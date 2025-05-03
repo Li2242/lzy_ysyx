@@ -53,6 +53,13 @@ static int cmd_c(char *args) {
 static int cmd_q(char *args) {
   return -1;
 }
+//单步si
+static int cmd_si(char *argc){
+  char *arg = strtok(NULL, " ");
+  int n = (int)*arg;
+  cpu_exec(n);
+  return 0;
+}
 //help
 static int cmd_help(char *args);
 //info
@@ -66,7 +73,7 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  //{"si", "Step execution",},
+  {"si", "Step execution",cmd_si},
   {"info", "Print the program status",cmd_info},
   //{"x", "Scan memory",},
   //{"p", "Expression evaluation",},
