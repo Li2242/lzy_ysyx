@@ -38,7 +38,7 @@ static void welcome() {
 #include <getopt.h>
 
 void sdb_set_batch_mode();
-void isa_reg_display(void);
+
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;

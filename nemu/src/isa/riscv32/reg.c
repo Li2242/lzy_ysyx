@@ -23,7 +23,7 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
-void isa_reg_display(void) {
+void isa_reg_display() {
   for(int i=0;i<4;i++){
     printf("regs[%d]:%s\n",i,regs[i]);
   }
