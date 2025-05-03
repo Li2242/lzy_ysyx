@@ -56,7 +56,7 @@ static int cmd_q(char *args) {
 //help
 static int cmd_help(char *args);
 //info
-//static int cmd_info(char *args);
+static int cmd_info(char *args);
 
 static struct {
   const char *name;
@@ -67,7 +67,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   //{"si", "Step execution",},
-  //{"info", "Print the program status",cmd_info},
+  {"info", "Print the program status",cmd_info},
   //{"x", "Scan memory",},
   //{"p", "Expression evaluation",},
   //{"w", "Set watchpoint",},
@@ -78,18 +78,17 @@ static struct {
 
 #define NR_CMD ARRLEN(cmd_table)
 
-/*
+
 //info
 static int cmd_info(char* argc){
   char *arg = strtok(NULL, " ");
-  int i;
 
   if (arg == NULL) {
     printf("Usage: info <subcommand> (e.g., info r,info w)\n");
   }
-
+  return 0;
 }
-*/
+
 
 //help
 static int cmd_help(char *args) {
