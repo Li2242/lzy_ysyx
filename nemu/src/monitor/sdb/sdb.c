@@ -84,9 +84,13 @@ static int cmd_info(char* argc){
   char *arg = strtok(NULL, " ");
 
   if (arg == NULL) {
-    printf("Usage: info <subcommand> (e.g., info r,info w)\n");
-  }else{
+    printf("Usage: info <subcommand>\n");
+  }else if (*arg == 'r'){
     isa_reg_display();
+  }else if (*arg == 'w'){
+
+  }else{
+    printf("subcommand error!!!\n");
   }
   return 0;
 }
