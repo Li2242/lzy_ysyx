@@ -86,7 +86,7 @@ static int cmd_info(char* argc){
   if (arg == NULL) {
     printf("Usage: info <subcommand> (e.g., info r,info w)\n");
   }else{
-    void isa_reg_display();
+    isa_reg_display();
   }
   return 0;
 }
