@@ -25,6 +25,7 @@ void init_regex();
 void init_wp_pool();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
+//使用 readline 函数从标准输入读取用户输入的一行命令，如果不为空,将其添加到历史记录中
 static char* rl_gets() {
   static char *line_read = NULL;
 
@@ -42,17 +43,20 @@ static char* rl_gets() {
   return line_read;
 }
 
+//继续程序的执行c
 static int cmd_c(char *args) {
   cpu_exec(-1);
   return 0;
 }
 
-
+//退出调试器q
 static int cmd_q(char *args) {
   return -1;
 }
-
+//help
 static int cmd_help(char *args);
+//info
+//static int cmd_info(char *args);
 
 static struct {
   const char *name;
@@ -62,13 +66,32 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  //{"si", "Step execution",},
+  //{"info", "Print the program status",cmd_info},
+  //{"x", "Scan memory",},
+  //{"p", "Expression evaluation",},
+  //{"w", "Set watchpoint",},
+  //{"d", "Delete watchpoint",}
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
+/*
+//info
+static int cmd_info(char* argc){
+  char *arg = strtok(NULL, " ");
+  int i;
+
+  if (arg == NULL) {
+    printf("Usage: info <subcommand> (e.g., info r,info w)\n");
+  }
+
+}
+*/
+
+//help
 static int cmd_help(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
