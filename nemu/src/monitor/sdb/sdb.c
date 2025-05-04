@@ -63,7 +63,7 @@ static int cmd_si(char *args){
   }else{
     int n = atoi(arg);
     if(n<=0){
-        printf("ERROR!!!");
+        printf("ERROR!!!\n");
         n = 1;
     }
     cpu_exec(n);
