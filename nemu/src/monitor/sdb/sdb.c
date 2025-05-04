@@ -70,7 +70,8 @@ static int cmd_si(char *args){
   }
     return 0;
   }
- 
+//x
+static int cmd_x(char *args);
 //help
 static int cmd_help(char *args);
 //info
@@ -86,7 +87,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   {"si", "Step execution",cmd_si},
   {"info", "Print the program status",cmd_info},
-  //{"x", "Scan memory",},
+  {"x", "Scan memory",cmd_x},
   //{"p", "Expression evaluation",},
   //{"w", "Set watchpoint",},
   //{"d", "Delete watchpoint",}
@@ -96,9 +97,29 @@ static struct {
 
 #define NR_CMD ARRLEN(cmd_table)
 
+                
+//x
+static int cmd_x(char *args){
+  char *arg[2];
+  arg[0] = strtok(NULL," "); 
+  arg[1] = strtok(NULL," "); 
+  //检验参数是否齐全
+  if(arg[0] == NULL||arg[1] == NULL){
+    printf("Usage:command arg1 arg2\n");
+  }
+
+  int n = atoi(arg[0]);
+  if(n<=0){
+    printf("Length must be a positive integer.\n");
+    return 1;
+  }
+
+  return 0;
+}
+
 
 //info
-static int cmd_info(char* argc){
+static int cmd_info(char* args){
   char *arg = strtok(NULL, " ");
 
   if (arg == NULL) {
