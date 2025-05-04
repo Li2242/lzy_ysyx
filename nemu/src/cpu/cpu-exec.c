@@ -40,6 +40,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 }
 
+//该函数用于执行一条指令
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
@@ -71,6 +72,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
 }
 
+//该函数用于执行指定数量的指令。
 static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {

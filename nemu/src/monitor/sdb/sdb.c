@@ -25,6 +25,7 @@ void init_regex();
 void init_wp_pool();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
+//使用 readline 函数从标准输入读取用户输入的一行命令，如果不为空,将其添加到历史记录中
 static char* rl_gets() {
   static char *line_read = NULL;
 
@@ -42,17 +43,39 @@ static char* rl_gets() {
   return line_read;
 }
 
+//继续程序的执行c
 static int cmd_c(char *args) {
   cpu_exec(-1);
   return 0;
 }
 
-
+//退出调试器q
 static int cmd_q(char *args) {
   return -1;
 }
 
+//单步si
+static int cmd_si(char *args){
+  char *arg = strtok(NULL, " ");
+  
+  if(args==NULL){
+    cpu_exec(1);
+  }else{
+    int n = atoi(arg);
+    if(n<=0){
+        printf("ERROR!!!\n");
+        n = 1;
+    }
+    cpu_exec(n);
+  }
+    return 0;
+  }
+//x
+static int cmd_x(char *args);
+//help
 static int cmd_help(char *args);
+//info
+static int cmd_info(char *args);
 
 static struct {
   const char *name;
@@ -62,13 +85,57 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  {"si", "Step execution",cmd_si},
+  {"info", "Print the program status",cmd_info},
+  {"x", "Scan memory",cmd_x},
+  //{"p", "Expression evaluation",},
+  //{"w", "Set watchpoint",},
+  //{"d", "Delete watchpoint",}
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
+                
+//x
+static int cmd_x(char *args){
+  char *arg[2];
+  arg[0] = strtok(NULL," "); 
+  arg[1] = strtok(NULL," "); 
+  //检验参数是否齐全
+  if(arg[0] == NULL||arg[1] == NULL){
+    printf("Usage:command arg1 arg2\n");
+  }
+
+  int n = atoi(arg[0]);
+  if(n<=0){
+    printf("Length must be a positive integer.\n");
+    return 1;
+  }
+
+  return 0;
+}
+
+
+//info
+static int cmd_info(char* args){
+  char *arg = strtok(NULL, " ");
+
+  if (arg == NULL) {
+    printf("Usage: info <subcommand>\n");
+  }else if (*arg == 'r'){
+    isa_reg_display();
+  }else if (*arg == 'w'){
+
+  }else{
+    printf("subcommand error!!!\n");
+  }
+  return 0;
+}
+
+
+//help
 static int cmd_help(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
