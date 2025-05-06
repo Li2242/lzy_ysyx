@@ -143,6 +143,8 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Perform ISA dependent initialization. */
   //执行与指令集架构相关的初始化操作
+  //第一项工作就是将一个内置的客户程序读入到内存中. 
+  //第二项任务是初始化寄存器
   init_isa();
 
   /* Load the image to memory. This will overwrite the built-in image. */

@@ -34,6 +34,7 @@ static uint8_t *pmem = NULL;
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 #endif
 //将物理地址 paddr 转换为主机地址。
+//地址映射 例如如果mips32的CPU打算访问内存地址0x80000000, 我们会让它最终访问pmem[0]
 uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 //将主机地址 haddr 转换为物理地址。
 paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
