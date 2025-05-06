@@ -13,6 +13,16 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+
+/*
+  1.静态函数：仅在这个源文件中可以使用，其作用域会被限制在定义它的文件里；不同文件中可以定义同名的静态函数，不会产生命名冲突。
+
+
+
+*/
+
+
+
 #include <isa.h>
 #include <memory/paddr.h>
 
@@ -68,17 +78,25 @@ static long load_img() {
   return size;
 }
 
+//解析命令行参数
 static int parse_args(int argc, char *argv[]) {
+  //定义长选项表
   const struct option table[] = {
+    //{长选项名称，是否需要参数，NULL，短选项名称}
     {"batch"    , no_argument      , NULL, 'b'},
     {"log"      , required_argument, NULL, 'l'},
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
+    //长选项表的结束标志
     {0          , 0                , NULL,  0 },
   };
-  int o; 
-  //getopt_long 是 C 语言中用于解析命令行参数的函数
+  int o;
+  //getopt_long用于解析命令行参数的函数，同时处理短或者长选项
+  //这个函数的第三个参数中，<:>选项需要参数，<->选项不需要参数
+  //第四个选项是长选项表
+  //第五个通常为NULL
+  //getopt_long 函数会依次解析命令行参数，并返回当前解析到的选项字符，若解析完毕则返回 -1。
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
@@ -99,25 +117,32 @@ static int parse_args(int argc, char *argv[]) {
   return 0;
 }
 
+//是对监控系统进行初始化操作。
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
   /* Parse arguments. */
+  //解析命令行参数
   parse_args(argc, argv);
 
   /* Set random seed. */
+  //为后续可能用到的随机数生成操作做准备。
   init_rand();
 
   /* Open the log file. */
+  //打开日志文件
   init_log(log_file);
 
   /* Initialize memory. */
+  //初始化内存
   init_mem();
 
   /* Initialize devices. */
+  //根据 CONFIG_DEVICE 宏的定义情况来决定是否调用 init_device 函数。
   IFDEF(CONFIG_DEVICE, init_device());
 
   /* Perform ISA dependent initialization. */
+  //执行与指令集架构相关的初始化操作
   init_isa();
 
   /* Load the image to memory. This will overwrite the built-in image. */
