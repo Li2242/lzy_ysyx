@@ -64,12 +64,13 @@ static int cmd_si(char *args){
     int n = atoi(arg);
     if(n<=0){
         printf("ERROR!!!\n");
-        n = 1;
+        return 1;
     }
     cpu_exec(n);
   }
     return 0;
   }
+  
 //x
 static int cmd_x(char *args);
 //help
