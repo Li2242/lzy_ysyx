@@ -121,7 +121,7 @@ static int cmd_x(char *args){
     return 1;
   }else{
     for(int i = 0; i<n; i++){
-      printf("0x%x\n",*mem_ptr);
+      printf("0x%x\n",*mem_ptr+i);
     }
   }
 
