@@ -40,7 +40,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 }
 
-//该函数用于执行一条指令
+//该函数用于执行一条指令,让CPU执行当前PC指向的一条指令, 然后更新PC.
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
@@ -84,6 +84,7 @@ static void execute(uint64_t n) {
   }
 }
 
+//该函数用于输出统计信息，包括主机时间花费、执行的客户指令总数和模拟频率。
 static void statistic() {
   IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
 #define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
@@ -92,13 +93,14 @@ static void statistic() {
   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
-
+//该函数用于在断言失败时输出寄存器信息和统计信息。
 void assert_fail_msg() {
   isa_reg_display();
   statistic();
 }
 
 /* Simulate how the CPU works. */
+//该函数是 CPU 执行的主函数，用于控制 CPU 的执行流程。
 void cpu_exec(uint64_t n) {
   g_print_step = (n < MAX_INST_TO_PRINT);
   switch (nemu_state.state) {

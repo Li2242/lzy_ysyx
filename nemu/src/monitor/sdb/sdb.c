@@ -18,6 +18,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/host.h>
+#include <memory/paddr.h>
 
 static int is_batch_mode = false;
 
@@ -64,12 +66,13 @@ static int cmd_si(char *args){
     int n = atoi(arg);
     if(n<=0){
         printf("ERROR!!!\n");
-        n = 1;
+        return 1;
     }
     cpu_exec(n);
   }
     return 0;
   }
+
 //x
 static int cmd_x(char *args);
 //help
@@ -103,16 +106,25 @@ static int cmd_x(char *args){
   char *arg[2];
   arg[0] = strtok(NULL," "); 
   arg[1] = strtok(NULL," "); 
+  paddr_t addr;
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
     printf("Usage:command arg1 arg2\n");
   }
-
+  //次数
   int n = atoi(arg[0]);
+  //将地址字符串转换为16进制的无符号数
+  addr = strtoul(arg[1],NULL,16);
+  uint8_t *mem_ptr = guest_to_host(addr);  // 映射到pmem[0]
   if(n<=0){
     printf("Length must be a positive integer.\n");
     return 1;
+  }else{
+    for(int i = 0; i<n; i++){
+      printf("0x%08x\n",*(mem_ptr+i));
+    }
   }
+
 
   return 0;
 }
