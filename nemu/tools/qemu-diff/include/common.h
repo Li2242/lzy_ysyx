@@ -23,10 +23,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sdb.h>
 
 typedef uint32_t paddr_t;
 
 #include "isa.h"
+#include "sdb.h"
 #include "protocol.h"
 
 #endif

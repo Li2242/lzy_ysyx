@@ -101,32 +101,10 @@ static struct {
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+
 //p
 static int cmd_p(){
-  printf("GO");
-   FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
-  if(fp == NULL){
-    printf("ERROR!");
-    return 1;
-  }
-  printf("da kai le!");
-  char line[1024];
-  while(fgets(line,sizeof(line),fp)!=NULL){
-    char *expression = strchr(line,' ');
-    if(expression == NULL){
-      printf("Invida format!");
-      return 1;
-    }
-    expression = expression + 1;
-    uint32_t str_len = strlen(expression);
-    if(str_len > 0&&expression[str_len - 1]=='\n'){
-      expression[str_len - 1] = '\0';
-    }
-    bool *r = false;
-    expr(expression,r);
-    printf("%d\n",*r);
-  }
-  fclose(fp);
+  
   return 0;
 }
 
