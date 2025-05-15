@@ -79,6 +79,8 @@ static int cmd_x(char *args);
 static int cmd_help(char *args);
 //info
 static int cmd_info(char *args);
+//p
+static int cmd_p();
 
 static struct {
   const char *name;
@@ -91,7 +93,7 @@ static struct {
   {"si", "Step execution",cmd_si},
   {"info", "Print the program status",cmd_info},
   {"x", "Scan memory",cmd_x},
-  //{"p", "Expression evaluation",},
+  {"p", "Expression evaluation",cmd_p},
   //{"w", "Set watchpoint",},
   //{"d", "Delete watchpoint",}
   /* TODO: Add more commands */
@@ -99,6 +101,31 @@ static struct {
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+//p
+static int cmd_p(){
+   FILE *fp = fopen("tools//gen-expr/build/input","r");
+  if(fp == NULL){
+    printf("ERROR!");
+    return 1;
+  }
+  char line[1024];
+  while(fgets(line,sizeof(line),fp)){
+    char *space_pos = strchr(line,' ');
+    if(space_pos== NULL){
+      printf("Invida format!");
+      return 1;
+    }
+    char *expression = space_pos + 1;
+    uint32_t str_len = strlen(expression);
+    if(str_len > 0&&expression[str_len - 1]=='\n'){
+      expression[str_len - 1] = '\0';
+    }
+    bool *r = false;
+    expr(expression,r);
+    printf("%d\n",*r);
+  }
+  return 0;
+}
 
                 
 //x
@@ -130,7 +157,7 @@ static int cmd_x(char *args){
 }
 
 
-//info
+//info r
 static int cmd_info(char* args){
   char *arg = strtok(NULL, " ");
 
