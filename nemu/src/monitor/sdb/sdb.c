@@ -103,6 +103,7 @@ static struct {
 #define NR_CMD ARRLEN(cmd_table)
 //p
 static int cmd_p(){
+  printf("GO");
    FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
   if(fp == NULL){
     printf("ERROR!");
