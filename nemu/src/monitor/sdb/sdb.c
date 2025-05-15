@@ -108,6 +108,7 @@ static int cmd_p(){
     printf("ERROR!");
     return 1;
   }
+  printf("da kai le!");
   char line[1024];
   while(fgets(line,sizeof(line),fp)!=NULL){
     char *expression = strchr(line,' ');
@@ -124,6 +125,7 @@ static int cmd_p(){
     expr(expression,r);
     printf("%d\n",*r);
   }
+  fclose(fp);
   return 0;
 }
 
