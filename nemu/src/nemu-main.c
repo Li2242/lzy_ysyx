@@ -57,9 +57,11 @@ int main(int argc, char *argv[]) {
     bool *r = false;
     printf("进入expr前\n");
     uint32_t result = expr(expression,r);
+     printf("进入expr后\n");
     printf("%d\n result=%u",*r,result);
   }
   fclose(fp);
+
 
   engine_start();
   
