@@ -65,10 +65,10 @@ int main(int argc, char *argv[]) {
     if(str_len == 0) continue;
 
     bool r = false ;
-    printf("进入expr前\n");
+    //printf("进入expr前\n");
     printf("%s\n",expression);
     uint32_t result = expr(expression,&r);
-     printf("进入expr后\n");
+     //printf("进入expr后\n");
     printf("r=%d result=%u\n",r,result);
   }
   fclose(fp);
