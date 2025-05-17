@@ -96,7 +96,7 @@ static void gen_rand_expr(int depth) {
     gen_num();
     return;
   }
-  switch (choose(4)) {
+  switch (choose(3)) {
     case 0: 
       
             gen_num(); 
@@ -109,10 +109,12 @@ static void gen_rand_expr(int depth) {
             gen(')');
             break; 
        }
+       /*
        case 2:
           gen(' ');
           gen_rand_expr(depth + 1); 
           break;
+          */
     default: 
             gen_rand_expr(depth + 1); 
             gen_rand_op(); 
