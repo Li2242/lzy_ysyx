@@ -47,8 +47,9 @@ int main(int argc, char *argv[]) {
   //开始读文章了
   while(fgets(line,512,fp)!= NULL){
     line_num++;
+
     if(line[0] == '\n')continue;
-    char *temp = 0;
+    char *temp = NULL;
     char *expression = strchr(line,' ');
     int len = strlen(line) - strlen(expression);
     strncpy(temp,line,len);
