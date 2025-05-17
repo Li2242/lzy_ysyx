@@ -49,9 +49,10 @@ int main(int argc, char *argv[]) {
     line_num++;
 
     if(line[0] == '\n')continue;
+    printf("没错");
     char *temp = NULL;
     char *expression = strchr(line,' ');
-    printf("没错");
+    
     int len = strlen(line) - strlen(expression);
     
     strncpy(temp,line,len);
