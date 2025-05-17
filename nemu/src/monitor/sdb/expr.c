@@ -14,7 +14,6 @@
 ***************************************************************************************/
 
 #include <isa.h>
-
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
@@ -83,7 +82,6 @@ void init_regex() {
 //Token结构体来记录token的信息
 typedef struct token {
   int type;
-  uint32_t num;
   char str[32];
 } Token;
 
@@ -106,7 +104,7 @@ static bool make_token(char *e) {
 
   while (e[position] != '\0') {
     /* Try all rules one by one. */
-    for (i = 0; i < NR_REGEX; i ++) {
+    for (i = 0; i < NR_REGEX; i++) {
       //使用编译后的正则表达式对目标字符串进行匹配，返回匹配结果
       //1：指向已编译的正则表达式
       //2：待匹配的目标字符串
@@ -121,13 +119,12 @@ static bool make_token(char *e) {
 
       // pmatch.rm_so：匹配子串的起始位置（从 0 开始的字节索引）
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
-        //char *substr_start = e + position;
-        //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度）.
+        char *substr_start = e + position;
+        //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度.
         int substr_len = pmatch.rm_eo;
-
-        /*Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
-            */
+            
 
         //移动位置
         position += substr_len;
@@ -137,6 +134,7 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
+        //记录信息的
         switch (rules[i].token_type) {
           case '+':
           case '-':
@@ -150,11 +148,13 @@ static bool make_token(char *e) {
           case TK_NUM:
           //类型
           tokens[nr_token].type = rules[i].token_type;
-          //sscanf,提取数字
-          sscanf(e+position,"%u",&tokens[nr_token].num);
+          //提取数字到str中
+          strcpy(tokens[nr_token].str, substr_start);
+          tokens[nr_token].str[substr_len] = '\0';
           break;
           //如果是空格不做处理
           case TK_NOTYPE:
+                nr_token--;
           break;
           default: TODO();
         }
@@ -185,6 +185,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
+
   word_t result =  eval(0,nr_token-1);
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
@@ -199,6 +200,7 @@ word_t expr(char *e, bool *success) {
 word_t eval(int p,int q) {
   if (p > q) {
     /* Bad expression */
+    printf(" Bad expression!");
     return 1;
   }
   else if (p == q) {
@@ -206,7 +208,7 @@ word_t eval(int p,int q) {
      * For now this token should be a number.
      * Return the value of the number.
      */
-    return tokens[p].num;
+    return (unsigned int)atoi(tokens[p].str);
   }
   else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
@@ -218,8 +220,9 @@ word_t eval(int p,int q) {
     int op = find_main_op(p,q);
     if(op==-1){
        printf("Error: No operator found between %d and %d\n", p, q);
-        return tokens[p].num; // 假设表达式是单个操作数
+        return (unsigned int)atoi(tokens[p].str); // 假设表达式是单个操作数
     }
+
     word_t val1 = eval(p, op - 1);
     word_t val2 = eval(op + 1, q);
 
@@ -281,7 +284,7 @@ int find_main_op(int p,int q){
         continue;
       }
 
-      //有限机相等时也更新为了满足后面的符号优先级更低。
+      //相等时也更新为了满足后面的符号优先级更低。
       if(precedence <= min_precedence){
           min_precedence = precedence;
           op = i;
