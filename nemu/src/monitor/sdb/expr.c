@@ -216,6 +216,10 @@ word_t eval(int p,int q) {
   }
   else {
     int op = find_main_op(p,q);
+    if(op==-1){
+       printf("Error: No operator found between %d and %d\n", p, q);
+        return tokens[p].num; // 假设表达式是单个操作数
+    }
     word_t val1 = eval(p, op - 1);
     word_t val2 = eval(op + 1, q);
 
