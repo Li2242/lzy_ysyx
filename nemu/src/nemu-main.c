@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
     printf("%s\n",expression);
     uint32_t result = expr(expression,&r);
      printf("进入expr后\n");
-    printf("%d\n result=%u",r,result);
+    printf("%d result=%u\n",r,result);
   }
   fclose(fp);
 
