@@ -22,6 +22,32 @@ void engine_start();
 int is_exit_status_bad();
 
 int main(int argc, char *argv[]) {
+
+  //测试
+   printf("GO");
+   FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
+  if(fp == NULL){
+    printf("ERROR!");
+    return 1;
+  }
+  char line[32];
+  while(fgets(line,32,fp)!=NULL){
+    char *expression = strchr(line,' ');
+    if(expression == NULL){
+      printf("Invida format!");
+      return 1;
+    }
+    expression = expression + 1;
+    uint32_t str_len = strlen(expression);
+    if(str_len > 0&&expression[str_len - 1]=='\n'){
+      expression[str_len - 1] = '\0';
+    }
+    bool *r = false;
+    uint32_t result = expr(expression,r);
+    printf("%d\n result=%u",*r,result);
+  }
+  fclose(fp);
+
    
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
@@ -34,31 +60,6 @@ int main(int argc, char *argv[]) {
 
   engine_start();
   
-  //测试
-   printf("GO");
-   FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
-  if(fp == NULL){
-    printf("ERROR!");
-    return 1;
-  }
-  printf("da kai le!");
-  char line[1024];
-  while(fgets(line,sizeof(line),fp)!=NULL){
-    char *expression = strchr(line,' ');
-    if(expression == NULL){
-      printf("Invida format!");
-      return 1;
-    }
-    expression = expression + 1;
-    uint32_t str_len = strlen(expression);
-    if(str_len > 0&&expression[str_len - 1]=='\n'){
-      expression[str_len - 1] = '\0';
-    }
-    bool *r = false;
-    expr(expression,r);
-    printf("%d\n",*r);
-  }
-  fclose(fp);
-
+  
   return is_exit_status_bad();
 }
