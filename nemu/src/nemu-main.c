@@ -43,11 +43,15 @@ int main(int argc, char *argv[]) {
   }
   printf("打开文件了\n");
   char line[32];
-  while(fgets(line,32,fp)!=NULL){
+  int line_num = 0;
+  while(fgets(line,32,fp)!= NULL){
+    line_num++;
+    if(line[0] == '\n')continue;
+
     char *expression = strchr(line,' ');
     if(expression == NULL){
-      printf("Invida format!");
-      return 1;
+      printf("Invida format in %d lien",line_num);
+      continue;
     }
     expression = expression + 1;
     uint32_t str_len = strlen(expression);
