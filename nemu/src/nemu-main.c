@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 
     char *expression = strchr(line,' ');
     if(expression == NULL){
-      printf("Invida format in %d lien",line_num);
+      printf("Invida format in %d lien\n",line_num);
       continue;
     }
 
