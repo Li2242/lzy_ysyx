@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   /* Start engine. */
   
   //测试
-   printf("GO");
+   printf("GO!开始了哦！！！\n");
    FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
   if(fp == NULL){
     printf("ERROR!");
