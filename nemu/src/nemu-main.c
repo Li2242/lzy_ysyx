@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     char *temp = NULL;
     char *expression = strchr(line,' ');
     
-    uint32_t len = line - expression;
+    uint32_t len = expression - line;
    strncpy(temp,line,len);
     //temp[len] = '\0';
     //uint32_t num = (unsigned int)atoi(temp); 
