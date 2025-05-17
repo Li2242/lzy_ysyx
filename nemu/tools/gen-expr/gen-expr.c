@@ -85,7 +85,7 @@ void gen_num(){
 //生成随机符号
 void gen_rand_op(){
   const char ops[4] = {'+','-','*','/'};
-  char op = ops[rand() % 4];
+  char op = ops[rand() % 3];
   gen(op);
 }
 
