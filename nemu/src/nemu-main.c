@@ -49,10 +49,11 @@ int main(int argc, char *argv[]) {
     line_num++;
 
     if(line[0] == '\n')continue;
-    char *temp = NULL;
+    
     char *expression = strchr(line,' ');
     
     size_t len = expression - line;
+    char temp[len+1];
    strncpy(temp,line,len);
     //temp[len] = '\0';
     //uint32_t num = (unsigned int)atoi(temp); 
