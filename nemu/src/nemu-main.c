@@ -42,10 +42,10 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   printf("打开文件了\n");
-  char line[32];
+  char line[33];
   int line_num = 0;
   //开始读文章了
-  while(fgets(line,32,fp)!= NULL){
+  while(fgets(line,33,fp)!= NULL){
     line_num++;
     if(line[0] == '\n')continue;
 
