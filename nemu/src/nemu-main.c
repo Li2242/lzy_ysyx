@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
     printf("ERROR!");
     return 1;
   }
+  printf("打开文件了\n");
   char line[32];
   while(fgets(line,32,fp)!=NULL){
     char *expression = strchr(line,' ');
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]) {
       expression[str_len - 1] = '\0';
     }
     bool *r = false;
+    printf("进入expr前\n");
     uint32_t result = expr(expression,r);
     printf("%d\n result=%u",*r,result);
   }
