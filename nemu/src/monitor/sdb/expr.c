@@ -150,7 +150,7 @@ static bool make_token(char *e) {
           tokens[nr_token++].type = rules[i].token_type;
           //提取数字到str中
           size_t len = strlen(substr_start);
-          printf("%ld\n",len);
+          printf("len的长度%ld\n",len);
           strcpy(tokens[nr_token].str, substr_start);
           tokens[nr_token++].str[substr_len] = '\0';
           break;
