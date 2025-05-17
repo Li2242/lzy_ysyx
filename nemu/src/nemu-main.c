@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <common.h>
+#include "/home/lzy14/ysyx/ysyx-workbench/nemu/src/monitor/sdb/sdb.h"
 
 void init_monitor(int, char *[]);
 void am_init_monitor();
@@ -21,15 +22,60 @@ void engine_start();
 int is_exit_status_bad();
 
 int main(int argc, char *argv[]) {
+
+
+   
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
 #else
   init_monitor(argc, argv);
 #endif
-
+ 
   /* Start engine. */
-  engine_start();
+  
+  //测试
+   printf("GO!开始了哦！！！\n");
+   FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
+  if(fp == NULL){
+    printf("ERROR!");
+    return 1;
+  }
+  printf("打开文件了\n");
+  char line[32];
+  int line_num = 0;
+  //开始读文章了
+  while(fgets(line,32,fp)!= NULL){
+    line_num++;
+    if(line[0] == '\n')continue;
 
+    char *expression = strchr(line,' ');
+    if(expression == NULL){
+      printf("Invida format in %d lien\n",line_num);
+      continue;
+    }
+
+    expression = expression + 1;
+
+    uint32_t str_len = strlen(expression);
+
+    if(str_len > 0&&expression[str_len - 1]=='\n'){
+      expression[str_len - 1] = '\0';
+    }
+    if(str_len == 0) continue;
+
+    bool r = false ;
+    printf("进入expr前\n");
+    printf("%s\n",expression);
+    uint32_t result = expr(expression,&r);
+     printf("进入expr后\n");
+    printf("%d result=%u\n",r,result);
+  }
+  fclose(fp);
+
+
+  engine_start();
+  
+  
   return is_exit_status_bad();
 }

@@ -79,6 +79,8 @@ static int cmd_x(char *args);
 static int cmd_help(char *args);
 //info
 static int cmd_info(char *args);
+//p
+static int cmd_p();
 
 static struct {
   const char *name;
@@ -91,7 +93,7 @@ static struct {
   {"si", "Step execution",cmd_si},
   {"info", "Print the program status",cmd_info},
   {"x", "Scan memory",cmd_x},
-  //{"p", "Expression evaluation",},
+  {"p", "Expression evaluation",cmd_p},
   //{"w", "Set watchpoint",},
   //{"d", "Delete watchpoint",}
   /* TODO: Add more commands */
@@ -99,6 +101,12 @@ static struct {
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+
+//p
+static int cmd_p(){
+  
+  return 0;
+}
 
                 
 //x
@@ -130,7 +138,7 @@ static int cmd_x(char *args){
 }
 
 
-//info
+//info r
 static int cmd_info(char* args){
   char *arg = strtok(NULL, " ");
 
