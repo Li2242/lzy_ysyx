@@ -54,12 +54,12 @@ int main(int argc, char *argv[]) {
     if(str_len > 0&&expression[str_len - 1]=='\n'){
       expression[str_len - 1] = '\0';
     }
-    bool *r = false;
+    bool r = false ;
     printf("进入expr前\n");
     printf("%s\n",expression);
-    uint32_t result = expr(expression,r);
+    uint32_t result = expr(expression,&r);
      printf("进入expr后\n");
-    printf("%d\n result=%u",*r,result);
+    printf("%d\n result=%u",r,result);
   }
   fclose(fp);
 
