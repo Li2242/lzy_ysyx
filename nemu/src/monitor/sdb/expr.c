@@ -149,8 +149,9 @@ static bool make_token(char *e) {
           //类型
           tokens[nr_token].type = rules[i].token_type;
           //提取数字到str中
-          strcpy(tokens[nr_token].str, substr_start);
-          tokens[nr_token++].str[substr_len] = '\0';
+          strncpy(tokens[nr_token].str, substr_start,substr_len);
+          tokens[nr_token].str[substr_len] = '\0';
+          nr_token++;
           break;
           //如果是空格不做处理
           case TK_NOTYPE:
