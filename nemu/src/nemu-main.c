@@ -51,10 +51,15 @@ int main(int argc, char *argv[]) {
     if(line[0] == '\n')continue;
     char *temp = NULL;
     char *expression = strchr(line,' ');
+
     int len = strlen(line) - strlen(expression);
+    printf("没错");
     strncpy(temp,line,len);
+
     temp[len] = '\0';
+
     uint32_t num = (unsigned int)atoi(temp); 
+
     if(expression == NULL){
       printf("Invida format in %d lien\n",line_num);
       continue;
