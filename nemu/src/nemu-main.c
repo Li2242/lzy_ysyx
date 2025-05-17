@@ -55,8 +55,8 @@ int main(int argc, char *argv[]) {
     size_t len = expression - line;
     char temp[len+1];
    strncpy(temp,line,len);
-    //temp[len] = '\0';
-    //uint32_t num = (unsigned int)atoi(temp); 
+    temp[len] = '\0';
+    uint32_t num = (unsigned int)atoi(temp); 
 
     if(expression == NULL){
       printf("Invida format in %d lien\n",line_num);
@@ -78,9 +78,9 @@ int main(int argc, char *argv[]) {
     uint32_t result = expr(expression,&r);
      //printf("进入expr后\n");
     printf("r=%d result=%u\n",r,result);
-    //if(num == result){
-      //printf("对了！%d\n",line_num);
-    //}
+    if(num == result){
+      printf("对了！%d\n",line_num);
+    }
   }
   fclose(fp);
 
