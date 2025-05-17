@@ -147,10 +147,8 @@ static bool make_token(char *e) {
           break;
           case TK_NUM:
           //类型
-          tokens[nr_token++].type = rules[i].token_type;
+          tokens[nr_token].type = rules[i].token_type;
           //提取数字到str中
-          size_t len = strlen(substr_start);
-          printf("len的长度%ld\n",len);
           strcpy(tokens[nr_token].str, substr_start);
           tokens[nr_token++].str[substr_len] = '\0';
           break;
