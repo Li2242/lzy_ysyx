@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
   printf("打开文件了\n");
   char line[32];
   int line_num = 0;
+  //开始读文章了
   while(fgets(line,32,fp)!= NULL){
     line_num++;
     if(line[0] == '\n')continue;
@@ -53,11 +54,16 @@ int main(int argc, char *argv[]) {
       printf("Invida format in %d lien",line_num);
       continue;
     }
+
     expression = expression + 1;
+
     uint32_t str_len = strlen(expression);
+
     if(str_len > 0&&expression[str_len - 1]=='\n'){
       expression[str_len - 1] = '\0';
     }
+    if(str_len == 0) continue;
+
     bool r = false ;
     printf("进入expr前\n");
     printf("%s\n",expression);
