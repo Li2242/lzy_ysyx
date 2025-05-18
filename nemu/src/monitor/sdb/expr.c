@@ -264,6 +264,11 @@ bool check_parentheses(int p,int q){
 
 //找主符号数
 int find_main_op(int p,int q){
+  printf("Searching op between p=%d, q=%d:\n", p, q);
+  for (int i = p; i <= q; i++) {
+    printf("token %d: type='%c', str='%s'\n", 
+           i, tokens[i].type, tokens[i].str);
+  }
   int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
