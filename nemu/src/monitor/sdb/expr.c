@@ -203,7 +203,7 @@ word_t eval(int p,int q) {
   if (p > q) {
     /* Bad expression */
     printf(" Bad expression!");
-    return 1;
+    return false;
   }
   else if (p == q) {
     /* Single token.
@@ -222,7 +222,7 @@ word_t eval(int p,int q) {
     int op = find_main_op(p,q);
      if(op==-1){
         printf("Error: No operator found between %d and %d\n", p, q);
-         return (unsigned int)atoi(tokens[p].str); // 假设表达式是单个操作数
+         return false; // 假设表达式是单个操作数
      }
     
     word_t val1 = eval(p, op - 1);
@@ -268,7 +268,7 @@ int find_main_op(int p,int q){
   int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
-  for(int i =q; i>=p; i--){
+  for(int i =p; i<=q; i++){
     //进行计数
     if(tokens[i].type=='('){
       paren_count++;
