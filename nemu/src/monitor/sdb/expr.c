@@ -122,8 +122,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度.
         int substr_len = pmatch.rm_eo;
-        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-        //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
+         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+             i, rules[i].regex, position, substr_len, substr_len, substr_start);
             
         //移动
         position += substr_len;
@@ -266,7 +266,7 @@ bool check_parentheses(int p,int q){
       return false;
     }
   }
-  
+
   if(paren_count == 0){
     return true;
   }else{
