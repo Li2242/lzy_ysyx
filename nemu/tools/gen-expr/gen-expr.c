@@ -85,7 +85,7 @@ void gen_num(){
 //生成随机符号
 void gen_rand_op(){
   const char ops[4] = {'+','-','*','/'};
-  char op = ops[rand() % 3];
+  char op = ops[rand() % 4];
   gen(op);
 }
 
@@ -98,23 +98,22 @@ static void gen_rand_expr(int depth) {
   }
   switch (choose(3)) {
     case 0: 
-      
             gen_num(); 
             break;
-    case 1: 
+    case 1:
+          if(buf[pos-1]!=' '){
+            gen(' ');
+            gen_rand_expr(depth + 1);
+            break;
+          }
+    case 2: 
       //整个判断防止生成好多括号
-       if(buf[pos-1] != '('){
+       if(pos==0||buf[pos-1] != '('){
             gen('('); 
             gen_rand_expr(depth + 1); 
             gen(')');
             break; 
-       }
-       /*
-       case 2:
-          gen(' ');
-          gen_rand_expr(depth + 1); 
-          break;
-          */
+          }   
     default: 
             gen_rand_expr(depth + 1); 
             gen_rand_op(); 
