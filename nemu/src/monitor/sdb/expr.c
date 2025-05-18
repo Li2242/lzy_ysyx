@@ -24,7 +24,7 @@ word_t eval(int p,int q);
 enum {
   //空格串的token类型是TK_NOTYPE
   TK_NOTYPE = 256, TK_EQ,
-  TK_NUM,
+  TK_NUM,TK_XD,TK_DD,TK_H,TK_UEQ,TK_PT,TK_AD
 
   /* TODO: Add more token types */
 
@@ -48,7 +48,12 @@ static struct rule {
   {"\\)", ')'},
   {"[0-9]+", TK_NUM},
   {"==", TK_EQ},        // equal
-  
+  {"<=",TK_XD},
+  {">=",TK_DD},
+  {"&&",TK_H},
+  {"!=",TK_UEQ},
+  {"*",TK_PT},
+  {"&",TK_AD}
 };
 
 //数组的长度
@@ -232,7 +237,7 @@ word_t eval(int p,int q) {
       case '/': 
         if(val2 == 0){
           printf("Error: Division by zero\n");
-          assert(0);
+          
         }
         return val1/val2;
       default: assert(0);
