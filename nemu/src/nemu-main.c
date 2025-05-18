@@ -73,9 +73,9 @@ int main(int argc, char *argv[]) {
     bool r = false ;
     printf("%s\n",expression);
     uint32_t result = expr(expression,&r);
-    printf("result=%u ",result);
+    printf("result= %u\n",result);
     if(num == result){
-      printf("Right! The number is %d\n",line_num);
+      printf("The %d test is corrent!\n",line_num);
     }
   }
   fclose(fp);
