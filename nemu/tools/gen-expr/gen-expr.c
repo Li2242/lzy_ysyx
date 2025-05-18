@@ -106,12 +106,12 @@ static void gen_rand_expr(int depth) {
             gen_num();
             break;
             */
-    // case 2:
-    //       if(buf[pos-1]!=' '){
-    //         gen(' ');
-    //         gen_rand_expr(depth + 1);
-    //         break;
-    //       }
+    case 2:
+          if(buf[pos-1]!=' '){
+            gen(' ');
+            gen_rand_expr(depth + 1);
+            break;
+          }
             
     case 3: 
       //整个判断防止生成好多括号
