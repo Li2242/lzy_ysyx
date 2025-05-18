@@ -20,7 +20,7 @@
 #include <regex.h>
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
-word_t eval(int p,int q);
+bool eval(int p,int q,word_t *result);
 enum {
   //空格串的token类型是TK_NOTYPE
   TK_NOTYPE = 256, TK_EQ,
@@ -186,13 +186,13 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  word_t result =  eval(0,nr_token-1);
+  word_t result =  0;
+  bool outcome = eval(0,nr_token-1,&result);
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
-  if(result == 0){
-    assert(0 && "可能出错了，先暂停");
+  if(outcome == false){
+    assert(0 && "出错!");
   }
-  
   //printf("expr中的result: %u \n",result);
   *success = true;
   return result;
@@ -201,40 +201,46 @@ word_t expr(char *e, bool *success) {
 
 
 //递归求值函数
-word_t eval(int p,int q) {
+bool eval(int p,int q,word_t *result) {
   if (p > q) {
     /* Bad expression */
     printf(" Bad expression!");
-    return 0;
+    return false;
   }
   else if (p == q) {
     /* Single token.
      * For now this token should be a number.
      * Return the value of the number.
      */
-    return (unsigned int)atoi(tokens[p].str);
+     *result = (word_t)atoi(tokens[p].str);
+    return true;
   }
   else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    return eval(p + 1, q - 1);
+    return eval(p + 1, q - 1,result);
   }
   else {
     int op = find_main_op(p,q);
      if(op==-1){
         printf("Error: No operator found between %d and %d\n", p, q);
-         return 0; 
+         return false; 
      }
     printf("%d:%c  ",op,tokens[op].type);
-    word_t val1 = eval(p, op - 1);
-    word_t val2 = eval(op + 1, q);
+    word_t val1 = eval(p, op - 1,result);
+    word_t val2 = eval(op + 1, q,result);
      printf("%u %u\n",val1,val2);
     switch (tokens[op].type) {
-      case '+': return val1 + val2;
-      case '-': return val1 - val2;
-      case '*': return val1 * val2;
-      case '/': return val1 / val2;
+      case '+': *result = val1 + val2;
+      case '-': *result = val1 - val2;
+      case '*': *result = val1 * val2;
+      case '/': 
+        if(val2 == 0){
+          printf("Error: Division by zero\n");
+          return false;
+        }
+        *result = val1/val2;
       default: assert(0);
     }
   }
