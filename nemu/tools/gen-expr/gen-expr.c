@@ -100,12 +100,10 @@ static void gen_rand_expr(int depth) {
     case 0: 
             gen_num(); 
             break;
-            /*
-    case 1:
-            gen('-');
-            gen_num();
-            break;
-            */
+    // case 1:
+    //         gen('-');
+    //         gen_num();
+    //         break;
     case 2:
           if(buf[pos-1]!=' '){
             gen(' ');
