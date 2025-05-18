@@ -271,7 +271,7 @@ bool check_parentheses(int p,int q){
 
 //找主符号数
 int find_main_op(int p,int q){
-  //printf("p=%d q=%d\n",p,q);
+  printf("p=%d q=%d\n",p,q);
   int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
