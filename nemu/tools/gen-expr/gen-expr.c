@@ -92,7 +92,7 @@ void gen_rand_op(){
 
 //生成随机值
 static void gen_rand_expr(int depth) {
-  if(depth >= 10){
+  if(depth > 20){
     gen_num();
     return;
   }
