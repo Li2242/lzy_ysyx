@@ -278,9 +278,9 @@ int find_main_op(int p,int q){
     //当前不在括号内
     if(paren_count == 0){
       int precedence = 0;
-      if(tokens[i].type == '+' || tokens[i].type == '-'){
+      if(tokens[i+1].type == '+' || tokens[i+1].type == '-'){
         precedence = 1;
-      }else if(tokens[i].type == '*' || tokens[i].type == '/'){
+      }else if(tokens[i+1].type == '*' || tokens[i+1].type == '/'){
         precedence = 2;
       }else{
         continue;
