@@ -263,7 +263,7 @@ bool check_parentheses(int p,int q){
     }
 
     //如果右括号大于左括号直接返回false
-    if(paren_count<0){
+    if(paren_count<=0&&i!=q){
       return false;
     }
   }
