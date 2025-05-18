@@ -285,6 +285,7 @@ int find_main_op(int p,int q){
     }else if(tokens[i].type == '*' || tokens[i].type == '/'){
       precedence = 2;
     }else{
+      //重要不能删除
       continue;
     }
     //相等时也更新为了满足后面的符号优先级更低。
