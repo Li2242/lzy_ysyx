@@ -267,7 +267,7 @@ int find_main_op(int p,int q){
   int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
-  for(int i =q; i<=p; i--){
+  for(int i =q; i>=p; i--){
     //进行计数
     if(tokens[i].type=='('){
       paren_count++;
@@ -281,10 +281,12 @@ int find_main_op(int p,int q){
     switch(tokens[i].type){
         case '+':
          case '-':
-              precedence = 1; break; 
+              precedence = 1; 
+              break; 
         case '*': 
         case '/': 
-              precedence = 2; break; 
+              precedence = 2; 
+              break; 
         default: 
               continue;
     }
