@@ -20,7 +20,7 @@
 #include <regex.h>
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
-bool eval(int p,int q,word_t *result);
+word_t eval(int p,int q);
 enum {
   //空格串的token类型是TK_NOTYPE
   TK_NOTYPE = 256, TK_EQ,
@@ -186,13 +186,9 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  word_t result =  0;
-  bool outcome = eval(0,nr_token-1,&result);
+  word_t result = eval(0,nr_token-1);
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
-  if(outcome == false){
-    assert(0 && "出错!");
-  }
   //printf("expr中的result: %u \n",result);
   *success = true;
   return result;
@@ -201,26 +197,23 @@ word_t expr(char *e, bool *success) {
 
 
 //递归求值函数
-bool eval(int p,int q,word_t *result) {
+word_t eval(int p,int q) {
   if (p > q) {
     /* Bad expression */
     printf(" Bad expression!");
-    return false;
-
+    assert(0);
   }else if (p == q) {
     /* Single token.
      * For now this token should be a number.
      * Return the value of the number.
      */
-     *result = (word_t)atoi(tokens[p].str);
-    return true;
-
+    return (word_t)atoi(tokens[p].str);
   }else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
     printf("消除过一次括号了\n");
-    return eval(p + 1, q - 1,result);
+    return eval(p + 1, q - 1);
   }
   else {
     int op = find_main_op(p,q);
@@ -229,19 +222,19 @@ bool eval(int p,int q,word_t *result) {
          return false; 
      }
     printf("%d:%c  ",op,tokens[op].type);
-    word_t val1 = eval(p, op - 1,result);
-    word_t val2 = eval(op + 1, q,result);
+    word_t val1 = eval(p, op - 1);
+    word_t val2 = eval(op + 1, q);
      printf("%u %u\n",val1,val2);
     switch (tokens[op].type) {
-      case '+': *result = val1 + val2;
-      case '-': *result = val1 - val2;
-      case '*': *result = val1 * val2;
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
       case '/': 
         if(val2 == 0){
           printf("Error: Division by zero\n");
-          return false;
+          assert(0);
         }
-        *result = val1/val2;
+        return val1/val2;
       default: assert(0);
     }
   }
@@ -262,7 +255,7 @@ bool check_parentheses(int p,int q){
       paren_count--;
     }
 
-    //如果右括号大于左括号直接返回false
+    //如果右括号大于左括号直接返回false或者，如果在中途等号为0了那么说明已经被拦截了
     if(paren_count<=0&&i!=q){
       return false;
     }
