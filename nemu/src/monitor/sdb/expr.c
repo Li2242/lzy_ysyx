@@ -219,6 +219,7 @@ bool eval(int p,int q,word_t *result) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
+    printf("消除过一次括号了\n");
     return eval(p + 1, q - 1,result);
   }
   else {
