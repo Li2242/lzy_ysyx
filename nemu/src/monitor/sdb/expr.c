@@ -52,7 +52,7 @@ static struct rule {
    {">=",TK_DD},
   //{"&&",TK_H},
   {"!=",TK_UEQ},
-  // {"*",TK_PT},
+  {"*",TK_PT},
   {"\\&",TK_AD}
 };
 
