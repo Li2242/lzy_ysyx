@@ -224,7 +224,7 @@ word_t eval(int p,int q) {
         printf("Error: No operator found between %d and %d\n", p, q);
          return (unsigned int)atoi(tokens[p].str); // 假设表达式是单个操作数
      }
-     printf("%c\n",tokens[op].type);
+     printf("op=%d %c",op,tokens[op].type);
     word_t val1 = eval(p, op - 1);
     word_t val2 = eval(op + 1, q);
 
