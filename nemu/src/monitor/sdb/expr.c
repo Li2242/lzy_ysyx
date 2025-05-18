@@ -206,16 +206,16 @@ bool eval(int p,int q,word_t *result) {
     /* Bad expression */
     printf(" Bad expression!");
     return false;
-  }
-  else if (p == q) {
+
+  }else if (p == q) {
     /* Single token.
      * For now this token should be a number.
      * Return the value of the number.
      */
      *result = (word_t)atoi(tokens[p].str);
     return true;
-  }
-  else if (check_parentheses(p, q) == true) {
+
+  }else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
@@ -263,10 +263,15 @@ bool check_parentheses(int p,int q){
 
     //如果右括号大于左括号直接返回false
     if(paren_count<0){
-      return 0;
+      return false;
     }
   }
-  return (paren_count == 0);
+  
+  if(paren_count == 0){
+    return true;
+  }else{
+    return false;
+  }
 }
 
 
