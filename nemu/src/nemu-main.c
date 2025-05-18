@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     uint32_t result = expr(expression,&r);
     printf("result=%u ",result);
     if(num == result){
-      printf("对了！%d\n",line_num);
+      printf("Right! The number is %d\n",line_num);
     }
   }
   fclose(fp);
