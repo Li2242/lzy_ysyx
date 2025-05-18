@@ -121,12 +121,11 @@ static bool make_token(char *e) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度.
-        int substr_len = pmatch.rm_eo - pmatch.rm_so;
+        int substr_len = pmatch.rm_eo;
         // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
         //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
             
-
-        //移动位置
+        //移动
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -156,7 +155,7 @@ static bool make_token(char *e) {
           break;
           //如果是空格不做处理
           case TK_NOTYPE:
-                
+              
           break;
           default: TODO();
         }
@@ -190,6 +189,9 @@ word_t expr(char *e, bool *success) {
   word_t result =  eval(0,nr_token-1);
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
+  if(result == 0){
+    assert(0 && "可能出错了，先暂停");
+  }
   
   //printf("expr中的result: %u \n",result);
   *success = true;
@@ -203,7 +205,7 @@ word_t eval(int p,int q) {
   if (p > q) {
     /* Bad expression */
     printf(" Bad expression!");
-    return false;
+    return 0;
   }
   else if (p == q) {
     /* Single token.
@@ -222,7 +224,7 @@ word_t eval(int p,int q) {
     int op = find_main_op(p,q);
      if(op==-1){
         printf("Error: No operator found between %d and %d\n", p, q);
-         return false; 
+         return 0; 
      }
     printf("%c",tokens[op].type);
     word_t val1 = eval(p, op - 1);
@@ -241,7 +243,7 @@ word_t eval(int p,int q) {
 //判断表达式是否被一对匹配的括号包围着
 bool check_parentheses(int p,int q){
   if(tokens[p].type!='(' && tokens[q].type!=')'){
-    return false;
+    return 0;
   }
   int paren_count = 0;
   for(int i =p;i<=q;i++){
@@ -255,7 +257,7 @@ bool check_parentheses(int p,int q){
 
     //如果右括号大于左括号直接返回false
     if(paren_count<0){
-      return false;
+      return 0;
     }
   }
   return (paren_count == 0);
