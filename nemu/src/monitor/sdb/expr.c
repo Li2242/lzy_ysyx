@@ -292,9 +292,9 @@ int find_main_op(int p,int q){
           min_precedence = precedence;
           op = i;
       }
-      printf(" %c\n",tokens[op].type);
     }
   }
+        printf(" %c\n",tokens[op].type);
   return op;
 }
 
