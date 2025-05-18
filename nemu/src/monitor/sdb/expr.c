@@ -212,7 +212,7 @@ word_t eval(int p,int q) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    //printf("消除过一次括号了\n");
+    printf("消除过一次括号了\n");
     return eval(p + 1, q - 1);
   }
   else {
@@ -221,7 +221,7 @@ word_t eval(int p,int q) {
         printf("Error: No operator found between %d and %d\n", p, q);
          return false; 
      }
-    //printf("%d:%c  ",op,tokens[op].type);
+    printf("%d:%c  ",op,tokens[op].type);
     word_t val1 = eval(p, op - 1);
     word_t val2 = eval(op + 1, q);
      //printf("%u %u\n",val1,val2);
