@@ -50,9 +50,9 @@ static struct rule {
   {"==", TK_EQ},        // equal
   {"<=",TK_XD},
    {">=",TK_DD},
-  //{"&&",TK_H},
+  {"\\&\\&",TK_H},
   {"!=",TK_UEQ},
-  {"*",TK_PT},
+  {"\\*",TK_PT},
   {"\\&",TK_AD}
 };
 
