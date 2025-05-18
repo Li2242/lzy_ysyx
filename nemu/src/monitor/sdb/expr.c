@@ -286,7 +286,7 @@ int find_main_op(int p,int q){
       precedence = 2;
     }
     //相等时也更新为了满足后面的符号优先级更低。
-    if(precedence <= min_precedence){
+    if(precedence < min_precedence){
         min_precedence = precedence;
         op = i;
     }
