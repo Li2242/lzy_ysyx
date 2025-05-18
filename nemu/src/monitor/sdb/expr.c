@@ -258,7 +258,7 @@ bool check_parentheses(int p,int q){
       return false;
     }
   }
-  return paren_count == 0;
+  return (paren_count == 0);
 }
 
 
