@@ -76,8 +76,8 @@ int main(int argc, char *argv[]) {
     //printf("进入expr前\n");
     printf("%s\n",expression);
     uint32_t result = expr(expression,&r);
-     //printf("进入expr后\n");
-    //printf("r=%d result=%u\n",r,result);
+     printf("进入expr后\n");
+    printf("r=%d result=%u\n",r,result);
     if(num == result){
       printf("对了！%d\n",line_num);
     }
