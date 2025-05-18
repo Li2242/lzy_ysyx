@@ -237,6 +237,7 @@ word_t eval(int p,int q) {
       case '/': 
         if(val2 == 0){
           printf("Error: Division by zero\n");
+          return 0;
         }
         return val1/val2;
       default: assert(0);
