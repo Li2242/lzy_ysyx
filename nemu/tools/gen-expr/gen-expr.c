@@ -108,7 +108,7 @@ static void gen_rand_expr(int depth) {
           }
     case 2: 
       //整个判断防止生成好多括号
-       if(pos==0||buf[pos-1] != '('){
+       if(buf[pos-1] != '('&&buf[pos - 1]!=' '){
             gen('('); 
             gen_rand_expr(depth + 1); 
             gen(')');
