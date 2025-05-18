@@ -289,7 +289,6 @@ int find_main_op(int p,int q){
     if(precedence <= min_precedence){
         min_precedence = precedence;
         op = i;
-    
     }
   }
   return op;
