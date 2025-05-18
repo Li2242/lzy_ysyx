@@ -224,7 +224,7 @@ word_t eval(int p,int q) {
         printf("Error: No operator found between %d and %d\n", p, q);
          return (unsigned int)atoi(tokens[p].str); // 假设表达式是单个操作数
      }
-     printf("op=%d %c",op,tokens[op].type);
+    
     word_t val1 = eval(p, op - 1);
     word_t val2 = eval(op + 1, q);
 
@@ -278,9 +278,9 @@ int find_main_op(int p,int q){
     //当前不在括号内
     if(paren_count == 0){
       int precedence = 0;
-      if(tokens[i].type == '+'||tokens[i].type == '-'){
+      if(tokens[i].type == '+' || tokens[i].type == '-'){
         precedence = 1;
-      }else if(tokens[i].type =='*'||tokens[i].type == '/'){
+      }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 2;
       }else{
         continue;
