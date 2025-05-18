@@ -73,9 +73,9 @@ int main(int argc, char *argv[]) {
     bool r = false ;
     printf("%s\n",expression);
     uint32_t result = expr(expression,&r);
-    printf("r=%d result=%u\n",r,result);
+    printf("result=%u ",result);
     if(num == result){
-      printf("对了！%d\n",line_num);
+      printf("对了！%d\n\n",line_num);
     }
   }
   fclose(fp);
