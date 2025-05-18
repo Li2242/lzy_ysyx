@@ -268,7 +268,7 @@ int find_main_op(int p,int q){
   int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
-  for(int i =p; i<=q; i++){
+  for(int i =q; i<=p; i--){
     //进行计数
     if(tokens[i].type=='('){
       paren_count++;
