@@ -35,13 +35,11 @@ int main(int argc, char *argv[]) {
   /* Start engine. */
   
   //测试
-   printf("GO!开始了哦！！！\n");
    FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
   if(fp == NULL){
     printf("ERROR!");
     return 1;
   }
-  printf("打开文件了\n");
   char line[512];
   int line_num = 0;
   //开始读文章了
@@ -73,10 +71,8 @@ int main(int argc, char *argv[]) {
     if(str_len == 0) continue;
 
     bool r = false ;
-    //printf("进入expr前\n");
     printf("%s\n",expression);
     uint32_t result = expr(expression,&r);
-     printf("进入expr后\n");
     printf("r=%d result=%u\n",r,result);
     if(num == result){
       printf("对了！%d\n",line_num);

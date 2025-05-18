@@ -222,7 +222,7 @@ word_t eval(int p,int q) {
     int op = find_main_op(p,q);
      if(op==-1){
         printf("Error: No operator found between %d and %d\n", p, q);
-         return false; // 假设表达式是单个操作数
+         return false; 
      }
     printf("%c",tokens[op].type);
     word_t val1 = eval(p, op - 1);
@@ -275,25 +275,25 @@ int find_main_op(int p,int q){
     if(tokens[i].type==')'){
       paren_count--;
     }
-    if(paren_count != 0){
-      continue;
-    }
-    //当前不在括号内
-    int precedence = 0;
-    if(tokens[i].type == '+' || tokens[i].type == '-'){
-      precedence = 1;
-    }else if(tokens[i].type == '*' || tokens[i].type == '/'){
-      precedence = 2;
-    }else{
-      //重要不能删除
-      continue;
-    }
-    //相等时也更新为了满足后面的符号优先级更低。
-    if(precedence <= min_precedence){
-        min_precedence = precedence;
-        op = i;
+    //当前在括号内
+    if(paren_count == 0){
+      int precedence = 0;
+      if(tokens[i].type == '+' || tokens[i].type == '-'){
+        precedence = 1;
+      }else if(tokens[i].type == '*' || tokens[i].type == '/'){
+        precedence = 2;
+      }else{
+        //重要不能删除
+        continue;
+      }
+      //相等时也更新为了满足后面的符号优先级更低。
+      if(precedence <= min_precedence){
+          min_precedence = precedence;
+          op = i;
+      }
     }
   }
+
   return op;
 }
 
