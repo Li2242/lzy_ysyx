@@ -263,7 +263,7 @@ bool check_parentheses(int p,int q){
 
 //找主符号数
 int find_main_op(int p,int q){
-  int op =-1;
+  int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
   for(int i =p; i<=q; i++){

@@ -96,17 +96,24 @@ static void gen_rand_expr(int depth) {
     gen_num();
     return;
   }
-  switch (choose(3)) {
+  switch (choose(4)) {
     case 0: 
             gen_num(); 
             break;
+            /*
     case 1:
+            gen('-');
+            gen_num();
+            break;
+            */
+    case 2:
           if(buf[pos-1]!=' '){
             gen(' ');
             gen_rand_expr(depth + 1);
             break;
           }
-    case 2: 
+            
+    case 3: 
       //整个判断防止生成好多括号
        if(buf[pos-1] != '('&&buf[pos - 1]!=' '){
             gen('('); 
