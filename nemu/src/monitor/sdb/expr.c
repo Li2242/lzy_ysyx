@@ -212,13 +212,13 @@ word_t eval(int p,int q) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    printf("消除过一次括号了\n");
+    //printf("消除过一次括号了\n");
     return eval(p + 1, q - 1);
   }
   else {
     int op = find_main_op(p,q);
      if(op==-1){
-        printf("Error: No operator found between %d and %d\n", p, q);
+        //printf("Error: No operator found between %d and %d\n", p, q);
          return false; 
      }
     printf("%d:%c  ",op,tokens[op].type);
@@ -271,7 +271,7 @@ bool check_parentheses(int p,int q){
 
 //找主符号数
 int find_main_op(int p,int q){
-  printf("p=%d q=%d\n",p,q);
+  //printf("p=%d q=%d\n",p,q);
   int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
