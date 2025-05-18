@@ -47,9 +47,9 @@ static struct rule {
   {"\\(", '('},
   {"\\)", ')'},
   {"[0-9]+", TK_NUM},
-  {"\\==", TK_EQ},        // equal
-  // {"<=",TK_XD},
-  // {">=",TK_DD},
+  {"==", TK_EQ},        // equal
+   {"<=",TK_XD},
+   {">=",TK_DD},
   // {"&&",TK_H},
   // {"!=",TK_UEQ},
   // {"*",TK_PT},
