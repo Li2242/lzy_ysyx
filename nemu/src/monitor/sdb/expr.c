@@ -121,7 +121,7 @@ static bool make_token(char *e) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度.
-        int substr_len = pmatch.rm_eo;
+        int substr_len = pmatch.rm_eo - pmatch.rm_so;
         //Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             //i, rules[i].regex, position, substr_len, substr_len, /substr_start);
             
@@ -145,6 +145,7 @@ static bool make_token(char *e) {
           //类型
           tokens[nr_token++].type = rules[i].token_type;
           break;
+
           case TK_NUM:
           //类型
           tokens[nr_token].type = rules[i].token_type;
@@ -181,7 +182,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  if(nr_token == 0){
+  if(nr_token <= 0){
     *success = false;
     return 0;
   }
@@ -219,10 +220,10 @@ word_t eval(int p,int q) {
   }
   else {
     int op = find_main_op(p,q);
-    // if(op==-1){
-    //    printf("Error: No operator found between %d and %d\n", p, q);
-    //     return (unsigned int)atoi(tokens[p].str); // 假设表达式是单个操作数
-    // }
+     if(op==-1){
+        printf("Error: No operator found between %d and %d\n", p, q);
+         return (unsigned int)atoi(tokens[p].str); // 假设表达式是单个操作数
+     }
 
     word_t val1 = eval(p, op - 1);
     word_t val2 = eval(op + 1, q);
