@@ -128,8 +128,15 @@ static int cmd_x(char *args){
     printf("Length must be a positive integer.\n");
     return 1;
   }else{
-    for(int i = 0; i<n; i++){
-      printf("0x%x\n",*(mem_ptr+i));
+    for(int i = 0; i<n*4; i++){
+      for(int j = 0;j<4;j++){
+        if(j == 0){
+          printf("0x%x",*(mem_ptr+i));
+        }else{
+          printf("%x",*(mem_ptr+i));
+        }
+      }
+      printf("\n");
     }
   }
 
