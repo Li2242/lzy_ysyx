@@ -32,56 +32,55 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
  
+  // //测试
+  //  FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
+  // if(fp == NULL){
+  //   printf("ERROR!");
+  //   return 1;
+  // }
+  // char line[512];
+  // int line_num = 0;
+  // //开始读文章了
+  // while(fgets(line,512,fp)!= NULL){
+  //   line_num++;
+
+  //   if(line[0] == '\n')continue;
+    
+  //   char *expression = strchr(line,' ');
+    
+  //   size_t len = expression - line;
+  //   char temp[len+1];
+  //  strncpy(temp,line,len);
+  //   temp[len] = '\0';
+  //   uint32_t num = (unsigned int)atoi(temp); 
+
+  //   if(expression == NULL){
+  //     printf("Invida format in %d lien\n",line_num);
+  //     continue;
+  //   }
+
+  //   expression = expression + 1;
+
+  //   uint32_t str_len = strlen(expression);
+
+  //   if(str_len > 0&&expression[str_len - 1]=='\n'){
+  //     expression[str_len - 1] = '\0';
+  //   }
+  //   if(str_len == 0) continue;
+
+  //   bool r = false ;
+  //   printf("%s\n",expression);
+  //   uint32_t result = expr(expression,&r);
+  //   printf("result= %u\n",result);
+  //   if(num == result){
+  //     printf("The %d test is corrent!\n\n",line_num);
+  //   }
+  // }
+  // fclose(fp);
+
   /* Start engine. */
-  
-  //测试
-   FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
-  if(fp == NULL){
-    printf("ERROR!");
-    return 1;
-  }
-  char line[512];
-  int line_num = 0;
-  //开始读文章了
-  while(fgets(line,512,fp)!= NULL){
-    line_num++;
-
-    if(line[0] == '\n')continue;
-    
-    char *expression = strchr(line,' ');
-    
-    size_t len = expression - line;
-    char temp[len+1];
-   strncpy(temp,line,len);
-    temp[len] = '\0';
-    uint32_t num = (unsigned int)atoi(temp); 
-
-    if(expression == NULL){
-      printf("Invida format in %d lien\n",line_num);
-      continue;
-    }
-
-    expression = expression + 1;
-
-    uint32_t str_len = strlen(expression);
-
-    if(str_len > 0&&expression[str_len - 1]=='\n'){
-      expression[str_len - 1] = '\0';
-    }
-    if(str_len == 0) continue;
-
-    bool r = false ;
-    printf("%s\n",expression);
-    uint32_t result = expr(expression,&r);
-    printf("result= %u\n",result);
-    if(num == result){
-      printf("The %d test is corrent!\n\n",line_num);
-    }
-  }
-  fclose(fp);
 
   engine_start();
-  
   
   return is_exit_status_bad();
 }

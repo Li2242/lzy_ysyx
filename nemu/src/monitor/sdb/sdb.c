@@ -114,7 +114,7 @@ static int cmd_x(char *args){
   char *arg[2];
   arg[0] = strtok(NULL," "); 
   arg[1] = strtok(NULL," "); 
-  paddr_t addr;
+  uint32_t addr;
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
     printf("Usage:command arg1 arg2\n");
@@ -129,7 +129,7 @@ static int cmd_x(char *args){
     return 1;
   }else{
     for(int i = 0; i<n; i++){
-      printf("0x%08x\n",*(mem_ptr+i));
+      printf("0x%x\n",*(mem_ptr+i));
     }
   }
 

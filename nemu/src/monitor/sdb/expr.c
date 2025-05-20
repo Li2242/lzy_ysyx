@@ -33,7 +33,9 @@ enum {
   //指针*
   TK_PT,
   //16进制
-  TK_ST
+  TK_ST,
+  //寄存器
+  TK_RN
   /* TODO: Add more token types */
 };
 
@@ -58,7 +60,7 @@ static struct rule {
   {"\\)", ')'},
   {"0x[0-9a-fA-F]+",TK_ST},  //16
   {"[0-9]+", TK_NUM},       //10
-  {"\\$",'$'}         
+  {"\\$[0-9a-f]+",TK_RN}    //寄存器
   
 };
 
@@ -231,28 +233,34 @@ word_t eval(int p,int q) {
     assert(0);
   }else if (p == q) {
     /* Single token.
-     * For now this token should be a number.
-     * Return the value of the number.
-     */
+    * For now this token should be a number.
+    * Return the value of the number.
+    */
+    //处理正常10进制数
     if(tokens[p].type == TK_NUM ){
-      //处理正常10进制数
       return (word_t)atoi(tokens[p].str);
-    }else if(tokens[p].type == TK_ST){
-      //处理16进制的数
-      return 0;
-    }else{
-      //处理解指针和寄存器的值
+    }
+    //处理16进制的数
+    else if(tokens[p].type == TK_ST){
       return 0;
     }
-    
+    //处理寄存器的值
+    else if(tokens[p].type == '$'){
+      bool *success = false;
+      uint32_t tem_reg = isa_reg_str2val(tokens[p].str, success);
+      //处理解指针和寄存器的值
+      printf("取寄存器取地址%d\n了",*success);
+      return tem_reg;
+    }else{
+      return 0;
+    }
   }else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
     //printf("消除过一次括号了\n");
     return eval(p + 1, q - 1);
-  }
-  else {
+  }else {
     int op = find_main_op(p,q);
      if(op==-1){
         //printf("Error: No operator found between %d and %d\n", p, q);
@@ -273,8 +281,12 @@ word_t eval(int p,int q) {
           return 0;
         }
         return val1/val2;
-      //case TK_PT: 
-      default: assert(0);
+      // //指针解引用
+      // case TK_PT:
+      // void* addr = val2;
+      //   uint32_t* val = (uint32_t*)addr;   
+      //   return *val;
+      default: assert(0);    
     }
   }
 }
@@ -331,7 +343,6 @@ int find_main_op(int p,int q){
         precedence = 2;
       }else if(tokens[i].type == TK_PT || tokens[i].type == '$'){
         precedence = 3;
-        continue;
       }else{
         //重要不能删除(当不在括号里面时直接跳过)
         continue;
@@ -343,7 +354,6 @@ int find_main_op(int p,int q){
       }
     }
   }
-
   return op;
 }
 
