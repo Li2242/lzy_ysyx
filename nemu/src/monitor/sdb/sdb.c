@@ -131,9 +131,9 @@ static int cmd_x(char *args){
     for(int i = 0; i<n*4; i++){
       for(int j = 0;j<4;j++){
         if(j == 0){
-          printf("0x%x",*(mem_ptr+j+i));
+          printf("0x%02x",*(mem_ptr+j+i));
         }else{
-          printf("%x",*(mem_ptr+i+j+i));
+          printf("%02x",*(mem_ptr+i+j+i));
         }
       }
       printf("\n");
