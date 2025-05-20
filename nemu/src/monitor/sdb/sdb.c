@@ -18,8 +18,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-#include <memory/host.h>
-#include <memory/paddr.h>
+#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
+
 
 static int is_batch_mode = false;
 
@@ -123,20 +124,14 @@ static int cmd_x(char *args){
   int n = atoi(arg[0]);
   //将地址字符串转换为16进制的无符号数
   addr = strtoul(arg[1],NULL,16);
-  uint8_t *mem_ptr = guest_to_host(addr);  // 映射到pmem[0]
+
   if(n<=0){
     printf("Length must be a positive integer.\n");
     return 1;
   }else{
-    for(int i = 0; i<n*4; i++){
-      for(int j = 0;j<4;j++){
-        if(j == 0){
-          printf("0x%02x",*(mem_ptr+j+i));
-        }else{
-          printf("%02x",*(mem_ptr+i+j+i));
-        }
-      }
-      printf("\n");
+    for(int i = 0; i<n; i ++){
+          printf("0x%08x\n",vaddr_read(addr,4));
+          addr += 4;
     }
   }
 
