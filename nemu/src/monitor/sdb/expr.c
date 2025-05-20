@@ -24,10 +24,17 @@ word_t eval(int p,int q);
 enum {
   //空格串的token类型是TK_NOTYPE
   TK_NOTYPE = 256, TK_EQ,
-  TK_NUM,TK_XD,TK_DD,TK_H,TK_UEQ,TK_PT,TK_AD
-
+  //十进制
+  TK_NUM,
+  //逻辑与
+  TK_H,
+  //不相等
+  TK_UEQ,
+  //指针*
+  TK_PT,
+  //16进制
+  TK_ST
   /* TODO: Add more token types */
-
 };
 
 static struct rule {
@@ -40,20 +47,19 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
+  {"==", TK_EQ},        // equal
+  {"!=",TK_UEQ},        //不等
+  {"\\&\\&",TK_H},      //逻辑与
   {"\\+", '+'},         // plus
   {"\\-", '-'},
   {"\\*", '*'},
   {"\\/", '/'},
   {"\\(", '('},
   {"\\)", ')'},
-  {"[0-9]+", TK_NUM},
-  {"==", TK_EQ},        // equal
-  {"<=",TK_XD},
-   {">=",TK_DD},
-  {"\\&\\&",TK_H},
-  {"!=",TK_UEQ},
-  {"\\*",TK_PT},
-  {"\\&",TK_AD}
+  {"0x[0-9a-fA-F]+",TK_ST},  //16
+  {"[0-9]+", TK_NUM},       //10
+  {"\\$",'$'}         
+  
 };
 
 //数组的长度
@@ -146,19 +152,26 @@ static bool make_token(char *e) {
           case '/':
           case '(':
           case ')':
-          //类型
-          tokens[nr_token++].type = rules[i].token_type;
-          break;
-
+          case TK_H:
+          case '$':
+          case TK_EQ:
+          case TK_UEQ:
+            //类型
+            tokens[nr_token++].type = rules[i].token_type;
+            break;
+          //10进制
           case TK_NUM:
-          //类型
-          tokens[nr_token].type = rules[i].token_type;
-          //提取数字到str中
-          strncpy(tokens[nr_token].str, substr_start,substr_len);
-          tokens[nr_token].str[substr_len] = '\0';
-          nr_token++;
-          break;
-          //如果是空格不做处理
+          //16进制
+          case TK_ST:
+            //类型
+            tokens[nr_token].type = rules[i].token_type;
+            //提取数字到str中
+            strncpy(tokens[nr_token].str, substr_start,substr_len);
+            tokens[nr_token].str[substr_len] = '\0';
+            nr_token++;
+            break;
+            
+            //如果是空格不做处理
           case TK_NOTYPE:
               
           break;
@@ -185,11 +198,20 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-
   if(nr_token <= 0){
     *success = false;
     return 0;
   }
+
+  /* TODO: Implement code to evaluate the expression. */
+
+  //区分解引用和乘法
+  for (int i = 0; i < nr_token; i ++) {
+    if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
+      tokens[i].type = TK_PT;
+    }
+  }
+
 
   word_t result = eval(0,nr_token-1);
   /* TODO: Insert codes to evaluate the expression. */
@@ -212,7 +234,17 @@ word_t eval(int p,int q) {
      * For now this token should be a number.
      * Return the value of the number.
      */
-    return (word_t)atoi(tokens[p].str);
+    if(tokens[p].type == TK_NUM ){
+      //处理正常10进制数
+      return (word_t)atoi(tokens[p].str);
+    }else if(tokens[p].type == TK_ST){
+      //处理16进制的数
+      return 0;
+    }else{
+      //处理解指针和寄存器的值
+      return 0;
+    }
+    
   }else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
@@ -224,15 +256,16 @@ word_t eval(int p,int q) {
     int op = find_main_op(p,q);
      if(op==-1){
         //printf("Error: No operator found between %d and %d\n", p, q);
-         return false; 
+         return false;
      }
     //printf("%d:%c  ",op,tokens[op].type);
     word_t val1 = eval(p, op - 1);
     word_t val2 = eval(op + 1, q);
+    
      //printf("%u %u\n",val1,val2);
     switch (tokens[op].type) {
       case '+': return val1 + val2;
-      case '-': return val1 - val2;
+      case '-': return val1 - val2; 
       case '*': return val1 * val2;
       case '/': 
         if(val2 == 0){
@@ -240,6 +273,7 @@ word_t eval(int p,int q) {
           return 0;
         }
         return val1/val2;
+      //case TK_PT: 
       default: assert(0);
     }
   }
@@ -295,8 +329,11 @@ int find_main_op(int p,int q){
         precedence = 1;
       }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 2;
+      }else if(tokens[i].type == TK_PT || tokens[i].type == '$'){
+        precedence = 3;
+        continue;
       }else{
-        //重要不能删除
+        //重要不能删除(当不在括号里面时直接跳过)
         continue;
       }
       //相等时也更新为了满足后面的符号优先级更低。
