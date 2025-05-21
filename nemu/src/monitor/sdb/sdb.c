@@ -134,8 +134,6 @@ static int cmd_x(char *args){
           addr += 4;
     }
   }
-
-
   return 0;
 }
 
