@@ -18,6 +18,8 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+//根据地址取值使用的头文件
+#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
 word_t eval(int p,int q);
@@ -155,7 +157,6 @@ static bool make_token(char *e) {
           case '(':
           case ')':
           case TK_H:
-          case '$':
           case TK_EQ:
           case TK_UEQ:
             //类型
@@ -165,6 +166,7 @@ static bool make_token(char *e) {
           case TK_NUM:
           //16进制
           case TK_ST:
+          case TK_RN:
             //类型
             tokens[nr_token].type = rules[i].token_type;
             //提取数字到str中
@@ -229,8 +231,8 @@ word_t expr(char *e, bool *success) {
 word_t eval(int p,int q) {
   if (p > q) {
     /* Bad expression */
-    printf(" Bad expression!");
-    assert(0);
+    printf(" Bad expression!可能是解引用的错！\n");
+    return 0;
   }else if (p == q) {
     /* Single token.
     * For now this token should be a number.
@@ -242,16 +244,22 @@ word_t eval(int p,int q) {
     }
     //处理16进制的数
     else if(tokens[p].type == TK_ST){
-      return 0;
+      uint32_t st =strtoul(tokens[p].str,NULL,16);
+      return st;
     }
     //处理寄存器的值
-    else if(tokens[p].type == '$'){
+    else if(tokens[p].type == TK_RN){
       bool *success = false;
       uint32_t tem_reg = isa_reg_str2val(tokens[p].str, success);
       //处理解指针和寄存器的值
-      printf("取寄存器取地址%d\n了",*success);
-      return tem_reg;
+      if(*success == true){
+          return tem_reg;
+      }else{
+        printf("寄存器名字取地址失败！");
+        return 0;
+      }
     }else{
+      //识别解引用的时候可能会出现问题
       return 0;
     }
   }else if (check_parentheses(p, q) == true) {
@@ -275,17 +283,20 @@ word_t eval(int p,int q) {
       case '+': return val1 + val2;
       case '-': return val1 - val2; 
       case '*': return val1 * val2;
+      case TK_EQ: return val1 == val2;
+      case TK_UEQ: return val1 != val2;
+      case TK_H: return val1 && val2;
       case '/': 
         if(val2 == 0){
           printf("Error: Division by zero\n");
           return 0;
         }
         return val1/val2;
-      // //指针解引用
-      // case TK_PT:
-      // void* addr = val2;
-      //   uint32_t* val = (uint32_t*)addr;   
-      //   return *val;
+      //指针解引用
+      case TK_PT:
+      uint32_t addr = val2;
+        uint32_t val = vaddr_read(addr,4);
+        return val;
       default: assert(0);    
     }
   }
