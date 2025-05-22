@@ -233,6 +233,7 @@ word_t eval(int p,int q,bool *success) {
   if (p > q) {
     /* Bad expression */
     printf(" Bad expression!\n");
+    *success = false;
     return 0;
   }else if (p == q) {
     /* Single token.
