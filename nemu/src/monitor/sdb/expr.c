@@ -25,7 +25,9 @@ int find_main_op(int p,int q);
 word_t eval(int p,int q,bool* success);
 enum {
   //空格串的token类型是TK_NOTYPE
-  TK_NOTYPE = 256, TK_EQ,
+  TK_NOTYPE = 256, 
+  //相等
+  TK_EQ,
   //十进制
   TK_NUM,
   //逻辑与
@@ -37,7 +39,7 @@ enum {
   //16进制
   TK_ST,
   //寄存器
-  TK_RN,
+  TK_RN
   /* TODO: Add more token types */
 };
 
