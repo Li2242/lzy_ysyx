@@ -53,7 +53,7 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"==", TK_EQ},        // equal
   {"!=",TK_UEQ},        //不等
-  {"\\&\\&",TK_H},      //逻辑与
+  {"&&",TK_H},      //逻辑与
   {"\\+", '+'},         // plus
   {"\\-", '-'},
   {"\\*", '*'},
