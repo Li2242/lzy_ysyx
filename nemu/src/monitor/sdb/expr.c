@@ -22,7 +22,7 @@
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
-word_t eval(int p,int q);
+word_t eval(int p,int q,bool* success);
 enum {
   //空格串的token类型是TK_NOTYPE
   TK_NOTYPE = 256, TK_EQ,
@@ -37,7 +37,7 @@ enum {
   //16进制
   TK_ST,
   //寄存器
-  TK_RN
+  TK_RN,
   /* TODO: Add more token types */
 };
 
@@ -62,7 +62,7 @@ static struct rule {
   {"\\)", ')'},
   {"0x[0-9a-fA-F]+",TK_ST},  //16
   {"[0-9]+", TK_NUM},       //10
-  {"\\$[0-9a-f]+",TK_RN}    //寄存器
+  {"\\$[0-9a-fA-F]+",TK_RN}    //寄存器
   
 };
 
@@ -217,7 +217,7 @@ word_t expr(char *e, bool *success) {
   }
 
 
-  word_t result = eval(0,nr_token-1);
+  word_t result = eval(0,nr_token-1,success);
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
   //printf("expr中的result: %u \n",result);
@@ -228,7 +228,7 @@ word_t expr(char *e, bool *success) {
 
 
 //递归求值函数
-word_t eval(int p,int q) {
+word_t eval(int p,int q,bool *success) {
   if (p > q) {
     /* Bad expression */
     printf(" Bad expression!可能是解引用的错！\n");
@@ -249,13 +249,14 @@ word_t eval(int p,int q) {
     }
     //处理寄存器的值
     else if(tokens[p].type == TK_RN){
-      bool *success = false;
-      uint32_t tem_reg = isa_reg_str2val(tokens[p].str, success);
+      bool success_flag = false;
+      uint32_t tem_reg = isa_reg_str2val(tokens[p].str, &success_flag);
       //处理解指针和寄存器的值
-      if(*success == true){
+      if(success_flag){
           return tem_reg;
       }else{
-        printf("寄存器名字取地址失败！");
+        printf("寄存器名字%s取地址失败!\n",tokens[p].str);
+        *success = false;
         return 0;
       }
     }else{
@@ -267,37 +268,38 @@ word_t eval(int p,int q) {
      * If that is the case, just throw away the parentheses.
      */
     //printf("消除过一次括号了\n");
-    return eval(p + 1, q - 1);
+    return eval(p + 1, q - 1,success);
   }else {
     int op = find_main_op(p,q);
      if(op==-1){
         //printf("Error: No operator found between %d and %d\n", p, q);
          return false;
      }
-    //printf("%d:%c  ",op,tokens[op].type);
-    word_t val1 = eval(p, op - 1);
-    word_t val2 = eval(op + 1, q);
-    
-     //printf("%u %u\n",val1,val2);
-    switch (tokens[op].type) {
-      case '+': return val1 + val2;
-      case '-': return val1 - val2; 
-      case '*': return val1 * val2;
-      case TK_EQ: return val1 == val2;
-      case TK_UEQ: return val1 != val2;
-      case TK_H: return val1 && val2;
-      case '/': 
-        if(val2 == 0){
-          printf("Error: Division by zero\n");
-          return 0;
-        }
-        return val1/val2;
-      //指针解引用
-      case TK_PT:
-      uint32_t addr = val2;
+     //处理解指针
+     if(tokens[op].type == TK_PT){
+        uint32_t addr = eval(op+1,q,success);
         uint32_t val = vaddr_read(addr,4);
         return val;
-      default: assert(0);    
+     }else{
+      //printf("%u %u\n",val1,val2);
+      word_t val1 = eval(p, op - 1,success);
+      word_t val2 = eval(op + 1, q,success);
+      switch (tokens[op].type) {
+        case '+': return val1 + val2;
+        case '-': return val1 - val2; 
+        case '*': return val1 * val2;
+        case TK_EQ: return val1 == val2;
+        case TK_UEQ: return val1 != val2;
+        case TK_H: return val1 && val2;
+        case '/': 
+          if(val2 == 0){
+            printf("Error: Division by zero\n");
+            *success = false;
+            return 0;
+          }
+          return val1/val2;
+        default: assert(0);    
+      }
     }
   }
 }
