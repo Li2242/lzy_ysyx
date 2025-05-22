@@ -105,7 +105,7 @@ static struct {
 
 //p
 static int cmd_p(char *args){
-  //提取出第参数；
+  //提取出第参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
   char* arg =args;
   bool success = true;
   uint32_t result = expr(arg,&success);

@@ -356,13 +356,13 @@ int find_main_op(int p,int q){
     if(paren_count == 0){
       int precedence = 0;
       if(tokens[i].type == '+' || tokens[i].type == '-'){
-        precedence = 1;
-      }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 2;
-      }else if(tokens[i].type == TK_PT ){
+      }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 3;
-      }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
+      }else if(tokens[i].type == TK_PT ){
         precedence = 4;
+      }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
+        precedence = 1;
       }else{
         //重要不能删除(当不在括号里面时直接跳过)
         continue;
