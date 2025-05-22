@@ -105,8 +105,8 @@ static struct {
 
 //p
 static int cmd_p(char *args){
-  //提取出第一个参数；
-  char* arg =strtok(NULL," ");
+  //提取出第参数；
+  char* arg =args;
   bool success = true;
   uint32_t result = expr(arg,&success);
    if (success) {

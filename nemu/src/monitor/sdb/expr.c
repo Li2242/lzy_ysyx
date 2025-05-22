@@ -13,6 +13,9 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+//感觉基本完善了这个表达式求值，但中间有依赖AI的部分，不够纯粹
+
+
 #include <isa.h>
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
