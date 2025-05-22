@@ -33,9 +33,12 @@ void isa_reg_display() {
 
 //获取寄存器的值
 word_t isa_reg_str2val(const char *s, bool *success) {
+  if(*s == '$'){
+    s++;
+  }
   for(int i = 0;i<32;i++){
     //对比寄存器的名字
-    if(*s == '$' && strcmp(s+1,regs[i])){
+    if(strcmp(s,regs[i]) == 0){
       *success = true;
       return cpu.gpr[i];
     }
