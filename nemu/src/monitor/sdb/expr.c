@@ -178,14 +178,12 @@ static bool make_token(char *e) {
             tokens[nr_token].str[substr_len] = '\0';
             nr_token++;
             break;
-            
             //如果是空格不做处理
           case TK_NOTYPE:
               
-          break;
+            break;
           default: TODO();
         }
-
         break;
       }
     }
