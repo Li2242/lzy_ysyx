@@ -104,13 +104,16 @@ static struct {
 #define NR_CMD ARRLEN(cmd_table)
 
 //p
-static int cmd_p(){
-  
+static int cmd_p(char *args){
+  //提取出第一个参数；
+  char* arg =strtok(NULL," ");
+  bool* success = false;
+  expr(arg,success);
   return 0;
 }
 
                 
-//x
+//x 扫描内存
 static int cmd_x(char *args){
   char *arg[2];
   arg[0] = strtok(NULL," "); 
@@ -138,7 +141,7 @@ static int cmd_x(char *args){
 }
 
 
-//info r
+//info r 打印程序状态
 static int cmd_info(char* args){
   char *arg = strtok(NULL, " ");
 
