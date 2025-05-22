@@ -166,7 +166,9 @@ static bool make_token(char *e) {
           case TK_NUM:
           //16进制
           case TK_ST:
+          //寄存器的值
           case TK_RN:
+          //寄存器的值
             //类型
             tokens[nr_token].type = rules[i].token_type;
             //提取数字到str中
