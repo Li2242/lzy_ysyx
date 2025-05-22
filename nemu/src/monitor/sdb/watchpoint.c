@@ -19,7 +19,7 @@
 
 
 WP* new_wp(char* s);
-void free_wp(WP *wp);
+void free_wp(int n);
 
 static WP wp_pool[NR_WP] = {};
 //head用于组织使用中的监视点结构
@@ -51,13 +51,14 @@ WP* new_wp(char *str){
   
 }
 
-void free_wp(WP *wp){
-  if(wp == NULL) return;
+void free_wp(int n){
+  if (n<0) return;
+
   //从head中删除
   WP** pp = &head;
   while(*pp != NULL){
     //找到目标地址
-    if(*pp == wp){
+    if((*pp)->NO == n){
       //跳过目标地址
       /*假设我们有一个链表：A -> B -> C，现在要删除节点 B。
         第一次匹配失败
@@ -66,14 +67,16 @@ void free_wp(WP *wp){
         *pp 就是 pp 所指向的内容，也就是 A.next 本身。
         pp = wp->next 相当于把 C 的地址赋值给 A.next
       */
-      *pp = wp->next;
-      break;
+        WP *wp = *pp;
+        *pp = wp->next;
+        //加入free_中
+        wp->next = free_;
+        free_ = wp;
+        return;
     }
     //pp是结构体中next的指针
     pp = &((*pp)->next);
   }
-
-  //加入free_中
-  wp->next = free_;
-  free_ = wp;
+  // 未找到对应监视点
+    printf("错误：未找到序号为 %d 的监视点\n", n);
 }
