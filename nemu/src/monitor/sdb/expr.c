@@ -223,7 +223,6 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
   //printf("expr中的result: %u \n",result);
-  *success = true;
   return result;
 }
 

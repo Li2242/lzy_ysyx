@@ -107,7 +107,7 @@ static struct {
 static int cmd_p(char *args){
   //提取出第一个参数；
   char* arg =strtok(NULL," ");
-  bool success = false;
+  bool success = true;
   uint32_t result = expr(arg,&success);
    if (success) {
     printf("表达式结果：%u\n", result);
