@@ -64,7 +64,7 @@ static struct rule {
   {"\\)", ')'},
   {"0x[0-9a-fA-F]+",TK_ST},  //16
   {"[0-9]+", TK_NUM},       //10
-  {"$[0-9a-zA-Z]+",TK_RN}    //寄存器
+  {"\\$[0-9a-zA-Z]+",TK_RN}    //寄存器
   
 };
 
@@ -233,7 +233,7 @@ word_t expr(char *e, bool *success) {
 word_t eval(int p,int q,bool *success) {
   if (p > q) {
     /* Bad expression */
-    printf(" Bad expression!可能是解引用的错！\n");
+    printf(" Bad expression!\n");
     return 0;
   }else if (p == q) {
     /* Single token.
