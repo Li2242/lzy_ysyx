@@ -17,17 +17,8 @@
 
 #define NR_WP 32
 
-typedef struct watchpoint {
-  //表示监视点的序号
-  int NO;
-  //下一个监视点的地址
-  struct watchpoint *next;
 
-  /* TODO: Add more members if necessary */
-
-} WP;
-
-WP* new_wp();
+WP* new_wp(char* s);
 void free_wp(WP *wp);
 
 static WP wp_pool[NR_WP] = {};
@@ -47,7 +38,7 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
-WP* new_wp(){
+WP* new_wp(char *str){
   if(free_ == NULL) return NULL;
 
   WP *p = free_;
@@ -55,7 +46,7 @@ WP* new_wp(){
   //把p加在了整个使用链表的头部
   p->next = head;
   head = p;
-
+  p->s = str;
   return p;
   
 }

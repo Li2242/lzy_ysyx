@@ -82,6 +82,8 @@ static int cmd_help(char *args);
 static int cmd_info(char *args);
 //p
 static int cmd_p();
+//w
+static int cmd_w();
 
 static struct {
   const char *name;
@@ -95,13 +97,22 @@ static struct {
   {"info", "Print the program status",cmd_info},
   {"x", "Scan memory",cmd_x},
   {"p", "Expression evaluation",cmd_p},
-  //{"w", "Set watchpoint",},
+  {"w", "Set watchpoint",cmd_w},
   //{"d", "Delete watchpoint",}
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+
+//w
+static int cmd_w(char *args){
+  char* arg =  args;
+  new_wp(arg);
+  return 0;
+}
+
+
 
 //p
 static int cmd_p(char *args){
