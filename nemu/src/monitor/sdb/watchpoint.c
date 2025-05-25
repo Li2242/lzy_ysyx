@@ -47,6 +47,12 @@ WP* new_wp(char *str){
   p->next = head;
   head = p;
   p->s = str;
+  bool* success = false;
+  uint32_t a = expr(p->s,success);
+  if(success == false){
+    printf("new_up中求值失败");
+  }
+  p->n = a;
   return p;
   
 }
@@ -79,4 +85,27 @@ void free_wp(int n){
   }
   // 未找到对应监视点
     printf("错误：未找到序号为 %d 的监视点\n", n);
+}
+
+//扫描监视点
+void scan_watchpoints(){
+  WP *wp = head;
+  //是否有监视点被触发
+  bool hit = false;
+  while(wp!=NULL){
+    bool* success = false;
+    uint32_t a = expr(wp->s,success);
+    if(*success == false){
+      printf("求值失败！");
+      return;
+    }
+    if(a != wp->n){
+      printf("触发监视点 %d: %s 的值从 0x%x 变为 0x%x\n",wp->NO, wp->s, wp->n,a);
+      wp->n = a;
+      hit = true;
+    }
+    if(hit){
+      nemu_state.state = NEMU_STOP;
+    }
+  }
 }

@@ -23,6 +23,8 @@ typedef struct watchpoint {
   int NO;
   //记录的值
   char* s;
+  //字符串的值
+  uint32_t n;
   //下一个监视点的地址
   struct watchpoint *next;
 
@@ -34,7 +36,7 @@ typedef struct watchpoint {
 word_t expr(char *e, bool *success);
 WP* new_wp(char *str);
 void free_wp(int n);
-
+void scan_watchpoints();
 
 
 #endif
