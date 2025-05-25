@@ -47,10 +47,10 @@ WP* new_wp(char *str){
   p->next = head;
   head = p;
   p->s = str;
-  bool* success = false;
-  uint32_t a = expr(p->s,success);
+  bool success = true;
+  uint32_t a = expr(p->s,&success);
   if(success == false){
-    printf("new_up中求值失败");
+    printf("new_up中求值失败\n");
   }
   p->n = a;
   return p;
@@ -93,9 +93,9 @@ void scan_watchpoints(){
   //是否有监视点被触发
   bool hit = false;
   while(wp!=NULL){
-    bool* success = false;
-    uint32_t a = expr(wp->s,success);
-    if(*success == false){
+    bool success = true;
+    uint32_t a = expr(wp->s,&success);
+    if(success == false){
       printf("求值失败！");
       return;
     }
