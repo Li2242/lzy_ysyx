@@ -145,6 +145,7 @@ static int cmd_x(char *args){
   bool success = true;
   //计算表达式的结果作为起始地址
   uint32_t addr = expr(arg[1],&success);
+  printf("addr；0x%08x\n",addr);
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
     printf("Usage:command arg1 arg2\n");
