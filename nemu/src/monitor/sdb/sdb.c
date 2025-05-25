@@ -153,6 +153,7 @@ static int cmd_x(char *args){
   //次数
   int n = atoi(arg[0]);
 
+  //之前直接写地址的时候的值
   //addr = strtoul(arg[1],NULL,16);
 
   if(n<=0){
