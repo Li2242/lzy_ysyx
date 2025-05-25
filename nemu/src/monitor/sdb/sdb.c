@@ -153,6 +153,8 @@ static int cmd_x(char *args){
   //次数
   int n = atoi(arg[0]);
 
+  //addr = strtoul(arg[1],NULL,16);
+
   if(n<=0){
     printf("Length must be a positive integer.\n");
     return 1;
