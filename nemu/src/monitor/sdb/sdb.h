@@ -37,6 +37,7 @@ word_t expr(char *e, bool *success);
 WP* new_wp(char *str);
 void free_wp(int n);
 void scan_watchpoints();
+void scan();
 
 
 #endif

@@ -97,6 +97,7 @@ void scan_watchpoints(){
     uint32_t a = expr(wp->s,&success);
     if(success == false){
       printf("求值失败！");
+      wp = wp->next;
       return;
     }
     if(a != wp->n){
@@ -104,8 +105,17 @@ void scan_watchpoints(){
       wp->n = a;
       hit = true;
     }
-    if(hit){
-      nemu_state.state = NEMU_STOP;
-    }
+    wp = wp->next;
   }
+  if(hit){
+      nemu_state.state = NEMU_STOP;
+  }
+}
+
+void scan(){
+  WP *wp = head;
+    //是否有监视点被触发
+    while(wp!=NULL){
+        printf("监视点 %d: %s 的值 0x%x",wp->NO, wp->s,wp->n );
+    }
 }

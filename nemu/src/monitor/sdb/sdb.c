@@ -124,7 +124,7 @@ static int cmd_d(char *args){
 
 //p
 static int cmd_p(char *args){
-  //提取出第参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
+  //提取出参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
   char* arg =args;
   bool success = true;
   uint32_t result = expr(arg,&success);
@@ -174,7 +174,7 @@ static int cmd_info(char* args){
   }else if (*arg == 'r'){
     isa_reg_display();
   }else if (*arg == 'w'){
-
+    scan();
   }else{
     printf("subcommand error!!!\n");
   }
