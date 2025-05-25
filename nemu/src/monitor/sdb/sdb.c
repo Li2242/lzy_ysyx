@@ -141,8 +141,10 @@ static int cmd_p(char *args){
 static int cmd_x(char *args){
   char *arg[2];
   arg[0] = strtok(NULL," "); 
-  arg[1] = strtok(NULL," "); 
-  uint32_t addr;
+  arg[1] = strtok(NULL,""); 
+  bool success = true;
+  //计算表达式的结果作为起始地址
+  uint32_t addr = expr(arg[1],&success);
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
     printf("Usage:command arg1 arg2\n");
@@ -150,6 +152,8 @@ static int cmd_x(char *args){
   //次数
   int n = atoi(arg[0]);
   //将地址字符串转换为16进制的无符号数
+
+
   addr = strtoul(arg[1],NULL,16);
 
   if(n<=0){
