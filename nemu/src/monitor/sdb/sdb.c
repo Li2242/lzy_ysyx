@@ -145,17 +145,13 @@ static int cmd_x(char *args){
   bool success = true;
   //计算表达式的结果作为起始地址
   uint32_t addr = expr(arg[1],&success);
-  printf("addr；0x%08x\n",addr);
+  printf("addr:0x%08x\n",addr);
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
     printf("Usage:command arg1 arg2\n");
   }
   //次数
   int n = atoi(arg[0]);
-  //将地址字符串转换为16进制的无符号数
-
-
-  addr = strtoul(arg[1],NULL,16);
 
   if(n<=0){
     printf("Length must be a positive integer.\n");
