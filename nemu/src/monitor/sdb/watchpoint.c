@@ -116,6 +116,8 @@ void scan(){
   WP *wp = head;
     //是否有监视点被触发
     while(wp!=NULL){
-        printf("监视点 %d: %s 的值 0x%x",wp->NO, wp->s,wp->n );
+        printf("监视点 %d: %s 的值 0x%x\n",wp->NO, wp->s,wp->n );
+        wp = wp->next;
     }
+    return;
 }
