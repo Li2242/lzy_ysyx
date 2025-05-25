@@ -27,10 +27,23 @@ const char *regs[] = {
 void isa_reg_display() {
   for(int i=0;i<32;i++){
     //寄存器在cpu-exec.c中
-    printf("%-3s:0x%x   pc=0x%08x\n",regs[i],cpu.gpr[i],cpu.pc);
+    printf("%-3s:0x%x\n",regs[i],cpu.gpr[i]);
   }
+  printf("pc=0x%08x\n",cpu.pc);
 }
 
+//获取寄存器的值
 word_t isa_reg_str2val(const char *s, bool *success) {
+  if(*s == '$'){
+    s++;
+  }
+  for(int i = 0;i<32;i++){
+    //对比寄存器的名字
+    if(strcmp(s,regs[i]) == 0){
+      *success = true;
+      return cpu.gpr[i];
+    }
+  }
+  *success = false;
   return 0;
 }

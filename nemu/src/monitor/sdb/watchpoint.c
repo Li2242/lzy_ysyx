@@ -17,15 +17,13 @@
 
 #define NR_WP 32
 
-typedef struct watchpoint {
-  int NO;
-  struct watchpoint *next;
 
-  /* TODO: Add more members if necessary */
-
-} WP;
+WP* new_wp(char* s);
+void free_wp(int n);
 
 static WP wp_pool[NR_WP] = {};
+//head用于组织使用中的监视点结构
+//free_用于组织空闲的监视点结构
 static WP *head = NULL, *free_ = NULL;
 
 void init_wp_pool() {
@@ -40,4 +38,86 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
+WP* new_wp(char *str){
+  if(free_ == NULL) return NULL;
 
+  WP *p = free_;
+  free_ = free_->next;
+  //把p加在了整个使用链表的头部
+  p->next = head;
+  head = p;
+  p->s = str;
+  bool success = true;
+  uint32_t a = expr(p->s,&success);
+  if(success == false){
+    printf("new_up中求值失败\n");
+  }
+  p->n = a;
+  return p;
+  
+}
+
+void free_wp(int n){
+  if (n<0) return;
+
+  //从head中删除
+  WP** pp = &head;
+  while(*pp != NULL){
+    //找到目标地址
+    if((*pp)->NO == n){
+      //跳过目标地址
+      /*假设我们有一个链表：A -> B -> C，现在要删除节点 B。
+        第一次匹配失败
+        现在是第二次
+        pp 是指向 A.next 的指针
+        *pp 就是 pp 所指向的内容，也就是 A.next 本身。
+        pp = wp->next 相当于把 C 的地址赋值给 A.next
+      */
+        WP *wp = *pp;
+        *pp = wp->next;
+        //加入free_中
+        wp->next = free_;
+        free_ = wp;
+        return;
+    }
+    //pp是结构体中next的指针
+    pp = &((*pp)->next);
+  }
+  // 未找到对应监视点
+    printf("错误：未找到序号为 %d 的监视点\n", n);
+}
+
+//扫描监视点
+void scan_watchpoints(){
+  WP *wp = head;
+  //是否有监视点被触发
+  bool hit = false;
+  while(wp!=NULL){
+    bool success = true;
+    uint32_t a = expr(wp->s,&success);
+    if(success == false){
+      printf("求值失败！");
+      wp = wp->next;
+      return;
+    }
+    if(a != wp->n){
+      printf("触发监视点 %d: %s 的值从 0x%x 变为 0x%x\n",wp->NO, wp->s, wp->n,a);
+      wp->n = a;
+      hit = true;
+    }
+    wp = wp->next;
+  }
+  if(hit){
+      nemu_state.state = NEMU_STOP;
+  }
+}
+
+void scan(){
+  WP *wp = head;
+    //是否有监视点被触发
+    while(wp!=NULL){
+        printf("监视点 %d: %s 的值 0x%x\n",wp->NO, wp->s,wp->n );
+        wp = wp->next;
+    }
+    return;
+}

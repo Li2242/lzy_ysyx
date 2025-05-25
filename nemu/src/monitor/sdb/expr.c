@@ -13,21 +13,37 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+//感觉基本完善了这个表达式求值，但中间有依赖AI的部分，不够纯粹
+
+
 #include <isa.h>
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+//根据地址取值使用的头文件
+#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
-word_t eval(int p,int q);
+word_t eval(int p,int q,bool* success);
 enum {
   //空格串的token类型是TK_NOTYPE
-  TK_NOTYPE = 256, TK_EQ,
+  TK_NOTYPE = 256, 
+  //相等
+  TK_EQ,
+  //十进制
   TK_NUM,
-
+  //逻辑与
+  TK_H,
+  //不相等
+  TK_UEQ,
+  //指针*
+  TK_PT,
+  //16进制
+  TK_ST,
+  //寄存器
+  TK_RN
   /* TODO: Add more token types */
-
 };
 
 static struct rule {
@@ -40,14 +56,18 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
+  {"==", TK_EQ},        // equal
+  {"!=",TK_UEQ},        //不等
+  {"&&",TK_H},      //逻辑与
   {"\\+", '+'},         // plus
   {"\\-", '-'},
   {"\\*", '*'},
   {"\\/", '/'},
   {"\\(", '('},
   {"\\)", ')'},
-  {"[0-9]+", TK_NUM},
-  {"==", TK_EQ},        // equal
+  {"0x[0-9a-fA-F]+",TK_ST},  //16
+  {"[0-9]+", TK_NUM},       //10
+  {"\\$[0-9a-zA-Z]+",TK_RN}    //寄存器
   
 };
 
@@ -86,7 +106,7 @@ typedef struct token {
 } Token;
 
 //tokens数组用于按顺序存放已经被识别出的token信息.
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[512] __attribute__((used)) = {};
 //nr_token指示已经被识别出的token数目.
 static int nr_token __attribute__((used)) = 0;
 
@@ -122,11 +142,10 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度.
         int substr_len = pmatch.rm_eo;
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+             i, rules[i].regex, position, substr_len, substr_len, substr_start);
             
-
-        //移动位置
+        //移动
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -142,24 +161,32 @@ static bool make_token(char *e) {
           case '/':
           case '(':
           case ')':
-          //类型
-          tokens[nr_token].type = rules[i].token_type;
-          break;
+          case TK_H:
+          case TK_EQ:
+          case TK_UEQ:
+            //类型
+            tokens[nr_token++].type = rules[i].token_type;
+            break;
+          //10进制
           case TK_NUM:
-          //类型
-          tokens[nr_token].type = rules[i].token_type;
-          //提取数字到str中
-          strcpy(tokens[nr_token].str, substr_start);
-          tokens[nr_token].str[substr_len] = '\0';
-          break;
-          //如果是空格不做处理
+          //16进制
+          case TK_ST:
+          //寄存器的值
+          case TK_RN:
+          //寄存器的值
+            //类型
+            tokens[nr_token].type = rules[i].token_type;
+            //提取数字到str中
+            strncpy(tokens[nr_token].str, substr_start,substr_len);
+            tokens[nr_token].str[substr_len] = '\0';
+            nr_token++;
+            break;
+            //如果是空格不做处理
           case TK_NOTYPE:
-                nr_token--;
-          break;
+              
+            break;
           default: TODO();
         }
-        //记录的token数加1
-        nr_token++;
         break;
       }
     }
@@ -180,67 +207,112 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-
-  if(nr_token == 0){
+  if(nr_token <= 0){
     *success = false;
     return 0;
   }
 
-  word_t result =  eval(0,nr_token-1);
+  /* TODO: Implement code to evaluate the expression. */
+
+  //区分解引用和乘法
+  for (int i = 0; i < nr_token; i ++) {
+    if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
+      tokens[i].type = TK_PT;
+    }
+  }
+
+
+  word_t result = eval(0,nr_token-1,success);
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
-  
-  printf("expr中的result: %u \n",result);
-  *success = true;
+  //printf("expr中的result: %u \n",result);
   return result;
 }
 
 
 
 //递归求值函数
-word_t eval(int p,int q) {
+word_t eval(int p,int q,bool *success) {
   if (p > q) {
     /* Bad expression */
-    printf(" Bad expression!");
-    return 1;
-  }
-  else if (p == q) {
+    printf(" Bad expression!\n");
+    *success = false;
+    return 0;
+  }else if (p == q) {
     /* Single token.
-     * For now this token should be a number.
-     * Return the value of the number.
-     */
-    return (unsigned int)atoi(tokens[p].str);
-  }
-  else if (check_parentheses(p, q) == true) {
+    * For now this token should be a number.
+    * Return the value of the number.
+    */
+    //处理正常10进制数
+    if(tokens[p].type == TK_NUM ){
+      return (word_t)atoi(tokens[p].str);
+    }
+    //处理16进制的数
+    else if(tokens[p].type == TK_ST){
+      uint32_t st =strtoul(tokens[p].str,NULL,16);
+      return st;
+    }
+    //处理寄存器的值
+    else if(tokens[p].type == TK_RN){
+      bool success_flag = false;
+      uint32_t tem_reg = isa_reg_str2val(tokens[p].str, &success_flag);
+      //处理解指针和寄存器的值
+      if(success_flag){
+          return tem_reg;
+      }else{
+        printf("寄存器名字%s取地址失败!\n",tokens[p].str);
+        *success = false;
+        return 0;
+      }
+    }else{
+      //识别解引用的时候可能会出现问题
+      return 0;
+    }
+  }else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    return eval(p + 1, q - 1);
-  }
-  else {
+    //printf("消除过一次括号了\n");
+    return eval(p + 1, q - 1,success);
+  }else {
     int op = find_main_op(p,q);
-    if(op==-1){
-       printf("Error: No operator found between %d and %d\n", p, q);
-        return (unsigned int)atoi(tokens[p].str); // 假设表达式是单个操作数
-    }
-
-    word_t val1 = eval(p, op - 1);
-    word_t val2 = eval(op + 1, q);
-
-    switch (tokens[op].type) {
-      case '+': return val1 + val2;
-      case '-': return val1 - val2;
-      case '*': return val1 * val2;
-      case '/': return val1 / val2;
-      default: assert(0);
+     if(op==-1){
+        //printf("Error: No operator found between %d and %d\n", p, q);
+         return false;
+     }
+     //处理解指针
+     if(tokens[op].type == TK_PT){
+        uint32_t addr = eval(op+1,q,success);
+        uint32_t val = vaddr_read(addr,4);
+        return val;
+     }else{
+      //printf("%u %u\n",val1,val2);
+      word_t val1 = eval(p, op - 1,success);
+      word_t val2 = eval(op + 1, q,success);
+      switch (tokens[op].type) {
+        case '+': return val1 + val2;
+        case '-': return val1 - val2; 
+        case '*': return val1 * val2;
+        case TK_EQ: return val1 == val2;
+        case TK_UEQ: return val1 != val2;
+        case TK_H: return val1 && val2;
+        case '/': 
+          if(val2 == 0){
+            printf("Error: Division by zero\n");
+            *success = false;
+            return 0;
+          }
+          return val1/val2;
+        default: assert(0);    
+      }
     }
   }
 }
 
 //判断表达式是否被一对匹配的括号包围着
 bool check_parentheses(int p,int q){
-  if(p >= q ||tokens[p].type!='('||tokens[q].type!=')'){
-    return false;
+  if(tokens[p].type!='(' && tokens[q].type!=')'){
+    return 0;
   }
   int paren_count = 0;
   for(int i =p;i<=q;i++){
@@ -252,18 +324,24 @@ bool check_parentheses(int p,int q){
       paren_count--;
     }
 
-    //如果右括号大于左括号直接返回false
-    if(paren_count<0){
+    //如果右括号大于左括号直接返回false或者，如果在中途等号为0了那么说明已经被拦截了
+    if(paren_count<=0&&i!=q){
       return false;
     }
   }
-  return paren_count == 0;
+
+  if(paren_count == 0){
+    return true;
+  }else{
+    return false;
+  }
 }
 
 
 //找主符号数
 int find_main_op(int p,int q){
-  int op =-1;
+  //printf("p=%d q=%d\n",p,q);
+  int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
   for(int i =p; i<=q; i++){
@@ -274,23 +352,26 @@ int find_main_op(int p,int q){
     if(tokens[i].type==')'){
       paren_count--;
     }
-    //当前不在括号内
+    //当前在括号内
     if(paren_count == 0){
       int precedence = 0;
-      if(tokens[i].type == '+'||tokens[i].type == '-'){
-        precedence = 1;
-      }else if(tokens[i].type =='*'||tokens[i].type == '/'){
+      if(tokens[i].type == '+' || tokens[i].type == '-'){
         precedence = 2;
+      }else if(tokens[i].type == '*' || tokens[i].type == '/'){
+        precedence = 3;
+      }else if(tokens[i].type == TK_PT ){
+        precedence = 4;
+      }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
+        precedence = 1;
       }else{
+        //重要不能删除(当不在括号里面时直接跳过)
         continue;
       }
-
       //相等时也更新为了满足后面的符号优先级更低。
       if(precedence <= min_precedence){
           min_precedence = precedence;
           op = i;
       }
-
     }
   }
   return op;

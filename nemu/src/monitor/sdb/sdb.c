@@ -18,8 +18,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-#include <memory/host.h>
-#include <memory/paddr.h>
+#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
+
 
 static int is_batch_mode = false;
 
@@ -80,7 +81,11 @@ static int cmd_help(char *args);
 //info
 static int cmd_info(char *args);
 //p
-static int cmd_p();
+static int cmd_p(char *args);
+//w
+static int cmd_w(char *args);
+//d
+static int cmd_d(char *args);
 
 static struct {
   const char *name;
@@ -94,51 +99,77 @@ static struct {
   {"info", "Print the program status",cmd_info},
   {"x", "Scan memory",cmd_x},
   {"p", "Expression evaluation",cmd_p},
-  //{"w", "Set watchpoint",},
-  //{"d", "Delete watchpoint",}
+  {"w", "Set watchpoint",cmd_w},
+  {"d", "Delete watchpoint",cmd_d}
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
+//w
+static int cmd_w(char *args){
+  char* arg =  args;
+  new_wp(arg);
+  return 0;
+}
+
+//d
+static int cmd_d(char *args){
+  int num = atoi(args);
+  free_wp(num);
+  return 0;
+}
+
+
 //p
-static int cmd_p(){
-  
+static int cmd_p(char *args){
+  //提取出参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
+  char* arg =args;
+  bool success = true;
+  uint32_t result = expr(arg,&success);
+   if (success) {
+    printf("表达式结果：%u\n", result);
+  } else {
+    printf("表达式求值失败\n");
+  }
   return 0;
 }
 
                 
-//x
+//x 扫描内存
 static int cmd_x(char *args){
   char *arg[2];
   arg[0] = strtok(NULL," "); 
-  arg[1] = strtok(NULL," "); 
-  paddr_t addr;
+  arg[1] = strtok(NULL,""); 
+  bool success = true;
+  //计算表达式的结果作为起始地址
+  uint32_t addr = expr(arg[1],&success);
+  printf("addr:0x%08x\n",addr);
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
     printf("Usage:command arg1 arg2\n");
   }
   //次数
   int n = atoi(arg[0]);
-  //将地址字符串转换为16进制的无符号数
-  addr = strtoul(arg[1],NULL,16);
-  uint8_t *mem_ptr = guest_to_host(addr);  // 映射到pmem[0]
+
+  //之前直接写地址的时候的值
+  //addr = strtoul(arg[1],NULL,16);
+
   if(n<=0){
     printf("Length must be a positive integer.\n");
     return 1;
   }else{
-    for(int i = 0; i<n; i++){
-      printf("0x%08x\n",*(mem_ptr+i));
+    for(int i = 0; i<n; i ++){
+          printf("0x%08x\n",vaddr_read(addr,4));
+          addr += 4;
     }
   }
-
-
   return 0;
 }
 
 
-//info r
+//info r 打印程序状态
 static int cmd_info(char* args){
   char *arg = strtok(NULL, " ");
 
@@ -147,7 +178,7 @@ static int cmd_info(char* args){
   }else if (*arg == 'r'){
     isa_reg_display();
   }else if (*arg == 'w'){
-
+    scan();
   }else{
     printf("subcommand error!!!\n");
   }
