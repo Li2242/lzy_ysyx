@@ -232,7 +232,7 @@ word_t expr(char *e, bool *success) {
   //区分减号和负号
   for (int i = 0; i < nr_token; i ++) {
     if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
-      printf("处理了减号");
+      printf("处理了减号!\n");
       tokens[i].type = TK_MS;
     }
   }
