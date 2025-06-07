@@ -18,7 +18,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+//#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+//为了读取客户端内存加的头文件
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 
 
@@ -59,11 +60,14 @@ static int cmd_q(char *args) {
 
 //单步执行si
 static int cmd_si(char *args){
+
   char *arg = strtok(NULL, " ");
-  
+
+  //不给参数默认执行一次
   if(args==NULL){
     cpu_exec(1);
   }else{
+    //执行几次
     uint32_t n;
     //用了刚刚讲过的sscanf
     sscanf(arg , "%u" , &n);
@@ -156,7 +160,9 @@ static int cmd_x(char *args){
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
     printf("Usage:command arg1 arg2\n");
+    return 1;
   }
+
   //次数
   uint32_t n;
   sscanf(arg[0],"%u",&n);
