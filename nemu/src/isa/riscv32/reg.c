@@ -27,6 +27,12 @@ const char *regs[] = {
 void isa_reg_display() {
   for(int i=0;i<32;i++){
     //寄存器在cpu-exec.c中
+    /*
+      并在nemu/src/cpu/cpu-exec.c中定义一个全局变量cpu
+      初始化寄存器的一个重要工作就是设置cpu.pc的初值
+      PC和通用寄存器都在nemu/src/isa/$ISA/include/isa-def.h中的
+      结构体中定义
+    */
     printf("%-3s:0x%x\n",regs[i],cpu.gpr[i]);
   }
   printf("pc=0x%08x\n",cpu.pc);

@@ -79,6 +79,10 @@ static long load_img() {
 }
 
 //解析命令行参数
+/*
+  另外的一个问题是, 这些参数是从哪里来的呢?
+  参数是调用者在命令行输入的
+*/
 static int parse_args(int argc, char *argv[]) {
   //定义长选项表
   const struct option table[] = {

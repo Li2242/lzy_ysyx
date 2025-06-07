@@ -64,9 +64,9 @@ static int cmd_si(char *args){
   if(args==NULL){
     cpu_exec(1);
   }else{
-    int n;
+    uint32_t n;
     //用了刚刚讲过的sscanf
-    sscanf(arg , "%d" , &n);
+    sscanf(arg , "%u" , &n);
     //int n = atoi(arg);(这是问AI的不合适)
     if(n<=0){
         printf("ERROR!!!\n");
@@ -77,17 +77,17 @@ static int cmd_si(char *args){
     return 0;
   }
 
-//x
+//x 扫描内存
 static int cmd_x(char *args);
 //help
 static int cmd_help(char *args);
-//info
+//info 打印
 static int cmd_info(char *args);
-//p
+//p 表达式的值
 static int cmd_p(char *args);
-//w
+//w 
 static int cmd_w(char *args);
-//d
+//d 删除间断点
 static int cmd_d(char *args);
 
 static struct {
@@ -141,6 +141,10 @@ static int cmd_p(char *args){
 
                 
 //x 扫描内存
+/*
+  在客户程序运行的过程中, 总是使用`vaddr_read()`和`vaddr_write()` 
+  (在`nemu/src/memory/vaddr.c`中定义)来访问模拟的内存. 
+*/
 static int cmd_x(char *args){
   char *arg[2];
   arg[0] = strtok(NULL," "); 
@@ -154,7 +158,9 @@ static int cmd_x(char *args){
     printf("Usage:command arg1 arg2\n");
   }
   //次数
-  int n = atoi(arg[0]);
+  uint32_t n;
+  sscanf(arg[0],"%u",&n);
+  //int n = atoi(arg[0]);
 
   //之前直接写地址的时候的值
   //addr = strtoul(arg[1],NULL,16);
