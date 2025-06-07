@@ -176,9 +176,15 @@ static int cmd_x(char *args){
     printf("Length must be a positive integer.\n");
     return 1;
   }else{
-    for(int i = 0; i<n; i ++){
-          printf("0x%08x\n",vaddr_read(addr,4));
-          addr += 4;
+    for(int i = 0,j=1; i<n; i ++,j++){
+      if(j%4==0){
+        printf("0x%08x: ",addr);
+      }
+        printf("0x%08x ",vaddr_read(addr,4));
+        addr += 4;
+      if(j%4==0){
+        printf("\n");
+      }
     }
   }
   return 0;
