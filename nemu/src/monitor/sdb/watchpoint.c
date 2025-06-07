@@ -109,7 +109,7 @@ void scan_watchpoints(bool* success){
       return;
     }
     if(a != wp->n){
-      printf("触发监视点 %d: %s 的值从 0x%x 变为 0x%x\n",wp->NO, wp->s, wp->n,a);
+      printf("触发监视点 %d: %s 的值从 %u 变为 %u\n",wp->NO, wp->s, wp->n,a);
       wp->n = a;
       *success = true;
     }
