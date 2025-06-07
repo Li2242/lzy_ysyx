@@ -54,7 +54,7 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-
+//双斜杠（\\）是先对 C 语言字符串里的斜杠进行转义，接着该斜杠又会对正则表达式中的特殊字符进行转义。
   {" +", TK_NOTYPE},    // spaces
   {"==", TK_EQ},        // equal
   {"!=",TK_UEQ},        //不等
@@ -93,6 +93,7 @@ void init_regex() {
     //成功返回0，失败返回错误代码，可通过regerror()转换为错误信息.
     ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
     if (ret != 0) {
+      //判断参数是否失败
       regerror(ret, &re[i], error_msg, 128);
       panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
     }
