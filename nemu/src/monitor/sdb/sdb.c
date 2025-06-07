@@ -65,8 +65,9 @@ static int cmd_si(char *args){
     cpu_exec(1);
   }else{
     int n;
+    //用了刚刚讲过的sscanf
     sscanf(arg , "%d" , &n);
-    //int n = atoi(arg);
+    //int n = atoi(arg);(这是问AI的不合适)
     if(n<=0){
         printf("ERROR!!!\n");
         return 1;
