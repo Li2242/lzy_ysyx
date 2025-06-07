@@ -232,6 +232,7 @@ word_t expr(char *e, bool *success) {
   //区分减号和负号
   for (int i = 0; i < nr_token; i ++) {
     if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
+      printf("处理了减号");
       tokens[i].type = TK_MS;
     }
   }
@@ -301,7 +302,7 @@ word_t eval(int p,int q,bool *success) {
      if(tokens[op].type == TK_PT){
         uint32_t addr = eval(op+1,q,success);
         uint32_t val = vaddr_read(addr,4);
-        printf("处理了指针");
+        printf("处理了指针\n");
         return val;
      }else if(tokens[op].type == TK_MS){
         uint32_t val0 = -eval(op+1,q,success);
