@@ -42,7 +42,9 @@ enum {
   //16进制
   TK_ST,
   //寄存器
-  TK_RN
+  TK_RN,
+  //负号
+  TK_MS
   /* TODO: Add more token types */
 };
 
@@ -163,6 +165,7 @@ static bool make_token(char *e) {
           case '(':
           case ')':
           case TK_H:
+          case TK_MS:
           case TK_EQ:
           case TK_UEQ:
             //类型
@@ -223,6 +226,13 @@ word_t expr(char *e, bool *success) {
   for (int i = 0; i < nr_token; i ++) {
     if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
       tokens[i].type = TK_PT;
+    }
+  }
+  
+  //区分减号和负号
+  for (int i = 0; i < nr_token; i ++) {
+    if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
+      tokens[i].type = TK_MS;
     }
   }
 
@@ -291,6 +301,9 @@ word_t eval(int p,int q,bool *success) {
      if(tokens[op].type == TK_PT){
         uint32_t addr = eval(op+1,q,success);
         uint32_t val = vaddr_read(addr,4);
+        return val;
+     }else if(tokens[op].type == TK_MS){
+        uint32_t val = eval(op+1,q,success);
         return val;
      }else{
       //printf("%u %u\n",val1,val2);
