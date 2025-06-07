@@ -18,7 +18,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-//#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+//已经不知道自己为什么加上它了，好像删去也没事
+// #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
 //为了读取客户端内存加的头文件
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 
@@ -176,7 +177,7 @@ static int cmd_x(char *args){
     return 1;
   }else{
     for(int i = 0; i<n; i ++){
-          printf("0x%08x\n",vaddr_read(addr,4));
+          printf("0x%x\n",vaddr_read(addr,4));
           addr += 4;
     }
   }
