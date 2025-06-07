@@ -384,7 +384,7 @@ int find_main_op(int p,int q){
         precedence = 2;
       }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 3;
-      }else if(tokens[i].type == TK_PT ){
+      }else if(tokens[i].type == TK_PT||tokens[i].type == TK_MS){
         precedence = 4;
       }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
         precedence = 1;
