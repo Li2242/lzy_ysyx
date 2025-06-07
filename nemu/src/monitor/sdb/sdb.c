@@ -178,7 +178,7 @@ static int cmd_x(char *args){
   }else{
     for(int i = 0; i<n; i ++){
           printf("0x%x\n",vaddr_read(addr,4));
-          addr += 1;
+          addr += 0;
     }
   }
   return 0;
