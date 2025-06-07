@@ -301,10 +301,12 @@ word_t eval(int p,int q,bool *success) {
      if(tokens[op].type == TK_PT){
         uint32_t addr = eval(op+1,q,success);
         uint32_t val = vaddr_read(addr,4);
+        printf("处理了指针");
         return val;
      }else if(tokens[op].type == TK_MS){
-        uint32_t val = -eval(op+1,q,success);
-        return val;
+        uint32_t val0 = -eval(op+1,q,success);
+        printf("处理了自减符号");
+        return val0;
      }else{
       //printf("%u %u\n",val1,val2);
       word_t val1 = eval(p, op - 1,success);
