@@ -303,7 +303,7 @@ word_t eval(int p,int q,bool *success) {
         uint32_t val = vaddr_read(addr,4);
         return val;
      }else if(tokens[op].type == TK_MS){
-        uint32_t val = eval(op+1,q,success);
+        uint32_t val = -eval(op+1,q,success);
         return val;
      }else{
       //printf("%u %u\n",val1,val2);
