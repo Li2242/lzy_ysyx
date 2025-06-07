@@ -186,8 +186,12 @@ static bool make_token(char *e) {
           case TK_NOTYPE:
               
             break;
-          default: TODO();
+          default:
+            printf("表达式有问题，请仔细核对一下");
+            return false;
+            break;
         }
+        //对应上了直接退出，不需要继续匹配了；
         break;
       }
     }
@@ -238,7 +242,7 @@ word_t eval(int p,int q,bool *success) {
     /* Bad expression */
     printf(" Bad expression!\n");
     *success = false;
-    return 0;
+    return 1;
   }else if (p == q) {
     /* Single token.
     * For now this token should be a number.
@@ -246,7 +250,9 @@ word_t eval(int p,int q,bool *success) {
     */
     //处理正常10进制数
     if(tokens[p].type == TK_NUM ){
-      return (word_t)atoi(tokens[p].str);
+      uint32_t n;
+      sscanf(tokens[p].str,"%u",&n);
+      return n;
     }
     //处理16进制的数
     else if(tokens[p].type == TK_ST){
@@ -261,7 +267,7 @@ word_t eval(int p,int q,bool *success) {
       if(success_flag){
           return tem_reg;
       }else{
-        printf("寄存器名字%s取地址失败!\n",tokens[p].str);
+        Log("寄存器名字%s取地址失败!\n",tokens[p].str);
         *success = false;
         return 0;
       }
@@ -278,7 +284,7 @@ word_t eval(int p,int q,bool *success) {
   }else {
     int op = find_main_op(p,q);
      if(op==-1){
-        //printf("Error: No operator found between %d and %d\n", p, q);
+        Log("Error: No operator found between %d and %d\n", p, q);
          return false;
      }
      //处理解指针
@@ -304,7 +310,7 @@ word_t eval(int p,int q,bool *success) {
             return 0;
           }
           return val1/val2;
-        default: assert(0);    
+        default: Assert(0,"出现其他符号了");    
       }
     }
   }
@@ -313,7 +319,7 @@ word_t eval(int p,int q,bool *success) {
 //判断表达式是否被一对匹配的括号包围着
 bool check_parentheses(int p,int q){
   if(tokens[p].type!='(' && tokens[q].type!=')'){
-    return 0;
+    return false;
   }
   int paren_count = 0;
   for(int i =p;i<=q;i++){
@@ -324,13 +330,13 @@ bool check_parentheses(int p,int q){
     if(tokens[i].type==')'){
       paren_count--;
     }
-
     //如果右括号大于左括号直接返回false或者，如果在中途等号为0了那么说明已经被拦截了
+    //i不等于q是为了不要误判最后一个括号
     if(paren_count<=0&&i!=q){
       return false;
     }
   }
-
+//对表达式进行检查后，进行最后的判断
   if(paren_count == 0){
     return true;
   }else{
@@ -365,7 +371,7 @@ int find_main_op(int p,int q){
       }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
         precedence = 1;
       }else{
-        //重要不能删除(当不在括号里面时直接跳过)
+        //重要不能删除(当不在括号里面时直接跳过,不进行更新)
         continue;
       }
       //相等时也更新为了满足后面的符号优先级更低。

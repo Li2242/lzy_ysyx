@@ -32,7 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 
-//扫描所有的监视点
+
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
