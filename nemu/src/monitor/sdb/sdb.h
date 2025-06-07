@@ -21,9 +21,9 @@
 typedef struct watchpoint {
   //表示监视点的序号
   int NO;
-  //记录的值
+  //记录的表达式
   char* s;
-  //字符串的值
+  //字符串的结果
   uint32_t n;
   //下一个监视点的地址
   struct watchpoint *next;
@@ -36,7 +36,7 @@ typedef struct watchpoint {
 word_t expr(char *e, bool *success);
 WP* new_wp(char *str);
 void free_wp(int n);
-void scan_watchpoints();
+void scan_watchpoints(bool* success);
 void scan();
 
 

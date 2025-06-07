@@ -124,7 +124,8 @@ static int cmd_w(char *args){
 
 //d
 static int cmd_d(char *args){
-  int num = atoi(args);
+  uint32_t num ;
+  sscanf(args,"%u",&num);
   free_wp(num);
   return 0;
 }
@@ -167,8 +168,8 @@ static int cmd_x(char *args){
   //次数
   uint32_t n;
   sscanf(arg[0],"%u",&n);
-  //int n = atoi(arg[0]);
 
+  //int n = atoi(arg[0]);
   //之前直接写地址的时候的值
   //addr = strtoul(arg[1],NULL,16);
 

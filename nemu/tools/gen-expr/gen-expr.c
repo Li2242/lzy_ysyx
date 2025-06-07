@@ -14,10 +14,8 @@
 ***************************************************************************************/
 
 /*
-  1.未实现除法的功能因为除数一直搞成了0；已经实现了
+  1.未解决除数为0的情况；感觉好难办啊 :(  ~_~ ^~^ -_- =_= +_+  ->_<-
   2.depth不能开很高，这是深度，buf成指数级增长
-  3。无符号数好像不能解决负数的问题，负数会转位超大的数
-  4.空格和单括号有矛盾。
 */
 
 
@@ -33,7 +31,7 @@
 
 // this should be enough
 static char buf[65536] = {};
-//现在buf的空位置在哪里
+//pos空闲位置的指针
 static int pos = 0;
 
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
@@ -75,7 +73,7 @@ uint32_t choose(uint32_t n){
 //生成的数字
 void gen_num(){
 
-  uint32_t n = 1 + rand()%10;
+  uint32_t n = 1 + rand()%100;
   char num_str[10]; 
   //sprintf 是一个通用的格式化字符串函数
   sprintf(num_str, "%u", n);  // 关键：将整数转为字符串，最后会加一个'\0’;
@@ -92,7 +90,7 @@ void gen_rand_op(){
 
 //生成随机值
 static void gen_rand_expr(int depth) {
-  if(depth >= 5){
+  if(depth >= 8){
     gen_num();
     return;
   }
@@ -146,8 +144,8 @@ int main(int argc, char *argv[]) {
 
     pos = 0;                 // 重置缓冲区位置
     memset(buf, 0, sizeof(buf));  // 清空缓冲区（可选，但更安全）
-
     gen_rand_expr(0);
+
     //把之前生成的随机表达式嵌入到一个完整的 C 语言程序中
     //buf也就是生成的表达式放入code_format中的占位符然后一起放入code_buf中
     sprintf(code_buf, code_format, buf);
