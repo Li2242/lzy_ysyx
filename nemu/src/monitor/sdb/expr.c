@@ -310,7 +310,9 @@ word_t eval(int p,int q,bool *success) {
             return 0;
           }
           return val1/val2;
-        default: Assert(0,"出现其他符号了");    
+        default:
+          printf("出现了不该出现的符号！");
+          assert(0);    
       }
     }
   }
