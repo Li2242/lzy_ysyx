@@ -48,9 +48,9 @@ int main(int argc, char *argv[]) {
   while(fgets(line,512,fp)!= NULL){
     line_num++;
 
-    if(line[0] == '\n')continue;
+    if(line[0] == '\n') continue;  // 跳过仅有换行符的行
     
-    char *expression = strchr(line,' ');
+    char *expression = strchr(line,' '); // 查找第一个空格位置
     
     // 检查格式是否合法
   if (expression == NULL) {
@@ -58,16 +58,17 @@ int main(int argc, char *argv[]) {
     continue;
   }
 
-    size_t len = expression - line;
-    if (len >= sizeof(line)) {  // 防止缓冲区溢出
+    size_t len = expression - line; // 计算空格前的字符数（预期数值长度）
+    if (len >= sizeof(line)) {   // 防止缓冲区溢出（sizeof(line)=512）
       printf("Line %d: number part too long\n", line_num);
       continue;
   }
-    char temp[len+1];
-    strncpy(temp,line,len);
-    temp[len] = '\0';
-    uint32_t num = (unsigned int)atoi(temp); 
-
+    char temp[len+1];   // 临时数组存储预期数值字符串
+    strncpy(temp,line,len); // 复制数值部分（最多len字节）
+    temp[len] = '\0';       // 手动添加空终止符
+    uint32_t num ;  
+    sscanf(temp , "%u" , &num);  // 转换为整数
+    
     if(expression == NULL){
       printf("Invida format in %d lien\n",line_num);
       continue;
@@ -75,12 +76,12 @@ int main(int argc, char *argv[]) {
 
     expression = expression + 1;
 
-    uint32_t str_len = strlen(expression);
+    uint32_t str_len = strlen(expression); // 计算表达式长度
 
-    if(str_len > 0&&expression[str_len - 1]=='\n'){
-      expression[str_len - 1] = '\0';
+    if(str_len > 0 && expression[str_len - 1]=='\n'){
+      expression[str_len - 1] = '\0'; // 将换行符替换为空终止符
     }
-    if(str_len == 0) continue;
+    if(str_len == 0) continue; // 表达式为空（如`"42  "`），跳过
 
     bool r = false ;
     printf("%s\n",expression);
