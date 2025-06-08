@@ -29,6 +29,12 @@
 #include <string.h>
 #include <ctype.h>
 
+//解析一个生成的表达式的位置指针
+static const char *expr_ptr;
+//是否是正确的表达式
+static int valid_expr = 1;
+
+
 // this should be enough
 static char buf[65536] = {};
 //pos空闲位置的指针
@@ -43,15 +49,97 @@ static char *code_format =
 "  return 0; "
 "}";
 
+static uint32_t parse_expression();
+static uint32_t parse_number();
+static uint32_t parse_factor();
+static uint32_t parse_term();
+static uint32_t valid_expression(const char* expr);
+
+
+//求数，为了服务下面的解表达式而存在
+static uint32_t parse_number(){
+  uint32_t n = 0;
+  //空格跳过
+  while(isspace(*expr_ptr)){
+    expr_ptr++;
+  }
+  //判断是否是数字
+  if(!isdigit(*expr_ptr)){ 
+    valid_expr = 0;
+    return 0;
+  }
+  //一个数要完整的求下来
+  while(isdigit(*expr_ptr)){
+    n = n*10+(*expr_ptr - '0');//累加数字
+    expr_ptr++;
+  }
+  return n;
+}
+
+//括号包裹的数字或者表达式
+static uint32_t parse_factor(){
+  uint32_t result = 0;
+  while(isspace(*expr_ptr)) expr_ptr++;
+  if(*expr_ptr == '('){
+    expr_ptr++;
+    result = parse_expression(); //解析括号内的表达式
+    if(*expr_ptr++ != ')') valid_expr = 0;
+  }else {
+    result = parse_number(); //无括号的情况直接解析数字
+  }
+  return result;
+}
+
+//解析乘除法两边的表达式
+static uint32_t parse_term(){
+  uint32_t left = parse_factor();
+  while(1){
+    char op = *expr_ptr;
+    if(op != '*' && op!='/') break;
+    expr_ptr++;
+    uint32_t right = parse_factor();
+    if(op == '/'&&right == 0){
+      valid_expr = 0;
+      return 0;
+    }
+    //左值在这里更新
+    left = (op == '*')?left * right : left / right;
+  }
+  return left;
+}
+
+//处理的是加减法
+static uint32_t parse_expression(){
+  uint32_t left = parse_term();
+  while(1){
+    char op=*expr_ptr;
+    if(op == '-' || op == '+') break;
+    expr_ptr++;
+    left = (op == '+') ? left + parse_term() : left - parse_term();
+  }
+  return left;
+}
+
+//验证表达式
+static uint32_t valid_expression(const char* expr){
+  expr_ptr = expr;
+  valid_expr = 1;
+  parse_expression();
+  //防止表达式后有空格
+  while(isspace(*expr_ptr)){
+    expr_ptr++;
+  }
+  return valid_expr && (*expr_ptr == '\0');
+}
 
 //写入字符
-void gen(char c){
+static void gen(char c){
   buf[pos++] = c;
   buf[pos] = '\0';
 }
 
 //写入字符串
-void gen_str(const char* str){
+static void gen_str(const char* str){
   uint32_t len = strlen(str);
   //内存复制操作
   //1，目标内存区域的起始地址
@@ -66,12 +154,12 @@ void gen_str(const char* str){
 }
 
 //随机选择你的武器
-uint32_t choose(uint32_t n){
+static uint32_t choose(uint32_t n){
   return rand() % n;
 }
 
 //生成的数字
-void gen_num(){
+static void gen_num(){
 
   uint32_t n = 1 + rand()%100;
   char num_str[10]; 
@@ -81,7 +169,7 @@ void gen_num(){
 }
 
 //生成随机符号
-void gen_rand_op(){
+static void gen_rand_op(){
   const char ops[4] = {'+','-','*','/'};
   char op = ops[rand() % 4];
   //这种方法并不能解决除0这个问题
@@ -95,7 +183,6 @@ void gen_rand_op(){
   gen(op);
 }
 
-
 //生成随机值
 static void gen_rand_expr(int depth) {
   if(depth >= 8){
@@ -103,11 +190,11 @@ static void gen_rand_expr(int depth) {
     return;
   }
   switch (choose(4)) {
-    //生成数字
+    //随机生成数字
     case 0: 
             gen_num(); 
             break;
-    //生成空格
+    //随机生成空格
     case 1:
           if(buf[pos-1]!=' '){
             gen(' ');
@@ -119,17 +206,46 @@ static void gen_rand_expr(int depth) {
       //整个判断防止生成好多括号
        if(buf[pos-1] != '('&&buf[pos - 1]!=' '){
             gen('('); 
-            gen_rand_expr(depth + 1); 
+            gen_rand_expr(depth + 1);
             gen(')');
             break; 
           }   
     default: 
             gen_rand_expr(depth + 1); 
-            gen_rand_op(); 
+            gen_rand_op();
             gen_rand_expr(depth + 1); 
             break;
   }
 }
+
+// 生成有效表达式（含重试机制）
+static void generate_valid_expression() {
+  const int max_attempts = 100;
+  int attempts = 0;
+  
+  while (attempts < max_attempts) {
+    pos = 0;
+    memset(buf, 0, sizeof(buf));
+    gen_rand_expr(0);
+    
+    // 补全以操作符结尾的表达式（例如 "10+" 补全为 "10+1"）
+    if (pos > 0 && strchr("+-*/", buf[pos-1])) {
+      gen_num();
+    }
+    
+    if (valid_expression(buf)) {
+      return;
+    }
+    attempts++;
+  }
+  
+  // 保底生成简单表达式
+  pos = 0;
+  gen_num();
+  gen('+');
+  gen_num();
+}
+
 
 //主体开始了
 int main(int argc, char *argv[]) {
@@ -148,9 +264,11 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
 
-    pos = 0;                 // 重置缓冲区位置
-    memset(buf, 0, sizeof(buf));  // 清空缓冲区（可选，但更安全）
-    gen_rand_expr(0);
+    generate_valid_expression();
+
+    // pos = 0;                 // 重置缓冲区位置
+    // memset(buf, 0, sizeof(buf));  // 清空缓冲区（可选，但更安全）
+    // gen_rand_expr(0);
 
     //把之前生成的随机表达式嵌入到一个完整的 C 语言程序中
     //buf也就是生成的表达式放入code_format中的占位符然后一起放入code_buf中
