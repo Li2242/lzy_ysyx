@@ -43,11 +43,11 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   //在Kconfig中可以控制这个宏是否生成
   //扫描监视点
   #ifdef CONFIG_WATCHPOINT
-  bool success = false;
-  scan_watchpoints(&success);
-  if(success){
-    printf("监视点发生了变化\n");
-  }
+    bool success = false;
+    scan_watchpoints(&success);
+    if(success){
+      printf("监视点发生了变化\n");
+    }
   #endif
 }
 
