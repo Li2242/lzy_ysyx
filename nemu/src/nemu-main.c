@@ -42,10 +42,10 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  char line[256]; //每行内容
+  char line[512]; //每行内容
   int line_num = 0;//行数
   //开始读文章了
-  while(fgets(line,256,fp)!= NULL){
+  while(fgets(line,512,fp)!= NULL){
     line_num++;
 
     if(line[0] == '\n')continue;
