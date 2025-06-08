@@ -38,10 +38,10 @@ int main(int argc, char *argv[]) {
     printf("ERROR!");
     return 1;
   }
-  char line[512];
+  char line[1024];
   int line_num = 0;
   //开始读文章了
-  while(fgets(line,512,fp)!= NULL){
+  while(fgets(line,1024,fp)!= NULL){
     line_num++;
 
     if(line[0] == '\n')continue;
