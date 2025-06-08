@@ -41,11 +41,13 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   
   //扫描监视点
+  #ifdef CONFIG_WATCHPOINT
   bool success = false;
   scan_watchpoints(&success);
   if(success){
     printf("监视点发生了变化\n");
   }
+  #endif
 }
 
 //该函数用于执行一条指令,让CPU执行当前PC指向的一条指令, 然后更新PC.

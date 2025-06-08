@@ -109,6 +109,7 @@ void scan_watchpoints(bool* success){
       return;
     }
     if(a != wp->n){
+      //这里的输出的值也修改了，从16进制到10 6.7
       printf("触发监视点 %d: %s 的值从 %u 变为 %u\n",wp->NO, wp->s, wp->n,a);
       wp->n = a;
       *success = true;
@@ -125,7 +126,8 @@ void scan(){
   WP *wp = head;
     //是否有监视点被触发
     while(wp!=NULL){
-        printf("监视点 %d: %s 的值 0x%x\n",wp->NO, wp->s,wp->n );
+      //这个值修改了6.7
+        printf("监视点 %d: %s 的值 %u\n",wp->NO, wp->s,wp->n );
         wp = wp->next;
     }
     return;

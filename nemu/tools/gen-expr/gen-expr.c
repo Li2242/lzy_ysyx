@@ -84,6 +84,14 @@ void gen_num(){
 void gen_rand_op(){
   const char ops[4] = {'+','-','*','/'};
   char op = ops[rand() % 4];
+  //这种方法并不能解决除0这个问题
+  // if(op == '/'){
+  //   gen(op);
+  //   uint32_t n = 1+random()%100;
+  //   char arr[100];
+  //   sprintf(arr,"%u",n);
+  //   gen_str(arr);
+  // }
   gen(op);
 }
 
@@ -95,21 +103,19 @@ static void gen_rand_expr(int depth) {
     return;
   }
   switch (choose(4)) {
+    //生成数字
     case 0: 
             gen_num(); 
             break;
-    // case 1:
-    //         gen('-');
-    //         gen_num();
-    //         break;
-    case 2:
+    //生成空格
+    case 1:
           if(buf[pos-1]!=' '){
             gen(' ');
             gen_rand_expr(depth + 1);
             break;
-          }
-            
-    case 3: 
+          } 
+    //生成带括号的表达式
+    case 2: 
       //整个判断防止生成好多括号
        if(buf[pos-1] != '('&&buf[pos - 1]!=' '){
             gen('('); 
