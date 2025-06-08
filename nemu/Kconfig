@@ -132,7 +132,7 @@ menu "Testing and Debugging"
 config WATCHPOINT
   #在 menuconfig 界面中显示的文本描述
   bool "Enable watchpoint support"
-  default y
+  default n
 
 config TRACE
   bool "Enable tracer"
