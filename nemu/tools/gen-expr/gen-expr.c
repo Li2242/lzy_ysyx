@@ -103,7 +103,7 @@ static void gen_rand_op(){
 
 //生成随机值
 static void gen_rand_expr(int depth) {
-  if(depth >= 8){
+  if(depth >= 5){
     gen_num();
     return;
   }
