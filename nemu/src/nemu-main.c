@@ -33,15 +33,19 @@ int main(int argc, char *argv[]) {
 #endif
  
   //测试
+
+  //打开文件
    FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
+   //确定打开了文件
   if(fp == NULL){
     perror("Failed to open file");  // 输出更详细的错误信息
     return 1;
   }
-  char line[512];
-  int line_num = 0;
+
+  char line[256]; //每行内容
+  int line_num = 0;//行数
   //开始读文章了
-  while(fgets(line,512,fp)!= NULL){
+  while(fgets(line,256,fp)!= NULL){
     line_num++;
 
     if(line[0] == '\n')continue;
@@ -86,6 +90,7 @@ int main(int argc, char *argv[]) {
       printf("The %d test is corrent!\n\n",line_num);
     }
   }
+
   fclose(fp);
 
   /* Start engine. */
