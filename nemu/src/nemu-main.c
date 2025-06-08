@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
     if(str_len == 0) continue;
 
     bool r = false ;
-    printf("%s\n",expression);
+    //printf("%s\n",expression);
     uint32_t result = expr(expression,&r);
     printf("result= %u\n",result);
     if(num == result){
