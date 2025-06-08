@@ -34,9 +34,9 @@ void isa_reg_display() {
       结构体中定义
     */
    for(int k =i;k<i+4;k++){
-      printf("%-3s:0x%x\n",regs[i],cpu.gpr[i]);
+      printf("%-3s:0x%x",regs[i],cpu.gpr[i]);
     }
-    
+    printf("\n");
   }
   printf("pc=0x%08x\n",cpu.pc);
 }
