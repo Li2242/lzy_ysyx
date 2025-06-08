@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   //测试
    FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
   if(fp == NULL){
-    printf("ERROR!");
+    perror("Failed to open file");  // 输出更详细的错误信息
     return 1;
   }
   char line[512];
@@ -48,7 +48,17 @@ int main(int argc, char *argv[]) {
     
     char *expression = strchr(line,' ');
     
+    // 检查格式是否合法
+  if (expression == NULL) {
+    printf("Invalid format in line %d: missing space separator\n", line_num);
+    continue;
+  }
+
     size_t len = expression - line;
+    if (len >= sizeof(line)) {  // 防止缓冲区溢出
+      printf("Line %d: number part too long\n", line_num);
+      continue;
+  }
     char temp[len+1];
    strncpy(temp,line,len);
     temp[len] = '\0';
