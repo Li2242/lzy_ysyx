@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
       printf("Line %d: number part too long\n", line_num);
       continue;
   }
-    char temp[100];
+    char temp[len+1];
    strncpy(temp,line,len);
     temp[len] = '\0';
     uint32_t num = (unsigned int)atoi(temp); 
