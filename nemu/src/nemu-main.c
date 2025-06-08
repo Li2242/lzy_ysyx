@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
     uint32_t result = expr(expression,&r);
     printf("result= %u\n",result);
     if(num == result){
-      printf("The %u test is corrent!\n\n",line_num);
+      printf("The %d test is corrent!\n\n",line_num);
     }
   }
   fclose(fp);
