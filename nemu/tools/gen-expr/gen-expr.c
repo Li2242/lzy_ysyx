@@ -29,11 +29,6 @@
 #include <string.h>
 #include <ctype.h>
 
-//解析一个生成的表达式的位置指针
-static const char *expr_ptr = "";
-//是否是正确的表达式
-static int valid_expr = 1;
-
 
 // this should be enough
 static char buf[65536] = {};
@@ -68,7 +63,6 @@ static void gen_str(const char* str){
   if(buf[pos]!='\0'){
     buf[pos] = '\0'; 
   }
-  
 }
 
 //随机选择你的武器
@@ -78,7 +72,6 @@ static uint32_t choose(uint32_t n){
 
 //生成的数字
 static void gen_num(){
-
   uint32_t n = 1 + rand()%100;
   char num_str[10]; 
   //sprintf 是一个通用的格式化字符串函数
@@ -88,8 +81,8 @@ static void gen_num(){
 
 //生成随机符号
 static void gen_rand_op(){
-  const char ops[4] = {'+','-','*','/'};
-  char op = ops[rand() % 4];
+  const char ops[3] = {'+','-','*'};
+  char op = ops[rand() % 3];
   //这种方法并不能解决除0这个问题
   // if(op == '/'){
   //   gen(op);
@@ -101,62 +94,68 @@ static void gen_rand_op(){
   gen(op);
 }
 
+// //生成随机符号
+// static void gen_rand_op_no(){
+//   const char ops[2] = {'+','*'};
+//   char op = ops[rand() % 2];
+//   gen(op);
+// }
+
 //生成随机值
 static void gen_rand_expr(int depth) {
   if(depth >= 8){
     gen_num();
     return;
   }
-  switch (choose(4)) {
+  switch (choose(21)) {
     //随机生成数字
-    case 0: 
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
             gen_num(); 
             break;
     //随机生成空格
-    case 1:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
           if(buf[pos-1]!=' '){
             gen(' ');
             gen_rand_expr(depth + 1);
             break;
           } 
     //生成带括号的表达式
-    case 2: 
+    case 10: 
+    case 11:
+    case 12:
+    case 13:
+    case 14:
       //整个判断防止生成好多括号
        if(buf[pos-1] != '('&&buf[pos - 1]!=' '){
             gen('('); 
             gen_rand_expr(depth + 1);
             gen(')');
             break; 
-          }   
+          }
+    case 15:
+          gen_rand_expr(depth + 1); 
+          gen_rand_op();
+          gen_rand_expr(depth + 1); 
+          gen('/');
+          gen_num();
+          // gen_rand_expr(depth + 1); 
+          // gen_rand_op_no();
+          // gen_rand_expr(depth + 1); 
+          break;
     default: 
             gen_rand_expr(depth + 1); 
             gen_rand_op();
             gen_rand_expr(depth + 1); 
             break;
   }
-}
-
-// 生成有效表达式（含重试机制）
-static void generate_valid_expression() {
-  const int max_attempts = 10;
-  int attempts = 0;
-  
-  while (attempts < max_attempts) {
-    pos = 0;
-    memset(buf, 0, sizeof(buf));
-    gen_rand_expr(0);
-    
-    if (valid_expression(buf)) {
-      return;
-    }
-    attempts++;
-  }
-  
-  // 保底生成简单表达式
-  pos = 0;
-  gen_num();
-  gen('+');
-  gen_num();
 }
 
 
@@ -177,11 +176,10 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
 
-    generate_valid_expression();
 
-    // pos = 0;                 // 重置缓冲区位置
-    // memset(buf, 0, sizeof(buf));  // 清空缓冲区（可选，但更安全）
-    // gen_rand_expr(0);
+    pos = 0;                 // 重置缓冲区位置
+    memset(buf, 0, sizeof(buf));  // 清空缓冲区（可选，但更安全）
+    gen_rand_expr(0);
 
     //把之前生成的随机表达式嵌入到一个完整的 C 语言程序中
     //buf也就是生成的表达式放入code_format中的占位符然后一起放入code_buf中

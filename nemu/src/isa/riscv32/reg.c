@@ -33,9 +33,9 @@ void isa_reg_display() {
       PC和通用寄存器都在nemu/src/isa/$ISA/include/isa-def.h中的
       结构体中定义
     */
-   for(int k =i;k<i+4;k++){
-      printf("%-3s: 0x%x\t",regs[k],cpu.gpr[k]);
-    }
+    for(int k =i;k<i+4;k++){
+        printf("%-3s: 0x%x\t",regs[k],cpu.gpr[k]);
+      }
     printf("\n");
   }
   printf("pc=0x%08x\n",cpu.pc);
