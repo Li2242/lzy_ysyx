@@ -109,7 +109,7 @@ typedef struct token {
 } Token;
 
 //tokens数组用于按顺序存放已经被识别出的token信息.
-static Token tokens[512] __attribute__((used)) = {};
+static Token tokens[1024] __attribute__((used)) = {};
 //nr_token指示已经被识别出的token数目.
 static int nr_token __attribute__((used)) = 0;
 
@@ -145,8 +145,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度.
         int substr_len = pmatch.rm_eo;
-         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-             i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        //  Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        //      i, rules[i].regex, position, substr_len, substr_len, substr_start);
             
         //移动
         position += substr_len;
@@ -232,7 +232,7 @@ word_t expr(char *e, bool *success) {
   //区分减号和负号
   for (int i = 0; i < nr_token; i ++) {
     if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
-      printf("处理了减号!\n");
+      //printf("处理了减号!\n");
       tokens[i].type = TK_MS;
     }
   }
@@ -302,11 +302,11 @@ word_t eval(int p,int q,bool *success) {
      if(tokens[op].type == TK_PT){
         uint32_t addr = eval(op+1,q,success);
         uint32_t val = vaddr_read(addr,4);
-        printf("处理了指针\n");
+        //printf("处理了指针\n");
         return val;
      }else if(tokens[op].type == TK_MS){
         uint32_t val0 = -eval(op+1,q,success);
-        printf("处理了自减符号\n");
+        //printf("处理了自减符号\n");
         return val0;
      }else{
       //printf("%u %u\n",val1,val2);
