@@ -54,7 +54,10 @@ WP* new_wp(char *str){
   p->next = head;
   //head改为新分配过来的
   head = p;
-  p->s = str;
+  //防止被释放了
+  char* str0 = str;
+  
+  p->s = str0;
   bool success = true;
   uint32_t a = expr(p->s,&success);
   if(success == false){
