@@ -150,7 +150,7 @@ static int cmd_test(){
     expression = expression+1;
 
     //输出表达式
-    printf("%s",expression);
+    printf("The expression is %s",expression);
 
     uint32_t str_len = strlen(expression);
     if(expression[str_len-1] == '\n'){
