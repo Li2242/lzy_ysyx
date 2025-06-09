@@ -132,6 +132,7 @@ static int cmd_test(){
   while(fgets(line,512,fp) != NULL){
     line_num++;
     if(line[0] == '\n') continue;
+    //搜寻第一个空格，strchr的作用就是这个
     char *expression = strchr(line,' ');
     if(expression == NULL){
       printf("Invalid format in line %d:missing sapce separator\n",line_num);
@@ -149,23 +150,27 @@ static int cmd_test(){
 
     expression = expression+1;
 
-    //输出表达式
+    //输出表达式,这里不加换行符是因为这里自带换行符，换行符还并未消除
     printf("The expression is %s",expression);
 
     uint32_t str_len = strlen(expression);
+    //消除换行符
     if(expression[str_len-1] == '\n'){
       expression[str_len - 1] = '\0';
     }
+    //表达式的长度出了问题
     if(str_len <= 0){
       continue;
     }
 
+    //对表达式进行了求值
     bool r = true;
     uint32_t result =  expr(expression,&r);
     if(r == false){
       printf("Evaluation failed in the expression test!\n");
     }
     printf("The reuslt is %u\n",result);
+    //判断是否相等
     if(result == num){
       printf("The %d test is corrent!\n\n",line_num);
     }
