@@ -21,6 +21,8 @@ void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
 
+static void test();
+
 int main(int argc, char *argv[]) {
 
 
@@ -31,7 +33,16 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
- 
+  test();
+  /* Start engine. */
+
+  engine_start();
+  
+  return is_exit_status_bad();
+}
+
+
+static void test(){
   //测试
 
   //打开文件
@@ -39,7 +50,7 @@ int main(int argc, char *argv[]) {
    //确定打开了文件
   if(fp == NULL){
     perror("Failed to open file");  // 输出更详细的错误信息
-    return 1;
+    return ;
   }
 
   char line[512]; //每行内容
@@ -93,10 +104,4 @@ int main(int argc, char *argv[]) {
   }
 
   fclose(fp);
-
-  /* Start engine. */
-
-  engine_start();
-  
-  return is_exit_status_bad();
-}
+} 
