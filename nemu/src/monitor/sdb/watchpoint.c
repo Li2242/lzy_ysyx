@@ -134,7 +134,7 @@ void scan(){
         wp = wp->next;
     }
     if(wp == NULL){
-      printf("The watchpoint was not scanned!\n");
+      printf("The watchpoint was not been set up!\n");
     }
     
     return;
