@@ -165,6 +165,7 @@ static int cmd_test(){
     if(r == false){
       printf("Evaluation failed in the expression test!\n");
     }
+    printf("%u\n",result);
     if(result == num){
       printf("The %d test is corrent!\n\n",line_num);
     }
