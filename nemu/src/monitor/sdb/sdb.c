@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <isa.h>
+#include <string.h>
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -94,6 +95,8 @@ static int cmd_p(char *args);
 static int cmd_w(char *args);
 //d 删除间断点
 static int cmd_d(char *args);
+//表达式测试
+static int  cmd_test();
 
 static struct {
   const char *name;
@@ -108,12 +111,66 @@ static struct {
   {"x", "Scan memory",cmd_x},
   {"p", "Expression evaluation",cmd_p},
   {"w", "Set watchpoint",cmd_w},
-  {"d", "Delete watchpoint",cmd_d}
+  {"d", "Delete watchpoint",cmd_d},
+  {"t", "Expression testing",cmd_test}
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+
+
+//t
+static int cmd_test(){
+  FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
+  if(fp == NULL){
+    perror("Failed to open file");
+    return 1;
+  }
+  char line[512];
+  int line_num = 0;
+  while(fgets(line,512,fp) != NULL){
+    line_num++;
+    if(line[0] == '\n') continue;
+    char *expression = strchr(line,' ');
+    if(expression == NULL){
+      printf("Invalid format in line %d:missing sapce separator\n",line_num);
+    }
+    uint32_t len = line - expression;
+    if(len >= sizeof(line)){
+      printf("Line %d: number part too long\n",line_num);
+      continue;
+    }
+    char temp[len+1];
+    strncpy(temp,line,len);
+    temp[len] = '\0';
+    uint32_t num;
+    sscanf(temp,"%u",&num);
+
+    expression = expression+1;
+
+    printf("%s\n",expression);
+
+    uint32_t str_len = strlen(expression);
+    if(expression[str_len-1] == '\n'){
+      expression[str_len - 1] = '\0';
+    }
+    if(str_len <= 0){
+      continue;
+    }
+
+    bool r = true;
+    uint32_t result =  expr(expression,&r);
+    if(r == false){
+      printf("Evaluation failed in the expression test!\n");
+    }
+    if(result == num){
+      printf("The %d test is corrent!\n\n",line_num);
+    }
+  }
+  fclose(fp);
+  return 0;
+}
 
 //w
 static int cmd_w(char *args){
