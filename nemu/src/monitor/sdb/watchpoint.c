@@ -125,12 +125,13 @@ void scan_watchpoints(bool* success){
   }
 }
 
+//扫描监视点
 void scan(){
   WP *wp = head;
     //是否有监视点被触发
     while(wp!=NULL){
-      //这个值修改了6.7
-        printf("监视点 %d: %s 的值 0x%08x\n",wp->NO, wp->s,wp->n );
+        // printf("Watchpoint %d: %s 的值 0x%08x\n",wp->NO, wp->s,wp->n );
+        printf("The value of the %d monitoring point %s is 0x%08x\n",wp->NO,wp->s,wp->n);
         wp = wp->next;
     }
     if(wp == NULL){
