@@ -45,9 +45,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   #ifdef CONFIG_WATCHPOINT
     bool success = false;
     scan_watchpoints(&success);
-    if(success){
-      printf("监视点发生了变化\n");
-    }
   #endif
 }
 
