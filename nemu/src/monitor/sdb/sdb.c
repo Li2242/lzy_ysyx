@@ -149,6 +149,7 @@ static int cmd_test(){
 
     expression = expression+1;
 
+    //输出表达式
     printf("%s\n",expression);
 
     uint32_t str_len = strlen(expression);
@@ -165,7 +166,7 @@ static int cmd_test(){
       printf("Evaluation failed in the expression test!\n");
     }
     if(result == num){
-      printf("The %d test is corrent!\n\n",line_num);
+      printf("The %d test is corrent!\n",line_num);
     }
   }
   fclose(fp);
