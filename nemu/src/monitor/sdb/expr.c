@@ -221,7 +221,6 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-
   /* TODO: Implement code to evaluate the expression. */
   //区分解引用和乘法
   for (int i = 0; i < nr_token; i ++) {
