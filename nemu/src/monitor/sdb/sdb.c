@@ -14,11 +14,14 @@
 ***************************************************************************************/
 
 #include <isa.h>
+#include <string.h>
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+//已经不知道自己为什么加上它了，好像删去也没事
+// #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+//为了读取客户端内存加的头文件
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 
 
@@ -57,14 +60,20 @@ static int cmd_q(char *args) {
   return -1;
 }
 
-//单步si
+//单步执行si
 static int cmd_si(char *args){
+
   char *arg = strtok(NULL, " ");
-  
+
+  //不给参数默认执行一次
   if(args==NULL){
     cpu_exec(1);
   }else{
-    int n = atoi(arg);
+    //执行几次
+    uint32_t n;
+    //用了刚刚讲过的sscanf
+    sscanf(arg , "%u" , &n);
+    //int n = atoi(arg);(这是问AI的不合适)
     if(n<=0){
         printf("ERROR!!!\n");
         return 1;
@@ -74,18 +83,20 @@ static int cmd_si(char *args){
     return 0;
   }
 
-//x
+//x 扫描内存
 static int cmd_x(char *args);
 //help
 static int cmd_help(char *args);
-//info
+//info 打印
 static int cmd_info(char *args);
-//p
+//p 表达式的值
 static int cmd_p(char *args);
-//w
+//w 
 static int cmd_w(char *args);
-//d
+//d 删除间断点
 static int cmd_d(char *args);
+//表达式测试
+static int  cmd_test();
 
 static struct {
   const char *name;
@@ -100,23 +111,85 @@ static struct {
   {"x", "Scan memory",cmd_x},
   {"p", "Expression evaluation",cmd_p},
   {"w", "Set watchpoint",cmd_w},
-  {"d", "Delete watchpoint",cmd_d}
+  {"d", "Delete watchpoint",cmd_d},
+  {"t", "Expression testing",cmd_test}
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
+
+//t
+static int cmd_test(){
+  FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
+  if(fp == NULL){
+    perror("Failed to open file");
+    return 1;
+  }
+  char line[512];
+  int line_num = 0;
+  while(fgets(line,512,fp) != NULL){
+    line_num++;
+    if(line[0] == '\n') continue;
+    //搜寻第一个空格，strchr的作用就是这个
+    char *expression = strchr(line,' ');
+    if(expression == NULL){
+      printf("Invalid format in line %d:missing sapce separator\n",line_num);
+    }
+    uint32_t len = expression - line;
+    if(len >= sizeof(line)){
+      printf("Line %d: number part too long\n",line_num);
+      continue;
+    }
+    char temp[len+1];
+    strncpy(temp,line,len);
+    temp[len] = '\0';
+    uint32_t num;
+    sscanf(temp,"%u",&num);
+
+    expression = expression+1;
+
+    //输出表达式,这里不加换行符是因为这里自带换行符，换行符还并未消除
+    printf("The expression is %s",expression);
+
+    uint32_t str_len = strlen(expression);
+    //消除换行符
+    if(expression[str_len-1] == '\n'){
+      expression[str_len - 1] = '\0';
+    }
+    //表达式的长度出了问题
+    if(str_len <= 0){
+      continue;
+    }
+
+    //对表达式进行了求值
+    bool r = true;
+    uint32_t result =  expr(expression,&r);
+    if(r == false){
+      printf("Evaluation failed in the expression test!\n");
+    }
+    printf("The reuslt is %u\n",result);
+    //判断是否相等
+    if(result == num){
+      printf("The %d test is corrent!\n\n",line_num);
+    }
+  }
+  fclose(fp);
+  return 0;
+}
+
 //w
 static int cmd_w(char *args){
-  char* arg =  args;
-  new_wp(arg);
+  char* w_arg =  args;
+  new_wp(w_arg);
   return 0;
 }
 
 //d
 static int cmd_d(char *args){
-  int num = atoi(args);
+  uint32_t num ;
+  sscanf(args,"%u",&num);
   free_wp(num);
   return 0;
 }
@@ -138,6 +211,10 @@ static int cmd_p(char *args){
 
                 
 //x 扫描内存
+/*
+  在客户程序运行的过程中, 总是使用`vaddr_read()`和`vaddr_write()` 
+  (在`nemu/src/memory/vaddr.c`中定义)来访问模拟的内存. 
+*/
 static int cmd_x(char *args){
   char *arg[2];
   arg[0] = strtok(NULL," "); 
@@ -149,10 +226,14 @@ static int cmd_x(char *args){
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
     printf("Usage:command arg1 arg2\n");
+    return 1;
   }
-  //次数
-  int n = atoi(arg[0]);
 
+  //次数
+  uint32_t n;
+  sscanf(arg[0],"%u",&n);
+
+  //int n = atoi(arg[0]);
   //之前直接写地址的时候的值
   //addr = strtoul(arg[1],NULL,16);
 
@@ -160,9 +241,15 @@ static int cmd_x(char *args){
     printf("Length must be a positive integer.\n");
     return 1;
   }else{
-    for(int i = 0; i<n; i ++){
-          printf("0x%08x\n",vaddr_read(addr,4));
-          addr += 4;
+    for(int i = 0; i<n;){
+      printf("0x%08x: ",addr);
+      for(int k=0;k<4;k++){
+        printf("0x%08x ",vaddr_read(addr,4));
+        addr += 4;
+        i++;
+        if(i>=n) break;
+      }
+      printf("\n");
     }
   }
   return 0;

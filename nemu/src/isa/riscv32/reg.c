@@ -25,9 +25,18 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-  for(int i=0;i<32;i++){
+  for(int i=0;i<32;i+=4){
     //寄存器在cpu-exec.c中
-    printf("%-3s:0x%x\n",regs[i],cpu.gpr[i]);
+    /*
+      并在nemu/src/cpu/cpu-exec.c中定义一个全局变量cpu
+      初始化寄存器的一个重要工作就是设置cpu.pc的初值
+      PC和通用寄存器都在nemu/src/isa/$ISA/include/isa-def.h中的
+      结构体中定义
+    */
+    for(int k =i;k<i+4;k++){
+        printf("%-3s: 0x%08x\t",regs[k],cpu.gpr[k]);
+      }
+    printf("\n");
   }
   printf("pc=0x%08x\n",cpu.pc);
 }
@@ -44,6 +53,10 @@ word_t isa_reg_str2val(const char *s, bool *success) {
       return cpu.gpr[i];
     }
   }
-  *success = false;
+  //加的pc
+  if(strcmp(s,"pc") == 0){
+    *success = true;
+    return cpu.pc;
+  }
   return 0;
 }

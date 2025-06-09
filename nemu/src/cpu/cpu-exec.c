@@ -32,7 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 
-//扫描所有的监视点
+
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
@@ -40,8 +40,12 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   
+  //在Kconfig中可以控制这个宏是否生成
   //扫描监视点
-  scan_watchpoints();
+  #ifdef CONFIG_WATCHPOINT
+    bool success = false;
+    scan_watchpoints(&success);
+  #endif
 }
 
 //该函数用于执行一条指令,让CPU执行当前PC指向的一条指令, 然后更新PC.

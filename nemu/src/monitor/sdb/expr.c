@@ -42,7 +42,9 @@ enum {
   //16进制
   TK_ST,
   //寄存器
-  TK_RN
+  TK_RN,
+  //负号
+  TK_MS
   /* TODO: Add more token types */
 };
 
@@ -54,7 +56,7 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-
+//双斜杠（\\）是先对 C 语言字符串里的斜杠进行转义，接着该斜杠又会对正则表达式中的特殊字符进行转义。
   {" +", TK_NOTYPE},    // spaces
   {"==", TK_EQ},        // equal
   {"!=",TK_UEQ},        //不等
@@ -93,6 +95,7 @@ void init_regex() {
     //成功返回0，失败返回错误代码，可通过regerror()转换为错误信息.
     ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
     if (ret != 0) {
+      //判断参数是否失败
       regerror(ret, &re[i], error_msg, 128);
       panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
     }
@@ -106,7 +109,8 @@ typedef struct token {
 } Token;
 
 //tokens数组用于按顺序存放已经被识别出的token信息.
-static Token tokens[512] __attribute__((used)) = {};
+static Token tokens[1024] __attribute__((used)) = {};
+
 //nr_token指示已经被识别出的token数目.
 static int nr_token __attribute__((used)) = 0;
 
@@ -142,8 +146,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度.
         int substr_len = pmatch.rm_eo;
-         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-             i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        //  Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        //      i, rules[i].regex, position, substr_len, substr_len, substr_start);
             
         //移动
         position += substr_len;
@@ -162,6 +166,7 @@ static bool make_token(char *e) {
           case '(':
           case ')':
           case TK_H:
+          case TK_MS:
           case TK_EQ:
           case TK_UEQ:
             //类型
@@ -185,8 +190,12 @@ static bool make_token(char *e) {
           case TK_NOTYPE:
               
             break;
-          default: TODO();
+          default:
+            printf("表达式有问题，请仔细核对一下");
+            return false;
+            break;
         }
+        //对应上了直接退出，不需要继续匹配了；
         break;
       }
     }
@@ -213,11 +222,19 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Implement code to evaluate the expression. */
-
   //区分解引用和乘法
   for (int i = 0; i < nr_token; i ++) {
-    if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
+    //')'是后加的，这可坑死我了，我以为是测试代码写的有问题呢
+    if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST && tokens[i-1].type != ')')) ) {
       tokens[i].type = TK_PT;
+    }
+  }
+  
+  //区分减号和负号
+  for (int i = 0; i < nr_token; i ++) {
+    if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST && tokens[i-1].type != ')'))) {
+      //printf("处理了减号!\n");
+      tokens[i].type = TK_MS;
     }
   }
 
@@ -237,7 +254,7 @@ word_t eval(int p,int q,bool *success) {
     /* Bad expression */
     printf(" Bad expression!\n");
     *success = false;
-    return 0;
+    return 1;
   }else if (p == q) {
     /* Single token.
     * For now this token should be a number.
@@ -245,7 +262,9 @@ word_t eval(int p,int q,bool *success) {
     */
     //处理正常10进制数
     if(tokens[p].type == TK_NUM ){
-      return (word_t)atoi(tokens[p].str);
+      uint32_t n;
+      sscanf(tokens[p].str,"%u",&n);
+      return n;
     }
     //处理16进制的数
     else if(tokens[p].type == TK_ST){
@@ -260,7 +279,7 @@ word_t eval(int p,int q,bool *success) {
       if(success_flag){
           return tem_reg;
       }else{
-        printf("寄存器名字%s取地址失败!\n",tokens[p].str);
+        Log("寄存器名字%s取地址失败!\n",tokens[p].str);
         *success = false;
         return 0;
       }
@@ -277,14 +296,19 @@ word_t eval(int p,int q,bool *success) {
   }else {
     int op = find_main_op(p,q);
      if(op==-1){
-        //printf("Error: No operator found between %d and %d\n", p, q);
+        Log("Error: No operator found between %d and %d\n", p, q);
          return false;
      }
      //处理解指针
      if(tokens[op].type == TK_PT){
         uint32_t addr = eval(op+1,q,success);
         uint32_t val = vaddr_read(addr,4);
+        //printf("处理了指针\n");
         return val;
+     }else if(tokens[op].type == TK_MS){
+        uint32_t val0 = -eval(op+1,q,success);
+        //printf("处理了自减符号\n");
+        return val0;
      }else{
       //printf("%u %u\n",val1,val2);
       word_t val1 = eval(p, op - 1,success);
@@ -303,7 +327,9 @@ word_t eval(int p,int q,bool *success) {
             return 0;
           }
           return val1/val2;
-        default: assert(0);    
+        default:
+          printf("出现了不该出现的符号\n");
+          assert(0);    
       }
     }
   }
@@ -312,7 +338,7 @@ word_t eval(int p,int q,bool *success) {
 //判断表达式是否被一对匹配的括号包围着
 bool check_parentheses(int p,int q){
   if(tokens[p].type!='(' && tokens[q].type!=')'){
-    return 0;
+    return false;
   }
   int paren_count = 0;
   for(int i =p;i<=q;i++){
@@ -323,13 +349,13 @@ bool check_parentheses(int p,int q){
     if(tokens[i].type==')'){
       paren_count--;
     }
-
     //如果右括号大于左括号直接返回false或者，如果在中途等号为0了那么说明已经被拦截了
+    //i不等于q是为了不要误判最后一个括号
     if(paren_count<=0&&i!=q){
       return false;
     }
   }
-
+//对表达式进行检查后，进行最后的判断
   if(paren_count == 0){
     return true;
   }else{
@@ -359,12 +385,12 @@ int find_main_op(int p,int q){
         precedence = 2;
       }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 3;
-      }else if(tokens[i].type == TK_PT ){
+      }else if(tokens[i].type == TK_PT||tokens[i].type == TK_MS){
         precedence = 4;
       }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
         precedence = 1;
       }else{
-        //重要不能删除(当不在括号里面时直接跳过)
+        //重要不能删除(当不在括号里面时直接跳过,不进行更新)
         continue;
       }
       //相等时也更新为了满足后面的符号优先级更低。

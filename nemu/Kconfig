@@ -1,5 +1,6 @@
 mainmenu "NEMU Configuration Menu"
 
+#基础指令集架构选择
 choice
   prompt "Base ISA"
   default ISA_riscv
@@ -13,6 +14,7 @@ config ISA_loongarch32r
   bool "loongarch32r"
 endchoice
 
+#指令集相关配置
 config ISA
   string
   default "x86" if ISA_x86
@@ -126,6 +128,11 @@ endmenu
 
 menu "Testing and Debugging"
 
+#这是我加的
+config WATCHPOINT
+  #在 menuconfig 界面中显示的文本描述
+  bool "Enable watchpoint support"
+  default n
 
 config TRACE
   bool "Enable tracer"
@@ -191,6 +198,9 @@ config DIFFTEST_REF_NAME
   default "kvm" if DIFFTEST_REF_KVM
   default "spike" if DIFFTEST_REF_SPIKE
   default "none"
+
+
+
 endmenu
 
 if MODE_SYSTEM
