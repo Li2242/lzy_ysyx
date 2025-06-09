@@ -225,7 +225,7 @@ word_t expr(char *e, bool *success) {
 
   //区分解引用和乘法
   for (int i = 0; i < nr_token; i ++) {
-    if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST)) ) {
+    if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST && tokens[i-1].type != ')')) ) {
       tokens[i].type = TK_PT;
     }
   }
