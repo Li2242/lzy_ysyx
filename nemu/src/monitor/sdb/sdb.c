@@ -136,7 +136,7 @@ static int cmd_test(){
     if(expression == NULL){
       printf("Invalid format in line %d:missing sapce separator\n",line_num);
     }
-    uint32_t len = line - expression;
+    uint32_t len = expression - line;
     if(len >= sizeof(line)){
       printf("Line %d: number part too long\n",line_num);
       continue;
