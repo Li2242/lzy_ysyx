@@ -182,7 +182,12 @@ static int cmd_test(){
 //w
 static int cmd_w(char *args){
   char* w_arg =  args;
-  new_wp(w_arg);
+  int success = new_wp(w_arg);
+  if(success == 0){
+    printf("The watchpoint is set up successfully.\n");
+  }else{
+    printf("The watchpoint settings fails.\n");
+  }
   return 0;
 }
 

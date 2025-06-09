@@ -18,7 +18,7 @@
 #define NR_WP 32
 
 
-WP* new_wp(char* s);
+int new_wp(char* s);
 void free_wp(int n);
 
 static WP wp_pool[NR_WP] = {};
@@ -43,9 +43,12 @@ void init_wp_pool() {
 
 
 /* TODO: Implement the functionality of watchpoint */
-WP* new_wp(char *str){
+int new_wp(char *str){
   //先看看以后没有空闲的了
-  if(free_ == NULL) assert(0);
+  if(free_ == NULL) {
+    printf("There are no spare watchpoints left\n");
+    return 1;
+  };
 
   WP *p = free_;
   //free往前挪动了一位
@@ -55,16 +58,18 @@ WP* new_wp(char *str){
   p->next = head;
   //head改为新分配过来的
   head = p;
-  //使用strup是为了防止被readline给free掉
+
+  //使用strup是为了防止被readline给free掉,从新分配空间给
   p->s = strdup(str);
 
   bool success = true;
   uint32_t a = expr(p->s,&success);
   if(success == false){
     printf("new_up中求值失败\n");
+    return 1;
   }
   p->n = a;
-  return p;
+  return 0;
 }
 
 void free_wp(int n){
