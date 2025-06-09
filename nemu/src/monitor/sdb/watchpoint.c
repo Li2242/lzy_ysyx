@@ -133,5 +133,9 @@ void scan(){
         printf("监视点 %d: %s 的值 0x%08x\n",wp->NO, wp->s,wp->n );
         wp = wp->next;
     }
+    if(wp == NULL){
+      printf("The watchpoint was not scanned!\n");
+    }
+    
     return;
 }
