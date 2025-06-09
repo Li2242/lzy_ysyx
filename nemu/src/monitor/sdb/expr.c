@@ -221,7 +221,6 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  printf("读取成功\n");
 
   /* TODO: Implement code to evaluate the expression. */
   //区分解引用和乘法
@@ -275,7 +274,6 @@ word_t eval(int p,int q,bool *success) {
     }
     //处理寄存器的值
     else if(tokens[p].type == TK_RN){
-      printf("处理寄存器的值\n");
       bool success_flag = false;
       uint32_t tem_reg = isa_reg_str2val(tokens[p].str, &success_flag);
       //处理解指针和寄存器的值
