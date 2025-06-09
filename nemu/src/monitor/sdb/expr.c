@@ -221,8 +221,9 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  /* TODO: Implement code to evaluate the expression. */
+  printf("读取成功\n");
 
+  /* TODO: Implement code to evaluate the expression. */
   //区分解引用和乘法
   for (int i = 0; i < nr_token; i ++) {
     //')'是后加的，这可坑死我了，我以为是测试代码写的有问题呢
@@ -274,6 +275,7 @@ word_t eval(int p,int q,bool *success) {
     }
     //处理寄存器的值
     else if(tokens[p].type == TK_RN){
+      printf("处理寄存器的值\n");
       bool success_flag = false;
       uint32_t tem_reg = isa_reg_str2val(tokens[p].str, &success_flag);
       //处理解指针和寄存器的值
