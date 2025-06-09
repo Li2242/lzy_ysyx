@@ -41,6 +41,7 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
+
 /* TODO: Implement the functionality of watchpoint */
 WP* new_wp(char *str){
   //先看看以后没有空闲的了
@@ -54,10 +55,9 @@ WP* new_wp(char *str){
   p->next = head;
   //head改为新分配过来的
   head = p;
-  //防止被释放了
-  char* str0 = str;
-  
-  p->s = str0;
+  //使用strup是为了防止被readline给free掉
+  p->s = strdup(str);
+
   bool success = true;
   uint32_t a = expr(p->s,&success);
   if(success == false){

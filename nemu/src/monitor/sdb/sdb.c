@@ -117,8 +117,8 @@ static struct {
 
 //w
 static int cmd_w(char *args){
-  char* arg =  args;
-  new_wp(arg);
+  char* w_arg =  args;
+  new_wp(w_arg);
   return 0;
 }
 
