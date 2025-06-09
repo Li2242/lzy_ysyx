@@ -33,7 +33,9 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
+//测试
   test();
+
   /* Start engine. */
 
   engine_start();
@@ -42,9 +44,9 @@ int main(int argc, char *argv[]) {
 }
 
 
-static void test(){
-  //测试
 
+//测试
+static void test(){
   //打开文件
    FILE *fp = fopen("/home/lzy14/ysyx/ysyx-workbench/nemu/tools/gen-expr/build/input","r");
    //确定打开了文件
@@ -57,6 +59,7 @@ static void test(){
   int line_num = 0;//行数
   //开始读文章了
   while(fgets(line,512,fp)!= NULL){
+
     line_num++;
 
     if(line[0] == '\n') continue;  // 跳过仅有换行符的行
@@ -69,7 +72,7 @@ static void test(){
     continue;
   }
 
-    size_t len = expression - line; // 计算空格前的字符数（预期数值长度）
+    uint32_t len = expression - line; // 计算空格前的字符数（预期数值长度）
     if (len >= sizeof(line)) {   // 防止缓冲区溢出（sizeof(line)=512）
       printf("Line %d: number part too long\n", line_num);
       continue;
@@ -80,24 +83,28 @@ static void test(){
     uint32_t num ;  
     sscanf(temp , "%u" , &num);  // 转换为整数
     
-    if(expression == NULL){
-      printf("Invida format in %d lien\n",line_num);
-      continue;
-    }
-
+    //处理完前面的结果了，轮到后面的表达式了
     expression = expression + 1;
 
     uint32_t str_len = strlen(expression); // 计算表达式长度
 
+    //处理为有效的字符串(表达式中不因该出现\0)
     if(str_len > 0 && expression[str_len - 1]=='\n'){
       expression[str_len - 1] = '\0'; // 将换行符替换为空终止符
     }
-    if(str_len == 0) continue; // 表达式为空（如`"42  "`），跳过
 
-    bool r = false ;
+    if(str_len == 0){
+      continue; // 表达式为空（如`"42  "`），跳过
+    }
+
+    bool r = false;
+    //打印出生成的结果
     printf("%s\n",expression);
+    //根据表达式计算结果
     uint32_t result = expr(expression,&r);
+    //打印出计算的结果
     printf("result= %u\n",result);
+    //判断是否相等
     if(num == result){
       printf("The %d test is corrent!\n\n",line_num);
     }
