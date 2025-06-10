@@ -73,7 +73,7 @@ int new_wp(char *str){
 }
 
 void free_wp(int n){
-  if (n<0) {
+  if (n<0 && n > 31) {
     printf("请给出正确的消除序号\n");
     return;
   }
@@ -96,6 +96,7 @@ void free_wp(int n){
         //加入free_中
         wp->next = free_;
         free_ = wp;
+        printf("Successfully deleted Watchpoint %d\n",n);
         return;
     }
     //pp是结构体中next的指针
