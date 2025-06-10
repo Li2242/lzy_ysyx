@@ -75,7 +75,7 @@ int new_wp(char *str){
 void free_wp(int n){
 
   if (n<0 || n > 31) {
-    printf("请给出正确的消除序号\n");
+    printf("Please provide the correct watchpoint number!(0-31)\n");
     return;
   }
 
