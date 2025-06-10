@@ -103,7 +103,7 @@ void free_wp(int n){
     pp = &((*pp)->next);
   }
   // 未找到对应监视点
-    printf("错误：未找到序号为 %d 的监视点\n", n);
+    printf("ERRor: NO.%d watchpoint was not found.\n", n);
 }
 
 //扫描监视点
