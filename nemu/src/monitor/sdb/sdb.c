@@ -40,7 +40,7 @@ static char* rl_gets() {
     line_read = NULL;
   }
 
-  line_read = readline("(nemu) ");
+  line_read = readline("(ysyx_nemu) ");
 
   if (line_read && *line_read) {
     add_history(line_read);
@@ -75,7 +75,8 @@ static int cmd_si(char *args){
     sscanf(arg , "%u" , &n);
     //int n = atoi(arg);(这是问AI的不合适)
     if(n<=0){
-        printf("ERROR!!!\n");
+        // printf("ERROR!!!\n");
+        printf("ERROR in cmd_si : The number of execution steps should be greater than 0!\n");
         return 1;
     }
     cpu_exec(n);
@@ -207,9 +208,9 @@ static int cmd_p(char *args){
   bool success = true;
   uint32_t result = expr(arg,&success);
    if (success) {
-    printf("表达式结果：%u\n", result);
+    printf("Expression result:%u\n", result);
   } else {
-    printf("表达式求值失败\n");
+    printf("ERROR cmd_p : The evaluation of the expression failed!\n");
   }
   return 0;
 }

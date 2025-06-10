@@ -65,7 +65,8 @@ int new_wp(char *str){
   bool success = true;
   uint32_t a = expr(p->s,&success);
   if(success == false){
-    printf("new_up中求值失败\n");
+    // printf("new_up中求值失败\n");
+    printf("The evaluation FAILED in the new_up\n");
     return 1;
   }
   p->n = a;

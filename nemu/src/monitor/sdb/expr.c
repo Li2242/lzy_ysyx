@@ -191,7 +191,8 @@ static bool make_token(char *e) {
               
             break;
           default:
-            printf("表达式有问题，请仔细核对一下");
+            // printf("表达式有问题，请仔细核对一下");
+            printf("The token in the expression are not matched!\n");
             return false;
             break;
         }
@@ -279,7 +280,7 @@ word_t eval(int p,int q,bool *success) {
       if(success_flag){
           return tem_reg;
       }else{
-        Log("寄存器名字%s取地址失败!\n",tokens[p].str);
+        Log("Register %s failed to fetch value!\n",tokens[p].str);
         *success = false;
         return 0;
       }
@@ -328,7 +329,8 @@ word_t eval(int p,int q,bool *success) {
           }
           return val1/val2;
         default:
-          printf("出现了不该出现的符号\n");
+          // printf("出现了不该出现的符号\n");
+          printf("Symbols that shouldn't have appeared have emerged!\n");
           assert(0);    
       }
     }
