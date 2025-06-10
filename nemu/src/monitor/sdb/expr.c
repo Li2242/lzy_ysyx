@@ -23,6 +23,10 @@
 #include <regex.h>
 //根据地址取值使用的头文件
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
+
+  //为处理这种情况：--1
+ static bool MS_0 = false;
+
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
 word_t eval(int p,int q,bool* success);
@@ -231,10 +235,15 @@ word_t expr(char *e, bool *success) {
     }
   }
   
+
+
   //区分减号和负号
   for (int i = 0; i < nr_token; i ++) {
     if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST && tokens[i-1].type != ')'))) {
       // printf("处理了减号!\n");
+      if(i == 0){
+        MS_0 = true;
+      }
       tokens[i].type = TK_MS;
     }
   }
@@ -300,6 +309,7 @@ word_t eval(int p,int q,bool *success) {
         Log("Error: No operator found between %d and %d\n", p, q);
          return false;
      }
+     
      //处理解指针
      if(tokens[op].type == TK_PT){
         uint32_t addr = eval(op+1,q,success);
@@ -308,6 +318,9 @@ word_t eval(int p,int q,bool *success) {
         return val;
      }else if(tokens[op].type == TK_MS){
         uint32_t val0 = -eval(op+1,q,success);
+        if(MS_0&&op==1){
+           val0 = -val0;
+        }
         Log("处理了自减符号\n");
         return val0;
      }else{
@@ -388,7 +401,7 @@ int find_main_op(int p,int q){
       }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 3;
       }else if(tokens[i].type == TK_PT||tokens[i].type == TK_MS){
-        Log("找了一次主符号数！\n");
+        //Log("找了一次主符号数！\n");
         precedence = 4;
       }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
         precedence = 1;
@@ -403,7 +416,7 @@ int find_main_op(int p,int q){
       }
     }
   }
-  printf("%d\n",op);
+  //printf("%d\n",op);
   return op;
 }
 
