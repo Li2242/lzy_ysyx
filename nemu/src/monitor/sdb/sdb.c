@@ -187,7 +187,7 @@ static int cmd_w(char *args){
   if(success == 0){
     printf("The watchpoint is  set up successfully.\n");
   }else{
-    Log("The watchpoint settings fails.\n");
+    Log("The watchpoint settings fails.");
   }
   return 0;
 }
@@ -210,7 +210,7 @@ static int cmd_p(char *args){
    if (success) {
     printf("Expression result:%u\n", result);
   } else {
-    Log("ERROR cmd_p : The evaluation of the expression failed!\n");
+    Log("ERROR cmd_p : The evaluation of the expression failed!");
   }
   return 0;
 }
