@@ -73,7 +73,8 @@ int new_wp(char *str){
 }
 
 void free_wp(int n){
-  if (n<0 && n > 31) {
+
+  if (n<0 || n > 31) {
     printf("请给出正确的消除序号\n");
     return;
   }
@@ -103,7 +104,7 @@ void free_wp(int n){
     pp = &((*pp)->next);
   }
   // 未找到对应监视点
-    printf("ERRor: NO.%d watchpoint was not found.\n", n);
+    printf("ERROR: NO.%d watchpoint was not found.\n", n);
 }
 
 //扫描监视点
