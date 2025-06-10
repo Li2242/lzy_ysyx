@@ -187,7 +187,7 @@ static int cmd_w(char *args){
   if(success == 0){
     printf("The watchpoint is  set up successfully.\n");
   }else{
-    printf("The watchpoint settings fails.\n");
+    Log("The watchpoint settings fails.\n");
   }
   return 0;
 }
@@ -210,7 +210,7 @@ static int cmd_p(char *args){
    if (success) {
     printf("Expression result:%u\n", result);
   } else {
-    printf("ERROR cmd_p : The evaluation of the expression failed!\n");
+    Log("ERROR cmd_p : The evaluation of the expression failed!\n");
   }
   return 0;
 }
@@ -231,7 +231,7 @@ static int cmd_x(char *args){
   printf("addr:0x%08x\n",addr);
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
-    printf("Usage:command arg1 arg2\n");
+    Log("Usage:command arg1 arg2\n");
     return 1;
   }
 
@@ -244,7 +244,7 @@ static int cmd_x(char *args){
   //addr = strtoul(arg[1],NULL,16);
 
   if(n<=0){
-    printf("Length must be a positive integer.\n");
+    Log("Length must be a positive integer.\n");
     return 1;
   }else{
     for(int i = 0; i<n;){
@@ -273,7 +273,7 @@ static int cmd_info(char* args){
   }else if (*arg == 'w'){
     scan();
   }else{
-    printf("subcommand error!!!\n");
+    Log("subcommand error!!!\n");
   }
   return 0;
 }

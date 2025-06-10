@@ -50,6 +50,14 @@ int new_wp(char *str){
     return 1;
   };
 
+  bool success = true;
+  uint32_t a = expr(str,&success);
+  if(success == false){
+    // printf("new_up中求值失败\n");
+    Log("The evaluation FAILED in the new_wp");
+    return 1;
+  }
+
   WP *p = free_;
   //free往前挪动了一位
   free_ = free_->next;
@@ -62,13 +70,6 @@ int new_wp(char *str){
   //使用strup是为了防止被readline给free掉,从新分配空间给
   p->s = strdup(str);
 
-  bool success = true;
-  uint32_t a = expr(p->s,&success);
-  if(success == false){
-    // printf("new_up中求值失败\n");
-    Log("The evaluation FAILED in the new_wp");
-    return 1;
-  }
   p->n = a;
   return 0;
 }
@@ -140,7 +141,7 @@ void scan(){
   WP *wp = head;
     //是否有监视点被触发
     if(wp == NULL){
-      Log("The watchpoint was not been set up!");
+      Log(" Watchpoints was not been set up!");
     }
     while(wp!=NULL){
         // printf("Watchpoint %d: %s 的值 0x%08x\n",wp->NO, wp->s,wp->n );
