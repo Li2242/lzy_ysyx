@@ -234,7 +234,7 @@ word_t expr(char *e, bool *success) {
   //区分减号和负号
   for (int i = 0; i < nr_token; i ++) {
     if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST && tokens[i-1].type != ')'))) {
-      printf("处理了减号!\n");
+      // printf("处理了减号!\n");
       tokens[i].type = TK_MS;
     }
   }
@@ -307,8 +307,8 @@ word_t eval(int p,int q,bool *success) {
         //printf("处理了指针\n");
         return val;
      }else if(tokens[op].type == TK_MS){
-        uint32_t val0 = ~eval(op+1,q,success);
-        printf("处理了自减符号\n");
+        uint32_t val0 = -eval(op+1,q,success);
+        Log("处理了自减符号\n");
         return val0;
      }else{
       //printf("%u %u\n",val1,val2);
@@ -388,6 +388,7 @@ int find_main_op(int p,int q){
       }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 3;
       }else if(tokens[i].type == TK_PT||tokens[i].type == TK_MS){
+        Log("找了一次主符号数！\n");
         precedence = 4;
       }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
         precedence = 1;
