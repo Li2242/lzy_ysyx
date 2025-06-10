@@ -307,7 +307,7 @@ word_t eval(int p,int q,bool *success) {
         //printf("处理了指针\n");
         return val;
      }else if(tokens[op].type == TK_MS){
-        uint32_t val0 = -eval(op+1,q,success);
+        uint32_t val0 = ~eval(op+1,q,success);
         //printf("处理了自减符号\n");
         return val0;
      }else{
