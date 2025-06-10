@@ -54,7 +54,7 @@ int new_wp(char *str){
   uint32_t a = expr(str,&success);
   if(success == false){
     // printf("new_up中求值失败\n");
-    Log("The evaluation FAILED in the new_wp");
+    Log("Expression error!");
     return 1;
   }
 
