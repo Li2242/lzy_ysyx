@@ -403,6 +403,7 @@ int find_main_op(int p,int q){
       }
     }
   }
+  printf("%d\n",op);
   return op;
 }
 
