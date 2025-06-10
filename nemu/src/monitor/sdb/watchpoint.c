@@ -104,7 +104,7 @@ void free_wp(int n){
     pp = &((*pp)->next);
   }
   // 未找到对应监视点
-    printf("ERROR: NO.%d watchpoint was not found.\n", n);
+    printf("ERROR: NO.%d watchpoint has not been set up yet.\n", n);
 }
 
 //扫描监视点
