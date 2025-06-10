@@ -114,7 +114,9 @@ void scan_watchpoints(bool* success){
     bool success0 = true;
     uint32_t a = expr(wp->s,&success0);
     if(success0 == false){
-      printf("在扫描监视点中 求值失败！\n");
+      //printf("在扫描监视点中 求值失败！\n");
+      printf("Evaluation failed at the watchpoint!\n ");
+      printf("At watchpoint.c\tFunction:scan_watchpoint\tLine:115\n");
       wp = wp->next;
       return;
     }
