@@ -280,7 +280,7 @@ word_t eval(int p,int q,bool *success) {
       if(success_flag){
           return tem_reg;
       }else{
-        Log("Register %s failed to fetch value!\n",tokens[p].str);
+        Log("Register %s failed to fetch value!",tokens[p].str);
         *success = false;
         return 0;
       }

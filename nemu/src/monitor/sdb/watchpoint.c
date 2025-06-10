@@ -46,7 +46,7 @@ void init_wp_pool() {
 int new_wp(char *str){
   //先看看以后没有空闲的了
   if(free_ == NULL) {
-    printf("There are no spare watchpoints left\n");
+    Log("There are no spare watchpoints left");
     return 1;
   };
 
@@ -66,7 +66,7 @@ int new_wp(char *str){
   uint32_t a = expr(p->s,&success);
   if(success == false){
     // printf("new_up中求值失败\n");
-    printf("The evaluation FAILED in the new_up\n");
+    Log("The evaluation FAILED in the new_wp");
     return 1;
   }
   p->n = a;
@@ -76,7 +76,7 @@ int new_wp(char *str){
 void free_wp(int n){
 
   if (n<0 || n > 31) {
-    printf("Please provide the correct watchpoint number!(0-31)\n");
+    Log("Please provide the correct watchpoint number!(0-31)");
     return;
   }
 
@@ -105,7 +105,7 @@ void free_wp(int n){
     pp = &((*pp)->next);
   }
   // 未找到对应监视点
-    printf("ERROR: NO.%d watchpoint has not been set up yet.\n", n);
+    Log("ERROR: NO.%d watchpoint has not been set up yet.", n);
 }
 
 //扫描监视点
@@ -116,8 +116,7 @@ void scan_watchpoints(bool* success){
     uint32_t a = expr(wp->s,&success0);
     if(success0 == false){
       //printf("在扫描监视点中 求值失败！\n");
-      printf("Evaluation failed at the watchpoint!\n ");
-      printf("At watchpoint.c\tFunction:scan_watchpoint\tLine:115\n");
+      Log("Evaluation failed at the watchpoint!\n ");
       wp = wp->next;
       return;
     }
@@ -141,7 +140,7 @@ void scan(){
   WP *wp = head;
     //是否有监视点被触发
     if(wp == NULL){
-      printf("The watchpoint was not been set up!\n");
+      Log("The watchpoint was not been set up!");
     }
     while(wp!=NULL){
         // printf("Watchpoint %d: %s 的值 0x%08x\n",wp->NO, wp->s,wp->n );
