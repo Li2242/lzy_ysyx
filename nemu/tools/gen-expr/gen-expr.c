@@ -176,9 +176,9 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
 
-
     pos = 0;                 // 重置缓冲区位置
-    memset(buf, 0, sizeof(buf));  // 清空缓冲区（可选，但更安全）
+    memset(buf, 0, sizeof(buf));  // 把buf的每个符号都搞为'\0'
+    //生成表达式
     gen_rand_expr(0);
 
     //把之前生成的随机表达式嵌入到一个完整的 C 语言程序中
@@ -194,6 +194,7 @@ int main(int argc, char *argv[]) {
     fclose(fp);
 
     //system的作用是允许 C 程序与操作系统 shell 交互，执行外部命令。
+    //在C语言利用shell生成文件
     int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
     if (ret != 0) continue;
 
@@ -205,8 +206,8 @@ int main(int argc, char *argv[]) {
     int result;
     ret = fscanf(fp, "%d", &result);
     pclose(fp);
-
-    printf("%u %s\n", result, buf);
+    //修改它之后会出现负数
+    printf("%d %s\n", result, buf);
   }
   return 0;
 }
