@@ -318,10 +318,11 @@ word_t eval(int p,int q,bool *success) {
         return val;
      }else if(tokens[op].type == TK_MS){
         uint32_t val0 = -eval(op+1,q,success);
+        //这一步单纯是为了解决--1这种情况
         if(MS_0&&op==1){
            val0 = -val0;
         }
-        Log("处理了自减符号\n");
+        //Log("处理了自减符号\n");
         return val0;
      }else{
       //printf("%u %u\n",val1,val2);
