@@ -158,7 +158,6 @@ static void gen_rand_expr(int depth) {
   }
 }
 
-
 //主体开始了
 int main(int argc, char *argv[]) {
   //当前时间作为种子
@@ -171,7 +170,7 @@ int main(int argc, char *argv[]) {
   if (argc > 1) {
     sscanf(argv[1], "%d", &loop);
   }
-
+  
   //循环生成随机表达式
   int i;
   for (i = 0; i < loop; i ++) {
