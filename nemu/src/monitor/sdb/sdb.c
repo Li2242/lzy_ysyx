@@ -208,7 +208,7 @@ static int cmd_p(char *args){
   bool success = true;
   uint32_t result = expr(arg,&success);
    if (success) {
-    printf("Expression result:%u\n", result);
+    printf("Expression result:%d\n", result);
   } else {
     Log("ERROR cmd_p : The evaluation of the expression failed!");
   }
