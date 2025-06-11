@@ -170,7 +170,7 @@ static int cmd_test(){
     if(r == false){
       printf("Evaluation failed in the expression test!\n");
     }
-    printf("The reuslt is %u\n",result);
+    printf("The reuslt is %d\n",result);
     //判断是否相等
     if(result == num){
       printf("The %d test is corrent!\n\n",line_num);
