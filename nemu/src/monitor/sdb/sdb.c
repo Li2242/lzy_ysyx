@@ -73,12 +73,13 @@ static int cmd_si(char *args){
     uint32_t n;
     //用了刚刚讲过的sscanf
     sscanf(arg , "%u" , &n);
-    //int n = atoi(arg);(这是问AI的不合适)
+
     if(n<=0){
         // printf("ERROR!!!\n");
-        printf("ERROR in cmd_si : The number of execution steps should be greater than 0!\n");
+        Log ("ERROR: The number of execution steps should be greater than 0!\n");
         return 1;
     }
+    //关键步骤
     cpu_exec(n);
   }
     return 0;
@@ -267,7 +268,7 @@ static int cmd_info(char* args){
   char *arg = strtok(NULL, " ");
 
   if (arg == NULL) {
-    printf("Usage: info <subcommand>\n");
+    Log("Usage: info <subcommand>\n");
   }else if (*arg == 'r'){
     isa_reg_display();
   }else if (*arg == 'w'){
