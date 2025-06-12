@@ -196,7 +196,7 @@ static bool make_token(char *e) {
             break;
           default:
             // printf("表达式有问题，请仔细核对一下");
-            printf("The token in the expression are not matched!\n");
+            Log("The token in the expression are not matched!\n");
             return false;
             break;
         }
@@ -235,7 +235,6 @@ word_t expr(char *e, bool *success) {
     }
   }
   
-
 
   //区分减号和负号
   for (int i = 0; i < nr_token; i ++) {
