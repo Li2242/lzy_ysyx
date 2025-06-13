@@ -57,6 +57,7 @@ static int cmd_c(char *args) {
 
 //退出调试器q
 static int cmd_q(char *args) {
+  nemu_state.state = NEMU_QUIT;
   return -1;
 }
 

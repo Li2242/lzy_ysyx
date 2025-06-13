@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 #endif
 //测试
   // test();
-  /* Start engine. */
+  /* Start engine.*/
 
   engine_start();
   
