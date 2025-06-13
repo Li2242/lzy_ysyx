@@ -57,7 +57,7 @@ static int cmd_c(char *args) {
 
 //退出调试器q
 static int cmd_q(char *args) {
-  return 1;
+  return 0;
 }
 
 //单步执行si
