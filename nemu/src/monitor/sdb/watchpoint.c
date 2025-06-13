@@ -64,7 +64,7 @@ int new_wp(char *str){
   //把p加在了整个使用链表的头部
   //p往后挪动了一位
   p->next = head;
-  //head改为新分配过来的
+  //head指向p
   head = p;
 
   //使用strup是为了防止被readline给free掉,从新分配空间给
@@ -99,6 +99,8 @@ void free_wp(int n){
         //加入free_中
         wp->next = free_;
         free_ = wp;
+        //当时分配了内存，后期还要free掉
+        free(wp->s);
         printf("Successfully deleted Watchpoint %d\n",n);
         return;
     }
@@ -109,7 +111,7 @@ void free_wp(int n){
     Log("ERROR: NO.%d watchpoint has not been set up yet.", n);
 }
 
-//扫描监视点
+//扫描监视点，找到发生改变的点
 void scan_watchpoints(bool* success){
   WP *wp = head;
   while(wp!=NULL){
@@ -136,7 +138,7 @@ void scan_watchpoints(bool* success){
   }
 }
 
-//扫描监视点
+//扫描已经被分配的所有监视点
 void scan(){
   WP *wp = head;
     //是否有监视点被触发
@@ -147,8 +149,6 @@ void scan(){
         // printf("Watchpoint %d: %s 的值 0x%08x\n",wp->NO, wp->s,wp->n );
         printf("The value of the %d Watchpoint %s is 0x%08x\n",wp->NO,wp->s,wp->n);
         wp = wp->next;
-    }
-    
-    
+    } 
     return;
 }
