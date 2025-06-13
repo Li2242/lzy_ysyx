@@ -94,9 +94,11 @@ void free_wp(int n){
         *pp 就是 pp 所指向的内容，也就是 A.next 本身。
         pp = wp->next 相当于把 C 的地址赋值给 A.next
       */
+        //wp为目标节点
         WP *wp = *pp;
+        //跳过目标节点
         *pp = wp->next;
-        //加入free_中
+        //将目标节点加入free_中
         wp->next = free_;
         free_ = wp;
         //当时分配了内存，后期还要free掉
