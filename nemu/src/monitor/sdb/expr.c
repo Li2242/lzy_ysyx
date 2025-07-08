@@ -279,15 +279,15 @@ word_t eval(int p,int q,bool *success) {
         return 0;
       }
     }else{
-      //识别解引用的时候可能会出现问题
+
       return 0;
     }
   }else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    //printf("消除过一次括号了\n");
     return eval(p + 1, q - 1,success);
+
   }else {
     int op = find_main_op(p,q);
      if(op==-1){
@@ -295,18 +295,15 @@ word_t eval(int p,int q,bool *success) {
          return false;
      }
      
-     //处理解指针
+     //处理解引用和负号
      if(tokens[op].type == TK_PT){
         uint32_t addr = eval(op+1,q,success);
         uint32_t val = vaddr_read(addr,4);
-        //printf("处理了指针\n");
         return val;
      }else if(tokens[op].type == TK_MS){
         uint32_t val0 = -eval(op+1,q,success);
-
         return val0;
      }else{
-      //printf("%u %u\n",val1,val2);
       word_t val1 = eval(p, op - 1,success);
       word_t val2 = eval(op + 1, q,success);
       switch (tokens[op].type) {
@@ -318,13 +315,12 @@ word_t eval(int p,int q,bool *success) {
         case TK_H: return val1 && val2;
         case '/': 
           if(val2 == 0){
-            printf("Error: Division by zero\n");
+            Log("Error: Division by zero\n");
             *success = false;
             return 0;
           }
           return val1/val2;
         default:
-          // printf("出现了不该出现的符号\n");
           printf("Symbols that shouldn't have appeared have emerged!\n");
           assert(0);    
       }
