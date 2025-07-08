@@ -38,7 +38,7 @@ void isa_reg_display() {
       }
     printf("\n");
   }
-  printf("pc=0x%08x\n",cpu.pc);
+  printf("pc : 0x%08x\n",cpu.pc);
 }
 
 //获取寄存器的值
@@ -51,6 +51,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
     if(strcmp(s,regs[i]) == 0){
       *success = true;
       return cpu.gpr[i];
+      break;
     }
   }
   //加的pc

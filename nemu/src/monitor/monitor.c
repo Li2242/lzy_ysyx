@@ -56,6 +56,7 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
 
+//这个函数会将一个有意义的客户程序从镜像文件读入到内存, 覆盖刚才的内置客户程序. 
 static long load_img() {
   if (img_file == NULL) {
     Log("No image is given. Use the default build-in image.");
@@ -83,8 +84,8 @@ static long load_img() {
   另外的一个问题是, 这些参数是从哪里来的呢?
   参数是调用者在命令行输入的
 */
+//定义长选项表
 static int parse_args(int argc, char *argv[]) {
-  //定义长选项表
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
     {"batch"    , no_argument      , NULL, 'b'},

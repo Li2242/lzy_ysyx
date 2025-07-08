@@ -57,6 +57,7 @@ static int cmd_c(char *args) {
 
 //退出调试器q
 static int cmd_q(char *args) {
+  nemu_state.state = NEMU_QUIT;
   return -1;
 }
 
@@ -73,11 +74,12 @@ static int cmd_si(char *args){
     uint32_t n;
     //用了刚刚讲过的sscanf
     sscanf(arg , "%u" , &n);
-    //int n = atoi(arg);(这是问AI的不合适)
+
     if(n<=0){
-        printf("ERROR!!!\n");
+        Log ("ERROR: The number of execution steps should be greater than 0!\n");
         return 1;
     }
+    //关键步骤
     cpu_exec(n);
   }
     return 0;
@@ -129,6 +131,8 @@ static int cmd_test(){
   }
   char line[512];
   int line_num = 0;
+  int count_success = 0;
+  int count_failure = 0;
   while(fgets(line,512,fp) != NULL){
     line_num++;
     if(line[0] == '\n') continue;
@@ -169,20 +173,30 @@ static int cmd_test(){
     if(r == false){
       printf("Evaluation failed in the expression test!\n");
     }
-    printf("The reuslt is %u\n",result);
+    printf("The reuslt is %d\n",result);
     //判断是否相等
     if(result == num){
-      printf("The %d test is corrent!\n\n",line_num);
+      printf("The %d test is corrent!\n",line_num);
+      count_success++;
+    }else{
+      count_failure++;
     }
+    printf("\n");
   }
   fclose(fp);
+  printf("Success count : %d \nFailure count : %d\n",count_success,count_failure);
   return 0;
 }
 
 //w
 static int cmd_w(char *args){
   char* w_arg =  args;
-  new_wp(w_arg);
+  int success = new_wp(w_arg);
+  if(success == 0){
+    printf("The watchpoint is  set up successfully.\n");
+  }else{
+    Log("The watchpoint settings fails.");
+  }
   return 0;
 }
 
@@ -202,9 +216,9 @@ static int cmd_p(char *args){
   bool success = true;
   uint32_t result = expr(arg,&success);
    if (success) {
-    printf("表达式结果：%u\n", result);
+    printf("Expression result:%d\n", result);
   } else {
-    printf("表达式求值失败\n");
+    Log("The evaluation of the expression failed!");
   }
   return 0;
 }
@@ -225,7 +239,7 @@ static int cmd_x(char *args){
   printf("addr:0x%08x\n",addr);
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
-    printf("Usage:command arg1 arg2\n");
+    Log("Usage:command arg1 arg2\n");
     return 1;
   }
 
@@ -233,22 +247,13 @@ static int cmd_x(char *args){
   uint32_t n;
   sscanf(arg[0],"%u",&n);
 
-  //int n = atoi(arg[0]);
-  //之前直接写地址的时候的值
-  //addr = strtoul(arg[1],NULL,16);
-
   if(n<=0){
-    printf("Length must be a positive integer.\n");
+    Log("Length must be a positive integer.\n");
     return 1;
   }else{
-    for(int i = 0; i<n;){
-      printf("0x%08x: ",addr);
-      for(int k=0;k<4;k++){
-        printf("0x%08x ",vaddr_read(addr,4));
-        addr += 4;
-        i++;
-        if(i>=n) break;
-      }
+    for(int i = 0; i<n;i++){
+      printf("0x%08x: 0x%08x",addr,vaddr_read(addr,4));
+      addr+=4;
       printf("\n");
     }
   }
@@ -261,13 +266,13 @@ static int cmd_info(char* args){
   char *arg = strtok(NULL, " ");
 
   if (arg == NULL) {
-    printf("Usage: info <subcommand>\n");
+    Log("Usage: info <subcommand>\n");
   }else if (*arg == 'r'){
     isa_reg_display();
   }else if (*arg == 'w'){
     scan();
   }else{
-    printf("subcommand error!!!\n");
+    Log("subcommand error!!!\n");
   }
   return 0;
 }
