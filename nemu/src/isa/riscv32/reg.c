@@ -38,7 +38,7 @@ void isa_reg_display() {
       }
     printf("\n");
   }
-  printf("pc=0x%08x\n",cpu.pc);
+  printf("pc : 0x%08x\n",cpu.pc);
 }
 
 //获取寄存器的值

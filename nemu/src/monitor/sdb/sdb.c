@@ -76,7 +76,6 @@ static int cmd_si(char *args){
     sscanf(arg , "%u" , &n);
 
     if(n<=0){
-        // printf("ERROR!!!\n");
         Log ("ERROR: The number of execution steps should be greater than 0!\n");
         return 1;
     }
@@ -240,10 +239,6 @@ static int cmd_x(char *args){
   //次数
   uint32_t n;
   sscanf(arg[0],"%u",&n);
-
-  //int n = atoi(arg[0]);
-  //之前直接写地址的时候的值
-  //addr = strtoul(arg[1],NULL,16);
 
   if(n<=0){
     Log("Length must be a positive integer.\n");
