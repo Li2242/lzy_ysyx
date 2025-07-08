@@ -131,6 +131,8 @@ static int cmd_test(){
   }
   char line[512];
   int line_num = 0;
+  int count_success = 0;
+  int count_failure = 0;
   while(fgets(line,512,fp) != NULL){
     line_num++;
     if(line[0] == '\n') continue;
@@ -174,10 +176,15 @@ static int cmd_test(){
     printf("The reuslt is %d\n",result);
     //判断是否相等
     if(result == num){
-      printf("The %d test is corrent!\n\n",line_num);
+      printf("The %d test is corrent!\n",line_num);
+      count_success++;
+    }else{
+      count_failure++;
     }
+    printf("\n");
   }
   fclose(fp);
+  printf("Success count : %d \nFailure count : %d\n",count_success,count_failure);
   return 0;
 }
 
