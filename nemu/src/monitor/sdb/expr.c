@@ -13,6 +13,10 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+/*
+  我发现了解决前面有很多负号的方法，就是找主符号的时候让主符号尽量靠右
+  但这又与一生一芯要求不符，需要解决
+*/
 
 #include <isa.h>
 /* We use the POSIX regex functions to process regular expressions.
@@ -243,7 +247,7 @@ word_t expr(char *e, bool *success) {
 word_t eval(int p,int q,bool *success) {
   if (p > q) {
     /* Bad expression */
-    printf(" Bad expression!\n");
+    Log(" Bad expression!\n");
     *success = false;
     return 1;
   }else if (p == q) {
@@ -259,7 +263,9 @@ word_t eval(int p,int q,bool *success) {
     }
     //处理16进制的数
     else if(tokens[p].type == TK_ST){
-      uint32_t st =strtoul(tokens[p].str,NULL,16);
+      // uint32_t st =strtoul(tokens[p].str,NULL,16);
+      uint32_t st;
+      sscanf(tokens[p].str,"%u",&st);
       return st;
     }
     //处理寄存器的值
@@ -299,6 +305,7 @@ word_t eval(int p,int q,bool *success) {
         return val;
      }else if(tokens[op].type == TK_MS){
         uint32_t val0 = -eval(op+1,q,success);
+
         return val0;
      }else{
       //printf("%u %u\n",val1,val2);
