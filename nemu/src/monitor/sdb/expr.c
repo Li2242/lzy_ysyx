@@ -13,8 +13,6 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-//感觉基本完善了这个表达式求值，但中间有依赖AI的部分，不够纯粹
-
 
 #include <isa.h>
 /* We use the POSIX regex functions to process regular expressions.
@@ -24,8 +22,6 @@
 //根据地址取值使用的头文件
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 
-  //为处理这种情况：--1
- static bool MS_0 = false;
 
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
@@ -52,32 +48,29 @@ enum {
   /* TODO: Add more token types */
 };
 
+
+//这个规则是有顺序的，16进制一定要放在10进制前，不然会出现错误
 static struct rule {
   const char *regex;
   int token_type;
 } rules[] = {
-
-  /* TODO: Add more rules.
-   * Pay attention to the precedence level of different rules.
-   */
 //双斜杠（\\）是先对 C 语言字符串里的斜杠进行转义，接着该斜杠又会对正则表达式中的特殊字符进行转义。
   {" +", TK_NOTYPE},    // spaces
   {"==", TK_EQ},        // equal
   {"!=",TK_UEQ},        //不等
-  {"&&",TK_H},      //逻辑与
+  {"&&",TK_H},          //逻辑与
   {"\\+", '+'},         // plus
   {"\\-", '-'},
   {"\\*", '*'},
   {"\\/", '/'},
   {"\\(", '('},
   {"\\)", ')'},
-  {"0x[0-9a-fA-F]+",TK_ST},  //16
-  {"[0-9]+", TK_NUM},       //10
-  {"\\$[0-9a-zA-Z]+",TK_RN}    //寄存器
-  
+  {"0x[0-9a-fA-F]+",TK_ST},    //16
+  {"[0-9]+", TK_NUM},         //10
+  {"\\$[0-9a-zA-Z]+",TK_RN}   //寄存器
 };
 
-//数组的长度
+//规则数组的长度
 #define NR_REGEX ARRLEN(rules)
 
 //用于存储编译后的正则表达式
@@ -148,18 +141,13 @@ static bool make_token(char *e) {
       // pmatch.rm_so：匹配子串的起始位置（从 0 开始的字节索引）
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
-        //rm_eo：匹配子串的结束位置的下一个字节的索引（即 rm_so + 匹配长度.
+        //rm_eo：匹配子串的结束位置的下一个字节的索引 即 rm_so + 匹配长度.
         int substr_len = pmatch.rm_eo;
           //Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
               //i, rules[i].regex, position, substr_len, substr_len, substr_start);
             
         //移动
         position += substr_len;
-
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
 
         //记录信息的
         switch (rules[i].token_type) {
@@ -210,7 +198,6 @@ static bool make_token(char *e) {
       return false;
     }
   }
-
   return true;
 }
 
@@ -226,7 +213,6 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  /* TODO: Implement code to evaluate the expression. */
   //区分解引用和乘法
   for (int i = 0; i < nr_token; i ++) {
     //')'是后加的，这可坑死我了，我以为是测试代码写的有问题呢
@@ -239,10 +225,6 @@ word_t expr(char *e, bool *success) {
   //区分减号和负号
   for (int i = 0; i < nr_token; i ++) {
     if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM && tokens[i-1].type != TK_ST && tokens[i-1].type != ')'))) {
-      // printf("处理了减号!\n");
-      if(i == 0){
-        MS_0 = true;
-      }
       tokens[i].type = TK_MS;
     }
   }
@@ -317,11 +299,6 @@ word_t eval(int p,int q,bool *success) {
         return val;
      }else if(tokens[op].type == TK_MS){
         uint32_t val0 = -eval(op+1,q,success);
-        //这一步单纯是为了解决--1这种情况
-        if(MS_0&&op==1){
-           val0 = -val0;
-        }
-        //Log("处理了自减符号\n");
         return val0;
      }else{
       //printf("%u %u\n",val1,val2);
@@ -381,10 +358,11 @@ bool check_parentheses(int p,int q){
 
 //找主符号数
 int find_main_op(int p,int q){
-  //printf("p=%d q=%d\n",p,q);
+
   int op = -1;
   int paren_count = 0;
   int min_precedence = 9999;
+
   for(int i =p; i<=q; i++){
     //进行计数
     if(tokens[i].type=='('){
@@ -393,6 +371,7 @@ int find_main_op(int p,int q){
     if(tokens[i].type==')'){
       paren_count--;
     }
+
     //当前在括号内
     if(paren_count == 0){
       int precedence = 0;
@@ -401,7 +380,6 @@ int find_main_op(int p,int q){
       }else if(tokens[i].type == '*' || tokens[i].type == '/'){
         precedence = 3;
       }else if(tokens[i].type == TK_PT||tokens[i].type == TK_MS){
-        //Log("找了一次主符号数！\n");
         precedence = 4;
       }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
         precedence = 1;
@@ -410,13 +388,12 @@ int find_main_op(int p,int q){
         continue;
       }
       //相等时也更新为了满足后面的符号优先级更低。
-      if(precedence <= min_precedence){
+      if(precedence < min_precedence){
           min_precedence = precedence;
           op = i;
       }
     }
   }
-  //printf("%d\n",op);
   return op;
 }
 
