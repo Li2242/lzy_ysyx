@@ -249,15 +249,8 @@ static int cmd_x(char *args){
     Log("Length must be a positive integer.\n");
     return 1;
   }else{
-    for(int i = 0; i<n;){
-      printf("0x%08x: ",addr);
-      for(int k=0;k<4;k++){
-        printf("0x%08x ",vaddr_read(addr,4));
-        addr += 4;
-        i++;
-        //防止出现多打印的情况
-        if(i>=n) break;
-      }
+    for(int i = 0; i<n;i++){
+      printf("0x%08x: 0x%08x",addr,vaddr_read(addr,4));
       printf("\n");
     }
   }
