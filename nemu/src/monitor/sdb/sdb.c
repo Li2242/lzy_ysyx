@@ -251,7 +251,7 @@ static int cmd_x(char *args){
   }else{
     for(int i = 0; i<n;i++){
       printf("0x%08x: 0x%08x",addr,vaddr_read(addr,4));
-      addr++;
+      addr+=4;
       printf("\n");
     }
   }
