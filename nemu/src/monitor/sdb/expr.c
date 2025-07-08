@@ -263,9 +263,7 @@ word_t eval(int p,int q,bool *success) {
     }
     //处理16进制的数
     else if(tokens[p].type == TK_ST){
-      // uint32_t st =strtoul(tokens[p].str,NULL,16);
-      uint32_t st;
-      sscanf(tokens[p].str,"%u",&st);
+      uint32_t st =strtoul(tokens[p].str,NULL,16);
       return st;
     }
     //处理寄存器的值
