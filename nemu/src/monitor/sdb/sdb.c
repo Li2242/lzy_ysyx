@@ -211,7 +211,7 @@ static int cmd_p(char *args){
    if (success) {
     printf("Expression result:%d\n", result);
   } else {
-    Log("ERROR cmd_p : The evaluation of the expression failed!");
+    Log("The evaluation of the expression failed!");
   }
   return 0;
 }
