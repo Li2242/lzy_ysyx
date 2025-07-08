@@ -20,7 +20,7 @@
 
 //起始地址，paddr_t通常表示物理地址
 #define PMEM_LEFT  ((paddr_t)CONFIG_MBASE)
-//中止地址
+//终止地址
 #define PMEM_RIGHT ((paddr_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 //复位向量
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)

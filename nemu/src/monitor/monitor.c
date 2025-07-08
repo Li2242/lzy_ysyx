@@ -83,8 +83,8 @@ static long load_img() {
   另外的一个问题是, 这些参数是从哪里来的呢?
   参数是调用者在命令行输入的
 */
+//定义长选项表
 static int parse_args(int argc, char *argv[]) {
-  //定义长选项表
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
     {"batch"    , no_argument      , NULL, 'b'},
