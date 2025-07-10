@@ -34,7 +34,7 @@ enum {
 #define immI() do { *imm = SEXT(BITS(i, 31, 20), 12); } while(0)
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
-#define immJ() do { uint32_t imm_temp =(BITS(i,31,31)<<20) | (BITS(i,19,12)<<12) | (BITS(i,20,20)<<11) |(BITS(i,30,21)<<1); *imm = SEXT(imm_temp,21) ; } while(0)
+#define immJ() do { uint32_t imm_temp =(BITS(i,31,31)<<20) | (BITS(i,19,12)<<12) | (BITS(i,20,20)<<11) |(BITS(i,30,21)<<1); *imm = SEXT(imm_temp,21) << 1 ; } while(0)
 
 //首先统一对目标操作数进行寄存器操作数的译码, 即调用*rd = BITS(i, 11, 7), 不同的指令类型可以视情况使用rd
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
