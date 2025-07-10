@@ -115,6 +115,7 @@ void free_wp(int n){
 void scan_watchpoints(bool* success){
   WP *wp = head;
   while(wp != NULL){
+    //触发点的条件判断
     bool success0 = false;
     uint32_t a = expr(wp->s,&success0);
     // if(success0 == false){
