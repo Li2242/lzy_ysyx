@@ -19,8 +19,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-//已经不知道自己为什么加上它了，好像删去也没事
-// #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+
 //为了读取客户端内存加的头文件
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 
@@ -169,7 +168,7 @@ static int cmd_test(){
 
     //对表达式进行了求值
     bool r = true;
-    uint32_t result =  expr(expression,&r);
+    uint32_t result =  expr(expression,&r,NULL);
     if(r == false){
       printf("Evaluation failed in the expression test!\n");
     }
@@ -214,7 +213,7 @@ static int cmd_p(char *args){
   //提取出参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
   char* arg =args;
   bool success = true;
-  uint32_t result = expr(arg,&success);
+  uint32_t result = expr(arg,&success,NULL);
    if (success) {
     printf("Expression result:%d\n", result);
   } else {
@@ -235,7 +234,7 @@ static int cmd_x(char *args){
   arg[1] = strtok(NULL,""); 
   bool success = true;
   //计算表达式的结果作为起始地址
-  uint32_t addr = expr(arg[1],&success);
+  uint32_t addr = expr(arg[1],&success,NULL);
   printf("addr:0x%08x\n",addr);
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){
@@ -307,11 +306,12 @@ void sdb_set_batch_mode() {
 }
 
 void sdb_mainloop() {
+  //批处理模式
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
   }
-
+  
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
 
