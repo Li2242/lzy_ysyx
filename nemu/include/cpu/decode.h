@@ -91,7 +91,6 @@ finish:
 // --- pattern matching wrappers for decode ---
 #define INSTPAT(pattern, ...) do { \
   uint64_t key, mask, shift; \
-  //pattern_decode()函数，它用于将模式字符串转换成3个整型变量.
   pattern_decode(pattern, STRLEN(pattern), &key, &mask, &shift); \
   if ((((uint64_t)INSTPAT_INST(s) >> shift) & mask) == key) { \
     INSTPAT_MATCH(s, ##__VA_ARGS__); \

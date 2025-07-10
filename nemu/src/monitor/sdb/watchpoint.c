@@ -115,16 +115,21 @@ void free_wp(int n){
 void scan_watchpoints(bool* success){
   WP *wp = head;
   while(wp != NULL){
-    bool success0 = true;
+    //触发点的条件判断
+    bool success0 = false;
     uint32_t a = expr(wp->s,&success0);
-    if(success0 == false){
-      Log("Evaluation failed at the watchpoint!\n ");
-      wp = wp->next;
-      return;
-    }
-    if(a != wp->n){
+    // if(success0 == false){
+    //   Log("Evaluation failed at the watchpoint!\n ");
+    //   wp = wp->next;
+    //   return;
+    // }
+    if(a != wp->n && success0 == false){
       printf("The watchpoint %s was triggered,and its value changed from 0x%08x to 0x%08x.\n",wp->s,wp->n,a);
       wp->n = a;
+      *success = true;
+    }
+    if(success0 == true && a == 1){
+      printf("Condition expression triggered!\n");
       *success = true;
     }
     wp = wp->next;
@@ -143,7 +148,6 @@ void scan(){
       Log(" Watchpoints was not been set up!");
     }
     while(wp!=NULL){
-        // printf("Watchpoint %d: %s 的值 0x%08x\n",wp->NO, wp->s,wp->n );
         printf("The value of the %d Watchpoint %s is 0x%08x\n",wp->NO,wp->s,wp->n);
         wp = wp->next;
     } 

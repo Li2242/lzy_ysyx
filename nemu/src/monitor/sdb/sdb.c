@@ -19,8 +19,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-//已经不知道自己为什么加上它了，好像删去也没事
-// #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/host.h>
+
 //为了读取客户端内存加的头文件
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 
@@ -156,7 +155,6 @@ static int cmd_test(){
 
     //输出表达式,这里不加换行符是因为这里自带换行符，换行符还并未消除
     printf("The expression is %s",expression);
-    printf("result:%d\n",)
 
     uint32_t str_len = strlen(expression);
     //消除换行符
@@ -308,11 +306,12 @@ void sdb_set_batch_mode() {
 }
 
 void sdb_mainloop() {
+  //批处理模式
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
   }
-
+  
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
 
