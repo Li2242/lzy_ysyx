@@ -42,7 +42,6 @@ void init_wp_pool() {
 }
 
 
-/* TODO: Implement the functionality of watchpoint */
 int new_wp(char *str){
   //先看看以后没有空闲的了
   if(free_ == NULL) {
@@ -53,7 +52,6 @@ int new_wp(char *str){
   bool success = true;
   uint32_t a = expr(str,&success);
   if(success == false){
-    // printf("new_up中求值失败\n");
     Log("Expression error!");
     return 1;
   }
@@ -116,18 +114,15 @@ void free_wp(int n){
 //扫描监视点，找到发生改变的点
 void scan_watchpoints(bool* success){
   WP *wp = head;
-  while(wp!=NULL){
+  while(wp != NULL){
     bool success0 = true;
     uint32_t a = expr(wp->s,&success0);
     if(success0 == false){
-      //printf("在扫描监视点中 求值失败！\n");
       Log("Evaluation failed at the watchpoint!\n ");
       wp = wp->next;
       return;
     }
     if(a != wp->n){
-      //这里的输出的值也修改了，从16进制到10 6.7
-      //printf("触发监视点 %d: %s 的值从 0x%08x 变为 0x%08x\n",wp->NO, wp->s, wp->n,a);
       printf("The watchpoint %s was triggered,and its value changed from 0x%08x to 0x%08x.\n",wp->s,wp->n,a);
       wp->n = a;
       *success = true;

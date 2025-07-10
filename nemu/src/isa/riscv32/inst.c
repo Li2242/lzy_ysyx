@@ -27,13 +27,17 @@ enum {
   TYPE_N, // none
 };
 
+//src1R()和src2R()两个辅助宏, 用于寄存器的读取结果记录到相应的操作数变量中
 #define src1R() do { *src1 = R(rs1); } while (0)
 #define src2R() do { *src2 = R(rs2); } while (0)
+//immI等辅助宏, 用于从指令中抽取出立即数
 #define immI() do { *imm = SEXT(BITS(i, 31, 20), 12); } while(0)
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
 
+//首先统一对目标操作数进行寄存器操作数的译码, 即调用*rd = BITS(i, 11, 7), 不同的指令类型可以视情况使用rd
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
+  //译码，操作数和操作码
   uint32_t i = s->isa.inst;
   int rs1 = BITS(i, 19, 15);
   int rs2 = BITS(i, 24, 20);
@@ -47,6 +51,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
   }
 }
 
+//译码
 static int decode_exec(Decode *s) {
   s->dnpc = s->snpc;
 
@@ -57,7 +62,10 @@ static int decode_exec(Decode *s) {
   decode_operand(s, &rd, &src1, &src2, &imm, concat(TYPE_, type)); \
   __VA_ARGS__ ; \
 }
-
+  //INSTPAT(模式字符串, 指令名称, 指令类型, 指令执行操作);
+  //指令名称：当注释使用，不参与宏展开
+  //指令类型：用于后续译码过程
+  //指令执行操作：则是通过C代码来模拟指令执行的真正行为
   INSTPAT_START();
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
@@ -67,12 +75,19 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
 
+//译码结果将记录到函数参数rd, src1, src2和imm中, 它们分别代表目的 操作数的寄存器号码, 两个源操作数 和 立即数.
+
   R(0) = 0; // reset $zero to 0
 
   return 0;
 }
 
+
 int isa_exec_once(Decode *s) {
+  //1.取指
+  //函数inst_fetch()(在nemu/include/cpu/ifetch.h中定义)专门负责取指令的工作
+  //inst_fetch()最后还会根据len来更新s->snpc, 从而让s->snpc指向下一条指令
   s->isa.inst = inst_fetch(&s->snpc, 4);
+  //2.译码
   return decode_exec(s);
 }

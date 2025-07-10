@@ -48,12 +48,16 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   #endif
 }
 
-//该函数用于执行一条指令,让CPU执行当前PC指向的一条指令, 然后更新PC.
+//该函数用于执行一条指令
+//Decode类型的结构体指针s, 这个结构体用于存放在执行一条指令过程中所需的信息, 包括指令的PC, 下一条指令的PC等
 static void exec_once(Decode *s, vaddr_t pc) {
-  s->pc = pc;
-  s->snpc = pc;
-  isa_exec_once(s);
-  cpu.pc = s->dnpc;
+  s->pc = pc;   //s->pc就是当前指令的PC
+  s->snpc = pc; //s->snpc则是下一条指令的PC
+  isa_exec_once(s);//它会随着取指的过程修改s->snpc的值, 使得从isa_exec_once()返回后s->snpc正好为下一条指令的PC.
+  cpu.pc = s->dnpc; //通过s->dnpc来更新PC
+
+
+  //下面的先不看
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
@@ -85,9 +89,9 @@ static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
-    g_nr_guest_inst ++;
+    g_nr_guest_inst ++;//对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
-    if (nemu_state.state != NEMU_RUNNING) break;
+    if (nemu_state.state != NEMU_RUNNING) break;//检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
