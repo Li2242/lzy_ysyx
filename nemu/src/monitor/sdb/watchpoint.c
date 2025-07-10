@@ -114,7 +114,7 @@ void free_wp(int n){
 //扫描监视点，找到发生改变的点
 void scan_watchpoints(bool* success){
   WP *wp = head;
-  while(wp!=NULL){
+  while(wp != NULL){
     bool success0 = true;
     uint32_t a = expr(wp->s,&success0);
     if(success0 == false){
@@ -123,8 +123,6 @@ void scan_watchpoints(bool* success){
       return;
     }
     if(a != wp->n){
-      //这里的输出的值也修改了，从16进制到10 6.7
-      //printf("触发监视点 %d: %s 的值从 0x%08x 变为 0x%08x\n",wp->NO, wp->s, wp->n,a);
       printf("The watchpoint %s was triggered,and its value changed from 0x%08x to 0x%08x.\n",wp->s,wp->n,a);
       wp->n = a;
       *success = true;

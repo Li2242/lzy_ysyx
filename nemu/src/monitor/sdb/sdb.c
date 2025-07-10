@@ -156,6 +156,7 @@ static int cmd_test(){
 
     //输出表达式,这里不加换行符是因为这里自带换行符，换行符还并未消除
     printf("The expression is %s",expression);
+    printf("result:%d\n",)
 
     uint32_t str_len = strlen(expression);
     //消除换行符
@@ -173,7 +174,7 @@ static int cmd_test(){
     if(r == false){
       printf("Evaluation failed in the expression test!\n");
     }
-    printf("The reuslt is %d\n",result);
+    printf("The expr reuslt is %d\n",result);
     //判断是否相等
     if(result == num){
       printf("The %d test is corrent!\n",line_num);
