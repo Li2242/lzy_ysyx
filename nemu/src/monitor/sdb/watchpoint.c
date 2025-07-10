@@ -50,8 +50,7 @@ int new_wp(char *str){
   };
 
   bool success = true;
-  bool condition_point = 0;
-  uint32_t a = expr(str,&success,&condition_point);
+  uint32_t a = expr(str,&success,NULL);
 
   if(success == false){
     Log("Expression error!");
