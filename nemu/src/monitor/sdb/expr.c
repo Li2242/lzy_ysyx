@@ -24,13 +24,12 @@
  */
 #include <regex.h>
 //根据地址取值使用的头文件
-#include "sdb.h"
 #include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
 
 
 bool check_parentheses(int p,int q);
-int find_main_op(int p,int q,bool *condition_point);
-word_t eval(int p,int q,bool* success,bool *condition_point);
+int find_main_op(int p,int q);
+word_t eval(int p,int q,bool* success);
 enum {
   //空格串的token类型是TK_NOTYPE
   TK_NOTYPE = 256, 
@@ -208,7 +207,7 @@ static bool make_token(char *e) {
 
 
 //主逻辑
-word_t expr(char *e, bool *success,bool *condition_point) {
+word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
@@ -235,7 +234,7 @@ word_t expr(char *e, bool *success,bool *condition_point) {
   }
 
 
-  word_t result = eval(0,nr_token-1,success,condition_point);
+  word_t result = eval(0,nr_token-1,success);
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
   //printf("expr中的result: %u \n",result);
@@ -245,7 +244,7 @@ word_t expr(char *e, bool *success,bool *condition_point) {
 
 
 //递归求值函数
-word_t eval(int p,int q,bool *success,bool *condition_point) {
+word_t eval(int p,int q,bool *success) {
   if (p > q) {
     /* Bad expression */
     Log(" Bad expression!\n");
@@ -287,10 +286,10 @@ word_t eval(int p,int q,bool *success,bool *condition_point) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    return eval(p + 1, q - 1,success,condition_point);
+    return eval(p + 1, q - 1,success);
 
   }else {
-    int op = find_main_op(p,q,condition_point);
+    int op = find_main_op(p,q);
      if(op==-1){
         Log("Error: No operator found between %d and %d\n", p, q);
          return false;
@@ -298,15 +297,15 @@ word_t eval(int p,int q,bool *success,bool *condition_point) {
      
      //处理解引用和负号
      if(tokens[op].type == TK_PT){
-        uint32_t addr = eval(op+1,q,success,condition_point);
+        uint32_t addr = eval(op+1,q,success);
         uint32_t val = vaddr_read(addr,4);
         return val;
      }else if(tokens[op].type == TK_MS){
-        uint32_t val0 = -eval(op+1,q,success,condition_point);
+        uint32_t val0 = -eval(op+1,q,success);
         return val0;
      }else{
-      word_t val1 = eval(p, op - 1,success,condition_point);
-      word_t val2 = eval(op + 1, q,success,condition_point);
+      word_t val1 = eval(p, op - 1,success);
+      word_t val2 = eval(op + 1, q,success);
       switch (tokens[op].type) {
         case '+': return val1 + val2;
         case '-': return val1 - val2; 
@@ -359,7 +358,7 @@ bool check_parentheses(int p,int q){
 
 
 //找主符号数
-int find_main_op(int p,int q,bool *condition_point){
+int find_main_op(int p,int q){
 
   int op = -1;
   int paren_count = 0;
@@ -385,7 +384,6 @@ int find_main_op(int p,int q,bool *condition_point){
         precedence = 4;
       }else if(tokens[i].type == TK_EQ || tokens[i].type == TK_UEQ||tokens[i].type == TK_H){
         precedence = 1;
-       *condition_point = 1;
       }else{
         //重要不能删除(当不在括号里面时直接跳过,不进行更新)
         continue;

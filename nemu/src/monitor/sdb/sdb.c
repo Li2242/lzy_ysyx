@@ -168,7 +168,7 @@ static int cmd_test(){
 
     //对表达式进行了求值
     bool r = true;
-    uint32_t result =  expr(expression,&r,NULL);
+    uint32_t result =  expr(expression,&r);
     if(r == false){
       printf("Evaluation failed in the expression test!\n");
     }
@@ -213,7 +213,7 @@ static int cmd_p(char *args){
   //提取出参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
   char* arg =args;
   bool success = true;
-  uint32_t result = expr(arg,&success,NULL);
+  uint32_t result = expr(arg,&success);
    if (success) {
     printf("Expression result:%d\n", result);
   } else {
@@ -234,7 +234,7 @@ static int cmd_x(char *args){
   arg[1] = strtok(NULL,""); 
   bool success = true;
   //计算表达式的结果作为起始地址
-  uint32_t addr = expr(arg[1],&success,NULL);
+  uint32_t addr = expr(arg[1],&success);
   printf("addr:0x%08x\n",addr);
   //检验参数是否齐全
   if(arg[0] == NULL||arg[1] == NULL){

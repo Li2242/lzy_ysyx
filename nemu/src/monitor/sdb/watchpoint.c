@@ -50,8 +50,7 @@ int new_wp(char *str){
   };
 
   bool success = true;
-  uint32_t a = expr(str,&success,NULL);
-
+  uint32_t a = expr(str,&success);
   if(success == false){
     Log("Expression error!");
     return 1;
@@ -117,20 +116,16 @@ void scan_watchpoints(bool* success){
   WP *wp = head;
   while(wp != NULL){
     bool success0 = true;
-    bool condition_point = 0;
-    uint32_t a = expr(wp->s,&success0,&condition_point);
+    uint32_t a = expr(wp->s,&success0);
     if(success0 == false){
       Log("Evaluation failed at the watchpoint!\n ");
       wp = wp->next;
       return;
     }
-    if(a != wp->n&&condition_point == 0){
+    if(a != wp->n){
       printf("The watchpoint %s was triggered,and its value changed from 0x%08x to 0x%08x.\n",wp->s,wp->n,a);
       wp->n = a;
       *success = true;
-    }
-    if(condition_point == 1 && a==1){
-      printf("watchpoint condition is trigger!\n");
     }
     wp = wp->next;
   }

@@ -18,7 +18,6 @@
 
 #include <common.h>
 
-
 typedef struct watchpoint {
   //表示监视点的序号
   int NO;
@@ -34,7 +33,7 @@ typedef struct watchpoint {
 } WP;
 
 
-word_t expr(char *e, bool *success,bool *condition_point);
+word_t expr(char *e, bool *success);
 int new_wp(char *str);
 void free_wp(int n);
 void scan_watchpoints(bool* success);
