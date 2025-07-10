@@ -129,7 +129,7 @@ void scan_watchpoints(bool* success){
       *success = true;
     }
     if(success0 == true && a == 1){
-      printf("Condition expression triggered! %d.\n",a);
+      printf("Condition expression triggered!\n");
       *success = true;
     }
     wp = wp->next;
