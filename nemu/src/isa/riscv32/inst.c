@@ -35,12 +35,12 @@ enum {
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
 #define immJ() do {        \
-  *imm = SEXT( BITS(       \
+  *imm = SEXT(             \
     (BITS(i,31,31)<<20) |  \
     (BITS(i,19,12)<<12) |  \
     (BITS(i,20,20)<<11) |  \
-    (BITS(i,30,21)<<1),21,1), \
-  20);                     \
+    (BITS(i,30,21)<<1),    \
+  21)>>1;                     \
 } while(0)
 
 #define immB() do {        \
@@ -49,7 +49,7 @@ enum {
     (BITS(i, 7, 7)<<11) |  \
     (BITS(i,30,25)<< 5) |  \
     (BITS(i,11, 8)<< 1),   \
-    13);                   \
+    13)>>1;                   \
 }while(0)
 
 //首先统一对目标操作数进行寄存器操作数的译码, 即调用*rd = BITS(i, 11, 7), 不同的指令类型可以视情况使用rd
