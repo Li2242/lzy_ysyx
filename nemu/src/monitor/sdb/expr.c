@@ -29,7 +29,7 @@
 
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
-word_t eval(int p,int q,bool* success);
+int eval(int p,int q,bool* success);
 enum {
   //空格串的token类型是TK_NOTYPE
   TK_NOTYPE = 256, 
@@ -207,7 +207,7 @@ static bool make_token(char *e) {
 
 
 //主逻辑
-word_t expr(char *e, bool *success) {
+int expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
@@ -234,7 +234,7 @@ word_t expr(char *e, bool *success) {
   }
 
 
-  word_t result = eval(0,nr_token-1,success);
+  int result = eval(0,nr_token-1,success);
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
   //printf("expr中的result: %u \n",result);
@@ -244,7 +244,7 @@ word_t expr(char *e, bool *success) {
 
 
 //递归求值函数
-word_t eval(int p,int q,bool *success) {
+int eval(int p,int q,bool *success) {
   if (p > q) {
     /* Bad expression */
     Log(" Bad expression!\n");
@@ -257,19 +257,19 @@ word_t eval(int p,int q,bool *success) {
     */
     //处理正常10进制数
     if(tokens[p].type == TK_NUM ){
-      uint32_t n;
-      sscanf(tokens[p].str,"%u",&n);
+      int n;
+      sscanf(tokens[p].str,"%d",&n);
       return n;
     }
     //处理16进制的数
     else if(tokens[p].type == TK_ST){
-      uint32_t st =strtoul(tokens[p].str,NULL,16);
+      int st =strtoul(tokens[p].str,NULL,16);
       return st;
     }
     //处理寄存器的值
     else if(tokens[p].type == TK_RN){
       bool success_flag = false;
-      uint32_t tem_reg = isa_reg_str2val(tokens[p].str, &success_flag);
+      int tem_reg = isa_reg_str2val(tokens[p].str, &success_flag);
       //处理解指针和寄存器的值
       if(success_flag){
           return tem_reg;
@@ -297,15 +297,15 @@ word_t eval(int p,int q,bool *success) {
      
      //处理解引用和负号
      if(tokens[op].type == TK_PT){
-        uint32_t addr = eval(op+1,q,success);
-        uint32_t val = vaddr_read(addr,4);
+        int addr = eval(op+1,q,success);
+        int val = vaddr_read(addr,4);
         return val;
      }else if(tokens[op].type == TK_MS){
-        uint32_t val0 = -eval(op+1,q,success);
+        int val0 = -eval(op+1,q,success);
         return val0;
      }else{
-      word_t val1 = eval(p, op - 1,success);
-      word_t val2 = eval(op + 1, q,success);
+      int val1 = eval(p, op - 1,success);
+      int val2 = eval(op + 1, q,success);
       switch (tokens[op].type) {
         case '+': return val1 + val2;
         case '-': return val1 - val2; 
