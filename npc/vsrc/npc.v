@@ -11,9 +11,9 @@ module npc(
     output [31:0]  imm,
     output [31:0]  sum
 );
-// initial begin
-//     inst = 32'h00A00093;
-// end
+initial begin
+    inst = 32'h00A00113;
+end
 //处理pc
 pc_4 u_pc_4(
     .clk 	(clk  ),
