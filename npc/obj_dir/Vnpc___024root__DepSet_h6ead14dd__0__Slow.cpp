@@ -28,7 +28,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_initial__TOP(Vnpc___024root* vlSelf) {
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    vlSelfRef.inst = 0x500093U;
+    vlSelfRef.inst = 0xffd00193U;
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_final(Vnpc___024root* vlSelf) {
