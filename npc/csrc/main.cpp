@@ -54,11 +54,12 @@ int main(int argc,char** argv) {
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(1);
-
+    printf("%d",top->sum);
     top->clk = 0;
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(1);
+    printf("%d",top->sum);
   }
   sim_end();
   return 0;

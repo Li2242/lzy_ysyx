@@ -36,6 +36,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc VL_NOT_FINAL : public VerilatedModel {
     VL_OUT(&src1,31,0);
     VL_OUT(&src2,31,0);
     VL_OUT(&imm,31,0);
+    VL_OUT(&sum,31,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.

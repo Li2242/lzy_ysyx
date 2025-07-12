@@ -96,9 +96,7 @@ void Vnpc___024root__trace_chg_0_sub_0(Vnpc___024root* vlSelf, VerilatedVcd::Buf
     bufp->chgIData(oldp+68,(vlSelfRef.src2),32);
     bufp->chgCData(oldp+69,(vlSelfRef.rd),5);
     bufp->chgIData(oldp+70,(vlSelfRef.imm),32);
-    bufp->chgIData(oldp+71,((vlSelfRef.imm + vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf
-                             [(0x1fU & (vlSelfRef.inst 
-                                        >> 0xfU))])),32);
+    bufp->chgIData(oldp+71,(vlSelfRef.sum),32);
     bufp->chgCData(oldp+72,((0x1fU & (vlSelfRef.inst 
                                       >> 0xfU))),5);
     bufp->chgBit(oldp+73,((IData)(((0x13U == (0x107fU 

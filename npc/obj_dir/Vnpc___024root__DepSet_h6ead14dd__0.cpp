@@ -36,17 +36,18 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     // Body
     vlSelfRef.pc = ((IData)(4U) + vlSelfRef.pc);
     __VdlyVal__npc__DOT__u_alu__DOT__u_RegisterFile2__DOT__rf__v0 
-        = (vlSelfRef.imm + vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf
-           [(0x1fU & (vlSelfRef.inst >> 0xfU))]);
+        = vlSelfRef.sum;
     __VdlyDim0__npc__DOT__u_alu__DOT__u_RegisterFile2__DOT__rf__v0 
         = vlSelfRef.rd;
+    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0U] = 0U;
     vlSelfRef.npc__DOT__u_alu__DOT__u_RegisterFile2__DOT__rf[__VdlyDim0__npc__DOT__u_alu__DOT__u_RegisterFile2__DOT__rf__v0] 
         = __VdlyVal__npc__DOT__u_alu__DOT__u_RegisterFile2__DOT__rf__v0;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0U] = 0U;
     vlSelfRef.src2 = vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf
         [0U];
     vlSelfRef.src1 = vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf
         [(0x1fU & (vlSelfRef.inst >> 0xfU))];
+    vlSelfRef.sum = (vlSelfRef.imm + vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf
+                     [(0x1fU & (vlSelfRef.inst >> 0xfU))]);
 }
 
 void Vnpc___024root___eval_triggers__act(Vnpc___024root* vlSelf);

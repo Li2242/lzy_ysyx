@@ -4,20 +4,17 @@ module alu(
     input[31:0] imm,
     input[4:0]  rd,
     output[31:0] src1,
+    output[31:0] sum,
     output[31:0] src2
 );
-    wire[31:0] temp;
-    assign temp = src1 + imm;
-initial begin
-    $display("temp = %d",temp);
-end
+    assign sum = src1 + imm;
     RegisterFile u_RegisterFile2(
         .clk    	(clk     ),
         .wen    	(1     ),
         .raddr1 	(0  ),
         .raddr2 	(0  ),
         .waddr  	(rd   ),
-        .wdata  	(temp   ),
+        .wdata  	(sum   ),
         .rdata1 	(src1  ),
         .rdata2 	(src2  )
     );

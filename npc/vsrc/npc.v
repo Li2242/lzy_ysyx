@@ -8,7 +8,8 @@ module npc(
     output [31:0]  src1,
     output [31:0]  src2,
     output [4:0]   rd,
-    output [31:0]  imm
+    output [31:0]  imm,
+    output [31:0]  sum
 );
 initial begin
     inst = 32'h00A00093;
@@ -40,7 +41,8 @@ alu u_alu(
     .src1 	(src1  ),
     .src2 	(src2  ),
     .rd   	(rd    ),
-    .imm  	(imm   )
+    .imm  	(imm   ),
+    .sum    (sum)
 );
 
 endmodule

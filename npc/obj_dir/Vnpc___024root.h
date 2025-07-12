@@ -24,6 +24,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     VL_OUT(src1,31,0);
     VL_OUT(src2,31,0);
     VL_OUT(imm,31,0);
+    VL_OUT(sum,31,0);
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_alu__DOT__u_RegisterFile2__DOT__rf;

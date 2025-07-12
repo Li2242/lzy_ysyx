@@ -17,6 +17,7 @@ Vnpc::Vnpc(VerilatedContext* _vcontextp__, const char* _vcname__)
     , src1{vlSymsp->TOP.src1}
     , src2{vlSymsp->TOP.src2}
     , imm{vlSymsp->TOP.imm}
+    , sum{vlSymsp->TOP.sum}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context
