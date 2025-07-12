@@ -12,9 +12,9 @@ void sim_end();
 
 #define IN_ADDRESS 0x80000000
 __uint32_t memory[3] = {
-  0x00A00093,
-  0x01408113,
-  0xFFB10193
+  0x00500093,
+  0x00A00113,
+  0xFFD00193
 };
 
 
@@ -55,17 +55,17 @@ int main(int argc,char** argv) {
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(1);
 
-    printf("%d\n",top->sum);
     top->clk = 0;
+    top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(1);
     printf( "sum = %d pc = %x\n",top->sum,top->pc);
-
+  }
   sim_end();
   return 0;
 }
 
-}
+
 
 
 
