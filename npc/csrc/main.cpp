@@ -11,10 +11,10 @@ static Vnpc* top;
 void sim_end();
 
 #define IN_ADDRESS 0x80000000
-__uint32_t memory[3] = {
-  0x00A00093,
-  0x01408113,
-  0xFFB10193,
+__uint32_t memory[1] = {
+  0x00A00093
+  // 0x01408113,
+  // 0xFFB10193,
 };
 
 
@@ -48,7 +48,7 @@ int main(int argc,char** argv) {
     tfp->dump(contextp->time()); // 记录复位前状态
     contextp->timeInc(1);
 
-    for(int i = 0; i<3; i++){
+    for(int i = 0; i<1; i++){
     top->clk = 1;
     top->inst = pmem_read(top->pc);
     top->eval();
