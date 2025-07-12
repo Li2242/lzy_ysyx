@@ -61,6 +61,12 @@ int main(int argc,char** argv) {
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(1);
     printf( "sum = %d pc = %x\n",top->sum,top->pc);
+
+    top->clk = 1;
+    top->eval();
+    tfp->dump(contextp->time());    // 记录波形
+    contextp->timeInc(1);
+    printf( "sum = %d pc = %x\n",top->sum,top->pc);
   }
   sim_end();
   return 0;
