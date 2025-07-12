@@ -43,6 +43,7 @@ int main(int argc,char** argv) {
 
     // 1. 复位初始化
     top->clk = 0;
+    top->pc = 0x80000000;
     top->eval();
     tfp->dump(contextp->time()); // 记录复位前状态
     contextp->timeInc(1);
