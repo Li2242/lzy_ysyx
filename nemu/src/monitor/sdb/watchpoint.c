@@ -150,6 +150,6 @@ void scan(){
     while(wp!=NULL){
         printf("The value of the %d Watchpoint %s is 0x%08x\n",wp->NO,wp->s,wp->n);
         wp = wp->next;
-    } 
+    }
     return;
 }
