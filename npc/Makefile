@@ -1,6 +1,6 @@
 VERILATOR = verilator
 
-CFLAGS = --cc --exe --build -O3 -Wall --trace -Wno-UNDRIVEN -Wno-UNUSEDSIGNAL
+CFLAGS = --cc --exe --build -O3 -Wall --trace  -Wno-UNDRIVEN
 CSRC = csrc/main.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
@@ -14,7 +14,7 @@ sim: $(CSRC) $(VSRC)
 	./$(OBJ_DIR)/Vnpc
 
 run:$(CSRC) $(VSRC)
-	$(VERILATOR) $(CFLAGS) --top-module npc $(CSRC) $(VSRC)
+	$(VERILATOR) $(CFLAGS) --top-module npc -Ivsrc/ $(CSRC) $(VSRC)
 
 clean:
 	rm -rf obj_dir
