@@ -11,7 +11,7 @@ all:
 
 sim: $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-
+	./$(OBJ_DIR)/Vnpc
 
 run:$(CSRC) $(VSRC)
 	$(VERILATOR) $(CFLAGS) --top-module npc $(CSRC) $(VSRC)
