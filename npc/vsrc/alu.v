@@ -8,7 +8,9 @@ module alu(
 );
     wire[31:0] temp;
     assign temp = src1 + imm;
-
+initial begin
+    $display("temp = %d",temp);
+end
     RegisterFile u_RegisterFile2(
         .clk    	(clk     ),
         .wen    	(1     ),

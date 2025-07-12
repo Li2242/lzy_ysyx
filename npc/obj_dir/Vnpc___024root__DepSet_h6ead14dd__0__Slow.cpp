@@ -29,6 +29,10 @@ VL_ATTR_COLD void Vnpc___024root___eval_initial__TOP(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     vlSelfRef.inst = 0xa00093U;
+    VL_WRITEF_NX("temp = %10#\n",0,32,(vlSelfRef.imm 
+                                       + vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf
+                                       [(0x1fU & (vlSelfRef.inst 
+                                                  >> 0xfU))]));
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_final(Vnpc___024root* vlSelf) {
