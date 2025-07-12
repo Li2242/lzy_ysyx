@@ -12,8 +12,8 @@ void sim_end();
 
 #define IN_ADDRESS 0x80000000
 __uint32_t memory[1] = {
-  0x00A00093
-  // 0x01408113,
+  //0x00A00093
+   0x01408113,
   // 0xFFB10193,
 };
 
