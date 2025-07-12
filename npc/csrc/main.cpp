@@ -19,14 +19,18 @@ __uint32_t memory[3] = {
 
 
 __uint32_t pmem_read(__int32_t pc){
-  return memory[(pc-IN_ADDRESS)/4];
+
+    __int32_t index = (pc - IN_ADDRESS) / 4;
+    if (index < 0 || index >= 3) {
+        printf("Error: PC 0x%X out of memory range!\n", pc);
+        exit(1);
+    }
+  return memory[index];
 }
 
 
 
-
 int main(int argc,char** argv) {
-
 
     contextp = new VerilatedContext;
     contextp->commandArgs(argc,argv);
@@ -37,19 +41,22 @@ int main(int argc,char** argv) {
     tfp->open("waveform.vcd");
 
 
+    // 1. 复位初始化
+    top->clk = 0;
+    top->eval();
+    tfp->dump(contextp->time()); // 记录复位前状态
+    contextp->timeInc(1);
+
     for(int i = 0; i<3; i++){
     top->clk = 1;
     top->inst = pmem_read(top->pc);
     top->eval();
+    tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(1);
 
-    if(i>=3){
-      break;
-    }
-
     top->clk = 0;
-    top->inst = pmem_read(top->pc);
     top->eval();
+    tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(1);
   }
   sim_end();
