@@ -12,6 +12,7 @@ int simend = 0;
 extern "C" void ebreak(u_int32_t addr){
   printf("ebreak指令在地址 0x%X 处被执行\n", addr);
   simend = 1;
+  printf("simend=%d",simend);
 }
 
 
@@ -73,6 +74,7 @@ int main(int argc,char** argv) {
     contextp->timeInc(5);
 
     if(simend == 1){
+      printf("0simend=%d",simend);
         return 0;
     }
 
@@ -83,6 +85,7 @@ int main(int argc,char** argv) {
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
 
     if(simend == 1){
+      printf("1simend=%d",simend);
         return 0;
     }
 
