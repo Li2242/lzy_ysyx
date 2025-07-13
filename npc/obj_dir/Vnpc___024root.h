@@ -19,20 +19,18 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ __VstlFirstIteration;
     CData/*0:0*/ __VicoFirstIteration;
     CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
-    CData/*0:0*/ __VactDidInit;
     CData/*0:0*/ __VactContinue;
     VL_IN(inst,31,0);
     VL_OUT(alu_result,31,0);
     VL_OUT(pc,31,0);
     IData/*31:0*/ npc__DOT____Vcellinp__pc_4__din;
-    IData/*31:0*/ __Vtrigprevexpr___TOP__pc__0;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_regfile2__DOT__rf;
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VicoTriggered;
-    VlTriggerVec<2> __VactTriggered;
-    VlTriggerVec<2> __VnbaTriggered;
+    VlTriggerVec<1> __VactTriggered;
+    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vnpc__Syms* const vlSymsp;
