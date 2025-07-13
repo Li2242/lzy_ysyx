@@ -20,11 +20,9 @@ Reg#(32,32'h80000000) pc_4(
 );
 
 //内部信号定义
-// reg [31:0]  src1;
-// reg [31:0]  src2;
 wire [31:0]  src1;
-wire [31:0]  src2;
 wire [31:0]  imm;
+wire [4:0]   rs1;
 wire [4:0]   rd;
 wire         reg_wen;
 
@@ -32,35 +30,31 @@ wire         reg_wen;
 
 //译码
 decoder u_decoder(
-    .clk  	(clk   ),
     .wen  	(1'b1   ),
     .inst 	(inst  ),
-    .src1 	(src1  ),
-    .src2 	(src2  ),
+    .rs1 	(rs1  ),
     .rd   	(rd    ),
     .imm  	(imm   ),
     .reg_wen(reg_wen)
 );
 
+
 //计算并写入寄存器
 
 alu u_alu(
     .src1 	(src1  ),
-    .src2 	(src2  ),
     .imm  	(imm   ),
     .result    (alu_result)
 );
 
     // 寄存器堆实例化
-    RegisterFile u_regfile (
+    RegisterFile u_regfile2 (
         .clk(clk),
         .wen(reg_wen),
         .waddr(rd),
         .wdata(alu_result),
-        .raddr1(inst[19:15]),
-        .raddr2(inst[24:20]),
-        .rdata1(src1),
-        .rdata2(src2)
+        .raddr1(rs1),
+        .rdata1(src1)
     );
 
 endmodule
