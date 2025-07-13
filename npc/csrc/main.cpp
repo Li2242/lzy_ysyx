@@ -81,6 +81,9 @@ int main(int argc,char** argv) {
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
+    if(simend == 1){
+      break;
+    }
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
 
   }
