@@ -6,7 +6,7 @@ module npc(
     output reg  [31:0]  pc
 );
 
-import "DPI-C" function void ebreak(input [31:0] addr);
+import "DPI-C" function void ebreak(input reg [31:0] addr);
 
 
 
