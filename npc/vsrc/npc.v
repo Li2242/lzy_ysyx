@@ -23,7 +23,7 @@ Reg#(32,32'h80000000) pc_4(
     .wen     (1)
 );
 
-always @(*)begin
+always @(posedge clk)begin
     if(inst == 32'h00100073) ebreak(pc);
 end
 

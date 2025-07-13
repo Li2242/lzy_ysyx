@@ -17,16 +17,11 @@ void Vnpc___024root___eval_ico(Vnpc___024root* vlSelf) {
     }
 }
 
-void Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(IData/*31:0*/ addr);
-
 VL_INLINE_OPT void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___ico_sequent__TOP__0\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    if ((0x100073U == vlSelfRef.inst)) {
-        Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(vlSelfRef.pc);
-    }
     vlSelfRef.alu_result = ((((- (IData)((vlSelfRef.inst 
                                           >> 0x1fU))) 
                               << 0xcU) | (vlSelfRef.inst 
@@ -74,6 +69,8 @@ void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
     }
 }
 
+void Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(IData/*31:0*/ addr);
+
 VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_sequent__TOP__0\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -86,6 +83,9 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
+    if ((0x100073U == vlSelfRef.inst)) {
+        Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(vlSelfRef.pc);
+    }
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if (((IData)((0x13U == (0x707fU & vlSelfRef.inst))) 
          & (0U != (0x1fU & (vlSelfRef.inst >> 7U))))) {
@@ -110,9 +110,6 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                 ? 0U : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
                                [(0x1fU & (vlSelfRef.inst 
                                           >> 0xfU))]));
-    if ((0x100073U == vlSelfRef.inst)) {
-        Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(vlSelfRef.pc);
-    }
     vlSelfRef.npc__DOT____Vcellinp__pc_4__din = ((IData)(4U) 
                                                  + vlSelfRef.pc);
 }
