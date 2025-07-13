@@ -69,6 +69,8 @@ void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
     }
 }
 
+void Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP();
+
 VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_sequent__TOP__0\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -81,6 +83,9 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
+    if ((0x100073U == vlSelfRef.inst)) {
+        Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP();
+    }
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if (((IData)((0x13U == (0x707fU & vlSelfRef.inst))) 
          & (0U != (0x1fU & (vlSelfRef.inst >> 7U))))) {
@@ -172,7 +177,7 @@ void Vnpc___024root___eval(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__ico(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 2, "", "Input combinational region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 1, "", "Input combinational region did not converge.");
         }
         __VicoIterCount = ((IData)(1U) + __VicoIterCount);
         __VicoContinue = 0U;
@@ -188,7 +193,7 @@ void Vnpc___024root___eval(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__nba(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 2, "", "NBA region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 1, "", "NBA region did not converge.");
         }
         __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
         __VnbaContinue = 0U;
@@ -199,7 +204,7 @@ void Vnpc___024root___eval(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vnpc___024root___dump_triggers__act(vlSelf);
 #endif
-                VL_FATAL_MT("vsrc/npc.v", 2, "", "Active region did not converge.");
+                VL_FATAL_MT("vsrc/npc.v", 1, "", "Active region did not converge.");
             }
             vlSelfRef.__VactIterCount = ((IData)(1U) 
                                          + vlSelfRef.__VactIterCount);

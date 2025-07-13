@@ -6,6 +6,14 @@
 #include "Vnpc__Syms.h"
 #include "Vnpc___024root.h"
 
+extern "C" void ebreak();
+
+VL_INLINE_OPT void Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP\n"); );
+    // Body
+    ebreak();
+}
+
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vnpc___024root___dump_triggers__ico(Vnpc___024root* vlSelf);
 #endif  // VL_DEBUG
