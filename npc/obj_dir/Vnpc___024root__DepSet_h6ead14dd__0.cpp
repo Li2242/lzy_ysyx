@@ -22,12 +22,13 @@ VL_INLINE_OPT void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf) 
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    vlSelfRef.alu_result = (vlSelfRef.npc__DOT__src1 
-                            + ((((- (IData)((vlSelfRef.inst 
-                                             >> 0x1fU))) 
-                                 << 0xcU) | (vlSelfRef.inst 
-                                             >> 0x14U)) 
-                               + vlSelfRef.npc__DOT__src2));
+    vlSelfRef.alu_result = ((vlSelfRef.npc__DOT__src1 
+                             + ((((- (IData)((vlSelfRef.inst 
+                                              >> 0x1fU))) 
+                                  << 0xcU) | (vlSelfRef.inst 
+                                              >> 0x14U)) 
+                                + vlSelfRef.npc__DOT__src2)) 
+                            - vlSelfRef.npc__DOT__src2);
 }
 
 void Vnpc___024root___eval_triggers__ico(Vnpc___024root* vlSelf);
@@ -110,12 +111,13 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     }
     vlSelfRef.npc__DOT____Vcellinp__pc_4__din = ((IData)(4U) 
                                                  + vlSelfRef.pc);
-    vlSelfRef.alu_result = (vlSelfRef.npc__DOT__src1 
-                            + ((((- (IData)((vlSelfRef.inst 
-                                             >> 0x1fU))) 
-                                 << 0xcU) | (vlSelfRef.inst 
-                                             >> 0x14U)) 
-                               + vlSelfRef.npc__DOT__src2));
+    vlSelfRef.alu_result = ((vlSelfRef.npc__DOT__src1 
+                             + ((((- (IData)((vlSelfRef.inst 
+                                              >> 0x1fU))) 
+                                  << 0xcU) | (vlSelfRef.inst 
+                                              >> 0x14U)) 
+                                + vlSelfRef.npc__DOT__src2)) 
+                            - vlSelfRef.npc__DOT__src2);
 }
 
 void Vnpc___024root___eval_triggers__act(Vnpc___024root* vlSelf);
