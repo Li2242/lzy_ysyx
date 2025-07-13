@@ -82,6 +82,10 @@ int main(int argc,char** argv) {
     contextp->timeInc(5);
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
 
+    if(simend == 1){
+        break;
+    }
+
   }
   sim_end();
   return 0;
