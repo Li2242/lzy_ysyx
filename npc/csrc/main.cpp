@@ -9,7 +9,7 @@ VerilatedVcdC* tfp = NULL;
 static Vnpc* top;
 int simend = 0;
 
-extern "C" void ebreak(int32_t addr){
+extern "C" void ebreak(u_int32_t addr){
   printf("ebreak指令在地址 0x%X 处被执行\n", addr);
   simend = 1;
 }
