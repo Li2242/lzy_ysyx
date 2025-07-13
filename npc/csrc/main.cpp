@@ -73,7 +73,7 @@ int main(int argc,char** argv) {
     contextp->timeInc(5);
 
     if(simend == 1){
-        break;
+        return 0;
     }
 
     top->clk = 1;
@@ -83,7 +83,7 @@ int main(int argc,char** argv) {
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
 
     if(simend == 1){
-        break;
+        return 0;
     }
 
   }
