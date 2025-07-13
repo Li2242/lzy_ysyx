@@ -1,8 +1,21 @@
+VERILATOR = verilator
+
+CFLAGS = --cc --exe --build -O3 -Wall --trace
+CSRC = csrc/main.cpp
+VSRC = vsrc/*.v
+OBJ_DIR = obj_dir
+
+
 all:
 	@echo "Write this Makefile by your self."
 
-sim:
+sim: $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	@echo "Write this Makefile by your self."
+	./$(OBJ_DIR)/Vnpc
 
+run:$(CSRC) $(VSRC)
+	$(VERILATOR) $(CFLAGS) --top-module npc -Ivsrc/ $(CSRC) $(VSRC)
+
+clean:
+	rm -rf obj_dir
 include ../Makefile
