@@ -24,4 +24,12 @@ module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   assign rdata1 = (raddr1 == 5'b0) ? 32'b0 : rf[raddr1];
 //读2
   assign rdata2 = (raddr2 == 5'b0) ? 32'b0 : rf[raddr2];
+
+//初始化寄存器
+initial begin
+   integer i;
+    for(i = 0; i < 32; i = i + 1) begin
+        rf[i] = 32'b0;
+    end
+end
 endmodule
