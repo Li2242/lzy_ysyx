@@ -14,7 +14,6 @@ VL_ATTR_COLD void Vnpc___024root___eval_static(Vnpc___024root* vlSelf) {
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_initial__TOP(Vnpc___024root* vlSelf);
-VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf);
 
 VL_ATTR_COLD void Vnpc___024root___eval_initial(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_initial\n"); );
@@ -22,7 +21,6 @@ VL_ATTR_COLD void Vnpc___024root___eval_initial(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     Vnpc___024root___eval_initial__TOP(vlSelf);
-    Vnpc___024root____Vm_traceActivitySetAll(vlSelf);
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_initial__TOP(Vnpc___024root* vlSelf) {
@@ -31,72 +29,6 @@ VL_ATTR_COLD void Vnpc___024root___eval_initial__TOP(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     vlSelfRef.pc = 0x80000000U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[1U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[2U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[3U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[4U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[5U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[6U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[7U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[8U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[9U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0xaU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0xbU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0xcU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0xdU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0xeU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0xfU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x10U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x11U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x12U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x13U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x14U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x15U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x16U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x17U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x18U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x19U] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x1aU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x1bU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x1cU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x1dU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x1eU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[0x1fU] = 0U;
-    vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__unnamedblk1__DOT__i = 0x20U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[1U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[2U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[3U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[4U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[5U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[6U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[7U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[8U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[9U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0xaU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0xbU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0xcU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0xdU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0xeU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0xfU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x10U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x11U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x12U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x13U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x14U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x15U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x16U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x17U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x18U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x19U] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x1aU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x1bU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x1cU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x1dU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x1eU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__rf[0x1fU] = 0U;
-    vlSelfRef.npc__DOT__u_regfile__DOT__unnamedblk1__DOT__i = 0x20U;
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_final(Vnpc___024root* vlSelf) {
@@ -244,15 +176,6 @@ VL_ATTR_COLD void Vnpc___024root___dump_triggers__nba(Vnpc___024root* vlSelf) {
 }
 #endif  // VL_DEBUG
 
-VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vm_traceActivitySetAll\n"); );
-    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    vlSelfRef.__Vm_traceActivity[0U] = 1U;
-    vlSelfRef.__Vm_traceActivity[1U] = 1U;
-}
-
 VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___ctor_var_reset\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -267,11 +190,9 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
-    vlSelf->npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__unnamedblk1__DOT__i = VL_RAND_RESET_I(32);
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_regfile__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
-    vlSelf->npc__DOT__u_regfile__DOT__unnamedblk1__DOT__i = VL_RAND_RESET_I(32);
     vlSelf->__Vtrigprevexpr___TOP__clk__0 = VL_RAND_RESET_I(1);
     for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;
