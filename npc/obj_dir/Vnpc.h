@@ -9,6 +9,7 @@
 #define VERILATED_VNPC_H_  // guard
 
 #include "verilated.h"
+#include "svdpi.h"
 
 class Vnpc__Syms;
 class Vnpc___024root;

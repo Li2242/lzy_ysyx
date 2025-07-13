@@ -3,6 +3,7 @@
 #include "Vnpc.cpp"
 #include "Vnpc___024root__DepSet_ha668e1b2__0.cpp"
 #include "Vnpc___024root__DepSet_h6ead14dd__0.cpp"
+#include "Vnpc__Dpi.cpp"
 #include "Vnpc__Trace__0.cpp"
 #include "Vnpc___024root__Slow.cpp"
 #include "Vnpc___024root__DepSet_ha668e1b2__0__Slow.cpp"

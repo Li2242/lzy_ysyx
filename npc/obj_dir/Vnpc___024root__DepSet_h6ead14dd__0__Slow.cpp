@@ -58,7 +58,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_settle(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__stl(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 2, "", "Settle region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 1, "", "Settle region did not converge.");
         }
         __VstlIterCount = ((IData)(1U) + __VstlIterCount);
         __VstlContinue = 0U;
@@ -96,11 +96,16 @@ VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
     }
 }
 
+void Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(IData/*31:0*/ addr);
+
 VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___stl_sequent__TOP__0\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
+    if ((0x100073U == vlSelfRef.inst)) {
+        Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(vlSelfRef.pc);
+    }
     vlSelfRef.npc__DOT____Vcellinp__pc_4__din = ((IData)(4U) 
                                                  + vlSelfRef.pc);
     vlSelfRef.alu_result = ((((- (IData)((vlSelfRef.inst 

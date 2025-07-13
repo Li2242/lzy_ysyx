@@ -19,6 +19,7 @@
 
 
 #include "verilated.h"
+#include "verilated_dpi.h"
 
 #include "Vnpc__Syms.h"
 #include "Vnpc.h"

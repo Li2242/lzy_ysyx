@@ -1,4 +1,3 @@
-
 module npc(
     input  wire clk,
     input  wire rst,
@@ -6,6 +5,11 @@ module npc(
     output wire [31:0]  alu_result,
     output reg  [31:0]  pc
 );
+
+import "DPI-C" function void ebreak(input [31:0] addr);
+
+
+
 initial begin
     pc = 32'h80000000;
 end
@@ -18,6 +22,10 @@ Reg#(32,32'h80000000) pc_4(
     .dout    (pc),
     .wen     (1)
 );
+
+always @(*)begin
+    if(inst == 32'h00100073) ebreak(pc);
+end
 
 //内部信号定义
 wire [31:0]  src1;
@@ -37,6 +45,7 @@ decoder u_decoder(
     .imm  	(imm   ),
     .reg_wen(reg_wen)
 );
+
 
 
 //计算并写入寄存器

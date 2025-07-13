@@ -6,6 +6,16 @@
 #include "Vnpc__Syms.h"
 #include "Vnpc___024root.h"
 
+extern "C" void ebreak(const svLogicVecVal* addr);
+
+VL_INLINE_OPT void Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(IData/*31:0*/ addr) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP\n"); );
+    // Body
+    svLogicVecVal addr__Vcvt[1];
+    for (size_t addr__Vidx = 0; addr__Vidx < 1; ++addr__Vidx) VL_SET_SVLV_I(32, addr__Vcvt + 1 * addr__Vidx, addr);
+    ebreak(addr__Vcvt);
+}
+
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vnpc___024root___dump_triggers__ico(Vnpc___024root* vlSelf);
 #endif  // VL_DEBUG
