@@ -20,8 +20,8 @@ Reg#(32,32'h80000000) pc_4(
 );
 
 //内部信号定义
-wire [31:0]  src1;
-wire [31:0]  src2;
+reg [31:0]  src1;
+reg [31:0]  src2;
 wire [31:0]  imm;
 wire [4:0]   rd;
 wire         reg_wen;
@@ -52,7 +52,7 @@ alu u_alu(
     // 寄存器堆实例化
     RegisterFile u_regfile (
         .clk(clk),
-        .wen(reg_wen|1),
+        .wen(reg_wen),
         .waddr(rd),
         .wdata(alu_result),
         .raddr1(inst[19:15]),

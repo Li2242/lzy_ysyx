@@ -27,7 +27,7 @@ module decoder(
     // 根据I型指令动态选择立即数格式
     RegisterFile u_RegisterFile1(
         .clk    	(clk     ),
-        .wen    	(1 ),
+        .wen    	(reg_wen ),
         .raddr1 	(r1  ),
         .raddr2 	(0 ),
         .waddr  	(0   ),

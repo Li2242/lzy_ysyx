@@ -171,15 +171,12 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
     // Body
     vlSelfRef.npc__DOT____Vcellinp__pc_4__din = ((IData)(4U) 
                                                  + vlSelfRef.pc);
-    vlSelfRef.alu_result = (((0U == (0x1fU & (vlSelfRef.inst 
-                                              >> 0xfU)))
-                              ? 0U : vlSelfRef.npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf
-                             [(0x1fU & (vlSelfRef.inst 
-                                        >> 0xfU))]) 
-                            + (((- (IData)((vlSelfRef.inst 
-                                            >> 0x1fU))) 
-                                << 0xcU) | (vlSelfRef.inst 
-                                            >> 0x14U)));
+    vlSelfRef.alu_result = (vlSelfRef.npc__DOT__src1 
+                            + ((((- (IData)((vlSelfRef.inst 
+                                             >> 0x1fU))) 
+                                 << 0xcU) | (vlSelfRef.inst 
+                                             >> 0x14U)) 
+                               + vlSelfRef.npc__DOT__src2));
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_triggers__stl(Vnpc___024root* vlSelf);
@@ -264,6 +261,8 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->alu_result = VL_RAND_RESET_I(32);
     vlSelf->pc = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT____Vcellinp__pc_4__din = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__src2 = VL_RAND_RESET_I(32);
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_decoder__DOT__u_RegisterFile1__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
