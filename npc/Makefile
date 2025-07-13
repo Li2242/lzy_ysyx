@@ -1,6 +1,6 @@
 VERILATOR = verilator
 
-CFLAGS = --cc --exe --build -O3 -Wall --trace  -Wno-UNDRIVEN
+CFLAGS = --cc --exe --build -O3 -Wall --trace
 CSRC = csrc/main.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir

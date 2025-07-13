@@ -43,23 +43,25 @@ int main(int argc,char** argv) {
 
     // 1. 复位初始化
     top->clk = 0;
-    top->pc = 0x80000000;
+    top->rst = 0;
     top->eval();
+    top->pc = 0x80000000;
     tfp->dump(contextp->time()); // 记录复位前状态
-    contextp->timeInc(1);
+    contextp->timeInc(10);
 
     for(int i = 0; i<3; i++){
-    top->clk = 1;
+
+    top->clk = 0;
     top->inst = pmem_read(top->pc);
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
-    contextp->timeInc(1);
+    contextp->timeInc(5);
 
-    top->clk = 0;
+    top->clk = 1;
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
-    contextp->timeInc(1);
-    printf( "sum = %d pc = %x\n",top->sum,top->pc);
+    contextp->timeInc(5);
+    printf( "result = %d pc = %x\n",top->alu_result,top->pc);
   }
   sim_end();
   return 0;

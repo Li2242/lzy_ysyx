@@ -11,13 +11,10 @@ Vnpc::Vnpc(VerilatedContext* _vcontextp__, const char* _vcname__)
     : VerilatedModel{*_vcontextp__}
     , vlSymsp{new Vnpc__Syms(contextp(), _vcname__, this)}
     , clk{vlSymsp->TOP.clk}
-    , rd{vlSymsp->TOP.rd}
-    , pc{vlSymsp->TOP.pc}
+    , rst{vlSymsp->TOP.rst}
     , inst{vlSymsp->TOP.inst}
-    , src1{vlSymsp->TOP.src1}
-    , src2{vlSymsp->TOP.src2}
-    , imm{vlSymsp->TOP.imm}
-    , sum{vlSymsp->TOP.sum}
+    , alu_result{vlSymsp->TOP.alu_result}
+    , pc{vlSymsp->TOP.pc}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context

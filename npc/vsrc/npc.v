@@ -1,49 +1,63 @@
 
-
-
 module npc(
     input  wire clk,
-    output reg[31:0]  pc,
-    output [31:0]  inst,
-    output [31:0]  src1,
-    output [31:0]  src2,
-    output [4:0]   rd,
-    output [31:0]  imm,
-    output [31:0]  sum
-);
-initial begin
-    inst = 32'hFFD00193 ;
-end
-//处理pc
-pc_4 u_pc_4(
-    .clk 	(clk  ),
-    .pc     (pc)
+    input  wire rst,
+    input  wire [31:0]  inst,
+    output wire [31:0]  alu_result,
+    output reg  [31:0]  pc
 );
 
+
+//使用触发器处理pc
+Reg#(32,32'h80000000) pc_4(
+    .clk 	 (clk  ),
+    .rst     (rst),
+    .din     (pc+32'h4),
+    .dout    (pc),
+    .wen     (1)
+);
+
+//内部信号定义
+wire [31:0]  src1;
+wire [31:0]  src2;
+wire [31:0]  imm;
+wire [4:0]   rd;
+wire         reg_wen;
 
 //取指令，在C语言中
 
 //译码
 decoder u_decoder(
     .clk  	(clk   ),
-    .wen  	(1   ),
+    .wen  	(1'b1   ),
     .inst 	(inst  ),
     .src1 	(src1  ),
     .src2 	(src2  ),
     .rd   	(rd    ),
-    .imm  	(imm   )
+    .imm  	(imm   ),
+    .reg_wen(reg_wen)
 );
 
 //计算并写入寄存器
 
 alu u_alu(
-    .clk  	(clk   ),
     .src1 	(src1  ),
     .src2 	(src2  ),
-    .rd   	(rd    ),
     .imm  	(imm   ),
-    .sum    (sum)
+    .result    (alu_result)
 );
+
+    // 寄存器堆实例化
+    RegisterFile u_regfile (
+        .clk(clk),
+        .wen(reg_wen),        // 连接写使能信号
+        .waddr(rd),           // 写入目标寄存器
+        .wdata(alu_result),       // 写入ALU计算结果
+        .raddr1(inst[19:15]), // 读取rs1
+        .raddr2(inst[24:20]), // 读取rs2
+        .rdata1(src1),        // 输出到src1
+        .rdata2(src2)         // 输出到src2
+    );
 
 endmodule
 
