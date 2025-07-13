@@ -82,8 +82,7 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     __VdlySet__npc__DOT__u_regfile__DOT__rf__v0 = 0;
     // Body
     __VdlySet__npc__DOT__u_regfile__DOT__rf__v0 = 0U;
-    if (((IData)((0x13U == (0x707fU & vlSelfRef.inst))) 
-         & (0U != (0x1fU & (vlSelfRef.inst >> 7U))))) {
+    if ((0U != (0x1fU & (vlSelfRef.inst >> 7U)))) {
         __VdlyVal__npc__DOT__u_regfile__DOT__rf__v0 
             = vlSelfRef.alu_result;
         __VdlyDim0__npc__DOT__u_regfile__DOT__rf__v0 

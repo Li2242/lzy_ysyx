@@ -52,13 +52,13 @@ alu u_alu(
     // 寄存器堆实例化
     RegisterFile u_regfile (
         .clk(clk),
-        .wen(reg_wen),        // 连接写使能信号
-        .waddr(rd),           // 写入目标寄存器
-        .wdata(alu_result),       // 写入ALU计算结果
-        .raddr1(inst[19:15]), // 读取rs1
-        .raddr2(inst[24:20]), // 读取rs2
-        .rdata1(src1),        // 输出到src1
-        .rdata2(src2)         // 输出到src2
+        .wen(reg_wen|1),
+        .waddr(rd),
+        .wdata(alu_result),
+        .raddr1(inst[19:15]),
+        .raddr2(inst[24:20]),
+        .rdata1(src1),
+        .rdata2(src2)
     );
 
 endmodule
