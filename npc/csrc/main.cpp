@@ -76,12 +76,13 @@ int main(int argc,char** argv) {
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
-    printf( "result = %d pc = %x\n",top->alu_result,top->pc);
+
       if(simend == 1){
         printf("ebreak指令在地址 0x%X 处被执行\n", top->pc);
         break;
       }
 
+    printf( "result = %d pc = %x\n",top->alu_result,top->pc);
   }
   sim_end();
   return 0;
