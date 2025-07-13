@@ -32,7 +32,7 @@ int find_main_op(int p,int q);
 int eval(int p,int q,bool* success);
 enum {
   //空格串的token类型是TK_NOTYPE
-  TK_NOTYPE = 256, 
+  TK_NOTYPE = 256,
   //相等
   TK_EQ,
   //十进制
@@ -149,7 +149,7 @@ static bool make_token(char *e) {
         int substr_len = pmatch.rm_eo;
           //Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
               //i, rules[i].regex, position, substr_len, substr_len, substr_start);
-            
+
         //移动
         position += substr_len;
 
@@ -184,7 +184,7 @@ static bool make_token(char *e) {
             break;
             //如果是空格不做处理
           case TK_NOTYPE:
-              
+
             break;
           default:
             // printf("表达式有问题，请仔细核对一下");
@@ -224,7 +224,7 @@ int expr(char *e, bool *success) {
       tokens[i].type = TK_PT;
     }
   }
-  
+
 
   //区分减号和负号
   for (int i = 0; i < nr_token; i ++) {
@@ -294,7 +294,7 @@ int eval(int p,int q,bool *success) {
         Log("Error: No operator found between %d and %d\n", p, q);
          return false;
      }
-     
+
      //处理解引用和负号
      if(tokens[op].type == TK_PT){
         int addr = eval(op+1,q,success);
@@ -308,12 +308,12 @@ int eval(int p,int q,bool *success) {
       int val2 = eval(op + 1, q,success);
       switch (tokens[op].type) {
         case '+': return val1 + val2;
-        case '-': return val1 - val2; 
+        case '-': return val1 - val2;
         case '*': return val1 * val2;
         case TK_EQ: *success = 1;return val1 == val2;
         case TK_UEQ: *success = 1; return val1 != val2;
         case TK_H: *success = 1; return val1 && val2;
-        case '/': 
+        case '/':
           if(val2 == 0){
             Log("Error: Division by zero\n");
             *success = false;
@@ -322,7 +322,7 @@ int eval(int p,int q,bool *success) {
           return val1/val2;
         default:
           printf("Symbols that shouldn't have appeared have emerged!\n");
-          assert(0);    
+          assert(0);
       }
     }
   }
