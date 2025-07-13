@@ -9,7 +9,6 @@ module npc(
 import "DPI-C" function void ebreak(input reg [31:0] addr);
 
 
-
 initial begin
     pc = 32'h80000000;
 end

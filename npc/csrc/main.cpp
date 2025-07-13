@@ -12,7 +12,9 @@ int simend = 0;
 extern "C" void ebreak(u_int32_t addr){
   printf("ebreak指令在地址 0x%X 处被执行\n", addr);
   simend = 1;
-  printf("ebreak 中 simendc=%d\n",simend);
+  // 直接调用 Verilator 的终止函数
+    Verilated::gotFinish(true);  // 立即设置终止标志
+  // printf("ebreak 中 simendc=%d\n",simend);
 }
 
 
