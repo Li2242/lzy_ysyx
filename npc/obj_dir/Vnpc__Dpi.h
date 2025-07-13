@@ -17,7 +17,7 @@ extern "C" {
 
     // DPI IMPORTS
     // DPI import at vsrc/npc.v:9:30
-    extern void ebreak();
+    extern void ebreak(const svLogicVecVal* pc);
 
 #ifdef __cplusplus
 }

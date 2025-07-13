@@ -6,7 +6,7 @@ module npc(
     output reg  [31:0]  pc
 );
 
-import "DPI-C" function void ebreak();
+import "DPI-C" function void ebreak(input logic [31:0] pc);
 
 
 initial begin
@@ -23,7 +23,7 @@ Reg#(32,32'h80000000) pc_4(
 );
 
 always @(posedge clk)begin
-    if(inst == 32'h00100073) ebreak();
+    if(inst == 32'h00100073) ebreak(pc);
 end
 
 //内部信号定义

@@ -18,7 +18,7 @@ Vnpc__Syms::Vnpc__Syms(VerilatedContext* contextp, const char* namep, Vnpc* mode
     , TOP{this, namep}
 {
         // Check resources
-        Verilated::stackCheck(37);
+        Verilated::stackCheck(53);
     // Configure time unit / time precision
     _vm_contextp__->timeunit(-12);
     _vm_contextp__->timeprecision(-12);
