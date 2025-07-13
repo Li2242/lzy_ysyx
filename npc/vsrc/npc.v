@@ -6,7 +6,9 @@ module npc(
     output wire [31:0]  alu_result,
     output reg  [31:0]  pc
 );
-
+initial begin
+    pc = 32'h80000000;
+end
 
 //使用触发器处理pc
 Reg#(32,32'h80000000) pc_4(

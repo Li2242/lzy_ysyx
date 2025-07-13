@@ -45,7 +45,6 @@ int main(int argc,char** argv) {
     top->clk = 0;
     top->rst = 0;
     top->eval();
-    top->pc = 0x80000000;
     tfp->dump(contextp->time()); // 记录复位前状态
     contextp->timeInc(10);
 
