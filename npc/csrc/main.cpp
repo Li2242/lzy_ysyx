@@ -28,7 +28,7 @@ __uint32_t memory[CYCKLE_NUM] = {
 __uint32_t pmem_read(__int32_t pc){
 
     __int32_t index = (pc - IN_ADDRESS) / 4;
-    if (index < 0 || index >= 3) {
+    if (index < 0 || index >= CYCKLE_NUM) {
         printf("Error: PC 0x%X out of memory range!\n", pc);
         exit(1);
     }
