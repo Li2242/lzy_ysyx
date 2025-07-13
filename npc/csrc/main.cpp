@@ -78,8 +78,8 @@ int main(int argc,char** argv) {
     contextp->timeInc(5);
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
       if(simend == 1){
-        break;
         printf("ebreak指令在地址 0x%X 处被执行\n", top->pc);
+        break;
       }
 
   }
