@@ -12,6 +12,8 @@ void sim_end();
 #define CYCKLE_NUM 10
 #define IN_ADDRESS 0x80000000
 __uint32_t memory[CYCKLE_NUM] = {
+  0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
+  0x00108113,  // 2: addi x2, x1, 1      (x2 = 100 + 1 = 101)
   0x00210193,  // 3: addi x3, x2, 2      (x3 = 101 + 2 = 103)
   0x00318213,  // 4: addi x4, x3, 3      (x4 = 103 + 3 = 106)
   0x00420293,  // 5: addi x5, x4, 4      (x5 = 106 + 4 = 110)
