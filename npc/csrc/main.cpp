@@ -12,7 +12,7 @@ int simend = 0;
 extern "C" void ebreak(u_int32_t addr){
   printf("ebreak指令在地址 0x%X 处被执行\n", addr);
   simend = 1;
-  printf("ebreak 中 simendc=c%d\n",simend);
+  printf("ebreak 中 simendc=%d\n",simend);
 }
 
 
@@ -65,7 +65,7 @@ int main(int argc,char** argv) {
     tfp->dump(contextp->time()); // 记录复位前状态
     contextp->timeInc(10);
 
-    for(int i = 0; i < CYCKLE_NUM; i++){
+    for(int i = 0; (i < CYCKLE_NUM) && simend != 1 ; i++){
 
     top->clk = 0;
     top->inst = pmem_read(top->pc);
@@ -73,21 +73,11 @@ int main(int argc,char** argv) {
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
 
-    if(simend == 1){
-      printf("0simend=%d",simend);
-        return 0;
-    }
-
     top->clk = 1;
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
-
-    if(simend == 1){
-      printf("1simend=%d",simend);
-        return 0;
-    }
 
   }
   sim_end();
