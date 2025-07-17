@@ -117,10 +117,10 @@ static void execute(uint64_t n) {
         printf("错误从这里开始\n");
         for(int j=0; j<8; j++){
             if(i<8){
-                printf("%s",ring_buf[i++]);
+                printf("%s\n",ring_buf[i++]);
             }else{
                 i = 0;
-                printf("%s",ring_buf[i++]);
+                printf("%s\n",ring_buf[i++]);
             }
         }
         break;
