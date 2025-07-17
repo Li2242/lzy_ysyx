@@ -107,12 +107,12 @@ static void execute(uint64_t n) {
         i = 0;
         ring_buf[i++] = s.logbuf;
         printf("%s\n",ring_buf[i-1]);
-    }
-
         for(int j=0; j<8; j++){
             printf("j %d = %s\n",j,ring_buf[j]);
         }
         break;
+    }
+    }
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
@@ -121,7 +121,6 @@ static void execute(uint64_t n) {
     if (nemu_state.state != NEMU_RUNNING){
         printf("错误从这里开始\n");
 
-    }
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
