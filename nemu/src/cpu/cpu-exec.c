@@ -111,7 +111,7 @@ static void execute(uint64_t n) {
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
-    //在这里添加出错指令再好不过了
+    //在这里添加出错指令再好不过了,不对不对，这里正常结束也会显示，我想定义一个全局变量，然后在最后状态里面输出
     //检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
     if (nemu_state.state != NEMU_RUNNING){
         printf("错误从这里开始\n");
