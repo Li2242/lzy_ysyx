@@ -18,6 +18,8 @@
 #include <cpu/difftest.h>
 #include <locale.h>
 #include "/home/lzy14/ysyx/ysyx-workbench/nemu/src/monitor/sdb/sdb.h"
+
+//是否显示指令
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
@@ -29,6 +31,10 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
+int ring_buf_count = 0;
+char ring_buf[8][100];
+
+
 
 void device_update();
 
@@ -94,19 +100,17 @@ static void exec_once(Decode *s, vaddr_t pc) {
 //该函数用于执行指定数量的指令。
 static void execute(uint64_t n) {
   Decode s;
-  char ring_buf[8][100];
-  int i =0;
+
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
-
     //加的环形缓冲区
-    if(i<8){
-        strncpy(ring_buf[i], s.logbuf, 100 );
-        ring_buf[i++][99] = '\0';
+    if(ring_buf_count<8){
+        strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
+        ring_buf[ring_buf_count++][99] = '\0';
     }else{
-        i = 0;
-        strncpy(ring_buf[i], s.logbuf, 100 );
-        ring_buf[i++][99] = '\0';
+        ring_buf_count = 0;
+        strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
+        ring_buf[ring_buf_count++][99] = '\0';
     }
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
@@ -114,16 +118,19 @@ static void execute(uint64_t n) {
     //在这里添加出错指令再好不过了,不对不对，这里正常结束也会显示，我想定义一个全局变量，然后在最后状态里面输出
     //检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
     if (nemu_state.state != NEMU_RUNNING){
-        printf("错误从这里开始\n");
-        for(int j=0; j<8; j++){
-            if(i<8){
-                printf("%s\n",ring_buf[i++]);
-            }else{
-                i = 0;
-                printf("%s\n",ring_buf[i++]);
+        int good = (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) ||
+                (nemu_state.state == NEMU_QUIT);
+        if(good == 0){
+            printf("错误从这里开始\n");
+            for(int j=0; j<8; j++){
+                if(ring_buf_count<8){
+                    printf("%s\n",ring_buf[ring_buf_count++]);
+                }else{
+                    ring_buf_count = 0;
+                    printf("%s\n",ring_buf[ring_buf_count++]);
+                }
             }
         }
-        break;
     }
     IFDEF(CONFIG_DEVICE, device_update());
   }

@@ -22,8 +22,16 @@ int is_exit_status_bad() {
     (nemu_state.state == NEMU_QUIT);
     //在这里输出堪称完美，甚至都给我判断好是不是正常退出了
     //可是问题来了我该怎么整一个全局变量呢？
-    if(good == 0){
-
-    }
+    // if(good == 0){
+    //     printf("错误从这里开始\n");
+    //     for(int j=0; j<8; j++){
+    //         if(ring_buf_count<8){
+    //             printf("%s\n",ring_buf[ring_buf_count++]);
+    //         }else{
+    //             ring_buf_count = 0;
+    //             printf("%s\n",ring_buf[ring_buf_count++]);
+    //         }
+    //     }
+    // }
   return !good;
 }
