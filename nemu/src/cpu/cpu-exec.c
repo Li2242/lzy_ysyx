@@ -131,6 +131,7 @@ static void execute(uint64_t n) {
                 }
             }
         }
+        break;
     }
     IFDEF(CONFIG_DEVICE, device_update());
   }
