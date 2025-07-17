@@ -115,8 +115,8 @@ static void execute(uint64_t n) {
     //检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
     if (nemu_state.state != NEMU_RUNNING){
         printf("错误从这里开始\n");
-        for( i=0; i<8; i++){
-            printf("%s\n",ring_buf[i]);
+        for(int j=0; j<8; j++){
+            printf("j %d = %s\n",j,ring_buf[j]);
         }
         break;
     }
