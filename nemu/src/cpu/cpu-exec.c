@@ -43,7 +43,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
-    //打印步骤
+    //如果走的步数少于MAX_INST_TO_PRINT就打印步骤
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
@@ -56,7 +56,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 }
 
 //该函数用于执行一条指令
-//Decode类型的结构体指针s, 这个结构体用于存放在执行一条指令过程中所需的信息, 包括指令的PC, 下一条指令的PC等
+// Decode类型的结构体指针s, 这个结构体用于存放在执行一条指令过程中所需的信息, 包括指令的PC, 下一条指令的PC等
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;       //s->pc就是当前指令的PC
   s->snpc = pc;     //s->snpc则是下一条指令的PC
@@ -115,19 +115,20 @@ static void execute(uint64_t n) {
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
+
     //在这里添加出错指令再好不过了,不对不对，这里正常结束也会显示，我想定义一个全局变量，然后在最后状态里面输出
-    //检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
+    //算了状态提前判断一下吧，就在这个文件里写一个ring_buf吧
     if (nemu_state.state != NEMU_RUNNING){
         int good = (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) ||
                 (nemu_state.state == NEMU_QUIT);
         if(good == 0){
-            printf("错误从这里开始\n");
+            log_write("下面是临近出错时的8条指令");
             for(int j=0; j<8; j++){
                 if(ring_buf_count<8){
-                    printf("%s\n",ring_buf[ring_buf_count++]);
+                    log_write("%s\n", ring_buf[ring_buf_count++]);
                 }else{
                     ring_buf_count = 0;
-                    printf("%s\n",ring_buf[ring_buf_count++]);
+                    log_write("%s\n", ring_buf[ring_buf_count++]);
                 }
             }
         }
