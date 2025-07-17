@@ -22,6 +22,7 @@ void halt(int code) {
   while (1);
 }
 
+
 //进行TRM相关的初始化工作
 void _trm_init() {
   int ret = main(mainargs);
