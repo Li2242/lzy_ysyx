@@ -102,9 +102,11 @@ static void execute(uint64_t n) {
     //加的环形缓冲区
     if(i<8){
         ring_buf[i++] = s.logbuf;
+        printf("%s\n",ring_buf[i-1]);
     }else{
         i = 0;
         ring_buf[i++] = s.logbuf;
+        printf("%s\n",ring_buf[i-1]);
     }
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
@@ -112,6 +114,7 @@ static void execute(uint64_t n) {
     //在这里添加出错指令再好不过了
     //检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
     if (nemu_state.state != NEMU_RUNNING){
+        printf("错误从这里开始\n");
         for(int j=0; j<8; j++){
             printf("%s\n",ring_buf[j]);
         }
