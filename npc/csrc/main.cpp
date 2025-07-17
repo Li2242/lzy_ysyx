@@ -9,7 +9,8 @@ VerilatedVcdC* tfp = NULL;
 static Vnpc* top;
 int simend = 0;
 
-extern "C" void ebreak(){
+extern "C" void ebreak(uint32_t pc){
+  // printf("pc = 0x%x",pc);
   simend = 1;
 }
 
@@ -28,7 +29,6 @@ __uint32_t memory[CYCKLE_NUM] = {
   0x00528313,  // 6: addi x6, x5, 5      (x6 = 110 + 5 = 115)
   0x00630393,  // 7: addi x7, x6, 6      (x7 = 115 + 6 = 121)
   0x00738413,  // 8: addi x8, x7, 7      (x8 = 121 + 7 = 128)
-
   0x00840493,  // 9: addi x9, x8, 8      (x9 = 128 + 8 = 136)
   // 0x00948513   // 10: addi x10, x9, 9    (x10 = 136 + 9 = 145)
 };

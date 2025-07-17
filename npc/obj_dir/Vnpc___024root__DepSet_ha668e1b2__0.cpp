@@ -6,12 +6,14 @@
 #include "Vnpc__Syms.h"
 #include "Vnpc___024root.h"
 
-extern "C" void ebreak();
+extern "C" void ebreak(const svLogicVecVal* pc);
 
-VL_INLINE_OPT void Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP() {
+VL_INLINE_OPT void Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP(IData/*31:0*/ pc) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vdpiimwrap_npc__DOT__ebreak_TOP\n"); );
     // Body
-    ebreak();
+    svLogicVecVal pc__Vcvt[1];
+    for (size_t pc__Vidx = 0; pc__Vidx < 1; ++pc__Vidx) VL_SET_SVLV_I(32, pc__Vcvt + 1 * pc__Vidx, pc);
+    ebreak(pc__Vcvt);
 }
 
 #ifdef VL_DEBUG
