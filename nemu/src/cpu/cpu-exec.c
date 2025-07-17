@@ -122,7 +122,7 @@ static void execute(uint64_t n) {
         int good = (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) ||
                 (nemu_state.state == NEMU_QUIT);
         if(good == 0){
-            log_write("下面是临近出错时的8条指令");
+            log_write("下面是临近出错时的8条指令\n");
             for(int j=0; j<8; j++){
                 if(ring_buf_count<8){
                     log_write("%s\n", ring_buf[ring_buf_count++]);
