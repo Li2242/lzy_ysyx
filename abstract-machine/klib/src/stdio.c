@@ -5,32 +5,31 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-void num_str(int num , char *num_str){
+void num_str(int num , char *str){
 	char temp[12];
 	int negative = 0;
 	int n =0;
 	if(num == 0){
-		num_str[0] = '0';
-		num_str[1] = '\0';
+		str[0] = '0';
+		str[1] = '\0';
 		return ;
 	}
 	if(num < 0){
-		num_str[0] = '-';
+		str[0] = '-';
 		negative = 1;
 		num = -num;
 	}
-	if(num>0){
-		while(num>0){
-			temp[n++] = num%10 + '0';
-			num/=10;
-		}
-		int t = negative ? 1:0;
-		for(int j = n-1; j>=0; j--){
-			num_str[t++] = temp[j];
-		}
-		//保证是字符串
-		num_str[t] = '\0';
+
+	while(num>0){
+		temp[n++] = num%10 + '0';
+		num/=10;
 	}
+	int t = negative ? 1 : 0;
+	for(int j = n-1; j>=0; j--){
+		str[t++] = temp[j];
+	}
+	//保证是字符串
+	str[t] = '\0';
 }
 
 int printf(const char *fmt, ...) {
@@ -75,7 +74,7 @@ int sprintf(char *out, const char *fmt, ...) {
   int count = 0;
   int i = 0;
   while(fmt[i] != '\0'){
-	if(fmt[i]=='%'){
+	if(fmt[i] == '%'){
 		i++;
 		switch(fmt[i]){
 			case 'd':{
@@ -107,6 +106,8 @@ int sprintf(char *out, const char *fmt, ...) {
 		out[count++] = fmt[i++];
 	}
   }
+  //确保字符串
+  out[count] = '\0';
   va_end(ap);
   return count;
 }
