@@ -94,24 +94,19 @@ static void exec_once(Decode *s, vaddr_t pc) {
 //该函数用于执行指定数量的指令。
 static void execute(uint64_t n) {
   Decode s;
-  char* ring_buf[8];
+  char ring_buf[8][100];
   int i =0;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
 
     //加的环形缓冲区
     if(i<8){
-        ring_buf[i++] = s.logbuf;
-        printf("%s\n",ring_buf[i-1]);
+        strncpy(ring_buf[i], s.logbuf, 100 );
+        ring_buf[i++][99] = '\0';
     }else{
         i = 0;
-        ring_buf[i++] = s.logbuf;
-        printf("%s\n",ring_buf[i-1]);
-        for(int j=0; j<8; j++){
-            printf("j %d = %s\n",j,ring_buf[j]);
-        }
-        break;
-    }
+        strncpy(ring_buf[i], s.logbuf, 100 );
+        ring_buf[i++][99] = '\0';
     }
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
@@ -120,7 +115,11 @@ static void execute(uint64_t n) {
     //检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
     if (nemu_state.state != NEMU_RUNNING){
         printf("错误从这里开始\n");
-
+        for(int j=0; j<8; j++){
+            printf("j %d = %s\n",j,ring_buf[j]);
+        }
+        break;
+    }
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
