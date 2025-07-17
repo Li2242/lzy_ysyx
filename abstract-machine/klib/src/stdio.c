@@ -9,7 +9,6 @@ void num_str(int num , char *num_str){
 	char temp[12];
 	int negative = 0;
 	int n =0;
-	// int negative = 0;
 	if(num == 0){
 		num_str[0] = '0';
 		num_str[1] = '\0';
@@ -39,24 +38,30 @@ int printf(const char *fmt, ...) {
   va_start(ap,fmt);
   int i = 0;
   while(fmt[i] != '\0'){
-	putch(fmt[i]);
 	if(fmt[i] == '%'){
 		i++;
 		switch(fmt[i]){
 			case 's':{
 				char* str = va_arg(ap,char*);
 				putstr(str);
-				return 0;
+				i++;
+				break;
 			}
 			case 'd':{
 				int num = va_arg(ap,int);
 				char str[12] ;
 				num_str(num,str);
+				i++;
 				putstr(str);
-				return 0;
 			}
-			default: return 1;
+			default:{
+				printf("暂时还不支持这个符号\n");
+				return 1;
+			}
 		}
+	}else{
+		putch(fmt[i]);
+		i++;
 	}
   }
   return 0;
@@ -73,7 +78,6 @@ int sprintf(char *out, const char *fmt, ...) {
   int i = 0;
   while(fmt[i] != '\0'){
 	if(fmt[i]=='%'){
-		out[i] = '%';
 		count++;
 		i++;
 		switch(fmt[i]){
