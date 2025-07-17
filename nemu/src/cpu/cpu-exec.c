@@ -116,7 +116,12 @@ static void execute(uint64_t n) {
     if (nemu_state.state != NEMU_RUNNING){
         printf("错误从这里开始\n");
         for(int j=0; j<8; j++){
-            printf("j %d = %s\n",j,ring_buf[j]);
+            if(i<8){
+                printf("%s",ring_buf[i++]);
+            }else{
+                i = 0;
+                printf("%s",ring_buf[i++]);
+            }
         }
         break;
     }
