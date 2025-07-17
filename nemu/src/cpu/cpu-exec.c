@@ -37,9 +37,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
+    //打印步骤
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
-  
+
   //在Kconfig中可以控制这个宏是否生成
   //扫描监视点
   #ifdef CONFIG_WATCHPOINT
@@ -51,19 +52,22 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 //该函数用于执行一条指令
 //Decode类型的结构体指针s, 这个结构体用于存放在执行一条指令过程中所需的信息, 包括指令的PC, 下一条指令的PC等
 static void exec_once(Decode *s, vaddr_t pc) {
-  s->pc = pc;   //s->pc就是当前指令的PC
-  s->snpc = pc; //s->snpc则是下一条指令的PC
-  isa_exec_once(s);//它会随着取指的过程修改s->snpc的值, 使得从isa_exec_once()返回后s->snpc正好为下一条指令的PC.
+  s->pc = pc;       //s->pc就是当前指令的PC
+  s->snpc = pc;     //s->snpc则是下一条指令的PC
+  isa_exec_once(s); //它会随着取指的过程修改s->snpc的值, 使得从isa_exec_once()返回后s->snpc正好为下一条指令的PC.
   cpu.pc = s->dnpc; //通过s->dnpc来更新PC
 
 
-  //下面的先不看
+  //日志跟踪
 #ifdef CONFIG_ITRACE
+    //先存储执行过程中的二进制
   char *p = s->logbuf;
+  //snprintf的返回值是"本应该"写入的总字符数
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
   int ilen = s->snpc - s->pc;
   int i;
   uint8_t *inst = (uint8_t *)&s->isa.inst;
+
 #ifdef CONFIG_ISA_x86
   for (i = 0; i < ilen; i ++) {
 #else
@@ -71,13 +75,16 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
     p += snprintf(p, 4, " %02x", inst[i]);
   }
+  //架构决定的
   int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
+
   int space_len = ilen_max - ilen;
   if (space_len < 0) space_len = 0;
   space_len = space_len * 3 + 1;
+  //清空了p
   memset(p, ' ', space_len);
   p += space_len;
-
+  //写入了反汇编的内容
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, ilen);
@@ -87,11 +94,27 @@ static void exec_once(Decode *s, vaddr_t pc) {
 //该函数用于执行指定数量的指令。
 static void execute(uint64_t n) {
   Decode s;
+  char* ring_buf[8];
+  int i =0;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
-    g_nr_guest_inst ++;//对一个用于记录客户指令的计数器加1
+    //加的环形缓冲区
+    if(i<8){
+        ring_buf[i++] = s.logbuf;
+    }else{
+        i = 0;
+        ring_buf[i++] = s.logbuf;
+    }
+    g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
-    if (nemu_state.state != NEMU_RUNNING) break;//检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
+    //在这里添加出错指令再好不过了
+    //检查NEMU的状态是否为NEMU_RUNNING, 若是, 则继续执行下一条指令, 否则则退出执行指令的循环.
+    if (nemu_state.state != NEMU_RUNNING){
+        for(int j=0; j<8; j++){
+            printf("%s",ring_buf[j]);
+        }
+        break;
+    }
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
