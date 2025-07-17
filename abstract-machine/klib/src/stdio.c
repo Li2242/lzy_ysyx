@@ -53,10 +53,7 @@ int printf(const char *fmt, ...) {
 				num_str(num,str);
 				i++;
 				putstr(str);
-			}
-			default:{
-				printf("暂时还不支持这个符号\n");
-				return 1;
+				break;
 			}
 		}
 	}else{
@@ -64,6 +61,7 @@ int printf(const char *fmt, ...) {
 		i++;
 	}
   }
+  va_end(ap);
   return 0;
 }
 
@@ -78,7 +76,6 @@ int sprintf(char *out, const char *fmt, ...) {
   int i = 0;
   while(fmt[i] != '\0'){
 	if(fmt[i]=='%'){
-		count++;
 		i++;
 		switch(fmt[i]){
 			case 'd':{
@@ -105,15 +102,12 @@ int sprintf(char *out, const char *fmt, ...) {
 				i++;
 				break;
 			}
-			default: {
-				printf("暂时还不支持这个符号\n");
-				return -1;
-			}
 		}
 	}else{
 		out[count++] = fmt[i++];
 	}
   }
+  va_end(ap);
   return count;
 }
 
