@@ -98,6 +98,7 @@ static void execute(uint64_t n) {
   int i =0;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
+
     //加的环形缓冲区
     if(i<8){
         ring_buf[i++] = s.logbuf;
@@ -105,6 +106,7 @@ static void execute(uint64_t n) {
         i = 0;
         ring_buf[i++] = s.logbuf;
     }
+
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
     //在这里添加出错指令再好不过了
