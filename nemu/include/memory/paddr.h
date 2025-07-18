@@ -33,6 +33,7 @@ uint8_t* guest_to_host(paddr_t paddr);
 //* 将NEMU中的主机虚拟地址转换为 guest 程序中的客户物理地址 */
 paddr_t host_to_guest(uint8_t *haddr);
 
+//判断是否在peme中
 static inline bool in_pmem(paddr_t addr) {
   return addr - CONFIG_MBASE < CONFIG_MSIZE;
 }

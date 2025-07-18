@@ -69,7 +69,13 @@ void init_mem() {
 
 //读
 word_t paddr_read(paddr_t addr, int len) {
-  if (likely(in_pmem(addr))) return pmem_read(addr, len);
+  if (likely(in_pmem(addr))) {
+		word_t temp = pmem_read(addr, len);
+		if(CONFIG_MTRACE){
+			log_write("R  adder=0x%08x  size=%d  data=0x%08x",addr,len,temp);
+		}
+    return temp;
+  }
   //先不管
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
   //是否越界
@@ -78,7 +84,15 @@ word_t paddr_read(paddr_t addr, int len) {
 }
 //写
 void paddr_write(paddr_t addr, int len, word_t data) {
-  if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
+  if (likely(in_pmem(addr))) {
+		pmem_write(addr, len, data);
+		if(CONFIG_MTRACE){
+			log_write("W  adder=0x%08x  size=%d  data=0x%08x",addr,len,data);
+		}
+		return;
+		}
+  //先不管
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
+  //是否越界
   out_of_bound(addr);
 }
