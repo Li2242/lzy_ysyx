@@ -28,7 +28,7 @@
 
 void init_rand();
 void init_log(const char *log_file);
-void init_elf(const char *log_file);
+void init_elf(const char *elf_file);
 void init_mem();
 void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
@@ -111,12 +111,13 @@ static int parse_args(int argc, char *argv[]) {
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 'e': elf_file = optarg; break;
+      case 'e': elf_file = optarg;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
         printf("\t-b,--batch              run with batch mode\n");
         printf("\t-l,--log=FILE           output log to FILE\n");
+        printf("\t-e,--elf=FILE           Open the elf FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
         printf("\n");
@@ -142,8 +143,9 @@ void init_monitor(int argc, char *argv[]) {
   //打开日志文件
   init_log(log_file);
 
-//   //打开elf文件
-//   init_elf(elf_file);
+  /* Open the elf file. */
+  //打开elf文件
+  init_elf(elf_file);
 
   /* Initialize memory. */
   //初始化内存

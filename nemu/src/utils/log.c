@@ -14,12 +14,13 @@
 ***************************************************************************************/
 
 #include <common.h>
+#include <elf.h>
 
 extern uint64_t g_nr_guest_inst;
 
 #ifndef CONFIG_TARGET_AM
 FILE *log_fp = NULL;
-// FILE *elf_fp = NULL;
+FILE *elf_fp = NULL;
 
 void init_log(const char *log_file) {
   //日志输出的目标设置为标准输出
@@ -32,17 +33,22 @@ void init_log(const char *log_file) {
   Log("Log is written to %s", log_file ? log_file : "stdout");
 }
 
-// //ftrace
-// void init_elf(const char *elf_file) {
-//   //日志输出的目标设置为标准输出
-//   elf_fp = stdout;
-//   if (elf_file != NULL) {
-//     FILE *fp = fopen(elf_file, "w");
-//     Assert(fp, "Can not open '%s'", elf_file);
-//     elf_fp = fp;
-//   }
-//   Log("Elf is written to %s", elf_file ? elf_file : "stdout");
-// }
+//ftrace
+void init_elf(const char *elf_file) {
+
+  if (elf_file != NULL){
+    FILE *fp = fopen(elf_file, "r");
+    Assert(fp, "Can not open '%s'", elf_file);
+    Log("The %s Elf is be open to ", elf_file);
+    // Elf32_Ehdr ehdr;
+    // fread(&ehdr,sizeof(ehdr),1,fp);
+
+
+  }else{
+    Log("Elf was not be open ");
+  }
+
+}
 
 bool log_enable() {
   return MUXDEF(CONFIG_TRACE, (g_nr_guest_inst >= CONFIG_TRACE_START) &&
