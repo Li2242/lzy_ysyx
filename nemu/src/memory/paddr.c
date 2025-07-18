@@ -71,6 +71,7 @@ void init_mem() {
 word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr))) {
 		word_t temp = pmem_read(addr, len);
+		//mtrace
 		#ifdef CONFIG_MTRACE
 			log_write("R  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,temp);
 		#endif
@@ -86,7 +87,7 @@ word_t paddr_read(paddr_t addr, int len) {
 void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) {
 		pmem_write(addr, len, data);
-
+		//mtrace
 		#ifdef CONFIG_MTRACE
 			log_write("W  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,data);
 		#endif
