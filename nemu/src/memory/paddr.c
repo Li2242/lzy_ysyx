@@ -36,7 +36,7 @@ static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 //将物理地址 paddr 转换为主机地址。
 //地址映射 例如如果mips32的CPU打算访问内存地址0x80000000, 我们会让它最终访问pmem[0]
 uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
-//将主机地址 haddr 转换为物理地址。
+//将主机地址 haddr 转换为客户机地址。
 paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 //从物理地址 addr 处读取长度为 len 的数据。
@@ -62,17 +62,21 @@ void init_mem() {
   pmem = malloc(CONFIG_MSIZE);
   assert(pmem);
 #endif
+    //把0x80000000前面的地址都初始化掉，从0x80000000开始是我们要设置的内存
   IFDEF(CONFIG_MEM_RANDOM, memset(pmem, rand(), CONFIG_MSIZE));
   Log("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
 }
 
+//读
 word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
+  //先不管
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
+  //是否越界
   out_of_bound(addr);
   return 0;
 }
-
+//写
 void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
