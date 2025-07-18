@@ -72,7 +72,7 @@ word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr))) {
 		word_t temp = pmem_read(addr, len);
 		if(CONFIG_MTRACE){
-			log_write("R  adder=0x%08x  size=%d  data=0x%08x",addr,len,temp);
+			log_write("R  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,temp);
 		}
     return temp;
   }
@@ -87,7 +87,7 @@ void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) {
 		pmem_write(addr, len, data);
 		if(CONFIG_MTRACE){
-			log_write("W  adder=0x%08x  size=%d  data=0x%08x",addr,len,data);
+			log_write("W  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,data);
 		}
 		return;
 		}
