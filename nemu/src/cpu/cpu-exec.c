@@ -120,7 +120,7 @@ static void execute(uint64_t n) {
         sscanf(s.logbuf,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
         // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
-        if(strncmp(fun1,"jal",3) ==0|| strncmp(fun1,"jalr",4)==0){
+        if(strncmp(fun1,"jal",3) ==0){
             int t = pc + target;
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value == t   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
@@ -131,7 +131,19 @@ static void execute(uint64_t n) {
                 }
             }
         }
-
+        if(strncmp(fun1,"jalr",4)==0){
+            printf("target=%x",target);
+            // bool success_flag = false;
+            // int tem_reg = isa_reg_str2val(, &success_flag);
+            // for(int i =0;i<sym_num;i++){
+            //     if(symtab[i].st_value == t   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+            //         printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,t);
+            //         break;
+            //     }else{
+            //         // printf("???\n");
+            //     }
+            // }
+        }
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
