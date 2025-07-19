@@ -121,7 +121,9 @@ static void execute(uint64_t n) {
         // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
         bool find = 0;
+        bool in = 0;
         if(strncmp(fun1,"jal",3) ==0){
+            in = 1;
             int jal_target = pc + target;
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value == jal_target   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
@@ -132,6 +134,7 @@ static void execute(uint64_t n) {
             }
         }
         if(strncmp(fun1,"jalr",4)==0){
+            in = 1;
             char str_t[10];
             sprintf(str_t,"%x",target);
             bool success_flag = false;
@@ -147,7 +150,7 @@ static void execute(uint64_t n) {
                 }
             }
         }
-        if(find == 0){
+        if(find==0 && in==1){
             printf("???\n");
         }
 
