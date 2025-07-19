@@ -112,15 +112,19 @@ static void execute(uint64_t n) {
         ring_buf[ring_buf_count++][99] = '\0';
     }
     //找出jal和jalr
-        char* fun = s.logbuf;
-        fun+=24;
-        char* temp = strtok(fun,"\t");
+        // char* fun = s.logbuf;
+        char fun[10];
+        uint32_t pc,target;
+        sscanf(s.logbuf,"%x: %*s %*s %*s %*s %*s\t%s %x",&pc ,fun, &target);
+        // fun+=24;
+        // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
-        if(strncmp(temp,"jal",3) ==0|| strncmp(temp,"jalr",4)==0){
-            printf("%s,%s\n",strtok(s.logbuf," "),temp);
+        if(strncmp(fun,"jal",3) ==0|| strncmp(fun,"jalr",4)==0){
+
+            printf("%x:%s\n",pc,fun);
         }
-        // int l = strlen(temp);
-        // printf("%d, %s\n",l,temp);
+
+
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
 
