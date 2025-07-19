@@ -115,13 +115,13 @@ static void execute(uint64_t n) {
         // char* fun = s.logbuf;
         char fun1[10];
         // fun+=24;
-        unsigned int pc,target;
-        sscanf(s.logbuf,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
+        unsigned int pc;
+        char target[10];
+        sscanf(s.logbuf,"%x: %*s %*s %*s %*s %s\t%s",&pc ,fun1, target);
         // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
         if(strncmp(fun1,"jal",3) ==0|| strncmp(fun1,"jalr",4)==0){
-
-            printf("%x:%s %x\n",pc,fun1,target);
+            printf("%x:%s %s\n",pc,fun1,target);
         }
 
 
