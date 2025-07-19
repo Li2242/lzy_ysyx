@@ -113,7 +113,7 @@ static void execute(uint64_t n) {
     }
     //找出jal和jalr
         char* fun = s.logbuf;
-        fun+=23;
+        fun+=24;
         char* temp = strtok(fun,"\t");
         // if(strncmp(temp,"jal",3) ==0|| strncmp(temp,"jalr",4)==0){
         //     printf("%s\n",temp);
