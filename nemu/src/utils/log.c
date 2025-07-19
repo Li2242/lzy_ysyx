@@ -65,13 +65,13 @@ void init_elf(const char *elf_file) {
     sym_num = u_symtab.sh_size/u_symtab.sh_entsize;
     symtab = malloc(u_symtab.sh_size);
     fseek(fp,u_symtab.sh_offset,SEEK_SET);
-    if(fread(symtab,u_symtab.sh_size,1,fp)){
+    if(fread(symtab,u_symtab.sh_size,1,fp) != 1){
         Assert(0,"symtab读取失败");
     }
     //字符串表
     strtab = malloc(u_strtab.sh_size);
     fseek(fp,u_strtab.sh_offset,SEEK_SET);
-    if(fread(strtab,u_strtab.sh_size,1,fp)){
+    if(fread(strtab,u_strtab.sh_size,1,fp) != 1){
         Assert(0,"strtab读取失败");
     }
     //初始化过了，因该如何使用呢？
