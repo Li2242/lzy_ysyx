@@ -20,9 +20,14 @@
 #include <inttypes.h>
 #include <stdbool.h>
 #include <string.h>
+#include <elf.h>
 
 #include <generated/autoconf.h>
 #include <macro.h>
+
+extern Elf32_Sym *symtab;
+extern char *strtab;
+extern int sym_num;
 
 #ifdef CONFIG_TARGET_AM
 #include <klib.h>

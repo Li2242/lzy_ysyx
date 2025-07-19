@@ -105,13 +105,13 @@ static int parse_args(int argc, char *argv[]) {
   //第四个选项是长选项表
   //第五个通常为NULL
   //getopt_long 函数会依次解析命令行参数，并返回当前解析到的选项字符，若解析完毕则返回 -1。
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:e:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 'e': elf_file = optarg;
+      case 'e': elf_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -143,8 +143,8 @@ void init_monitor(int argc, char *argv[]) {
   //打开日志文件
   init_log(log_file);
 
-  /* Open the elf file. */
-  //打开elf文件
+
+  //打开elf文件并构建符号表和字符串表
   init_elf(elf_file);
 
   /* Initialize memory. */
