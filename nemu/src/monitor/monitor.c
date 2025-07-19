@@ -57,6 +57,7 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static char *elf_file = NULL;
 static int difftest_port = 1234;
+//在没有-e选项时不启动
 bool ftrace_switch = 0;
 
 //这个函数会将一个有意义的客户程序从镜像文件读入到内存, 覆盖刚才的内置客户程序.

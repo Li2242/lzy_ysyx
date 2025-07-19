@@ -28,6 +28,7 @@
 extern Elf32_Sym *symtab;
 extern char *strtab;
 extern int sym_num;
+////在没有-e选项时不启动
 extern bool ftrace_switch;
 
 #ifdef CONFIG_TARGET_AM

@@ -108,6 +108,7 @@ static void execute(uint64_t n) {
     exec_once(&s, cpu.pc);
     //ring_buf
     ring_buf_fun(s.logbuf);
+    //在没有-e选项时不启动
     if(ftrace_switch){
         #ifdef CONFIG_FTRACE
             //ftrace
