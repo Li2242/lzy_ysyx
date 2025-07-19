@@ -112,7 +112,7 @@ static void execute(uint64_t n) {
         strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
         ring_buf[ring_buf_count++][99] = '\0';
         //找出jal和jalr
-        *(s.logbuf) += 24;
+        *(s.logbuf) += 23;
         char *fun = strtok(s.logbuf," ");
         printf("%s\n",fun);
     }
