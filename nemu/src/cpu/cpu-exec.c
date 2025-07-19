@@ -114,7 +114,7 @@ static void execute(uint64_t n) {
         //找出jal和jalr
         char* fun;
         for(int i =0;i<6;i++){
-            fun = strtok(s.logbuf," ");
+            fun = strtok(s.logbuf,"{h");
         }
         printf("%s\n",fun);
     }
