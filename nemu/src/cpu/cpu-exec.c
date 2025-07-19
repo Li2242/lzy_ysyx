@@ -121,13 +121,13 @@ static void execute(uint64_t n) {
         // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
         if(strncmp(fun1,"jal",3) ==0){
-            int t = pc + target;
+            int jal_target = pc + target;
             for(int i =0;i<sym_num;i++){
-                if(symtab[i].st_value == t   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,t);
+                if(symtab[i].st_value == jal_target   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                    printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,jal_target);
                     break;
                 }else{
-                    printf("???\n");
+                    // printf("???\n");
                 }
             }
         }
@@ -145,7 +145,7 @@ static void execute(uint64_t n) {
                     printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,jalr_target);
                     break;
                 }else{
-                    printf("???\n");
+                    // printf("???\n");
                 }
             }
         }
