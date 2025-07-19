@@ -132,7 +132,7 @@ static void execute(uint64_t n) {
             }
         }
         if(strncmp(fun1,"jalr",4)==0){
-            printf("target=%x",target);
+            printf("target=%x\n",target);
             // bool success_flag = false;
             // int tem_reg = isa_reg_str2val(, &success_flag);
             // for(int i =0;i<sym_num;i++){
