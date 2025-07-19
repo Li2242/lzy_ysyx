@@ -78,7 +78,7 @@ void init_elf(const char *elf_file) {
     for(int i=0; i<sym_num; i++){
         if(ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
             char *name = strtab + symtab[i].st_name;
-            printf("%d : %s",i,name);
+            printf("%d : %s\n",i,name);
         }
     }
 
