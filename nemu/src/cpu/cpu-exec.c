@@ -100,7 +100,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 //该函数用于执行指定数量的指令。
 static void execute(uint64_t n) {
   Decode s;
-
+    bool sc =1;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     //加的环形缓冲区
@@ -118,9 +118,8 @@ static void execute(uint64_t n) {
         // }
         // printf("%s\n",fun);
     }
-    bool sc =1;
     if(ring_buf_count == 1 && sc){
-        sc = false;
+        sc = 0;
         int n = strlen(s.logbuf);
         for(int i =0;i<n;i++){
             printf("%c ",s.logbuf[i]);
