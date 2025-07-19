@@ -127,7 +127,7 @@ static void execute(uint64_t n) {
                     printf("0x%x:[%s@0x%x]\n",pc,strtab+symtab[i].st_name,t);
                     break;
                 }else{
-                    printf("???\n");
+                    // printf("???\n");
                 }
             }
         }
