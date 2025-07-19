@@ -120,21 +120,20 @@ static void execute(uint64_t n) {
         sscanf(s.logbuf,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
         // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
+        bool find = 0;
         if(strncmp(fun1,"jal",3) ==0){
             int jal_target = pc + target;
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value == jal_target   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
                     printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,jal_target);
+                    find = 1;
                     break;
-                }else{
-                    // printf("???\n");
                 }
             }
         }
         if(strncmp(fun1,"jalr",4)==0){
             char str_t[10];
             sprintf(str_t,"%x",target);
-
             bool success_flag = false;
             uint32_t jalr_target = isa_reg_str2val(str_t, &success_flag);
             if(!success_flag){
@@ -143,11 +142,13 @@ static void execute(uint64_t n) {
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value == jalr_target   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
                     printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,jalr_target);
+                    find = 1;
                     break;
-                }else{
-                    // printf("???\n");
                 }
             }
+        }
+        if(find == 0){
+            printf("???\n");
         }
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
