@@ -118,7 +118,7 @@ static void execute(uint64_t n) {
         // }
         // printf("%s\n",fun);
     }
-    if(ring_buf_count == 1 && sc){
+    if(ring_buf_count == 8 && sc){
         sc = 0;
         int n = strlen(s.logbuf);
         for(int i =0;i<n;i++){
