@@ -144,8 +144,10 @@ void init_monitor(int argc, char *argv[]) {
   init_log(log_file);
 
 
+#ifdef CONFIG_FTRACE
   //打开elf文件并构建符号表和字符串表
   init_elf(elf_file);
+#endif
 
   /* Initialize memory. */
   //初始化内存

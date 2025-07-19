@@ -34,10 +34,14 @@ static bool g_print_step = false;
 int ring_buf_count = 0;
 char ring_buf[8][100];
 
-
-
 void device_update();
+//ring buf
+void ring_buf_fun();
 
+//ftrace
+void ftrace();
+//用于空格
+int count = 0;
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -100,82 +104,21 @@ static void exec_once(Decode *s, vaddr_t pc) {
 //该函数用于执行指定数量的指令。
 static void execute(uint64_t n) {
   Decode s;
-  int count = 0;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
-    //加的环形缓冲区
-    if(ring_buf_count<8){
-        strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
-        ring_buf[ring_buf_count++][99] = '\0';
-    }else{
-        ring_buf_count = 0;
-        strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
-        ring_buf[ring_buf_count++][99] = '\0';
-    }
-    //找出jal和jalr
-        // char* fun = s.logbuf;
-        // fun+=24;
-        char fun1[10];
-        unsigned int pc, target;
-        // char target[10];
-        sscanf(s.logbuf,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
-        // char* temp = strtok(fun,"\t");
-        //终于找出来了，接下来要进行处理了
-        bool find = 0;
-        bool in = 0;
-        //jal
-        if(strncmp(fun1,"jal",3) ==0){
-            in = 1;
-            int jal_target = pc + target;
-            for(int i =0;i<sym_num;i++){
-                if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&   ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("0x%x %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jal_target);
-                    find = 1;
-                    break;
-                }
-            }
-        }
-        //jalr
-        if(strncmp(fun1,"jalr",4)==0){
-            in = 1;
-            char str_t[10];
-            sprintf(str_t,"%x",target);
-            bool success_flag = false;
-            uint32_t jalr_target = isa_reg_str2val(str_t, &success_flag);
-            if(!success_flag){
-                printf("寄存器取值失败!\n");
-            }
-            for(int i =0;i<sym_num;i++){
-                in = 1;
-                if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jalr_target);
-                    find = 1;
-                    break;
-                }
-            }
-        }
-        //ret
-        if(strncmp(fun1,"ret",3)==0){
-            in = 1;
-            for(int i =0;i<sym_num;i++){
-                in = 1;
-                if(symtab[i].st_value <= pc && pc < symtab[i].st_value + symtab[i].st_size ){
-                    printf("0x%x: %*sret[%s]\n",pc,--count,"",strtab+symtab[i].st_name);
-                    find = 1;
-                    break;
-                }
-            }
-        }
-        if(find==0 && in==1){
-            printf("???\n");
-        }
-
+    //ring_buf
+    ring_buf_fun(s.logbuf);
+    #ifdef CONFIG_FTRACE
+        //ftrace
+        ftrace(s.logbuf);
+    #endif
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
 
     //在这里添加出错指令再好不过了,不对不对，这里正常结束也会显示，我想定义一个全局变量，然后在最后状态里面输出
     //算了状态提前判断一下吧，就在这个文件里写一个ring_buf吧
     if (nemu_state.state != NEMU_RUNNING){
+        //判断是否正常退出
         int good = (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) ||
                 (nemu_state.state == NEMU_QUIT);
         if(good == 0){
@@ -241,4 +184,80 @@ void cpu_exec(uint64_t n) {
       // fall through
     case NEMU_QUIT: statistic();
   }
+}
+
+//ringbuf
+void ring_buf_fun(char* inst){
+    //加的环形缓冲区
+    if(ring_buf_count<8){
+        strncpy(ring_buf[ring_buf_count], inst, 100 );
+        ring_buf[ring_buf_count++][99] = '\0';
+    }else{
+        ring_buf_count = 0;
+        strncpy(ring_buf[ring_buf_count], inst, 100 );
+        ring_buf[ring_buf_count++][99] = '\0';
+    }
+}
+
+
+//ftrace
+void ftrace(char* inst){
+    //找出jal和jalr
+        // char* fun = s.logbuf;
+        // fun+=24;
+        char fun1[10];
+        unsigned int pc, target;
+        // char target[10];
+        sscanf(inst,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
+        // char* temp = strtok(fun,"\t");
+        //终于找出来了，接下来要进行处理了
+        bool find = 0;
+        bool in = 0;
+        //jal
+        if(strncmp(fun1,"jal",3) ==0){
+            in = 1;
+            int jal_target = pc + target;
+            for(int i =0;i<sym_num;i++){
+                if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&   ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                    printf("0x%x %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jal_target);
+                    find = 1;
+                    break;
+                }
+            }
+        }
+        //jalr
+        if(strncmp(fun1,"jalr",4)==0){
+            in = 1;
+            char str_t[10];
+            sprintf(str_t,"%x",target);
+            bool success_flag = false;
+            uint32_t jalr_target = isa_reg_str2val(str_t, &success_flag);
+            if(!success_flag){
+                printf("寄存器取值失败!\n");
+            }
+            for(int i =0;i<sym_num;i++){
+                in = 1;
+                if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                    printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jalr_target);
+                    find = 1;
+                    break;
+                }
+            }
+        }
+        //ret
+        if(strncmp(fun1,"ret",3)==0){
+            in = 1;
+            for(int i =0;i<sym_num;i++){
+                in = 1;
+                if(symtab[i].st_value <= pc && pc < symtab[i].st_value + symtab[i].st_size ){
+                    printf("0x%x: %*sret[%s]\n",pc,--count,"",strtab+symtab[i].st_name);
+                    find = 1;
+                    break;
+                }
+            }
+        }
+        if(find==0 && in==1){
+            printf("???\n");
+        }
+
 }

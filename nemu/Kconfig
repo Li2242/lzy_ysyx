@@ -158,6 +158,11 @@ config MTRACE
     bool "Enable momory tracer"
     default y
 
+config FTRACE
+    depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
+    bool "Enable funtion tracer"
+    default y
+
 config ITRACE_COND
   depends on ITRACE
   string "Only trace instructions when the condition is true"
