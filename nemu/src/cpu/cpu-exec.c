@@ -111,7 +111,7 @@ static void execute(uint64_t n) {
         ring_buf_count = 0;
         strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
         ring_buf[ring_buf_count++][99] = '\0';
-        printf("%s",s.logbuf);
+        printf("%s\n",s.logbuf);
 
     }
 
