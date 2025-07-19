@@ -111,9 +111,12 @@ static void execute(uint64_t n) {
         ring_buf_count = 0;
         strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
         ring_buf[ring_buf_count++][99] = '\0';
-        printf("%s\n",s.logbuf);
-
+        //找出jal和jalr
+        *(s.logbuf) += 24;
+        char *fun = strtok(s.logbuf," ");
+        printf("%s",fun);
     }
+
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
