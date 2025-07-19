@@ -122,13 +122,14 @@ static void execute(uint64_t n) {
         //终于找出来了，接下来要进行处理了
         bool find = 0;
         bool in = 0;
+        int count = 0;
         //jal
         if(strncmp(fun1,"jal",3) ==0){
             in = 1;
             int jal_target = pc + target;
             for(int i =0;i<sym_num;i++){
                 if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&   ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf(" 0x%x call [%s@0x%x]\n",pc,strtab+symtab[i].st_name,jal_target);
+                    printf(" 0x%x %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jal_target);
                     find = 1;
                     break;
                 }
@@ -147,7 +148,7 @@ static void execute(uint64_t n) {
             for(int i =0;i<sym_num;i++){
                 in = 1;
                 if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("0x%x: call [%s@0x%x]\n",pc,strtab+symtab[i].st_name,jalr_target);
+                    printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jalr_target);
                     find = 1;
                     break;
                 }
@@ -159,7 +160,7 @@ static void execute(uint64_t n) {
             for(int i =0;i<sym_num;i++){
                 in = 1;
                 if(symtab[i].st_value <= pc && pc < symtab[i].st_value + symtab[i].st_size ){
-                    printf("0x%x: ret[%s]\n",pc,strtab+symtab[i].st_name);
+                    printf("0x%x: %*sret[%s]\n",pc,--count,"",strtab+symtab[i].st_name);
                     find = 1;
                     break;
                 }
