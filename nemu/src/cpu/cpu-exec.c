@@ -115,10 +115,10 @@ static void execute(uint64_t n) {
         char* fun = s.logbuf;
         fun+=23;
         char* temp = strtok(fun,"\t");
-        if(strncmp(temp,"jal",3) ==0|| strncmp(temp,"jalr",4)==0){
-            printf("%s\n",temp);
-        }
-
+        // if(strncmp(temp,"jal",3) ==0|| strncmp(temp,"jalr",4)==0){
+        //     printf("%s\n",temp);
+        // }
+        printf("%s\n",temp);
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
 
