@@ -100,6 +100,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 //该函数用于执行指定数量的指令。
 static void execute(uint64_t n) {
   Decode s;
+  int count = 0;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     //加的环形缓冲区
@@ -122,7 +123,6 @@ static void execute(uint64_t n) {
         //终于找出来了，接下来要进行处理了
         bool find = 0;
         bool in = 0;
-        int count = 0;
         //jal
         if(strncmp(fun1,"jal",3) ==0){
             in = 1;
