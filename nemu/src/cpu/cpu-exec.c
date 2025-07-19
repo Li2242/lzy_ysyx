@@ -115,9 +115,9 @@ static void execute(uint64_t n) {
         char* fun = s.logbuf;
         char fun1[10];
         fun+=24;
-        char* temp = strtok(fun,"\t");
+        // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
-        if(strncmp(temp,"jal",3) ==0|| strncmp(temp,"jalr",4)==0){
+        if(strncmp(fun,"jal",3) ==0|| strncmp(fun,"jalr",4)==0){
             unsigned int pc,target;
             sscanf(s.logbuf,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
             printf("%x:%s %x\n",pc,fun,target);
