@@ -114,7 +114,7 @@ static void execute(uint64_t n) {
         char* fun = s.logbuf;
         fun+=23;
         char* temp = strtok(fun,"\t");
-        if(strcmp(temp,"jal")||strcmp(temp,"jalr")){
+        if(strcmp(temp,"jal") ==0|| strcmp(temp,"jalr")==0){
             printf("%s\n",temp);
         }
     }
