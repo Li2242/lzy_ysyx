@@ -115,8 +115,9 @@ static void execute(uint64_t n) {
         char* fun = s.logbuf;
         fun+=24;
         char* temp = strtok(fun,"\t");
+        //终于找出来了，接下来要进行处理了
         if(strncmp(temp,"jal",3) ==0|| strncmp(temp,"jalr",4)==0){
-            printf("%s\n",temp);
+            printf("%s,%s\n",strtok(s.logbuf," "),temp);
         }
         // int l = strlen(temp);
         // printf("%d, %s\n",l,temp);
