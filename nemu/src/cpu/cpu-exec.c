@@ -120,7 +120,8 @@ static void execute(uint64_t n) {
         // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
         fun[9] = '\0';
-        printf("%s",fun);
+        int n =strlen(fun);
+        printf("%d = %s\n",n,fun);
         if(strncmp(fun,"jal",3) ==0|| strncmp(fun,"jalr",4)==0){
             printf("%x:%s\n",pc,fun);
         }
