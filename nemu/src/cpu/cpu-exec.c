@@ -122,7 +122,7 @@ static void execute(uint64_t n) {
         sc = 0;
         int n = strlen(s.logbuf);
         for(int i =0;i<n;i++){
-            printf("%c=%d",s.logbuf[i],s.logbuf[i]);
+            printf("%c=%d ",s.logbuf[i],s.logbuf[i]);
         }
     }
 
