@@ -137,8 +137,8 @@ static void execute(uint64_t n) {
 
             bool success_flag = false;
             uint32_t jalr_target = isa_reg_str2val(str_t, &success_flag);
-            if(success_flag){
-                printf("寄存器取值成功!\n");
+            if(!success_flag){
+                printf("寄存器取值失败!\n");
             }
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value == jalr_target   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
