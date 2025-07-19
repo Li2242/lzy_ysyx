@@ -45,7 +45,7 @@ void init_elf(const char *elf_file) {
     Log("The %s Elf is be open to ", elf_file);
     //先整header
     Elf32_Ehdr ehdr;
-    if(fread(&ehdr,sizeof(ehdr),1,fp) ){
+    if(fread(&ehdr,sizeof(ehdr),1,fp) != 1){
         Assert(0,"ehdr读取失败");
     }
     //从header中找到偏移量找节区
