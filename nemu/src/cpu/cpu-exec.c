@@ -100,7 +100,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
 //该函数用于执行指定数量的指令。
 static void execute(uint64_t n) {
   Decode s;
-    bool sc =1;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     //加的环形缓冲区
@@ -112,19 +111,12 @@ static void execute(uint64_t n) {
         strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
         ring_buf[ring_buf_count++][99] = '\0';
         //找出jal和jalr
-        // char* fun;
-        // for(int i =0;i<6;i++){
-        //     fun = strtok(s.logbuf," ");
-        // }
-        // printf("%s\n",fun);
+        char* fun = s.logbuf;
+        fun+=23;
+        char* temp = strtok(fun,"\t");
+        printf("%s\n",temp);
     }
-    if(ring_buf_count == 8 && sc){
-        sc = 0;
-        int n = strlen(s.logbuf);
-        for(int i =0;i<n;i++){
-            printf("%c=%d ",s.logbuf[i],s.logbuf[i]);
-        }
-    }
+
 
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
