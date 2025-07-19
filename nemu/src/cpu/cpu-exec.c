@@ -112,8 +112,10 @@ static void execute(uint64_t n) {
         strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
         ring_buf[ring_buf_count++][99] = '\0';
         //找出jal和jalr
-        char fun[10];
-        memcpy(fun,s.logbuf+23,4);
+        char* fun;
+        for(int i =0;i<6;i++){
+            fun = strtok(s.logbuf," ");
+        }
         printf("%s\n",fun);
     }
 
