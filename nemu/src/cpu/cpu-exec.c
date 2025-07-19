@@ -121,7 +121,7 @@ static void execute(uint64_t n) {
     if(ring_buf_count == 1){
         int n = strlen(s.logbuf);
         for(int i =0;i<n;i++){
-            printf("%c",s.logbuf[i]);
+            printf("%c\n",s.logbuf[i]);
         }
     }
 
