@@ -218,7 +218,7 @@ void ftrace(char* inst){
         bool find = 0;
         bool in = 0;
         //jal
-        if(strncmp(fun1,"jal",3) ==0){
+        if(strncmp(fun1,"jal",4) ==0){
             in = 1;
             int jal_target = pc + target;
             for(int i =0;i<sym_num;i++){
@@ -230,7 +230,7 @@ void ftrace(char* inst){
             }
         }
         //jalr
-        if(strncmp(fun1,"jalr",4)==0){
+        if(strncmp(fun1,"jalr",5)==0){
             in = 1;
             char str_t[10];
             sprintf(str_t,"%x",target);
