@@ -108,10 +108,13 @@ static void execute(uint64_t n) {
     exec_once(&s, cpu.pc);
     //ring_buf
     ring_buf_fun(s.logbuf);
-    #ifdef CONFIG_FTRACE
-        //ftrace
-        ftrace(s.logbuf);
-    #endif
+    if(ftrace_switch){
+        #ifdef CONFIG_FTRACE
+            //ftrace
+            ftrace(s.logbuf);
+        #endif
+    }
+
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
 

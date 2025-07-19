@@ -28,6 +28,7 @@
 extern Elf32_Sym *symtab;
 extern char *strtab;
 extern int sym_num;
+extern bool ftrace_switch;
 
 #ifdef CONFIG_TARGET_AM
 #include <klib.h>
