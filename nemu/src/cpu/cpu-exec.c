@@ -112,11 +112,17 @@ static void execute(uint64_t n) {
         strncpy(ring_buf[ring_buf_count], s.logbuf, 100 );
         ring_buf[ring_buf_count++][99] = '\0';
         //找出jal和jalr
-        char* fun;
-        for(int i =0;i<6;i++){
-            fun = strtok(s.logbuf," ");
+        // char* fun;
+        // for(int i =0;i<6;i++){
+        //     fun = strtok(s.logbuf," ");
+        // }
+        // printf("%s\n",fun);
+    }
+    if(ring_buf_count == 1){
+        int n = strlen(s.logbuf);
+        for(int i =0;i<n;i++){
+            printf("%c",s.logbuf[i]);
         }
-        printf("%s\n",fun);
     }
 
 
