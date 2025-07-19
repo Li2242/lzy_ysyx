@@ -129,7 +129,7 @@ static void execute(uint64_t n) {
             int jal_target = pc + target;
             for(int i =0;i<sym_num;i++){
                 if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&   ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf(" 0x%x %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jal_target);
+                    printf("0x%x %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jal_target);
                     find = 1;
                     break;
                 }
