@@ -118,10 +118,12 @@ static void execute(uint64_t n) {
         // }
         // printf("%s\n",fun);
     }
-    if(ring_buf_count == 1){
+    bool sc =1;
+    if(ring_buf_count == 1 && sc){
+        sc = false;
         int n = strlen(s.logbuf);
         for(int i =0;i<n;i++){
-            printf("%c\n",s.logbuf[i]);
+            printf("%c ",s.logbuf[i]);
         }
     }
 
