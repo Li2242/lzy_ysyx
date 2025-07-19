@@ -119,7 +119,7 @@ static void execute(uint64_t n) {
         if(strncmp(temp,"jal",3) ==0|| strncmp(temp,"jalr",4)==0){
             unsigned int pc,target;
             sscanf(s.logbuf,"%x: %*s %*s %*s %*s %*s\t%*s %x",&pc , &target);
-            printf("%x:%s\n",pc,temp);
+            printf("%x:%s\n %x",pc,temp,target);
         }
 
 
