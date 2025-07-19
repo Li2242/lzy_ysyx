@@ -113,7 +113,7 @@ static void execute(uint64_t n) {
         ring_buf[ring_buf_count++][99] = '\0';
         //找出jal和jalr
         char fun[10];
-        memcpy(fun,s.logbuf+23,7);
+        memcpy(fun,s.logbuf+23,6);
         printf("%s\n",fun);
     }
 
