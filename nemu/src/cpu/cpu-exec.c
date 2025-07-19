@@ -127,7 +127,7 @@ static void execute(uint64_t n) {
                     printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,t);
                     break;
                 }else{
-                    // printf("???\n");
+                    printf("???\n");
                 }
             }
         }
@@ -145,7 +145,7 @@ static void execute(uint64_t n) {
                     printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,jalr_target);
                     break;
                 }else{
-                    // printf("???\n");
+                    printf("???\n");
                 }
             }
         }
