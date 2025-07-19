@@ -45,13 +45,13 @@ void init_elf(const char *elf_file) {
     Log("The %s Elf is be open to ", elf_file);
     //先整header
     Elf32_Ehdr ehdr;
-    if(fread(&ehdr,sizeof(ehdr),1,fp) != 1){
+    if(fread(&ehdr,sizeof(ehdr),1,fp) ){
         Assert(0,"ehdr读取失败");
     }
     //从header中找到偏移量找节区
     Elf32_Shdr shdr[ehdr.e_shnum];
     fseek(fp,ehdr.e_shoff,SEEK_SET);
-    if(fread(&shdr,sizeof(shdr)*ehdr.e_shnum,1,fp)){
+    if(fread(&shdr,sizeof(shdr)*ehdr.e_shnum,1,fp) != 1){
         Assert(0,"shdr读取失败");
     }
     //找到节区后从节区中找到符号表和字符串表
@@ -65,7 +65,7 @@ void init_elf(const char *elf_file) {
     sym_num = u_symtab.sh_size/u_symtab.sh_entsize;
     symtab = malloc(u_symtab.sh_size);
     fseek(fp,u_symtab.sh_offset,SEEK_SET);
-    if(fread(symtab,u_symtab.sh_size,1,fp) != 1){
+    if(fread(symtab,u_symtab.sh_size,1,fp)){
         Assert(0,"symtab读取失败");
     }
     //字符串表
