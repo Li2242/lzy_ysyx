@@ -74,8 +74,8 @@ void init_elf(const char *elf_file) {
     if(fread(strtab,u_strtab.sh_size,1,fp) != 1){
         Assert(0,"strtab读取失败");
     }
-
-    //初始化过了，因该如何使用呢？
+    printf("%s\n",strtab);
+    //初始化过了，因该如何使用呢？ 这里是吧所有的函数跳出来打印一边
     for(int i=0; i<sym_num; i++){
         if(ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
             char *name = strtab + symtab[i].st_name;
