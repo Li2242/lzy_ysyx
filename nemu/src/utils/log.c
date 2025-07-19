@@ -51,9 +51,11 @@ void init_elf(const char *elf_file) {
     //从header中找到偏移量找节区
     Elf32_Shdr shdr[ehdr.e_shnum];
     fseek(fp,ehdr.e_shoff,SEEK_SET);
-    if(fread(&shdr,sizeof(shdr)*ehdr.e_shnum,1,fp)!=ehdr.e_shnum){
+    int n = fread(&shdr,sizeof(shdr)*ehdr.e_shnum,1,fp);
+    if(n){
         Assert(0,"shdr读取失败");
     }
+    printf("%d\n",n);
     //找到节区后从节区中找到符号表和字符串表
     Elf32_Shdr u_symtab,u_strtab;
     for(int i=0; i<ehdr.e_shnum; i++){
