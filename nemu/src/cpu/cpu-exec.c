@@ -124,7 +124,7 @@ static void execute(uint64_t n) {
             int t = pc + target;
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value >= t && t < symtab[i].st_value +symtab[i].st_size  && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("%x:[%s@%x]\n",pc,strtab+symtab[i].st_name,t);
+                    printf("0x%x:[%s@0x%x]\n",pc,strtab+symtab[i].st_name,t);
                 }
             }
         }
