@@ -114,7 +114,7 @@ static void execute(uint64_t n) {
         //找出jal和jalr
         *(s.logbuf) += 24;
         char *fun = strtok(s.logbuf," ");
-        printf("%s",fun);
+        printf("%s\n",fun);
     }
 
 
