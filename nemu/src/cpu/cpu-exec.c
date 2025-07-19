@@ -122,7 +122,7 @@ static void execute(uint64_t n) {
         //终于找出来了，接下来要进行处理了
         if(strncmp(fun1,"jal",3) ==0|| strncmp(fun1,"jalr",4)==0){
             for(int i =0;i<sym_num;i++){
-                if(symtab[i].st_value == pc+target && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                if(symtab[i].st_value >= pc + target && symtab[i].st_value < pc +symtab[i].st_size  && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
                     printf("%x : %s\n",pc,strtab+symtab[i].st_name);
                 }
             }
