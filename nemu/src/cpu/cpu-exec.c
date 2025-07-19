@@ -126,7 +126,7 @@ static void execute(uint64_t n) {
             in = 1;
             int jal_target = pc + target;
             for(int i =0;i<sym_num;i++){
-                if(symtab[i].st_value == jal_target   && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                if(symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab->st_name &&   ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
                     printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,jal_target);
                     find = 1;
                     break;
@@ -143,6 +143,7 @@ static void execute(uint64_t n) {
                 printf("寄存器取值失败!\n");
             }
             for(int i =0;i<sym_num;i++){
+                in = 1;
                 if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab->st_name && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
                     printf("i=%d 0x%x:[%s@0x%x]\n",i,pc,strtab+symtab[i].st_name,jalr_target);
                     find = 1;
