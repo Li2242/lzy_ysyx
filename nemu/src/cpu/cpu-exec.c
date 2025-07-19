@@ -113,15 +113,19 @@ static void execute(uint64_t n) {
     }
     //找出jal和jalr
         // char* fun = s.logbuf;
-        char fun1[10];
         // fun+=24;
+        char fun1[10];
         unsigned int pc;
         char target[10];
         sscanf(s.logbuf,"%x: %*s %*s %*s %*s %s\t%s",&pc ,fun1, target);
         // char* temp = strtok(fun,"\t");
         //终于找出来了，接下来要进行处理了
         if(strncmp(fun1,"jal",3) ==0|| strncmp(fun1,"jalr",4)==0){
-            printf("%x:%s %s\n",pc,fun1,target);
+            for(int i =0;i<sym_num;i++){
+                if(symtab[i].st_value == pc && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                    printf("%x : %s",pc,symtab->st_name+strtab);
+                }
+            }
         }
 
 
