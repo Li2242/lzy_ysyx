@@ -118,7 +118,7 @@ static void execute(uint64_t n) {
         //终于找出来了，接下来要进行处理了
         if(strncmp(temp,"jal",3) ==0|| strncmp(temp,"jalr",4)==0){
             unsigned int pc,target;
-            sscanf(s.logbuf,"%x: %*s %*s %*s %*s %*s %x",&pc , &target);
+            sscanf(s.logbuf,"%x: %*s %*s %*s %*s %*s\t%x",&pc , &target);
             printf("%x:%s %x\n",pc,temp,target);
         }
 
