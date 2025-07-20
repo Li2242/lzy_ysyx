@@ -17,7 +17,7 @@
 #define __MEMORY_HOST_H__
 
 #include <common.h>
-
+//判断以什么形式读出
 static inline word_t host_read(void *addr, int len) {
   switch (len) {
     case 1: return *(uint8_t  *)addr;
@@ -27,7 +27,7 @@ static inline word_t host_read(void *addr, int len) {
     default: MUXDEF(CONFIG_RT_CHECK, assert(0), return 0);
   }
 }
-
+//判断用什么形式写入
 static inline void host_write(void *addr, int len, word_t data) {
   switch (len) {
     case 1: *(uint8_t  *)addr = data; return;

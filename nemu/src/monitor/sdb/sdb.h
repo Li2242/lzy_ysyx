@@ -39,5 +39,4 @@ void free_wp(int n);
 void scan_watchpoints(bool* success);
 void scan();
 
-
 #endif

@@ -28,6 +28,7 @@
 
 void init_rand();
 void init_log(const char *log_file);
+void init_elf(const char *elf_file);
 void init_mem();
 void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
@@ -54,9 +55,12 @@ void sdb_set_batch_mode();
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
+static char *elf_file = NULL;
 static int difftest_port = 1234;
+//在没有-e选项时不启动
+bool ftrace_switch = 0;
 
-//这个函数会将一个有意义的客户程序从镜像文件读入到内存, 覆盖刚才的内置客户程序. 
+//这个函数会将一个有意义的客户程序从镜像文件读入到内存, 覆盖刚才的内置客户程序.
 static long load_img() {
   if (img_file == NULL) {
     Log("No image is given. Use the default build-in image.");
@@ -93,6 +97,7 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
+    {"elf"      , required_argument, NULL, 'e'},
     //长选项表的结束标志
     {0          , 0                , NULL,  0 },
   };
@@ -102,17 +107,19 @@ static int parse_args(int argc, char *argv[]) {
   //第四个选项是长选项表
   //第五个通常为NULL
   //getopt_long 函数会依次解析命令行参数，并返回当前解析到的选项字符，若解析完毕则返回 -1。
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:e:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
+      case 'e': elf_file = optarg; ftrace_switch = 1; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
         printf("\t-b,--batch              run with batch mode\n");
         printf("\t-l,--log=FILE           output log to FILE\n");
+        printf("\t-e,--elf=FILE           Open the elf FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
         printf("\n");
@@ -138,6 +145,14 @@ void init_monitor(int argc, char *argv[]) {
   //打开日志文件
   init_log(log_file);
 
+if(ftrace_switch){
+    #ifdef CONFIG_FTRACE
+        //打开elf文件并构建符号表和字符串表
+        init_elf(elf_file);
+    #endif
+}
+
+
   /* Initialize memory. */
   //初始化内存
   init_mem();
@@ -148,7 +163,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Perform ISA dependent initialization. */
   //执行与指令集架构相关的初始化操作
-  //第一项工作就是将一个内置的客户程序读入到内存中. 
+  //第一项工作就是将一个内置的客户程序读入到内存中.
   //第二项任务是初始化寄存器
   init_isa();
 

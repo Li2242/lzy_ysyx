@@ -27,15 +27,15 @@ static csh handle;
 void init_disasm() {
   void *dl_handle;
 
-  /* 打开共享对象file并将其映射进来；返回一个句柄，可传递给 `dlsym` 以从中获取符号值。(符号对应的运行时地址) */
+  // 打开共享对象file并将其映射进来；返回一个句柄，可传递给 `dlsym` 以从中获取符号值。(符号对应的运行时地址)
   dl_handle = dlopen("tools/capstone/repo/libcapstone.so.5", RTLD_LAZY);
   assert(dl_handle);
 
   cs_err (*cs_open_dl)(cs_arch arch, cs_mode mode, csh *handle) = NULL;
+  //查找共享对象中 handle 所指向的名为 name 的符号的运行时地址
   cs_open_dl = dlsym(dl_handle, "cs_open");
   assert(cs_open_dl);
 
-    //查找共享对象中 handle 所指向的名为 name 的符号的运行时地址
   cs_disasm_dl = dlsym(dl_handle, "cs_disasm");
   assert(cs_disasm_dl);
 
@@ -68,8 +68,10 @@ void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte) {
 	cs_insn *insn;
 	size_t count = cs_disasm_dl(handle, code, nbyte, pc, 0, &insn);
   assert(count == 1);
+  //这个应该是在写入riscv指令
   int ret = snprintf(str, size, "%s", insn->mnemonic);
   if (insn->op_str[0] != '\0') {
+    //这是后面的操作数变量
     snprintf(str + ret, size - ret, "\t%s", insn->op_str);
   }
   cs_free_dl(insn, count);

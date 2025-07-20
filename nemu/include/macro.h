@@ -69,6 +69,7 @@
 #define __IGNORE(...)
 #define __KEEP(...) __VA_ARGS__
 // keep the code if a boolean macro is defined
+// 如果定义了布尔宏，则保留代码
 #define IFDEF(macro, ...) MUXDEF(macro, __KEEP, __IGNORE)(__VA_ARGS__)
 // keep the code if a boolean macro is undefined
 #define IFNDEF(macro, ...) MUXNDEF(macro, __KEEP, __IGNORE)(__VA_ARGS__)
@@ -96,6 +97,10 @@
 #define PG_ALIGN __attribute((aligned(4096)))
 
 #if !defined(likely)
+/*long __builtin_expect(long exp, long c);
+  告诉编译器，“exp 的值更可能是 c”，帮助编译器做分支预测优化，
+  从而排布指令，减少 CPU 分支预测失误带来的性能损耗。
+*/
 #define likely(cond)   __builtin_expect(cond, 1)
 #define unlikely(cond) __builtin_expect(cond, 0)
 #endif
