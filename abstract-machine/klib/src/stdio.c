@@ -28,8 +28,8 @@ int printf(const char *fmt, ...) {
 					putstr(str);
 					break;
 				}
-				fmt++;
 			}
+			fmt++;
 		}else{
 			putch(*fmt++);
 		}	
@@ -69,8 +69,8 @@ int sprintf(char *out, const char *fmt, ...) {
 					}
 					break;
 				}
-				fmt++;
 			}
+			fmt++;
 		}else{
 			out[count++] = *fmt++;
 		}
