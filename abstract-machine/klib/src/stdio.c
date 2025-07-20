@@ -19,7 +19,6 @@ int printf(const char *fmt, ...) {
 				case 's':{
 					char* str = va_arg(ap,char*);
 					putstr(str);
-					fmt++;
 					break;
 				}
 				case 'd':{
@@ -27,9 +26,9 @@ int printf(const char *fmt, ...) {
 					char str[13];
 					num_str(num,str);
 					putstr(str);
-					fmt++;
 					break;
 				}
+				fmt++;
 			}
 		}else{
 			putch(*fmt++);
@@ -59,7 +58,6 @@ int sprintf(char *out, const char *fmt, ...) {
 					char *p = str;
 					//写入
 					while(*p!='\0') out[count++] = *p++;
-					fmt++;
 					free(str);
 					break;
 				}
@@ -70,9 +68,9 @@ int sprintf(char *out, const char *fmt, ...) {
 					while(*str!='\0'){
 						out[count++] = *str++;
 					}
-					fmt++;
 					break;
 				}
+				fmt++;
 			}
 		}else{
 			out[count++] = *fmt++;
