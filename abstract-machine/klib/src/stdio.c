@@ -15,8 +15,7 @@ int printf(const char *fmt, ...) {
   va_start(ap,fmt);
   while(*fmt != '\0'){
 		if(*fmt == '%'){
-			fmt++;
-			switch(*fmt){
+			switch(*++fmt){
 				case 's':{
 					char* str = va_arg(ap,char*);
 					putstr(str);
