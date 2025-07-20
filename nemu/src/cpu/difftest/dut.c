@@ -62,10 +62,12 @@ void difftest_skip_dut(int nr_ref, int nr_dut) {
 void init_difftest(char *ref_so_file, long img_size, int port) {
   assert(ref_so_file != NULL);
 
+  //打开传入的动态库文件ref_so_file
   void *handle;
   handle = dlopen(ref_so_file, RTLD_LAZY);
   assert(handle);
 
+  //通过动态链接对动态库中的上述API符号进行符号解析和重定位, 返回它们的地址.
   ref_difftest_memcpy = dlsym(handle, "difftest_memcpy");
   assert(ref_difftest_memcpy);
 
