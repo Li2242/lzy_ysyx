@@ -82,7 +82,63 @@ int sprintf(char *out, const char *fmt, ...) {
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  panic("Not implemented");
+  va_list ap;
+  va_start(ap,fmt);
+  int count = 0; //已经写入的字符串
+  int total_len = 0;
+  while(*fmt != '\0'){
+		if(*fmt == '%'){
+			switch(*++fmt){
+				case 'd':{
+					//取出
+					int num = va_arg(ap,int);
+					char str[13];
+					int i = 0;
+					num_str(num,str);
+					//写入
+					while(str[i]!='\0'){
+						if(out != NULL && count < n-1 && n!=0){
+							out[count++] = str[i++];
+							total_len++;
+						}else{
+							total_len++;
+							i++;
+						}
+					} 
+					break;
+				}
+				case 's':{
+					//取出
+					char* str = va_arg(ap,char*);
+					//写入
+					while(*str!='\0'){
+						if(out != NULL && count < n-1 && n!=0){
+							out[count++] = *str++;
+							total_len++;
+						}else{
+							total_len++;
+							str++;
+						}
+					}
+					break;
+				}
+			}
+			fmt++;
+		}else{
+			if(count < n-1 && out!=NULL && n!=0){
+				out[count++] = *fmt++;
+				total_len++;
+			}else{
+				total_len++;
+				fmt++;
+			}
+		}
+  }
+  //确保字符串
+	if(n!=0 && out!=NULL)
+  	out[count] = '\0';
+  va_end(ap);
+  return total_len;
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
