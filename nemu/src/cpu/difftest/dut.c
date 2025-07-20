@@ -98,6 +98,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 static void checkregs(CPU_state *ref, vaddr_t pc) {
   if (!isa_difftest_checkregs(ref, pc)) {
+		printf("DUT:pc=0x%08x  REF:pc=0x%08x\n",cpu.pc,pc);
     nemu_state.state = NEMU_ABORT;
     nemu_state.halt_pc = pc;
     isa_reg_display();
@@ -114,11 +115,12 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
   CPU_state ref_r;
 
   if (skip_dut_nr_inst > 0) {
+		//读入寄存器的值
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
     if (ref_r.pc == npc) {
       skip_dut_nr_inst = 0;
-      checkregs(&ref_r, npc);
       return;
+      checkregs(&ref_r, npc);
     }
     skip_dut_nr_inst --;
     if (skip_dut_nr_inst == 0)
