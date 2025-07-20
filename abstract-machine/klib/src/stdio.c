@@ -119,7 +119,7 @@ void num_str(int num , char *str){
 		u/=10;
 	}
 	//保证是字符串
-	*p++ = '\0';
+	*p = '\0';
 	//反转字符串
 	char *end = p-1;
 	//只要 start 指针还在 end 指针的左边，就继续交换两端的字符。
