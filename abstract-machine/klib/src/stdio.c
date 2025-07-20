@@ -53,12 +53,11 @@ int sprintf(char *out, const char *fmt, ...) {
 				case 'd':{
 					//取出
 					int num = va_arg(ap,int);
-					char *str = malloc(sizeof(char)*13);
+					char str[13];
+					int i = 0;
 					num_str(num,str);
-					char *p = str;
 					//写入
-					while(*p!='\0') out[count++] = *p++;
-					free(str);
+					while(str[i]!='\0') out[count++] = str[i++];
 					break;
 				}
 				case 's':{
