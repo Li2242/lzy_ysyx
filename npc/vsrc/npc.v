@@ -6,12 +6,9 @@ module npc(
     output reg  [31:0]  pc
 );
 
-import "DPI-C" function void ebreak(input logic [31:0] pc);
+import "DPI-C" function void ebreak(input int pc);
 
 
-initial begin
-    pc = 32'h80000000;
-end
 
 //使用触发器处理pc
 Reg#(32,32'h80000000) pc_4(

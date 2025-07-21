@@ -1,10 +1,11 @@
 VERILATOR = verilator
 
-CFLAGS = --cc --exe --build -O3 -Wall --trace
+CFLAGS = --cc --exe --build -O3 -Wall --trace --top-module npc
 CSRC = csrc/main.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
 
+IMG ?=
 
 all:
 	@echo "Write this Makefile by your self."
@@ -14,7 +15,7 @@ sim: $(CSRC) $(VSRC)
 	./$(OBJ_DIR)/Vnpc
 
 run:$(CSRC) $(VSRC)
-	$(VERILATOR) $(CFLAGS) --top-module npc -Ivsrc/ $(CSRC) $(VSRC)
+	$(VERILATOR) $(CFLAGS)   $(CSRC) $(VSRC) $(IMG)
 
 clean:
 	rm -rf obj_dir
