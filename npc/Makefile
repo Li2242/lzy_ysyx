@@ -14,9 +14,11 @@ all:
 
 sim: $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	echo "sim"
 	$(VERILATOR) $(CFLAGS) $(CSRC) $(VSRC)
 
 run: sim $(CSRC) $(VSRC)
+	echo "sim"
 	./$(OBJ_DIR)/Vnpc $(IMG)
 
 
