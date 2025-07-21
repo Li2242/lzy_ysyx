@@ -23,5 +23,5 @@ run: sim $(CSRC) $(VSRC)
 
 
 clean:
-	rm -rf obj_dir waveform.vcd
+	rm -rf obj_dir waveform.vcd waveform.view
 include ../Makefile
