@@ -18,7 +18,7 @@ sim: $(CSRC) $(VSRC)
 	$(VERILATOR) $(CFLAGS) $(CSRC) $(VSRC)
 
 run: sim $(CSRC) $(VSRC)
-	echo "sim"
+	echo "run"
 	./$(OBJ_DIR)/Vnpc $(IMG)
 
 
