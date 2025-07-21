@@ -20,7 +20,7 @@ Reg#(32,32'h80000000) pc_4(
 );
 
 always @(posedge clk)begin
-    if(inst == 32'h00100073) ebreak(pc);
+    if(inst == 32'h00100073) ebreak(pc + 4);
 end
 
 //内部信号定义

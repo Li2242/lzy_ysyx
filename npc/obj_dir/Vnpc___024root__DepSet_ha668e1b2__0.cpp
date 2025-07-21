@@ -57,7 +57,9 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
     if ((0x100073U == vlSelfRef.inst)) {
-        Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(vlSelfRef.pc);
+        Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(
+                                                           ((IData)(4U) 
+                                                            + vlSelfRef.pc));
     }
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if (((IData)((0x13U == (0x707fU & vlSelfRef.inst))) 
