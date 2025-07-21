@@ -10,7 +10,7 @@ static Vnpc* top;
 int simend = 0;
 
 extern "C" void ebreak(uint32_t pc){
-printf("pc = 0x%x",pc);
+    printf("pc = 0x%x\n",pc);
   simend = 1;
 }
 
