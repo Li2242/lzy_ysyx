@@ -94,7 +94,9 @@ static long load_img() {
   }
 
   FILE *fp = fopen(img_file, "rb");
-  assert(fp);
+  if(!fp){
+		return 0;
+	}
 
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
