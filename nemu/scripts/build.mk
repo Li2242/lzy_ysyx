@@ -15,16 +15,20 @@ OBJ_DIR  = $(BUILD_DIR)/obj-$(NAME)$(SO)
 BINARY   = $(BUILD_DIR)/$(NAME)$(SO)
 
 # Compilation flags
+#用哪一个编译器
 ifeq ($(CC),clang)
 CXX := clang++
 else
 CXX := g++
 endif
 LD := $(CXX)
+#加个-I防止找不到文件
 INCLUDES = $(addprefix -I, $(INC_PATH))
+## c的编译选项
 CFLAGS  := -O2 -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
+## ld（链接器）编译选项
 LDFLAGS := -O2 $(LDFLAGS)
-
+#目标文件变为.o
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
 # Compilation patterns
@@ -50,7 +54,9 @@ $(OBJ_DIR)/%.o: %.cc
 .PHONY: app clean
 
 app: $(BINARY)
-
+# 静态库（archive）存放的多为.a文件
+#LIBS 里一般放 链接器需要链接的库名
+#链接
 $(BINARY):: $(OBJS) $(ARCHIVES)
 	@echo + LD $@
 	@$(LD) -o $@ $(OBJS) $(LDFLAGS) $(ARCHIVES) $(LIBS)

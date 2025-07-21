@@ -7,15 +7,18 @@ OBJ_DIR = obj_dir
 
 IMG ?=
 
+.PHONY: sim run clean
+
 all:
 	@echo "Write this Makefile by your self."
 
 sim: $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	./$(OBJ_DIR)/Vnpc
+	$(VERILATOR) $(CFLAGS) $(CSRC) $(VSRC)
 
-run:$(CSRC) $(VSRC)
-	$(VERILATOR) $(CFLAGS)   $(CSRC) $(VSRC) $(IMG)
+run: sim $(CSRC) $(VSRC)
+	./$(OBJ_DIR)/Vnpc $(IMG)
+
 
 clean:
 	rm -rf obj_dir

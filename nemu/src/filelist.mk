@@ -13,6 +13,8 @@
 # See the Mulan PSL v2 for more details.
 #**************************************************************************************/
 
+#处理文件
+
 SRCS-y += src/nemu-main.c
 DIRS-y += src/cpu src/monitor src/utils
 DIRS-$(CONFIG_MODE_SYSTEM) += src/memory
