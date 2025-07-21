@@ -46,7 +46,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_settle(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__stl(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 1, "", "Settle region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 4, "", "Settle region did not converge.");
         }
         __VstlIterCount = ((IData)(1U) + __VstlIterCount);
         __VstlContinue = 0U;

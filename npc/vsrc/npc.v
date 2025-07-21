@@ -1,3 +1,6 @@
+
+import "DPI-C" function void ebreak(input int unsigned pc);
+
 module npc(
     input  wire clk,
     input  wire rst,
@@ -5,9 +8,6 @@ module npc(
     output wire [31:0]  alu_result,
     output reg  [31:0]  pc
 );
-
-import "DPI-C" function void ebreak(input int pc);
-
 
 
 //使用触发器处理pc

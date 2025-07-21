@@ -14,6 +14,8 @@
 class Vnpc__Syms;
 class Vnpc___024root;
 class VerilatedVcdC;
+class Vnpc___024unit;
+
 
 // This class is the main interface to the Verilated model
 class alignas(VL_CACHE_LINE_BYTES) Vnpc VL_NOT_FINAL : public VerilatedModel {
@@ -39,6 +41,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc VL_NOT_FINAL : public VerilatedModel {
     // CELLS
     // Public to allow access to /* verilator public */ items.
     // Otherwise the application code can consider these internals.
+    Vnpc___024unit* const __PVT____024unit;
 
     // Root instance pointer to allow access to model internals,
     // including inlined /* verilator public_flat_* */ items.

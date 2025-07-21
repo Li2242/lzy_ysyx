@@ -15,6 +15,7 @@ Vnpc::Vnpc(VerilatedContext* _vcontextp__, const char* _vcname__)
     , inst{vlSymsp->TOP.inst}
     , alu_result{vlSymsp->TOP.alu_result}
     , pc{vlSymsp->TOP.pc}
+    , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context
