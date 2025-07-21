@@ -5,8 +5,8 @@
 #include "verilated_vcd_c.h"
 
 
-#define RESET_VECTOR 0x8000000
-#define MSIZE 0x8000000
+#define RESET_VECTOR 0x100000
+#define MSIZE 0x100000
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
@@ -131,7 +131,7 @@ void sim_init(int argc,char** argv){
     // 1. 复位初始化
     top->clk = 0;
     top->rst = 0;
-    top->pc = 0x80000000;
+    top->pc = RESET_VECTOR;
     long img_size = load_img();
     top->eval();
     tfp->dump(contextp->time()); // 记录复位前状态
