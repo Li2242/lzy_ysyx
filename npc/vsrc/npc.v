@@ -43,7 +43,6 @@ wire is_I;
 // wire is_B;
 wire is_U;
 wire is_J;
-wire inst_type;
 
 //立即数
 // wire [31:0]imm_R;
@@ -121,6 +120,8 @@ assign is_lui   = is_U & hot_opcode[55];
 assign is_jal   = is_J ;
 assign is_jalr  = is_I & hot_funct3[0] & hot_opcode[103];
 assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
+
+assign reg_wen = 1;
 
 assign alu_op[0] = is_auipc;
 assign alu_op[1] = is_lui;

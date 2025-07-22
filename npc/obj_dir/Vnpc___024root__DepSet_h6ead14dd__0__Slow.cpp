@@ -72,7 +72,8 @@ VL_ATTR_COLD void Vnpc___024root___dump_triggers__stl(Vnpc___024root* vlSelf) {
 }
 #endif  // VL_DEBUG
 
-VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf);
+void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf);
+VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf);
 
 VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_stl\n"); );
@@ -80,26 +81,9 @@ VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     if ((1ULL & vlSelfRef.__VstlTriggered.word(0U))) {
-        Vnpc___024root___stl_sequent__TOP__0(vlSelf);
+        Vnpc___024root___ico_sequent__TOP__0(vlSelf);
+        Vnpc___024root____Vm_traceActivitySetAll(vlSelf);
     }
-}
-
-VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___stl_sequent__TOP__0\n"); );
-    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    vlSelfRef.npc__DOT____Vcellinp__pc_4__din = ((IData)(4U) 
-                                                 + vlSelfRef.pc);
-    vlSelfRef.alu_result = ((((- (IData)((vlSelfRef.inst 
-                                          >> 0x1fU))) 
-                              << 0xcU) | (vlSelfRef.inst 
-                                          >> 0x14U)) 
-                            + ((0U == (0x1fU & (vlSelfRef.inst 
-                                                >> 0xfU)))
-                                ? 0U : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
-                               [(0x1fU & (vlSelfRef.inst 
-                                          >> 0xfU))]));
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_triggers__stl(Vnpc___024root* vlSelf);
@@ -164,6 +148,16 @@ VL_ATTR_COLD void Vnpc___024root___dump_triggers__nba(Vnpc___024root* vlSelf) {
 }
 #endif  // VL_DEBUG
 
+VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vm_traceActivitySetAll\n"); );
+    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Body
+    vlSelfRef.__Vm_traceActivity[0U] = 1U;
+    vlSelfRef.__Vm_traceActivity[1U] = 1U;
+    vlSelfRef.__Vm_traceActivity[2U] = 1U;
+}
+
 VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___ctor_var_reset\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -174,12 +168,21 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->inst = VL_RAND_RESET_I(32);
     vlSelf->alu_result = VL_RAND_RESET_I(32);
     vlSelf->pc = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT____Vcellinp__pc_4__din = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__next_pc = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__imm = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__reg_wen = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__alu_op = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__is_I = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_U = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__inst_type = VL_RAND_RESET_I(1);
+    VL_RAND_RESET_W(128, vlSelf->npc__DOT__hot_opcode);
+    vlSelf->npc__DOT____VdfgRegularize_h9a2a8a06_0_5 = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__u_alu__DOT__result_auipc = VL_RAND_RESET_I(32);
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
     vlSelf->__Vtrigprevexpr___TOP__clk__0 = VL_RAND_RESET_I(1);
-    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+    for (int __Vi0 = 0; __Vi0 < 3; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }
 }

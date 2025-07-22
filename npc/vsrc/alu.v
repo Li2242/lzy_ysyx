@@ -13,10 +13,11 @@ wire [31:0] result_lui;
 wire [31:0] result_jal;
 wire [31:0] result_jalr;
 wire [31:0] result_addi;
-//jal
-assign next_pc = alu_op[2] ? pc+imm : pc;
-//jalr
-assign next_pc = alu_op[3] ? (src1+imm)&~1 : pc ;
+//jal jarl
+assign next_pc = alu_op[2] ? pc+imm :
+                 alu_op[3] ? (src1+imm)&~1 :
+                 pc+4;
+
 
 assign result_auipc = imm + pc;
 assign result_lui   = imm;

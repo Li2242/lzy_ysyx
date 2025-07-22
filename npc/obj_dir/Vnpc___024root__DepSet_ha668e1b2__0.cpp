@@ -56,35 +56,60 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
+    __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((0x100073U == vlSelfRef.inst)) {
         Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(
                                                            ((IData)(4U) 
                                                             + vlSelfRef.pc));
     }
-    __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
-    if (((IData)((0x13U == (0x707fU & vlSelfRef.inst))) 
-         & (0U != (0x1fU & (vlSelfRef.inst >> 7U))))) {
+    if (((IData)(vlSelfRef.npc__DOT__reg_wen) & (0U 
+                                                 != 
+                                                 (0x1fU 
+                                                  & (vlSelfRef.inst 
+                                                     >> 7U))))) {
         __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0 
             = vlSelfRef.alu_result;
         __VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0 
             = (0x1fU & (vlSelfRef.inst >> 7U));
         __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 1U;
     }
-    vlSelfRef.pc = ((IData)(vlSelfRef.rst) ? 0x80000000U
-                     : vlSelfRef.npc__DOT____Vcellinp__pc_4__din);
     if (__VdlySet__npc__DOT__u_regfile2__DOT__rf__v0) {
         vlSelfRef.npc__DOT__u_regfile2__DOT__rf[__VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0] 
             = __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0;
     }
-    vlSelfRef.alu_result = ((((- (IData)((vlSelfRef.inst 
-                                          >> 0x1fU))) 
-                              << 0xcU) | (vlSelfRef.inst 
-                                          >> 0x14U)) 
-                            + ((0U == (0x1fU & (vlSelfRef.inst 
-                                                >> 0xfU)))
-                                ? 0U : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
-                               [(0x1fU & (vlSelfRef.inst 
-                                          >> 0xfU))]));
-    vlSelfRef.npc__DOT____Vcellinp__pc_4__din = ((IData)(4U) 
-                                                 + vlSelfRef.pc);
+    vlSelfRef.pc = ((IData)(vlSelfRef.rst) ? 0x80000000U
+                     : vlSelfRef.npc__DOT__next_pc);
+    vlSelfRef.npc__DOT__u_alu__DOT__result_auipc = 
+        (vlSelfRef.npc__DOT__imm + vlSelfRef.pc);
+    vlSelfRef.npc__DOT__next_pc = ((4U & vlSelfRef.npc__DOT__alu_op)
+                                    ? vlSelfRef.npc__DOT__u_alu__DOT__result_auipc
+                                    : vlSelfRef.pc);
+    vlSelfRef.alu_result = (((- (IData)((1U & vlSelfRef.npc__DOT__alu_op))) 
+                             & vlSelfRef.npc__DOT__u_alu__DOT__result_auipc) 
+                            | (((- (IData)((1U & (vlSelfRef.npc__DOT__alu_op 
+                                                  >> 1U)))) 
+                                & vlSelfRef.npc__DOT__imm) 
+                               | (((- (IData)((1U & 
+                                               (vlSelfRef.npc__DOT__alu_op 
+                                                >> 2U)))) 
+                                   & ((IData)(4U) + vlSelfRef.pc)) 
+                                  | (((- (IData)((1U 
+                                                  & (vlSelfRef.npc__DOT__alu_op 
+                                                     >> 3U)))) 
+                                      & ((IData)(4U) 
+                                         + vlSelfRef.pc)) 
+                                     | ((- (IData)(
+                                                   (1U 
+                                                    & (vlSelfRef.npc__DOT__alu_op 
+                                                       >> 4U)))) 
+                                        & (vlSelfRef.npc__DOT__imm 
+                                           + ((0U == 
+                                               (0x1fU 
+                                                & (vlSelfRef.inst 
+                                                   >> 0xfU)))
+                                               ? 0U
+                                               : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
+                                              [(0x1fU 
+                                                & (vlSelfRef.inst 
+                                                   >> 0xfU))])))))));
 }
