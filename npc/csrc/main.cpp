@@ -91,6 +91,7 @@ static int parse_args(int argc, char *argv[]) {
 static long load_img() {
   if (img_file == NULL) {
     printf("No image is given. Use the default build-in image.");
+    memcpy(pmem,memory,sizeof(memory));
     return 4096; // built-in image size
   }
 
