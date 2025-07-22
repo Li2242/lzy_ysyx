@@ -77,6 +77,7 @@ assign rd    = inst[11:7];
 assign funct3 = inst[14:12];
 
 // output declaration of module decoder7_128
+/* verilator lint_on UNUSEDSIGNAL */
 wire [127:0] hot_opcode;
 
 decoder7_128 u_decoder7_128(
@@ -85,6 +86,7 @@ decoder7_128 u_decoder7_128(
 );
 
 // output declaration of module decoder3_8
+/* verilator lint_on UNUSEDSIGNAL */
 wire [7:0] hot_funct3;
 decoder3_8 u_decoder3_8(
 	.in  	(funct3   ),

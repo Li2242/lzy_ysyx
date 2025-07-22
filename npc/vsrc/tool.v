@@ -1,3 +1,4 @@
+/* verilator lint_on UNUSEDSIGNAL */
 module decoder3_8(
     input wire [2:0] in,
     output wire [7:0] out
@@ -10,7 +11,7 @@ module decoder3_8(
 
 endmodule
 
-
+/* verilator lint_on UNUSEDSIGNAL */
 module decoder7_128(
     input wire[6:0] in,
     output wire[127:0] out
