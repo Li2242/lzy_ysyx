@@ -110,16 +110,6 @@ static long load_img() {
   return size;
 }
 
-// //读指令
-// __uint32_t pmem_read(__int32_t pc){
-//     __int32_t index = (pc - MBASE) / 4;
-//     if (index < 0 || index >= MSIZE) {
-//         printf("Error: PC 0x%X out of memory range!\n", pc);
-//         exit(1);
-//     }
-//   return img_file[index];
-// }
-
 
 //开始
 void sim_init(int argc,char** argv){
