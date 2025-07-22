@@ -10,7 +10,7 @@ module decoder3_8(
     end endgenerate
 
 endmodule
-
+/* verilator lint_on UNUSEDSIGNAL */
 /* verilator lint_on UNUSEDSIGNAL */
 module decoder7_128(
     input wire[6:0] in,
@@ -22,3 +22,4 @@ module decoder7_128(
             assign out[i] = (i==in);
     end endgenerate
 endmodule
+/* verilator lint_on UNUSEDSIGNAL */
