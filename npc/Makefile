@@ -1,5 +1,5 @@
 VERILATOR = verilator
-
+#-Wall未加
 CFLAGS = --cc --exe --build -O3  --trace --top-module npc
 CSRC = csrc/main.cpp
 VSRC = vsrc/*.v
