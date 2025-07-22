@@ -4,8 +4,7 @@
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
 
-
-#define RESET_VECTOR 0x100000
+#define MBASE 0x100000
 #define MSIZE 0x100000
 
 VerilatedContext* contextp = NULL;
@@ -13,22 +12,28 @@ VerilatedVcdC* tfp = NULL;
 static char *img_file = NULL;
 static Vnpc* top;
 int simend = 0;
+//初始化内存
+static uint8_t pmem[MSIZE] = {};
 
+//函数
 static long load_img();
 void sim_init(int argc,char** argv);
-void sim_end();
 void sim_exe();
+void sim_end();
 __uint32_t pmem_read(__int32_t pc);
 static int parse_args(int argc, char *argv[]);
+static inline uint32_t host_read(void *addr, int len);
+static uint32_t pmem_read(uint32_t addr, int len);
+uint8_t* guest_to_host(uint32_t paddr);
 
-
+//verilog中的函数
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
   simend = 1;
 }
 
 //为传入文件时的指令
-__uint32_t memory[MSIZE] = {
+static const __uint32_t memory[] = {
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
   0x00108113,  // 2: addi x2, x1, 1      (x2 = 100 + 1 = 101)
   0x00210193,  // 3: addi x3, x2, 2      (x3 = 101 + 2 = 103)
@@ -61,8 +66,7 @@ int main(int argc,char** argv) {
 
 
 
-
-
+//解析参数
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
@@ -83,9 +87,6 @@ static int parse_args(int argc, char *argv[]) {
 
 
 
-
-
-
 //这个函数会将一个有意义的客户程序从镜像文件读入到内存, 覆盖刚才的内置客户程序.
 static long load_img() {
   if (img_file == NULL) {
@@ -96,27 +97,28 @@ static long load_img() {
   FILE *fp = fopen(img_file, "rb");
   assert(fp);
 
+
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
 
   printf("The image is %s, size = %ld", img_file, size);
 
   fseek(fp, 0, SEEK_SET);
-  int ret = fread(memory, size, 1, fp);
+  int ret = fread(pmem, size, 1, fp);
   assert(ret == 1);
   fclose(fp);
   return size;
 }
 
-//读指令
-__uint32_t pmem_read(__int32_t pc){
-    __int32_t index = (pc - RESET_VECTOR) / 4;
-    if (index < 0 || index >= MSIZE) {
-        printf("Error: PC 0x%X out of memory range!\n", pc);
-        exit(1);
-    }
-  return img_file[index];
-}
+// //读指令
+// __uint32_t pmem_read(__int32_t pc){
+//     __int32_t index = (pc - MBASE) / 4;
+//     if (index < 0 || index >= MSIZE) {
+//         printf("Error: PC 0x%X out of memory range!\n", pc);
+//         exit(1);
+//     }
+//   return img_file[index];
+// }
 
 
 //开始
@@ -131,7 +133,7 @@ void sim_init(int argc,char** argv){
     // 1. 复位初始化
     top->clk = 0;
     top->rst = 0;
-    top->pc = RESET_VECTOR;
+    top->pc = MBASE;
     long img_size = load_img();
     top->eval();
     tfp->dump(contextp->time()); // 记录复位前状态
@@ -139,9 +141,9 @@ void sim_init(int argc,char** argv){
 }
 
 void sim_exe(){
-    for(int i = 0; (i < RESET_VECTOR) && simend != 1 ; i++){
+    for(int i = 0; (i < MSIZE) && simend != 1 ; i++){
     top->clk = 0;
-    top->inst = pmem_read(top->pc);
+    top->inst = pmem_read(top->pc,4);
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
@@ -169,4 +171,20 @@ void sim_end(){
   delete contextp;
 }
 
+//判断以什么形式读出
+static inline uint32_t host_read(void *addr, int len) {
+  switch (len) {
+    case 1: return *(uint8_t  *)addr;
+    case 2: return *(uint16_t *)addr;
+    case 4: return *(uint32_t *)addr;
+    default:assert(0);
+  }
+}
 
+//从物理地址 addr 处读取长度为 len 的数据。
+static uint32_t pmem_read(uint32_t addr, int len) {
+  uint32_t ret = host_read(guest_to_host(addr),len);
+  return ret;
+}
+
+uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - MBASE; }
