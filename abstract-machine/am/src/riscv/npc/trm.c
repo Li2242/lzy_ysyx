@@ -1,5 +1,6 @@
 #include <am.h>
 #include <klib-macros.h>
+#include <stdio.h>
 
 extern char _heap_start;
 int main(const char *args);
@@ -16,7 +17,7 @@ void putch(char ch) {
 
 void halt(int code) {
   while (1){
-		return ;
+		asm volatile ("move $v0, %0; sdbbp" : :"r"(0));
 	};
 }
 
