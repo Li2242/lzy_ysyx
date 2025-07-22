@@ -2,7 +2,7 @@
 module alu(
     input[31:0] imm,
     input[31:0] src1,
-    input[31:0] alu_op,
+    input[4:0] alu_op,
     input[31:0] pc,
     output[31:0]  next_pc,
     output[31:0] result

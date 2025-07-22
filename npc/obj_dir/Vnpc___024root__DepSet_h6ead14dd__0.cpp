@@ -723,9 +723,27 @@ VL_INLINE_OPT void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                                        & vlSelfRef.inst))))));
     vlSelfRef.npc__DOT__u_alu__DOT__result_auipc = 
         (vlSelfRef.npc__DOT__imm + vlSelfRef.pc);
+    vlSelfRef.npc__DOT__u_alu__DOT__result_addi = (vlSelfRef.npc__DOT__imm 
+                                                   + 
+                                                   ((0U 
+                                                     == 
+                                                     (0x1fU 
+                                                      & (vlSelfRef.inst 
+                                                         >> 0xfU)))
+                                                     ? 0U
+                                                     : 
+                                                    vlSelfRef.npc__DOT__u_regfile2__DOT__rf
+                                                    [
+                                                    (0x1fU 
+                                                     & (vlSelfRef.inst 
+                                                        >> 0xfU))]));
     vlSelfRef.npc__DOT__next_pc = ((4U & vlSelfRef.npc__DOT__alu_op)
                                     ? vlSelfRef.npc__DOT__u_alu__DOT__result_auipc
-                                    : vlSelfRef.pc);
+                                    : ((8U & vlSelfRef.npc__DOT__alu_op)
+                                        ? (0xfffffffeU 
+                                           & vlSelfRef.npc__DOT__u_alu__DOT__result_addi)
+                                        : ((IData)(4U) 
+                                           + vlSelfRef.pc)));
     vlSelfRef.alu_result = (((- (IData)((1U & vlSelfRef.npc__DOT__alu_op))) 
                              & vlSelfRef.npc__DOT__u_alu__DOT__result_auipc) 
                             | (((- (IData)((1U & (vlSelfRef.npc__DOT__alu_op 
@@ -744,16 +762,7 @@ VL_INLINE_OPT void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                                    (1U 
                                                     & (vlSelfRef.npc__DOT__alu_op 
                                                        >> 4U)))) 
-                                        & (vlSelfRef.npc__DOT__imm 
-                                           + ((0U == 
-                                               (0x1fU 
-                                                & (vlSelfRef.inst 
-                                                   >> 0xfU)))
-                                               ? 0U
-                                               : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
-                                              [(0x1fU 
-                                                & (vlSelfRef.inst 
-                                                   >> 0xfU))])))))));
+                                        & vlSelfRef.npc__DOT__u_alu__DOT__result_addi)))));
 }
 
 void Vnpc___024root___eval_triggers__ico(Vnpc___024root* vlSelf);

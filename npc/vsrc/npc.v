@@ -33,8 +33,8 @@ wire[31:0]  src1;
 wire[4:0]   rs1;
 // wire [4:0] 	 rs2;
 wire[4:0]   rd;
-wire         reg_wen;
-wire[31:0] alu_op;
+wire        reg_wen;
+wire[4:0] alu_op;
 
 //指令BIG类型
 // wire is_R;
