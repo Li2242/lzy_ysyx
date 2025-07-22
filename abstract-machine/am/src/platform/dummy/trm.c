@@ -6,7 +6,5 @@ void putch(char ch) {
 }
 
 void halt(int code) {
-  while (1){
-		printf("!");
-	};
+  while (1);
 }
