@@ -17,7 +17,7 @@ void putch(char ch) {
 
 void halt(int code) {
   while (1){
-		asm volatile ("move $v0, %0; sdbbp" : :"r"(0));
+		putstr("while");
 	};
 }
 
