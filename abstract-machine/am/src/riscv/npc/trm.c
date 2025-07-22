@@ -16,7 +16,7 @@ void putch(char ch) {
 
 void halt(int code) {
   while (1){
-		printf("1");
+		putch('1');
 	};
 }
 
