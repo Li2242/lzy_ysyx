@@ -32,6 +32,10 @@ extern "C" void ebreak(uint32_t pc){
   simend = 1;
 }
 
+extern "C" void halt(){
+	top->pc = 0x00100073;
+}
+
 //为传入文件时的指令
 static const __uint32_t memory[] = {
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
