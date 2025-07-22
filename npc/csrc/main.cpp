@@ -5,7 +5,7 @@
 #include "verilated_vcd_c.h"
 
 #define MBASE 0x80000000
-#define MSIZE 0x30000000
+#define MSIZE 0x40000000
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
