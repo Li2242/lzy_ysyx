@@ -1,6 +1,6 @@
 
 import "DPI-C" function void ebreak(input int unsigned pc);
-inport "DPI_C" function void halt();
+import "DPI-C" function void halt();
 
 module npc(
     input  wire clk,
