@@ -130,13 +130,9 @@ assign alu_op[3] = is_jalr;
 assign alu_op[4] = is_addi;
 //读取数据
 //符号扩
-// wire is_addi = (opcode == 7'b0010011) && (funct3 == 3'b000);
-// assign reg_wen =  is_addi;
 
 
-
-//计算并写入寄存器
-
+//alu
 // output declaration of module alu
 alu u_alu(
     .imm    	(imm     ),

@@ -4,7 +4,7 @@
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
 
-#define MBASE 0x1000000
+#define MBASE 0x80000000
 #define MSIZE 0x1000000
 
 VerilatedContext* contextp = NULL;
@@ -54,7 +54,7 @@ static const __uint32_t memory[] = {
 
 int main(int argc,char** argv) {
 	//解析参数（现在的功能只有读入bin文件）
-	parse_args(argc, argv);
+  parse_args(argc, argv);
 	//初始化
   sim_init(argc,argv);
   //执行
