@@ -17,7 +17,7 @@ void putch(char ch) {
 
 void halt(int code) {
   while (1){
-		putstr("while");
+		1;
 	};
 }
 
