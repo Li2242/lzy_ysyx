@@ -33,7 +33,7 @@ extern "C" void ebreak(uint32_t pc){
 }
 
 extern "C" void halt(){
-	top->pc = 0x00100073;
+	top->inst = 0x00100073;
 }
 
 //为传入文件时的指令
