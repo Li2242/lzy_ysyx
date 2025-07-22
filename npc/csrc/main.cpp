@@ -4,8 +4,8 @@
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
 
-#define MBASE 0x80000000
-#define MSIZE 0x80000000
+#define MBASE 0x1000000
+#define MSIZE 0x1000000
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
