@@ -57,6 +57,13 @@ void sim_init(int argc,char** argv){
 
 //执行
 void sim_exe(uint32_t n){
+	switch (npc_state) {
+    case NPC_END: case NPC_ABORT: case NPC_QUIT:
+      printf("Program execution has ended. To restart the program, exit NEMU and run again.\n");
+      return;
+    default: npc_state = NPC_RUNNING;
+  }
+
   for(int i = 0; (i < n) && npc_state != NPC_RUNNING ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
