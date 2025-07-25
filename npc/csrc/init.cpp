@@ -74,7 +74,7 @@ void sim_end(){
 }
 
 //解析参数
-static int parse_args(int argc, char *argv[]) {
+int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
     //长选项表的结束标志
