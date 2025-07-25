@@ -8,6 +8,8 @@
 //宏定义
 #define MBASE 0x80000000
 #define MSIZE 0x10000000
+// calculate the length of an array
+#define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
 
 //内存
 extern uint8_t pmem[MSIZE];
