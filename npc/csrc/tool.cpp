@@ -18,6 +18,7 @@ uint32_t pmem_read(uint32_t addr, int len) {
 		return ret;
 	}
 	out_of_bound(addr);
+	assert(0);
 	return 0;
 }
 //地址转换
@@ -69,5 +70,4 @@ long load_img() {
 //越界处理
 static void out_of_bound(uint32_t addr) {
   printf("ERROR = address = 0x%08x is out of bound of pmem [0x%08x, 0x%08x] at pc =  0x%08x",addr, MBASE, MBASE+MSIZE, top->pc);
-	assert(0);
 }
