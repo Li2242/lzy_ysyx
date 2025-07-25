@@ -36,13 +36,12 @@ extern "C" void isa_reg_str2val(const svLogicVecVal *rf_data){
 
 	for(int i = 0;i<32;i++){
   //对比寄存器的名字
-	printf("%-3s: 0x%08x\t",regs[i],rf_data[i].aval);
-    if(strcmp(reg_name,regs[i]) == 0){
-			// printf("找到了！！\n");
-      reg_num = rf_data[i].aval;
-			printf("%d\n",reg_num);
-      break;
-    }
+	printf("%-3s: 0x%08x\n",regs[i],rf_data[i].aval);
+    // if(strcmp(reg_name,regs[i]) == 0){
+		// 	// printf("找到了！！\n");
+    //   reg_num = rf_data[i].aval;
+    //   break;
+    // }
   }
   //加的pc
   if(strcmp(reg_name,"pc") == 0){
