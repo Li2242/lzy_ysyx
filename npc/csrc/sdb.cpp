@@ -10,6 +10,7 @@ static int cmd_c  (char *args);
 static int cmd_q  (char *args);
 static int cmd_si (char *args);
 static int cmd_x  (char *args);
+static int info_r (char* args);
 //help
 static int cmd_help(char *args);
 
@@ -151,4 +152,15 @@ static int cmd_x(char *args){
 		addr += 4;
 	}
 	return 0;
+}
+
+static int info_r(char* args){
+	char* arg = strtok("NULL"," ");
+	if(arg == NULL){
+		printf("请输入一个参数\n");
+		return 0;
+	}
+	if(arg == "r"){
+		top->info_r = 1;
+	}
 }
