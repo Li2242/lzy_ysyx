@@ -113,7 +113,7 @@ static int cmd_q(char *args){
 
 //单步执行
 static int cmd_si(char *args){
-	char* arg = strtok(args," ");
+	char* arg = strtok(NULL," ");
 	if(arg == NULL){
 		sim_exe(1);
 		return 0;
@@ -125,5 +125,27 @@ static int cmd_si(char *args){
 		return 0;
 	}
 	sim_exe(n);
+	return 0;
+}
+//扫描内存
+static int cmd_x(char *args){
+	char *arg[2];
+	arg[0] = strtok(NULL," ");
+	arg[1] = strtok(NULL," ");
+	if(arg[0] == NULL || arg[1]==NULL){
+		printf("请输入两个参数:长度 从哪里开始");
+		return 0;
+	}
+	int n ;
+	sscanf(arg[0],"%d", &n);
+	if(n<=0){
+		printf("请输入大于零的次数哦！\n");
+	}
+	uint32_t addr;
+	sscanf(arg[1],"%u",&addr);
+	for(int i =0;i<n;i++){
+		printf("addr = %u: %u\n",addr,pmem_read(addr,4));
+		addr += 4;
+	}
 	return 0;
 }
