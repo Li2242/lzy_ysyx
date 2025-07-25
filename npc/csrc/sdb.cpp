@@ -78,7 +78,8 @@ void sdb_mainloop(){
 		if(i == NR_CMD){printf("Unkonwn command '%s'\n",cmd);}
 	}
 }
-static int help(char* str){
+
+static int cmd_help(char* str){
 	char* arg = strtok(NULL," ");
 	int i;
 	if(arg == NULL){
