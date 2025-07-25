@@ -63,7 +63,7 @@ void execute(uint32_t n){
 	printf("%d\n",npc_state);
 	switch (npc_state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
-      printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
+      green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
       return;
     default: npc_state = NPC_RUNNING;
   }
@@ -79,6 +79,9 @@ void execute(uint32_t n){
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
+		if(simend == 1){
+			green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
+		}
 		//检查监视点是否改变
 		trace_and_difftest();
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
