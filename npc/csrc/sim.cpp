@@ -81,6 +81,7 @@ void execute(uint32_t n){
     contextp->timeInc(5);
 		if(simend == 1){
 			green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
+			return ;
 		}
 		//检查监视点是否改变
 		trace_and_difftest();
