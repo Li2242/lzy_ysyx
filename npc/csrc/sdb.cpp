@@ -144,7 +144,7 @@ static int cmd_x(char *args){
 		printf("请输入大于零的次数哦！\n");
 	}
 	uint32_t addr;
-	sscanf(arg[1],"%u",&addr);
+	sscanf(arg[1],"%x",&addr);
 	printf("addr = 0x%08x\n",addr);
 	for(int i =0;i < n;i++){
 		printf("addr = 0x%08x: 0x%08x\n",addr,pmem_read(addr,4));
