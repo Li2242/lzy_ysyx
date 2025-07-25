@@ -1,9 +1,7 @@
 #include "common.h"
 
+
 static char *img_file = NULL;
-
-
-
 
 //判断以什么形式读出
 inline uint32_t host_read(void *addr, int len) {
