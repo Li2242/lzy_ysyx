@@ -92,8 +92,8 @@ static int cmd_help(char* str){
         printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
         return 0;
       }
-			printf("Unknown command '%s'\n", arg);
 		}
+		printf("Unknown command '%s'\n", arg);
 	}
 	return 0;
 }
