@@ -169,6 +169,9 @@ static int cmd_info(char* args){
 		top->info_r = 1;
 		top->eval();
 	}
+	if(*arg == 'w'){
+		scan();
+	}
 	return 0;
 }
 

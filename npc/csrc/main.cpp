@@ -39,7 +39,7 @@ extern "C" void isa_reg_str2val(const svLogicVecVal *rf_data){
     if(strcmp(reg_name,regs[i]) == 0){
 			// printf("找到了！！\n");
       reg_num = rf_data[i].aval;
-			printf("%d\n",reg_num);
+			// printf("%d\n",reg_num);
       break;
     }
   }

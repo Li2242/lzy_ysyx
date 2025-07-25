@@ -209,9 +209,6 @@ int expr(char *e, bool *success) {
 
 
   int result = eval(0,nr_token-1,success);
-  /* TODO: Insert codes to evaluate the expression. */
-  //TODO();
-  //printf("expr中的result: %u \n",result);
   return result;
 }
 
