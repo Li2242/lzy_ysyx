@@ -1,6 +1,8 @@
 #include "common.h"
 
 static char *img_file = NULL;
+ char *reg_name = NULL;
+ uint32_t reg_num = 0;
 static void out_of_bound(uint32_t addr);
 //判断以什么形式读出
 inline uint32_t host_read(void *addr, int len) {
