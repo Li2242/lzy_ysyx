@@ -190,7 +190,6 @@ int expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-	printf("参数检查没有问题\n");
   //区分解引用和乘法
   for (int i = 0; i < nr_token; i ++) {
     //')'是后加的，这可坑死我了，我以为是测试代码写的有问题呢
@@ -245,7 +244,7 @@ int eval(int p,int q,bool *success) {
       top->info_r = 2;
 			top->eval();
       //处理解指针和寄存器的值
-			printf("%d\n",reg_num);
+			printf("reg_num = 0x%08x\n",reg_num);
       return reg_num;
     }else{
       return 0;
