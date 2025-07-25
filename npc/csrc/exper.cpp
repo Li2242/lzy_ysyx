@@ -242,6 +242,9 @@ int eval(int p,int q,bool *success) {
 			//跳过寄存器的特殊标志$
 			reg_name++;
       top->info_r = 2;
+			top->clk = 0;
+			top->eval();
+			top->clk = 1;
 			top->eval();
       //处理解指针和寄存器的值
 			printf("reg_num = 0x%08x\n",reg_num);
