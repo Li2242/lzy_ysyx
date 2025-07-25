@@ -118,10 +118,10 @@ void scan_watchpoints(bool* success){
     }
     wp = wp->next;
   }
-  // if(*success){
-  //     //你需要将nemu_state.state变量设置为NEMU_STOP来达到暂停的效果
-  //     nemu_state.state = NEMU_STOP;
-  // }
+  if(*success){
+      //你需要将nemu_state.state变量设置为NEMU_STOP来达到暂停的效果
+      npc_state = NPC_STOP;
+  }
 }
 
 //扫描已经被分配的所有监视点
