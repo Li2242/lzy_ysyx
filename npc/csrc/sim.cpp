@@ -61,7 +61,7 @@ void sim_exe(uint32_t n){
     contextp->timeInc(5);
         //结束
       if(simend == 1){
-        Log("ebreak指令在地址 0x%X 处被执行\n", top->pc);
+        printf("ebreak指令在地址 0x%X 处被执行\n", top->pc);
 
         break;
       }
