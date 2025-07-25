@@ -175,6 +175,7 @@ static int cmd_p(char *args){
   char* arg =args;
 	if(arg==NULL){
 		printf("请输入表达式\n");
+		return 0;
 	}
   bool success = true;
   int result = expr(arg,&success);
