@@ -5,14 +5,14 @@
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
 
-
+//宏定义
 #define MBASE 0x80000000
 #define MSIZE 0x10000000
 
-extern uint8_t pmem[MSIZE] = {};
-extern VerilatedContext* contextp = NULL;
-extern VerilatedVcdC* tfp = NULL;
-extern Vnpc* top;
+extern VerilatedContext* contextp ;
+extern VerilatedVcdC* tfp;
+extern uint8_t pmem[MSIZE];
+extern int simend;
 
 //函数
 static long load_img();
