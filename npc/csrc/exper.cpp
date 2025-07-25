@@ -94,7 +94,6 @@ static int nr_token __attribute__((used)) = 0;
 static bool make_token(char *e) {
   int position = 0;
   int i;
-	printf("make_token\n");
   //用于存储正则表达式匹配的位置信息.
   //regmatch_t 是一个关键结构体，专门用于记录匹配结果的起始和结束位置。
   regmatch_t pmatch;
@@ -177,6 +176,7 @@ static bool make_token(char *e) {
       return false;
     }
   }
+	printf("make_token\n");
   return true;
 }
 
