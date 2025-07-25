@@ -24,6 +24,8 @@ extern Vnpc* top;
 //内存
 extern uint8_t pmem[MSIZE];
 
+//结束标志
+extern int simend;
 //需要查找的寄存器
 extern char *reg_name;
 extern uint32_t reg_num;
