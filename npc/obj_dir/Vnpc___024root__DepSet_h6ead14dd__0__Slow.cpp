@@ -46,7 +46,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_settle(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__stl(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 4, "", "Settle region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 3, "", "Settle region did not converge.");
         }
         __VstlIterCount = ((IData)(1U) + __VstlIterCount);
         __VstlContinue = 0U;
@@ -165,6 +165,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     // Body
     vlSelf->clk = VL_RAND_RESET_I(1);
     vlSelf->rst = VL_RAND_RESET_I(1);
+    vlSelf->info_r = VL_RAND_RESET_I(1);
     vlSelf->inst = VL_RAND_RESET_I(32);
     vlSelf->alu_result = VL_RAND_RESET_I(32);
     vlSelf->pc = VL_RAND_RESET_I(32);

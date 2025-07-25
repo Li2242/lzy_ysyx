@@ -42,6 +42,7 @@ void Vnpc___024root___eval_triggers__act(Vnpc___024root* vlSelf) {
 #endif
 }
 
+void Vnpc___024unit____Vdpiimwrap_info_reg__Vdpioc2_TOP____024unit(const VlUnpacked<IData/*31:0*/, 32> &rf_data);
 void Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(IData/*31:0*/ pc);
 
 VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) {
@@ -56,6 +57,7 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
+    Vnpc___024unit____Vdpiimwrap_info_reg__Vdpioc2_TOP____024unit(vlSelfRef.npc__DOT__u_regfile2__DOT__rf);
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((0x100073U == vlSelfRef.inst)) {
         Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(

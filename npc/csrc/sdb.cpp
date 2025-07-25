@@ -10,7 +10,7 @@ static int cmd_c  (char *args);
 static int cmd_q  (char *args);
 static int cmd_si (char *args);
 static int cmd_x  (char *args);
-static int info_r (char* args);
+static int cmd_info (char* args);
 //help
 static int cmd_help(char *args);
 
@@ -43,7 +43,8 @@ static struct{
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NPC", cmd_q },
 	{ "si", "Step execution",cmd_si},
-	{ "x", "Scan memory", cmd_x}
+	{ "x", "Scan memory", cmd_x},
+	{ "info", "Print the program status", cmd_info}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -154,13 +155,14 @@ static int cmd_x(char *args){
 	return 0;
 }
 
-static int info_r(char* args){
-	char* arg = strtok("NULL"," ");
+static int cmd_info(char* args){
+	char *arg = strtok(NULL," ");
 	if(arg == NULL){
 		printf("请输入一个参数\n");
 		return 0;
 	}
-	if(arg == "r"){
+	if(*arg == 'r'){
 		top->info_r = 1;
 	}
+	return 0;
 }

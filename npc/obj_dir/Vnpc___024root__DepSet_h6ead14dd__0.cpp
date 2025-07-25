@@ -849,7 +849,7 @@ void Vnpc___024root___eval(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__ico(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 4, "", "Input combinational region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 3, "", "Input combinational region did not converge.");
         }
         __VicoIterCount = ((IData)(1U) + __VicoIterCount);
         __VicoContinue = 0U;
@@ -865,7 +865,7 @@ void Vnpc___024root___eval(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__nba(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 4, "", "NBA region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 3, "", "NBA region did not converge.");
         }
         __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
         __VnbaContinue = 0U;
@@ -876,7 +876,7 @@ void Vnpc___024root___eval(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vnpc___024root___dump_triggers__act(vlSelf);
 #endif
-                VL_FATAL_MT("vsrc/npc.v", 4, "", "Active region did not converge.");
+                VL_FATAL_MT("vsrc/npc.v", 3, "", "Active region did not converge.");
             }
             vlSelfRef.__VactIterCount = ((IData)(1U) 
                                          + vlSelfRef.__VactIterCount);
@@ -901,5 +901,7 @@ void Vnpc___024root___eval_debug_assertions(Vnpc___024root* vlSelf) {
         Verilated::overWidthError("clk");}
     if (VL_UNLIKELY(((vlSelfRef.rst & 0xfeU)))) {
         Verilated::overWidthError("rst");}
+    if (VL_UNLIKELY(((vlSelfRef.info_r & 0xfeU)))) {
+        Verilated::overWidthError("info_r");}
 }
 #endif  // VL_DEBUG

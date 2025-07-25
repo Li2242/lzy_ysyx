@@ -12,6 +12,7 @@ Vnpc::Vnpc(VerilatedContext* _vcontextp__, const char* _vcname__)
     , vlSymsp{new Vnpc__Syms(contextp(), _vcname__, this)}
     , clk{vlSymsp->TOP.clk}
     , rst{vlSymsp->TOP.rst}
+    , info_r{vlSymsp->TOP.info_r}
     , inst{vlSymsp->TOP.inst}
     , alu_result{vlSymsp->TOP.alu_result}
     , pc{vlSymsp->TOP.pc}
