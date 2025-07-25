@@ -19,8 +19,10 @@ module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
 
 //传出reg的值
-always @(posedge clk)begin
-	info_reg(rf);
+always @(*)begin
+	if(info_r == 1)begin
+		info_reg(rf);
+	end
 end
 
 
