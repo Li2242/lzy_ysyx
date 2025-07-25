@@ -111,7 +111,6 @@ void scan_watchpoints(bool* success){
       printf("The watchpoint %s was triggered,and its value changed from 0x%08x to 0x%08x.\n",wp->s,wp->n,a);
       wp->n = a;
       *success = true;
-			printf("%d\n",*success);
     }
 		//条件判断用的
     if(success0 == true && a == 1){
@@ -124,6 +123,7 @@ void scan_watchpoints(bool* success){
   if(*success){
       //你需要将nemu_state.state变量设置为NEMU_STOP来达到暂停的效果
       npc_state = NPC_STOP;
+			printf("%d\n",npc_state);
   }
 }
 
