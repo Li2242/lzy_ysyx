@@ -9,8 +9,9 @@
 #define MBASE 0x80000000
 #define MSIZE 0x10000000
 
-
+//内存
 extern uint8_t pmem[MSIZE];
+//结束标志
 extern int simend;
 
 //函数
