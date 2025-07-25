@@ -28,12 +28,15 @@ VM_CLASSES_FAST += \
 	Vnpc \
 	Vnpc___024root__DepSet_ha668e1b2__0 \
 	Vnpc___024root__DepSet_h6ead14dd__0 \
+	Vnpc___024unit__DepSet_h8260b3f5__0 \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
 	Vnpc___024root__Slow \
 	Vnpc___024root__DepSet_ha668e1b2__0__Slow \
 	Vnpc___024root__DepSet_h6ead14dd__0__Slow \
+	Vnpc___024unit__Slow \
+	Vnpc___024unit__DepSet_h8aa5431c__0__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization
 VM_SUPPORT_FAST += \

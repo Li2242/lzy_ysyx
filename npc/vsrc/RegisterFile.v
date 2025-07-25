@@ -1,5 +1,8 @@
+
+import "DPI-C" function void isa_reg_display(input logic[31:0] rf_data[] );
 module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   input wire clk,
+	input wire info_r,
   //写端口
   input wire wen,
   input wire [ADDR_WIDTH-1:0] waddr,
@@ -14,6 +17,14 @@ module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
 
 //寄存器
   reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
+
+//传出reg的值
+always @(*)begin
+	if(info_r == 1)begin
+		isa_reg_display(rf);
+	end
+end
+
 
 //READ 1
 assign rdata1 = (raddr1 == 5'b0) ? 32'b0 : rf[raddr1];

@@ -1,21 +1,27 @@
 VERILATOR = verilator
-
-CFLAGS = --cc --exe --build -O3 -Wall --trace
-CSRC = csrc/main.cpp
+#-Wall未加
+CFLAGS = --cc --exe --build -O3  --trace --top-module npc -LDFLAGS "-lreadline"
+CSRC = csrc/*.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
 
+IMG ?=
+
+.PHONY: sim run clean
 
 all:
 	@echo "Write this Makefile by your self."
 
 sim: $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	./$(OBJ_DIR)/Vnpc
+	echo "sim"
+	$(VERILATOR) $(CFLAGS) $(CSRC) $(VSRC)
 
-run:$(CSRC) $(VSRC)
-	$(VERILATOR) $(CFLAGS) --top-module npc -Ivsrc/ $(CSRC) $(VSRC)
+run: sim $(CSRC) $(VSRC)
+	echo "run"
+	./$(OBJ_DIR)/Vnpc $(IMG)
+
 
 clean:
-	rm -rf obj_dir
+	rm -rf obj_dir waveform.vcd waveform.view
 include ../Makefile
