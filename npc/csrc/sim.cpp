@@ -63,7 +63,7 @@ void sim_exe(uint32_t n){
 
 	switch (npc_state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
-      printf("Program execution has ended. To restart the program, exit NEMU and run again.\n");
+      printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
       return;
     default: npc_state = NPC_RUNNING;
   }
