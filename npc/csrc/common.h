@@ -10,6 +10,9 @@
 #define MSIZE 0x10000000
 
 extern uint8_t pmem[MSIZE] = {};
+extern VerilatedContext* contextp = NULL;
+extern VerilatedVcdC* tfp = NULL;
+extern Vnpc* top;
 
 //函数
 static long load_img();

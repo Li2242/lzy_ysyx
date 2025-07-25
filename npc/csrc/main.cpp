@@ -2,13 +2,11 @@
 
 
 
-VerilatedContext* contextp = NULL;
-VerilatedVcdC* tfp = NULL;
-static Vnpc* top;
+
 
 int simend = 0;
 //初始化内存
-uint8_t pmem[MSIZE] = {};
+
 
 
 
@@ -63,27 +61,7 @@ static int parse_args(int argc, char *argv[]) {
 
 
 
-//开始
-void sim_init(int argc,char** argv){
-    contextp = new VerilatedContext;
-    contextp->commandArgs(argc,argv);
-    Verilated::traceEverOn(true);
-    top = new Vnpc;
-    tfp = new VerilatedVcdC;
-    top->trace(tfp,99);
-    tfp->open("waveform.vcd");
-    //写入内置程序
-    memcpy(pmem,memory,sizeof(memory));
-    // 1. 复位初始化
-    top->clk = 0;
-    top->rst = 0;
-    top->pc = MBASE;
-    //载入外部程序 这个返回值暂时用不上
-    long img_size = load_img();
-    top->eval();
-    tfp->dump(contextp->time()); // 记录复位前状态
-    contextp->timeInc(10);
-}
+
 
 void sim_exe(){
     for(int i = 0; (i < MSIZE) && simend != 1 ; i++){
