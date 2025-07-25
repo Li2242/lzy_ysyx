@@ -59,7 +59,7 @@ void sim_init(int argc,char** argv){
 }
 
 //执行
-void sim_exe(uint32_t n){
+void execute(uint32_t n){
 	printf("%d\n",npc_state);
 	switch (npc_state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
@@ -79,22 +79,21 @@ void sim_exe(uint32_t n){
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
+		//检查监视点是否改变
+		trace_and_difftest();
+    printf( "result = %d pc = %x\n",top->alu_result,top->pc);
+  }
+}
 
-		switch (npc_state) {
+void sim_exe(uint32_t n){
+	execute(n);
+	switch (npc_state) {
 			case NPC_RUNNING: npc_state = NPC_STOP; break;
-
 			case NPC_END: case NPC_ABORT:
 				green_printf("nemu: %s at pc = ",top->pc);
-
 				// fall through
 			case NPC_QUIT: return ;
 		}
-
-	//检查监视点是否改变
-		trace_and_difftest();
-
-    printf( "result = %d pc = %x\n",top->alu_result,top->pc);
-  }
 }
 
 //结束
