@@ -3,7 +3,7 @@ import "DPI-C" function void isa_reg_display(input logic[31:0] rf_data[] );
 import "DPI-C" function void isa_reg_str2val(input logic[31:0] rf_data[] );
 module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   input wire clk,
-	input wire info_r,
+	input wire [3:0]info_r,
   //写端口
   input wire wen,
   input wire [ADDR_WIDTH-1:0] waddr,
@@ -23,6 +23,9 @@ module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
 always @(*)begin
 	if(info_r == 1)begin
 		isa_reg_display(rf);
+	end
+	if(info_r == 2)begin
+		isa_reg_str2val(rf);
 	end
 end
 

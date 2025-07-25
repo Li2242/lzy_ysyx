@@ -44,7 +44,7 @@ extern "C" void isa_reg_str2val(const svLogicVecVal *rf_data){
   if(strcmp(reg_name,"pc") == 0){
     reg_num = top->pc;
   }
-
+	top->info_r = 0;
 }
 
 
