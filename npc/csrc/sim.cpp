@@ -60,7 +60,7 @@ void sim_init(int argc,char** argv){
 
 //执行
 void sim_exe(uint32_t n){
-
+	printf("%d\n",npc_state);
 	switch (npc_state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
       printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
