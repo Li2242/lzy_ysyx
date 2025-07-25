@@ -111,13 +111,13 @@ static int cmd_q(char *args){
 
 static int cmd_si(char *args){
 	char* arg = strtok(args," ");
-	printf("arg = %s\n",arg);
 	if(arg == NULL){
 		sim_exe(1);
 		return 0;
 	}
 	int n;
 	sscanf("arg","%d",&n);
+	printf("n = %d\n",n);
 	if(n<=0){
 		printf("请输入大于0的执行次数");
 		return 0;
