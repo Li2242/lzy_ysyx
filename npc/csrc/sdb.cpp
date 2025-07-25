@@ -145,7 +145,7 @@ static int cmd_x(char *args){
 	}
 	uint32_t addr;
 	sscanf(arg[1],"%u",&addr);
-	// printf("0x%08x",addr);
+	printf("addr = 0x%08x\n",addr);
 	for(int i =0;i < n;i++){
 		printf("addr = 0x%08x: 0x%08x\n",addr,pmem_read(addr,4));
 		addr += 4;
