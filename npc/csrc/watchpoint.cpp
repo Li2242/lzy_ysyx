@@ -107,7 +107,6 @@ void scan_watchpoints(bool* success){
     //   wp = wp->next;
     //   return;
     // }
-		printf("%d\n",a);
     if(a != wp->n && success0 == false){
       printf("The watchpoint %s was triggered,and its value changed from 0x%08x to 0x%08x.\n",wp->s,wp->n,a);
       wp->n = a;
