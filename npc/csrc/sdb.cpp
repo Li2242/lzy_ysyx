@@ -180,7 +180,7 @@ static int cmd_p(char *args){
   bool success = true;
   int result = expr(arg,&success);
    if (success) {
-    printf("Expression result:%d\n", result);
+    printf("Expression result:0x%08x\n", result);
   } else {
     printf("\033[31mThe evaluation of the expression failed!\033[0m\n");
   }
