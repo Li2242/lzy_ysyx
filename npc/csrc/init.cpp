@@ -2,6 +2,8 @@
 
 static Vnpc* top;
 static char *img_file = NULL;
+//初始化内存
+uint8_t pmem[MSIZE] = {};
 
 //为传入文件时的指令
 static const __uint32_t memory[] = {
@@ -40,7 +42,7 @@ void sim_init(int argc,char** argv){
     tfp->dump(contextp->time()); // 记录复位前状态
     contextp->timeInc(10);
 }
-
+//执行
 void sim_exe(){
     for(int i = 0; (i < MSIZE) && simend != 1 ; i++){
     top->clk = 0;

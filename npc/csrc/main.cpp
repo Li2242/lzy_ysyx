@@ -1,13 +1,7 @@
 #include "common.h"
 
 
-
-
 int simend = 0;
-//初始化内存
-uint8_t pmem[MSIZE] = {};
-
-
 //verilog中的函数
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
