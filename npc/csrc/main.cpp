@@ -16,7 +16,7 @@ int main(int argc,char** argv) {
 	//初始化
   sim_init(argc,argv);
   //执行
-  sim_exe(-1);
+  sdb_mainloop();
 	//结束
   sim_end();
   return 0;

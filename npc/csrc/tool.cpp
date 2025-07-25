@@ -2,6 +2,10 @@
 
 static char *img_file = NULL;
 
+
+// calculate the length of an array
+#define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
+
 //判断以什么形式读出
 inline uint32_t host_read(void *addr, int len) {
   switch (len) {
