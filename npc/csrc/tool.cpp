@@ -20,8 +20,16 @@ uint32_t pmem_read(uint32_t addr, int len) {
 	out_of_bound(addr);
 	return 0;
 }
+
 //地址转换
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - MBASE; }
+
+
+//越界处理
+static void out_of_bound(uint32_t addr) {
+  printf("\033[31mERROR = address = 0x%08x is out of bound of pmem [0x%08x, 0x%08x] at pc =  0x%08x\033[0m\n",addr, MBASE, MBASE+MSIZE, top->pc);
+	assert(0);
+}
 
 //解析参数
 int parse_args(int argc, char *argv[]) {
@@ -41,8 +49,6 @@ int parse_args(int argc, char *argv[]) {
   }
   return 0;
 }
-
-
 
 //这个函数会将一个有意义的客户程序从镜像文件读入到内存, 覆盖刚才的内置客户程序.
 long load_img() {
@@ -66,8 +72,4 @@ long load_img() {
   return size;
 }
 
-//越界处理
-static void out_of_bound(uint32_t addr) {
-  printf("\033[31mERROR = address = 0x%08x is out of bound of pmem [0x%08x, 0x%08x] at pc =  0x%08x\033[0m\n",addr, MBASE, MBASE+MSIZE, top->pc);
-		assert(0);
-}
+

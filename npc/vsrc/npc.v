@@ -110,7 +110,7 @@ assign is_J = (hot_opcode[111]) ? 1 : 0;
 
 //立即数
 assign imm = ({32{is_I}} & imm_I)
-			| ({32{is_U}} & imm_U)
+				| ({32{is_U}} & imm_U)
 		    | ({32{is_J}} & imm_J);
 						//  | ({32{is_S}} & imm_S);
 
