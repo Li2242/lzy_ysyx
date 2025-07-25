@@ -21,6 +21,7 @@ extern "C" void info_reg(const svLogicVecVal *rf_data){
     printf("\n");
   }
   printf("pc : 0x%08x\n",top->pc);
+	top->info_r = 0;
 }
 
 
