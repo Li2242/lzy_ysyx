@@ -80,14 +80,19 @@ void sim_exe(uint32_t n){
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
 
+		switch (npc_state) {
+			case NPC_RUNNING: npc_state = NPC_STOP; break;
+
+			case NPC_END: case NPC_ABORT:
+				green_printf("nemu: %s at pc = ",top->pc);
+
+				// fall through
+			case NPC_QUIT: return ;
+		}
+
+	//检查监视点是否改变
 		trace_and_difftest();
 
-		if (npc_state != NPC_RUNNING){
-        //判断是否正常退出
-        int good = (npc_state == NPC_END && npc_state == 0) ||
-                (npc_state == NPC_QUIT);
-        break;
-    }
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
   }
 }
