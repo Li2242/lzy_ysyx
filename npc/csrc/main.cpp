@@ -7,7 +7,7 @@ extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
   	simend = 1;
 }
-extern "C" void info_reg(const svLogicVecVal *rf_data){
+extern "C" void isa_reg_display(const svLogicVecVal *rf_data){
 	const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
   "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
