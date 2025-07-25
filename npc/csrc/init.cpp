@@ -1,5 +1,7 @@
 #include "common.h"
 
+VerilatedContext* contextp =NULL ;
+VerilatedVcdC* tfp = NULL;
 static Vnpc* top;
 static char *img_file = NULL;
 //初始化内存
