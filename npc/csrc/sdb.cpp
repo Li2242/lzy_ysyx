@@ -129,7 +129,6 @@ static int cmd_si(char *args){
 }
 //扫描内存
 static int cmd_x(char *args){
-	printf("cmd_x\n");
 	char *arg[2];
 	arg[0] = strtok(NULL," ");
 	arg[1] = strtok(NULL," ");
