@@ -14,6 +14,7 @@ static char* rl_gets(){
 	if(line_read && *line_read){
 		add_history(line_read);
 	}
+	return line_read;
 }
 
 
