@@ -15,7 +15,6 @@ typedef struct watchpoint {
 } WP;
 
 
-uint32_t expr(char *e, bool *success);
 int new_wp(char *str);
 void free_wp(int n);
 void scan_watchpoints(bool* success);

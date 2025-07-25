@@ -35,6 +35,7 @@ uint32_t pmem_read(uint32_t addr, int len);
 uint8_t* guest_to_host(uint32_t paddr);
 void sdb_mainloop();
 void green_printf(const char *fmt, ...);
+//表达式求值
 int expr(char *e, bool *success);
 //编译正则表达式
 void init_regex();
