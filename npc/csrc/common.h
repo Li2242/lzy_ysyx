@@ -15,7 +15,7 @@ extern uint8_t pmem[MSIZE];
 extern int simend;
 
 //函数
-static long load_img();
+long load_img();
 void sim_init(int argc,char** argv);
 void sim_exe();
 void sim_end();
