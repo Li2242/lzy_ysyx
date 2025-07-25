@@ -13,7 +13,8 @@ static int cmd_info (char* args);
 static int cmd_p (char* args);
 //help
 static int cmd_help(char *args);
-
+static int cmd_d(char *args);
+static int cmd_w(char *args);
 
 //使用 readline 函数从标准输入读取用户输入的一行命令，如果不为空,将其添加到历史记录中
 //并返回给调用的参数
@@ -187,4 +188,23 @@ static int cmd_p(char *args){
   return 0;
 }
 
+
 //w
+static int cmd_w(char *args){
+  char* w_arg =  args;
+  int success = new_wp(w_arg);
+  if(success == 0){
+    printf("The watchpoint is  set up successfully.\n");
+  }else{
+    green_printf("The watchpoint settings fails.");
+  }
+  return 0;
+}
+
+//d
+static int cmd_d(char *args){
+  uint32_t num ;
+  sscanf(args,"%u",&num);
+  free_wp(num);
+  return 0;
+}

@@ -38,6 +38,12 @@ void green_printf(const char *fmt, ...);
 int expr(char *e, bool *success);
 //编译正则表达式
 void init_regex();
+//初始化监视点
+void init_wp_pool();
+int new_wp(char *str);
+void free_wp(int n);
+void scan_watchpoints(bool* success);
+void scan();
 //判断是否在peme中
 static inline bool in_pmem(uint32_t addr) {
   return addr - MBASE < MSIZE;

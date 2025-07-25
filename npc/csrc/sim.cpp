@@ -33,6 +33,8 @@ void sim_init(int argc,char** argv){
     tfp->open("waveform.vcd");
 		//编译正则表达式
 		init_regex();
+		//初始化监视点
+		init_wp_pool();
     //写入内置程序
     memcpy(pmem,memory,sizeof(memory));
     // 1. 复位初始化
