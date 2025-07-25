@@ -21,6 +21,13 @@ static const __uint32_t memory[] = {
   0x00948513   // 10: addi x10, x9, 9    (x10 = 136 + 9 = 145)
 };
 
+static void trace_and_difftest() {
+  //在Kconfig中可以控制这个宏是否生成
+  //扫描监视点
+    bool success = false;
+    scan_watchpoints(&success);
+}
+
 
 //开始
 void sim_init(int argc,char** argv){
@@ -50,7 +57,7 @@ void sim_init(int argc,char** argv){
 
 //执行
 void sim_exe(uint32_t n){
-  for(int i = 0; (i < n) && simend != 1 ; i++){
+  for(int i = 0; (i < n) && npc_state != NPC_RUNNING ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
     top->eval();
@@ -61,11 +68,15 @@ void sim_exe(uint32_t n){
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
-        //结束
-      if(simend == 1){
-        printf("ebreak指令在地址 0x%X 处被执行\n", top->pc);
+
+		trace_and_difftest();
+
+		if (npc_state != NPC_RUNNING){
+        //判断是否正常退出
+        int good = (npc_state == NPC_END && npc_state == 0) ||
+                (npc_state == NPC_QUIT);
         break;
-      }
+    }
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
   }
 }

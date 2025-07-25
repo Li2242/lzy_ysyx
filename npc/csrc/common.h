@@ -6,21 +6,24 @@
 #include "verilated_vcd_c.h"
 #include <string.h>
 
+//NPC状态
+enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
+//npc状态
+extern int npc_state;
 
+//仿真
 extern VerilatedContext* contextp ;
 extern VerilatedVcdC* tfp ;
 extern Vnpc* top;
 
-//宏定义
+//内存
 #define MBASE 0x80000000
 #define MSIZE 0x10000000
 // calculate the length of an array
 #define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
-
 //内存
 extern uint8_t pmem[MSIZE];
-//结束标志
-extern int simend;
+
 //需要查找的寄存器
 extern char *reg_name;
 extern uint32_t reg_num;

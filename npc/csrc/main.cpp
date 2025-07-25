@@ -1,11 +1,10 @@
 #include "common.h"
 
 
-int simend = 0;
 //verilog中的函数
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
-  	simend = 1;
+  	npc_state = NPC_QUIT;
 }
 //遍历寄存器
 extern "C" void isa_reg_display(const svLogicVecVal *rf_data){
