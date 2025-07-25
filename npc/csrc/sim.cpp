@@ -2,7 +2,7 @@
 
 VerilatedContext* contextp =NULL ;
 VerilatedVcdC* tfp = NULL;
-static Vnpc* top;
+Vnpc* top;
 //初始化内存
 uint8_t pmem[MSIZE] = {};
 

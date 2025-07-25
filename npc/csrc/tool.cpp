@@ -13,8 +13,12 @@ inline uint32_t host_read(void *addr, int len) {
 }
 //从物理地址 addr 处读取长度为 len 的数据。
 uint32_t pmem_read(uint32_t addr, int len) {
-  uint32_t ret = host_read(guest_to_host(addr),len);
-  return ret;
+   if (in_pmem(addr) == 1){
+		uint32_t ret = host_read(guest_to_host(addr),len);
+		return ret;
+	}
+
+	return 0;
 }
 //地址转换
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - MBASE; }
@@ -60,4 +64,9 @@ long load_img() {
   assert(ret == 1);
   fclose(fp);
   return size;
+}
+
+//越界处理
+static void out_of_bound(uint32_t addr) {
+  printf("address = 0x%08x is out of bound of pmem [0x%08x, 0x%08x] at pc =  0x%08x",addr, MBASE, MBASE+MSIZE, top->pc);
 }

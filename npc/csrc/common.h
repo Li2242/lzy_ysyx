@@ -5,6 +5,9 @@
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
 
+extern VerilatedContext* contextp ;
+extern VerilatedVcdC* tfp ;
+extern Vnpc* top;
 
 //宏定义
 #define MBASE 0x80000000
@@ -27,3 +30,8 @@ inline uint32_t host_read(void *addr, int len);
 uint32_t pmem_read(uint32_t addr, int len);
 uint8_t* guest_to_host(uint32_t paddr);
 void sdb_mainloop();
+
+//判断是否在peme中
+static inline bool in_pmem(uint32_t addr) {
+  return addr - MBASE < MSIZE;
+}
