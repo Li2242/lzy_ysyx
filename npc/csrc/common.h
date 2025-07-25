@@ -9,6 +9,8 @@
 #define MBASE 0x80000000
 #define MSIZE 0x10000000
 
+extern uint8_t pmem[MSIZE] = {};
+
 //函数
 static long load_img();
 void sim_init(int argc,char** argv);
