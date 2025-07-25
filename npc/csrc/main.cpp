@@ -20,7 +20,7 @@ extern "C" void isa_reg_display(const svLogicVecVal *rf_data){
     //     printf("%-3s: 0x%08x\t",regs[k],rf_data[k].aval);
     //   }
     // printf("\n");
-		printf("%-3s: 0x%08x\t",regs[i],rf_data[i].aval);
+		printf("%-3s: 0x%08x\n",regs[i],rf_data[i].aval);
   }
   printf("pc : 0x%08x\n",top->pc);
 	top->info_r = 0;
