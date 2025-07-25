@@ -42,7 +42,7 @@ int parse_args(int argc, char *argv[]) {
 
 
 //这个函数会将一个有意义的客户程序从镜像文件读入到内存, 覆盖刚才的内置客户程序.
-static long load_img() {
+long load_img() {
   if (img_file == NULL) {
     printf("No image is given. Use the default build-in image.\n");
     return 4096; // built-in image size
