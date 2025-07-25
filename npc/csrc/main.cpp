@@ -5,7 +5,7 @@ int simend = 0;
 //verilog中的函数
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
-  simend = 1;
+  	simend = 1;
 }
 
 

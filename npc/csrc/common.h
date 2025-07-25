@@ -9,8 +9,7 @@
 #define MBASE 0x80000000
 #define MSIZE 0x10000000
 
-extern VerilatedContext* contextp ;
-extern VerilatedVcdC* tfp;
+
 extern uint8_t pmem[MSIZE];
 extern int simend;
 
@@ -19,7 +18,6 @@ static long load_img();
 void sim_init(int argc,char** argv);
 void sim_exe();
 void sim_end();
-__uint32_t pmem_read(__int32_t pc);
 int parse_args(int argc, char *argv[]);
 inline uint32_t host_read(void *addr, int len);
 uint32_t pmem_read(uint32_t addr, int len);
