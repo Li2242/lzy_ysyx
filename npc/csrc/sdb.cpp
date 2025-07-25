@@ -133,7 +133,7 @@ static int cmd_x(char *args){
 	arg[0] = strtok(NULL," ");
 	arg[1] = strtok(NULL," ");
 	if(arg[0] == NULL || arg[1]==NULL){
-		printf("请输入两个参数:长度 从哪里开始");
+		printf("请输入两个参数:长度 从哪里开始]\n");
 		return 0;
 	}
 	int n ;
