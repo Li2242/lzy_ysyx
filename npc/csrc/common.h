@@ -17,7 +17,7 @@ extern int simend;
 //函数
 long load_img();
 void sim_init(int argc,char** argv);
-void sim_exe();
+void sim_exe(uint32_t n);
 void sim_end();
 int parse_args(int argc, char *argv[]);
 inline uint32_t host_read(void *addr, int len);
