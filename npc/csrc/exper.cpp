@@ -248,6 +248,7 @@ int eval(int p,int q,bool *success) {
       top->info_r = 2;
 			top->eval();
       //处理解指针和寄存器的值
+			printf("%d\n",reg_num);
       return reg_num;
     }else{
       return 0;
