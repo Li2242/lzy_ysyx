@@ -4,6 +4,10 @@
 #include <verilated.h>
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
+#include <regex.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <string.h>
 
 extern VerilatedContext* contextp ;
 extern VerilatedVcdC* tfp ;
@@ -21,6 +25,7 @@ extern uint8_t pmem[MSIZE];
 extern int simend;
 //需要查找的寄存器
 extern char *reg_name;
+extern uint32_t reg_num;
 //函数
 long load_img();
 void sim_init(int argc,char** argv);
@@ -31,7 +36,8 @@ inline uint32_t host_read(void *addr, int len);
 uint32_t pmem_read(uint32_t addr, int len);
 uint8_t* guest_to_host(uint32_t paddr);
 void sdb_mainloop();
-
+void green_printf(const char *fmt, ...);
+int expr(char *e, bool *success);
 //判断是否在peme中
 static inline bool in_pmem(uint32_t addr) {
   return addr - MBASE < MSIZE;

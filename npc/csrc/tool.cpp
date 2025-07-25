@@ -73,3 +73,14 @@ long load_img() {
 }
 
 
+void green_printf(const char *fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    // 设置为绿色：\033[32m，恢复默认颜色：\033[0m
+    printf("\033[32m");       // 设置颜色
+    vprintf(fmt, args);       // 实际打印
+    printf("\033[0m");        // 恢复默认
+
+    va_end(args);
+}

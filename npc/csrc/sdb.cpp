@@ -1,7 +1,5 @@
 #include "common.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <string.h>
+
 
 //批处理模式
 static int is_batch_mode = false;
@@ -11,6 +9,7 @@ static int cmd_q  (char *args);
 static int cmd_si (char *args);
 static int cmd_x  (char *args);
 static int cmd_info (char* args);
+static int cmd_p (char* args);
 //help
 static int cmd_help(char *args);
 
@@ -44,7 +43,8 @@ static struct{
 	{ "q", "Exit NPC", cmd_q },
 	{ "si", "Step execution",cmd_si},
 	{ "x", "Scan memory", cmd_x},
-	{ "info", "Print the program status", cmd_info}
+	{ "info", "Print the program status", cmd_info},
+	{"p", "Expression evaluation",cmd_p}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -166,4 +166,18 @@ static int cmd_info(char* args){
 		top->eval();
 	}
 	return 0;
+}
+
+//p
+static int cmd_p(char *args){
+  //提取出参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
+  char* arg =args;
+  bool success = true;
+  int result = expr(arg,&success);
+   if (success) {
+    printf("Expression result:%d\n", result);
+  } else {
+    printf("\033[31mThe evaluation of the expression failed!\033[0m\n");
+  }
+  return 0;
 }
