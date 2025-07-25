@@ -1,5 +1,6 @@
 #include "common.h"
-
+#include <readline/readline.h>
+#include <readline/history.h>
 
 //批处理模式
 static int is_batch_mode = false;

@@ -1,5 +1,5 @@
 #include "common.h"
-
+#include <regex.h>
 
 bool check_parentheses(int p,int q);
 int find_main_op(int p,int q);
