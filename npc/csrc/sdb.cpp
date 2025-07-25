@@ -46,7 +46,9 @@ static struct{
 	{ "si", "Step execution",cmd_si},
 	{ "x", "Scan memory", cmd_x},
 	{ "info", "Print the program status", cmd_info},
-	{"p", "Expression evaluation",cmd_p}
+	{"p", "Expression evaluation",cmd_p},
+	{"w", "Set watchpoint",cmd_w},
+  {"d", "Delete watchpoint",cmd_d}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
