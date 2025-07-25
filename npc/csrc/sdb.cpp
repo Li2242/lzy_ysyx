@@ -70,11 +70,31 @@ void sdb_mainloop(){
 		}
 		int i;
 		for(i =0; i < NR_CMD ;i++){
-			if(strcmp(cmd,cmd_table[i].handler(args)) < 0){return;}
-			break;
+			if(strcmp(cmd,cmd_table[i].name) == 0){
+				if(cmd_table[i].handler(args) < 0){return;}
+				break;
+			}
 		}
 		if(i == NR_CMD){printf("Unkonwn command '%s'\n",cmd);}
 	}
+}
+static int help(char* str){
+	char* arg = strtok(NULL," ");
+	int i;
+	if(arg == NULL){
+		for(i = 0;i<NR_CMD;i++){
+			printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+		}
+	}else{
+		for(i = 0; i<NR_CMD;i++){
+			if (strcmp(arg, cmd_table[i].name) == 0) {
+        printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+        return 0;
+      }
+			printf("Unknown command '%s'\n", arg);
+		}
+	}
+	return 0;
 }
 
 
