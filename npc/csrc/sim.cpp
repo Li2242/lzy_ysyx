@@ -26,6 +26,7 @@ static const __uint32_t memory[] = {
 static void trace_and_difftest() {
   //在Kconfig中可以控制这个宏是否生成
   //扫描监视点
+	printf("sao miao le\n");
     bool success = false;
     scan_watchpoints(&success);
 }
