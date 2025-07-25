@@ -1,21 +1,21 @@
 # include "common.h"
 
 
-// ----------- state -----------
+// // ----------- state -----------
 
-enum { NEMU_RUNNING, NEMU_STOP, NEMU_END, NEMU_ABORT, NEMU_QUIT };
+// enum { NEMU_RUNNING, NEMU_STOP, NEMU_END, NEMU_ABORT, NEMU_QUIT };
 
-typedef struct {
-  int state;
-  uint32_t halt_pc;
-  uint32_t halt_ret;
-} NEMUState;
+// typedef struct {
+//   int state;
+//   uint32_t halt_pc;
+//   uint32_t halt_ret;
+// } NEMUState;
 
-extern NEMUState nemu_state;
+// extern NEMUState nemu_state;
 
-// ----------- timer -----------
+// // ----------- timer -----------
 
-uint64_t get_time();
+// uint64_t get_time();
 
 // ----------- log -----------
 
