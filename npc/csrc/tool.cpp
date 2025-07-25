@@ -1,7 +1,7 @@
 #include "common.h"
 
 static char *img_file = NULL;
-
+static void out_of_bound(uint32_t addr);
 //判断以什么形式读出
 inline uint32_t host_read(void *addr, int len) {
   switch (len) {
@@ -17,7 +17,7 @@ uint32_t pmem_read(uint32_t addr, int len) {
 		uint32_t ret = host_read(guest_to_host(addr),len);
 		return ret;
 	}
-
+	out_of_bound(addr);
 	return 0;
 }
 //地址转换
