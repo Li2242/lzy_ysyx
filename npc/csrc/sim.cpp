@@ -1,5 +1,8 @@
 #include "common.h"
 
+VerilatedContext* contextp =NULL ;
+VerilatedVcdC* tfp = NULL;
+Vnpc* top;
 //初始化内存
 uint8_t pmem[MSIZE] = {};
 
