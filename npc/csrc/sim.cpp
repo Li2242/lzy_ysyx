@@ -46,14 +46,12 @@ void sim_init(int argc,char** argv){
 
 //执行
 void sim_exe(uint32_t n){
-	printf("%d",n);
   for(int i = 0; (i < n) && simend != 1 ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
-
 
     top->clk = 1;
     top->eval();
@@ -62,10 +60,8 @@ void sim_exe(uint32_t n){
         //结束
       if(simend == 1){
         printf("ebreak指令在地址 0x%X 处被执行\n", top->pc);
-
         break;
       }
-
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
   }
 }

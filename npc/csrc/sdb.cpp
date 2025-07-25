@@ -9,6 +9,7 @@ static int is_batch_mode = false;
 static int cmd_c  (char *args);
 static int cmd_q  (char *args);
 static int cmd_si (char *args);
+static int cmd_x  (char *args);
 //help
 static int cmd_help(char *args);
 
@@ -40,7 +41,8 @@ static struct{
 	{ "help", "Display information about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NPC", cmd_q },
-	{ "si", "Step execution",cmd_si}
+	{ "si", "Step execution",cmd_si},
+	{ "x", "Scan memory", cmd_x}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -109,6 +111,7 @@ static int cmd_q(char *args){
 		return -1;
 }
 
+//单步执行
 static int cmd_si(char *args){
 	char* arg = strtok(args," ");
 	if(arg == NULL){
@@ -118,7 +121,7 @@ static int cmd_si(char *args){
 	int n;
 	sscanf(arg,"%d",&n);
 	if(n<=0){
-		printf("请输入大于0的执行次数");
+		printf("请输入大于0的执行次数\n");
 		return 0;
 	}
 	sim_exe(n);
