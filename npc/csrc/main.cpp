@@ -37,7 +37,7 @@ extern "C" void isa_reg_str2val(const svLogicVecVal *rf_data){
 	for(int i = 0;i<32;i++){
   //对比寄存器的名字
     if(strcmp(reg_name,regs[i]) == 0){
-			printf("找到了！！\n");
+			// printf("找到了！！\n");
       reg_num = rf_data[i].aval;
       break;
     }
