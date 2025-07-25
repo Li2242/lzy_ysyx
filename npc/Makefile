@@ -1,6 +1,6 @@
 VERILATOR = verilator
 #-Wall未加
-CFLAGS = --cc --exe --build -O3  --trace --top-module npc -LDFLAGS "-lreadline"
+CFLAGS = --cc --exe --build -g -O3  --trace --top-module npc -LDFLAGS "-lreadline"
 CSRC = csrc/*.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
