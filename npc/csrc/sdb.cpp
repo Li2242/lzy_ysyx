@@ -132,20 +132,20 @@ static int cmd_x(char *args){
 	char *arg[2];
 	arg[0] = strtok(NULL," ");
 	arg[1] = strtok(NULL," ");
-	printf("arg[0] = %s arg[1]=%s\n",arg[0],arg[1]);
+	// printf("arg[0] = %s arg[1]=%s\n",arg[0],arg[1]);
 	if(arg[0] == NULL || arg[1]==NULL){
 		printf("请输入两个参数:长度 从哪里开始]\n");
 		return 0;
 	}
 	int n ;
 	sscanf(arg[0],"%d", &n);
-	printf("n = %d\n",n);
+	// printf("n = %d\n",n);
 	if(n<=0){
 		printf("请输入大于零的次数哦！\n");
 	}
 	uint32_t addr;
 	sscanf(arg[1],"%x",&addr);
-	printf("addr = 0x%08x\n",addr);
+	// printf("addr = 0x%08x\n",addr);
 	for(int i =0;i < n;i++){
 		printf("addr = 0x%08x: 0x%08x\n",addr,pmem_read(addr,4));
 		addr += 4;
