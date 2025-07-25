@@ -173,6 +173,9 @@ static int cmd_info(char* args){
 static int cmd_p(char *args){
   //提取出参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
   char* arg =args;
+	if(arg==NULL){
+		printf("请输入表达式\n");
+	}
   bool success = true;
   int result = expr(arg,&success);
    if (success) {
