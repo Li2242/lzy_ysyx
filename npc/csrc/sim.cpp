@@ -5,6 +5,8 @@ VerilatedVcdC* tfp = NULL;
 Vnpc* top;
 //初始化内存
 uint8_t pmem[MSIZE] = {};
+//初始化状态
+	int npc_state = NPC_RUNNING;
 
 //为传入文件时的指令
 static const __uint32_t memory[] = {
@@ -42,8 +44,7 @@ void sim_init(int argc,char** argv){
 		init_regex();
 		//初始化监视点
 		init_wp_pool();
-		//初始化状态
-		int npc_state = NPC_RUNNING;
+
     //写入内置程序
     memcpy(pmem,memory,sizeof(memory));
     // 1. 复位初始化
