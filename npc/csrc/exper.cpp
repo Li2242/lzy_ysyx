@@ -104,7 +104,6 @@ static bool make_token(char *e) {
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i++) {
-			printf("jin\n");
       //使用编译后的正则表达式对目标字符串进行匹配，返回匹配结果
       //1：指向已编译的正则表达式
       //2：待匹配的目标字符串

@@ -31,6 +31,8 @@ void sim_init(int argc,char** argv){
     tfp = new VerilatedVcdC;
     top->trace(tfp,99);
     tfp->open("waveform.vcd");
+		//编译正则表达式
+		init_regex();
     //写入内置程序
     memcpy(pmem,memory,sizeof(memory));
     // 1. 复位初始化

@@ -4,9 +4,6 @@
 #include <verilated.h>
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
-#include <regex.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include <string.h>
 
 extern VerilatedContext* contextp ;
@@ -38,6 +35,8 @@ uint8_t* guest_to_host(uint32_t paddr);
 void sdb_mainloop();
 void green_printf(const char *fmt, ...);
 int expr(char *e, bool *success);
+//编译正则表达式
+void init_regex();
 //判断是否在peme中
 static inline bool in_pmem(uint32_t addr) {
   return addr - MBASE < MSIZE;
