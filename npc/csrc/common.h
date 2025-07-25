@@ -4,7 +4,7 @@
 #include <verilated.h>
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
-#include "utils.h"
+
 
 //宏定义
 #define MBASE 0x80000000
