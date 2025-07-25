@@ -43,7 +43,7 @@ void sim_init(int argc,char** argv){
 		//初始化监视点
 		init_wp_pool();
 		//初始化状态
-		npc_state = NPC_RUNNING;
+		int npc_state = NPC_RUNNING;
     //写入内置程序
     memcpy(pmem,memory,sizeof(memory));
     // 1. 复位初始化
