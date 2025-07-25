@@ -23,7 +23,7 @@ void Vnpc___024root___eval_triggers__ico(Vnpc___024root* vlSelf) {
 #endif
 }
 
-void Vnpc___024unit____Vdpiimwrap_info_reg__Vdpioc2_TOP____024unit(const VlUnpacked<IData/*31:0*/, 32> &rf_data);
+void Vnpc___024unit____Vdpiimwrap_isa_reg_display__Vdpioc2_TOP____024unit(const VlUnpacked<IData/*31:0*/, 32> &rf_data);
 
 VL_INLINE_OPT void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___ico_sequent__TOP__0\n"); );
@@ -31,7 +31,7 @@ VL_INLINE_OPT void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf) 
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     if (vlSelfRef.info_r) {
-        Vnpc___024unit____Vdpiimwrap_info_reg__Vdpioc2_TOP____024unit(vlSelfRef.npc__DOT__u_regfile2__DOT__rf);
+        Vnpc___024unit____Vdpiimwrap_isa_reg_display__Vdpioc2_TOP____024unit(vlSelfRef.npc__DOT__u_regfile2__DOT__rf);
     }
     vlSelfRef.npc__DOT__hot_opcode[0U] = (((((((0x1fU 
                                                 == 
@@ -813,7 +813,7 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     vlSelfRef.pc = ((IData)(vlSelfRef.rst) ? 0x80000000U
                      : vlSelfRef.npc__DOT__next_pc);
     if (vlSelfRef.info_r) {
-        Vnpc___024unit____Vdpiimwrap_info_reg__Vdpioc2_TOP____024unit(vlSelfRef.npc__DOT__u_regfile2__DOT__rf);
+        Vnpc___024unit____Vdpiimwrap_isa_reg_display__Vdpioc2_TOP____024unit(vlSelfRef.npc__DOT__u_regfile2__DOT__rf);
     }
     vlSelfRef.npc__DOT__u_alu__DOT__result_addi = (vlSelfRef.npc__DOT__imm 
                                                    + 

@@ -19,7 +19,8 @@ extern Vnpc* top;
 extern uint8_t pmem[MSIZE];
 //结束标志
 extern int simend;
-
+//需要查找的寄存器
+extern char *reg_name;
 //函数
 long load_img();
 void sim_init(int argc,char** argv);

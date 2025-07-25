@@ -1,5 +1,6 @@
 
 import "DPI-C" function void isa_reg_display(input logic[31:0] rf_data[] );
+import "DPI-C" function void isa_reg_str2val(input logic[31:0] rf_data[] );
 module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   input wire clk,
 	input wire info_r,

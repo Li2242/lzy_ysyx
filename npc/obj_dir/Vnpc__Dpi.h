@@ -19,7 +19,7 @@ extern "C" {
     // DPI import at vsrc/npc.v:1:30
     extern void ebreak(unsigned int pc);
     // DPI import at vsrc/RegisterFile.v:2:30
-    extern void info_reg(const svOpenArrayHandle rf_data);
+    extern void isa_reg_display(const svOpenArrayHandle rf_data);
 
 #ifdef __cplusplus
 }
