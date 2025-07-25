@@ -46,6 +46,7 @@ void sim_init(int argc,char** argv){
 
 //执行
 void sim_exe(uint32_t n){
+	printf("%d",n);
   for(int i = 0; (i < n) && simend != 1 ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
