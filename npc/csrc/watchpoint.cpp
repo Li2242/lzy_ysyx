@@ -122,7 +122,7 @@ void scan_watchpoints(bool* success){
 	//为什么没有暂停呢？
   if(*success){
       //你需要将nemu_state.state变量设置为NEMU_STOP来达到暂停的效果
-      npc_state = NPC_STOP;
+      npc_state = NPC_QUIT;
   }
 }
 
