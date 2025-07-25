@@ -111,6 +111,7 @@ static int cmd_q(char *args){
 
 static int cmd_si(char *args){
 	char* arg = strtok(NULL," ");
+	printf("arg = %s",arg);
 	if(arg == NULL){
 		sim_exe(1);
 		return 0;
