@@ -39,7 +39,8 @@ static struct{
 }cmd_table[] = {
 	{ "help", "Display information about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
-	{ "q", "Exit NPC", cmd_q }
+	{ "q", "Exit NPC", cmd_q },
+	{ "si", "Step execution",cmd_si}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
