@@ -243,6 +243,7 @@ int eval(int p,int q,bool *success) {
     //处理寄存器的值
     else if(tokens[p].type == TK_RN){
 			reg_name = tokens[p].str;
+			reg_name++;
       top->info_r = 2;
 			top->eval();
       //处理解指针和寄存器的值
