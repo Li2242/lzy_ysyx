@@ -116,7 +116,7 @@ static int cmd_si(char *args){
 		return 0;
 	}
 	int n;
-	sscanf("arg","%d",&n);
+	sscanf(arg,"%d",&n);
 	printf("n = %d\n",n);
 	if(n<=0){
 		printf("请输入大于0的执行次数");
