@@ -68,7 +68,7 @@ void sim_exe(uint32_t n){
     default: npc_state = NPC_RUNNING;
   }
 
-  for(int i = 0; (i < n) && npc_state != NPC_RUNNING ; i++){
+  for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
     top->eval();
