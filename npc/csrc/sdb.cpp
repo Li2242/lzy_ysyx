@@ -139,7 +139,7 @@ static int cmd_x(char *args){
 	}
 	int n ;
 	sscanf(arg[0],"%d", &n);
-	// printf("%d",n);
+	printf("n = %d\n",n);
 	if(n<=0){
 		printf("请输入大于零的次数哦！\n");
 	}
