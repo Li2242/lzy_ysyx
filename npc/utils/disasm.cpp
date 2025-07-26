@@ -33,13 +33,16 @@ void init_disasm() {
 
   cs_err (*cs_open_dl)(cs_arch arch, cs_mode mode, csh *handle) = NULL;
   //查找共享对象中 handle 所指向的名为 name 的符号的运行时地址
-  cs_open_dl = dlsym(dl_handle, "cs_open");
+  // cs_open_dl = dlsym(dl_handle, "cs_open");
+	cs_open_dl = reinterpret_cast<cs_err (*)(cs_arch, cs_mode, csh*)>(dlsym(dl_handle, "cs_open"));
   assert(cs_open_dl);
 
-  cs_disasm_dl = dlsym(dl_handle, "cs_disasm");
+  // cs_disasm_dl = dlsym(dl_handle, "cs_disasm");
+	cs_disasm_dl = reinterpret_cast<size_t (*)(csh, const uint8_t*, size_t, uint64_t, size_t, cs_insn**)>(dlsym(dl_handle, "cs_disasm"));
   assert(cs_disasm_dl);
 
-  cs_free_dl = dlsym(dl_handle, "cs_free");
+  // cs_free_dl = dlsym(dl_handle, "cs_free");
+	cs_free_dl = reinterpret_cast<void (*)(cs_insn*, size_t)>(dlsym(dl_handle, "cs_free"));
   assert(cs_free_dl);
     //架构
   cs_arch arch =  CS_ARCH_RISCV;
