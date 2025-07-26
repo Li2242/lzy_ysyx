@@ -1,7 +1,9 @@
 VERILATOR = verilator
 #参数
 VERILATOR_FLAGS = --cc --exe --build --trace --top-module npc
-CFLAGS = -g -O3 -I tools/capstone/repo/include -I /home/lzy14/ysyx/ysyx-workbench/npc/csrc/include/
+CFLAGS = -g -O3
+# 头文件路径
+CFLAGS += -I /home/lzy14/ysyx/ysyx-workbench/npc/csrc/include/
 # Link the readline library
 LDFLAGS = -lreadline
 #-Wall未加
@@ -14,7 +16,7 @@ OBJ_DIR = obj_dir
 IMG ?=
 
 # Include all filelist.mk to merge file lists
-FILELIST_MK = $(shell find -L ./src -name "filelist.mk")
+FILELIST_MK = $(shell find -L ./utils -name "filelist.mk")
 include $(FILELIST_MK)
 
 all:
