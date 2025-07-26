@@ -92,7 +92,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   int space_len = ilen_max - ilen;
   if (space_len < 0) space_len = 0;
   space_len = space_len * 3 + 1;
-  //清空了p
+
   memset(p, ' ', space_len);
   p += space_len;
   //写入了反汇编的内容

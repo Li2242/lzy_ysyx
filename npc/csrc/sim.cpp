@@ -78,15 +78,23 @@ void execute(uint32_t n){
 		char* p = logbuf;
 		//先写入pc
 		p += snprintf(p, sizeof(logbuf), "%08x:",top->pc);
-		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 		int ilen = 4;
 		int k;
 		uint8_t *inst = (uint8_t *)&top->inst;
 
+		for(k = ilen - 1; k >= 0; k --){
+			p += snprintf(p,4,"%02x", inst[i]);
+		}
+		int space_len = 1;
+		memset(p,' ',space_len);
+		p += space_len;
+		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+		disassemble(p,logbuf + 128 - p,top->pc,(uint8_t *)&top->inst,ilen);
 		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
 		printf( "result = %d pc = %x\n",top->alu_result,top->pc);
-		printf("pc=0x%08x : %08x\n",top->pc,top->inst);
+		// printf("pc=0x%08x : %08x\n",top->pc,top->inst);
+		printf("%s\n",logbuf);
   }
 }
 
