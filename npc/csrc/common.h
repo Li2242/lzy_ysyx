@@ -15,7 +15,8 @@ extern int npc_state;
 extern VerilatedContext* contextp ;
 extern VerilatedVcdC* tfp ;
 extern Vnpc* top;
-
+//寄存器
+extern const char *regs[];
 //内存
 #define MBASE 0x80000000
 #define MSIZE 0x10000000
