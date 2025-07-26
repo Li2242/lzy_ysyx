@@ -3,7 +3,7 @@ VERILATOR = verilator
 VERILATOR_FLAGS = --cc --exe --build --trace --top-module npc
 CFLAGS = -g -O3
 # 头文件路径
-CFLAGS += $(NPC_HOME)/csrc/include/
+CFLAGS += -I $(NPC_HOME)/csrc/include/
 CFLAGS += -I $(NPC_HOME)/tools/capstone/repo/include
 # Link the readline library
 LDFLAGS = -lreadline
