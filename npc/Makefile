@@ -6,7 +6,6 @@ CFLAGS = -g -O3
 CFLAGS += -I /home/lzy14/ysyx/ysyx-workbench/npc/csrc/include/
 # Link the readline library
 LDFLAGS = -lreadline
-LDFLAGS += -Ltools/capstone/repo -lcapstone
 #-Wall未加
 ALL_FLAGS = $(VERILATOR_FLAGS) -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 CSRC = csrc/*.cpp
@@ -16,19 +15,15 @@ OBJ_DIR = obj_dir
 #如果没有传入镜像文件就置为空
 IMG ?=
 
-# Include all filelist.mk to merge file lists
-FILELIST_MK = $(shell find -L ./utils -name "filelist.mk")
-include $(FILELIST_MK)
-
 all:
 	@echo "Write this Makefile by your self."
 
-sim: $(LIBCAPSTONE) $(CSRC) $(VSRC)
+sim: $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	echo "sim"
 	$(VERILATOR) $(ALL_FLAGS) $(CSRC) $(VSRC)
 
-run: sim
+run: sim $(CSRC) $(VSRC)
 	echo "run"
 	./$(OBJ_DIR)/Vnpc $(IMG)
 
