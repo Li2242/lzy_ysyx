@@ -1,5 +1,7 @@
 #include "common.h"
 
+#define MAX_INST_TO_PRINT 10;
+
 VerilatedContext* contextp =NULL ;
 VerilatedVcdC* tfp = NULL;
 Vnpc* top;
@@ -9,7 +11,8 @@ uint8_t pmem[MSIZE] = {};
 char logbuf[128];
 //初始化状态
 int npc_state = NPC_RUNNING;
-
+//控制是否打印命令
+static bool g_print_step =false;
 //为传入文件时的指令
 static const __uint32_t memory[] = {
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
@@ -26,6 +29,12 @@ static const __uint32_t memory[] = {
 };
 
 static void trace_and_difftest() {
+		ftrace(logbuf);
+		if(g_print_step)
+		printf( "result = %d pc = %x\n",top->alu_result,top->pc);
+
+		log_write("%s\n",logbuf);
+		printf("%s\n",logbuf);
   //在Kconfig中可以控制这个宏是否生成
   //扫描监视点
     bool success = false;
@@ -67,6 +76,7 @@ void sim_init(int argc,char** argv){
 
 //执行
 void execute(uint32_t n){
+	g_print_step = (n < MAX_INST_TO_PRINT);
   for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
@@ -96,10 +106,7 @@ void execute(uint32_t n){
 		disassemble(p,logbuf + 128 - p,top->pc,(uint8_t *)&top->inst,ilen);
 		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
-		ftrace(logbuf);
-		printf( "result = %d pc = %x\n",top->alu_result,top->pc);
-		log_write("%s\n",logbuf);
-		printf("%s\n",logbuf);
+
   }
 }
 
