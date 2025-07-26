@@ -3,6 +3,8 @@
 
 int simend = 0;
 //verilog中的函数
+extern unsigned int get_reg(int index);
+
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
   	simend = 1;
