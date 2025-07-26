@@ -17,7 +17,7 @@
 #ifndef VL_DPIDECL_get_reg_
 #define VL_DPIDECL_get_reg_
 svBitVecVal get_reg(int index) {
-    // DPI export at vsrc/RegisterFile.v:33:31
+    // DPI export at vsrc/RegisterFile.v:32:31
     return Vnpc::get_reg(index);
 }
 #endif

@@ -2,8 +2,6 @@
 
 
 int simend = 0;
-//verilog中的函数
-extern "C" unsigned int get_reg(int index);
 
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
@@ -19,7 +17,7 @@ const char *regs[] = {
 void reg_display(){
 	 for(int i=0;i<32;i+=4){
     for(int k =i;k<i+4;k++){
-				uint32_t temp_reg = get_reg(k);
+				uint32_t temp_reg = top->rootp->npc__DOT__u_regfile2__DOT__rf[k];
         printf("%-3s: 0x%08x\t",regs[k],temp_reg);
       }
     printf("\n");
@@ -33,7 +31,7 @@ uint32_t reg_str2val(char* name ){
 	for(int i = 0;i<32;i++){
   //对比寄存器的名字
     if(strcmp(name,regs[i]) == 0){
-      uint32_t reg_num = get_reg(i);
+      uint32_t reg_num = top->rootp->npc__DOT__u_regfile2__DOT__rf[i];
 			return reg_num;
       break;
     }

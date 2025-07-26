@@ -16,7 +16,7 @@ extern "C" {
 
 
     // DPI EXPORTS
-    // DPI export at vsrc/RegisterFile.v:33:31
+    // DPI export at vsrc/RegisterFile.v:32:31
     extern svBitVecVal get_reg(int index);
 
     // DPI IMPORTS

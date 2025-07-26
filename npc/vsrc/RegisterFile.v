@@ -28,19 +28,5 @@ assign rdata1 = (raddr1 == 5'b0) ? 32'b0 : rf[raddr1];
   end
 
 
-//传出reg的值
-function automatic bit[31:0]  get_reg(input int index);
-	if(index >= 0 && index < 32)begin
-		get_reg = rf[index];
-	end else begin
-		$warning("Invalid register index: %0d", index);
-    get_reg = 0;
-	end
-endfunction
-
-//给C用的寄存器接口
-export  "DPI-C"  function get_reg;
-
-
 endmodule
 
