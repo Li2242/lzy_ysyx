@@ -79,9 +79,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc VL_NOT_FINAL : public VerilatedModel {
     /// Retrieve name of this model instance (as passed to constructor).
     const char* name() const;
 
-    /// DPI Export functions
-    static svBitVecVal get_reg(int index);
-
     // Abstract methods from VerilatedModel
     const char* hierName() const override final;
     const char* modelName() const override final;

@@ -15,10 +15,6 @@ extern "C" {
 #endif
 
 
-    // DPI EXPORTS
-    // DPI export at vsrc/RegisterFile.v:32:31
-    extern svBitVecVal get_reg(int index);
-
     // DPI IMPORTS
     // DPI import at vsrc/npc.v:1:30
     extern void ebreak(unsigned int pc);
