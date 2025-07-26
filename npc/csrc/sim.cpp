@@ -82,7 +82,8 @@ void execute(uint32_t n){
 }
 
 void sim_exe(uint32_t n){
-	//运行前检查一下
+
+	//看一下程序是否运行完成
 	switch (npc_state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
       green_printf("1Program execution has ended. To restart the program, exit NPC and run again.\n");
@@ -91,11 +92,12 @@ void sim_exe(uint32_t n){
   }
 
 	execute(n);
-	//运行后检查一下
+
+	//这边应该是对退出状态的检查
 	switch (npc_state) {
 			case NPC_RUNNING: npc_state = NPC_STOP; break;
 			case NPC_END: case NPC_ABORT:
-				green_printf("2Program execution has ended. To restart the program, exit NPC and run again.\n");
+				green_printf("我现在并不知道它是否正确退出，反正是退出了\n");
 				// fall through
 			case NPC_QUIT: return ;
 		}
