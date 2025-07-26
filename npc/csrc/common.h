@@ -6,6 +6,7 @@
 #include <verilated.h>
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
+#include <assert.h>
 
 //NPC状态
 enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
