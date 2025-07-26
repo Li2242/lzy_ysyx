@@ -1,5 +1,4 @@
 
-export  "DPI-C" function get_reg;
 
 module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   input wire clk,
@@ -14,9 +13,13 @@ module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   // input  wire[ADDR_WIDTH-1:0] raddr2,
   // output wire[DATA_WIDTH-1:0] rdata2
 );
-
 //寄存器
   reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
+
+//给C用的寄存器接口
+	export  "DPI-C" function get_reg;
+
+
 
 //传出reg的值
 function automatic bit[31:0]  get_reg(input int index);
