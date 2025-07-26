@@ -46,6 +46,8 @@ int expr(char *e, bool *success);
 void init_regex();
 //初始化监视点
 void init_wp_pool();
+//初始化反汇编
+void init_disasm();
 int new_wp(char *str);
 void free_wp(int n);
 void scan_watchpoints(bool* success);

@@ -5,6 +5,8 @@ VerilatedVcdC* tfp = NULL;
 Vnpc* top;
 //初始化内存
 uint8_t pmem[MSIZE] = {};
+//ITRACE
+char logbuf[128];
 //初始化状态
 	int npc_state = NPC_RUNNING;
 
@@ -44,7 +46,8 @@ void sim_init(int argc,char** argv){
 		init_regex();
 		//初始化监视点
 		init_wp_pool();
-
+		//初始化反汇编
+		init_disasm();
     //写入内置程序
     memcpy(pmem,memory,sizeof(memory));
     // 1. 复位初始化
@@ -71,6 +74,15 @@ void execute(uint32_t n){
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
+		//ITRACE
+		char* p = logbuf;
+		//先写入pc
+		p += snprintf(p, sizeof(logbuf), "%08x:",top->pc);
+		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+		int ilen = 4;
+		int k;
+		uint8_t *inst = (uint8_t *)&top->inst;
+
 		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
 		printf( "result = %d pc = %x\n",top->alu_result,top->pc);
