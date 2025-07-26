@@ -1,8 +1,10 @@
 VERILATOR = verilator
+#参数
+VERILATOR_FLAGS = --cc --exe --build --trace --top-module npc
+CFLAGS = -g -O3 -I tools/capstone/repo/include
+LDFLAGS = -lreadline
 #-Wall未加
-ALL_FLAGS = --cc --exe --build --trace --top-module npc \
-	-CFLAGS "-g -O3" \
- 	-LDFLAGS "-lreadline"
+ALL_FLAGS = $(VERILATOR_FLAGS) -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 CSRC = csrc/*.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
