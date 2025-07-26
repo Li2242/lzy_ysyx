@@ -85,7 +85,7 @@ void sim_exe(uint32_t n){
 	//运行前检查一下
 	switch (npc_state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
-      green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
+      green_printf("1Program execution has ended. To restart the program, exit NPC and run again.\n");
       return;
     default: npc_state = NPC_RUNNING;
   }
@@ -95,7 +95,7 @@ void sim_exe(uint32_t n){
 	switch (npc_state) {
 			case NPC_RUNNING: npc_state = NPC_STOP; break;
 			case NPC_END: case NPC_ABORT:
-				green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
+				green_printf("2Program execution has ended. To restart the program, exit NPC and run again.\n");
 				// fall through
 			case NPC_QUIT: return ;
 		}
