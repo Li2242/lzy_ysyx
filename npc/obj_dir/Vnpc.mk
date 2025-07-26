@@ -53,6 +53,7 @@ VM_USER_CLASSES = \
 	tool \
 	watchpoint \
 	disasm \
+	elf \
 	log \
 
 # User .cpp directories (from .cpp's on Verilator command line)
@@ -86,6 +87,8 @@ tool.o: csrc/tool.cpp
 watchpoint.o: csrc/watchpoint.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 disasm.o: utils/disasm.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+elf.o: utils/elf.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 log.o: utils/log.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
