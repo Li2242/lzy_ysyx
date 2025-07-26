@@ -26,7 +26,7 @@ void reg_display(){
 }
 
 //找对应的寄存器的值
-uint32_t reg_str2val(char* name ){
+uint32_t reg_str2val(char* name){
 	uint32_t reg_num;
 	for(int i = 0;i<32;i++){
   //对比寄存器的名字
