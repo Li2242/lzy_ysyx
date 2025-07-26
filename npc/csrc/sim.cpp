@@ -8,7 +8,7 @@ uint8_t pmem[MSIZE] = {};
 //ITRACE
 char logbuf[128];
 //初始化状态
-	int npc_state = NPC_RUNNING;
+int npc_state = NPC_RUNNING;
 
 //为传入文件时的指令
 static const __uint32_t memory[] = {
@@ -50,6 +50,8 @@ void sim_init(int argc,char** argv){
 		init_disasm();
 		//初始化日志文件
 		init_log();
+		//初始化elf文件
+		init_elf();
     //写入内置程序
     memcpy(pmem,memory,sizeof(memory));
     // 1. 复位初始化
@@ -94,6 +96,7 @@ void execute(uint32_t n){
 		disassemble(p,logbuf + 128 - p,top->pc,(uint8_t *)&top->inst,ilen);
 		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
+		ftrace(logbuf);
 		printf( "result = %d pc = %x\n",top->alu_result,top->pc);
 		log_write("%s\n",logbuf);
 		printf("%s\n",logbuf);
@@ -129,4 +132,3 @@ void sim_end(){
   delete tfp;
   delete contextp;
 }
-

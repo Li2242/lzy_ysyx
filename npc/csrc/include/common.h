@@ -7,6 +7,8 @@
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
 #include <assert.h>
+//解析elf文件需要的
+#include <elf.h>
 
 //NPC状态
 enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
@@ -53,6 +55,10 @@ void init_wp_pool();
 void init_disasm();
 //初始化log文件
 void init_log();
+//初始化elf文件
+void init_elf();
+//ftrace主逻辑
+void ftrace(char* inst);
 
 int new_wp(char *str);
 void free_wp(int n);
@@ -67,6 +73,9 @@ void reg_display();
 uint32_t reg_str2val(char* name);
 //仿真记录
 extern char *log_file;
+//elf文件
+extern char *elf_file;
+
 //写入功能
 #define log_write(...) \
 	do{ \

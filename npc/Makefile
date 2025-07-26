@@ -16,7 +16,7 @@ OBJ_DIR = obj_dir
 BUILD_DIR = ./build
 $(shell mkdir -p $(BUILD_DIR))
 
-override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
+override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt
 #如果没有传入镜像文件就置为空
 IMG ?=
 

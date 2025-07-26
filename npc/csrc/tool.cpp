@@ -1,9 +1,10 @@
 #include "common.h"
-
+//镜像文件
 static char *img_file = NULL;
+//日志文件
 char *log_file = NULL;
- char *reg_name = NULL;
- uint32_t reg_num = 0;
+//elf文件
+char *elf_file = NULL;
 static void out_of_bound(uint32_t addr);
 //判断以什么形式读出
 inline uint32_t host_read(void *addr, int len) {
@@ -39,15 +40,18 @@ int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
     //长选项表的结束标志
+		{"elf"      , required_argument, NULL, 'e'},
 		{"log"      , required_argument, NULL, 'l'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-l:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-l:e:", table, NULL)) != -1) {
     switch (o) {
+			case 'e':elf_file = optarg;break;
 			case 'l':log_file = optarg;break;
       case 1: img_file = optarg; return 0;
       default:
+				printf("\t-e,--elf=FILE           Open the elf FILE\n");
 				printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\n");
         exit(0);
