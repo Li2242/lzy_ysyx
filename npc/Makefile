@@ -1,8 +1,8 @@
 VERILATOR = verilator
 #-Wall未加
-CFLAGS = --cc --exe --build    --trace --top-module npc \
+ALL_FLAGS = --cc --exe --build --trace --top-module npc \
 	-CFLAGS "-g -O3" \
- -LDFLAGS "-lreadline"
+ 	-LDFLAGS "-lreadline"
 CSRC = csrc/*.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
@@ -17,7 +17,7 @@ all:
 sim: $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	echo "sim"
-	$(VERILATOR) $(CFLAGS) $(CSRC) $(VSRC)
+	$(VERILATOR) $(ALL_FLAGS) $(CSRC) $(VSRC)
 
 run: sim $(CSRC) $(VSRC)
 	echo "run"
