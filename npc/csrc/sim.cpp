@@ -1,10 +1,12 @@
 #include "common.h"
 
-#define MAX_INST_TO_PRINT 10;
+
 
 VerilatedContext* contextp =NULL ;
 VerilatedVcdC* tfp = NULL;
 Vnpc* top;
+//最大的执行数打印命令
+#define MAX_INST_TO_PRINT 10;
 //初始化内存
 uint8_t pmem[MSIZE] = {};
 //ITRACE
@@ -76,7 +78,7 @@ void sim_init(int argc,char** argv){
 
 //执行
 void execute(uint32_t n){
-	g_print_step = (n < MAX_INST_TO_PRINT);
+	g_print_step = n < MAX_INST_TO_PRINT;
   for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
