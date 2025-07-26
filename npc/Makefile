@@ -1,7 +1,7 @@
 VERILATOR = verilator
 #参数
 VERILATOR_FLAGS = --cc --exe --build --trace --top-module npc
-CFLAGS = -g -O3
+CFLAGS = -g -O2
 # 头文件路径
 CFLAGS += -I $(NPC_HOME)/csrc/include/
 CFLAGS += -I $(NPC_HOME)/tools/capstone/repo/include
