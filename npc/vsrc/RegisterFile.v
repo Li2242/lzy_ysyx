@@ -17,7 +17,7 @@ module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
 
 //给C用的寄存器接口
-	export  "DPI-C" function get_reg;
+export  "DPI-C" function get_reg;
 
 
 
