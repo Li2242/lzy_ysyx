@@ -37,7 +37,7 @@ VM_PREFIX = Vnpc
 VM_MODPREFIX = Vnpc
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-g -O3 -I tools/capstone/repo/include -I npc/csrc/include \
+	-g -O3 -I tools/capstone/repo/include -I csrc/include/ \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \

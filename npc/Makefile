@@ -1,7 +1,7 @@
 VERILATOR = verilator
 #参数
 VERILATOR_FLAGS = --cc --exe --build --trace --top-module npc
-CFLAGS = -g -O3 -I tools/capstone/repo/include -I csrc/include/
+CFLAGS = -g -O3 -I tools/capstone/repo/include -I /home/lzy14/ysyx/ysyx-workbench/npc/csrc/include/
 # Link the readline library
 LDFLAGS = -lreadline
 #-Wall未加
