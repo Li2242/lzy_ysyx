@@ -10,6 +10,7 @@ LDFLAGS = -lreadline
 #-Wall未加
 ALL_FLAGS = $(VERILATOR_FLAGS) -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 CSRC = csrc/*.cpp
+CSRC += utils/*.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
 
