@@ -26,9 +26,7 @@ extern uint8_t pmem[MSIZE];
 
 //结束标志
 extern int simend;
-//需要查找的寄存器
-extern char *reg_name;
-extern uint32_t reg_num;
+
 //函数
 long load_img();
 void sim_init(int argc,char** argv);
@@ -54,3 +52,6 @@ void scan();
 static inline bool in_pmem(uint32_t addr) {
   return addr - MBASE < MSIZE;
 }
+//打印寄存器
+void reg_display();
+uint32_t reg_str2val(char* name);

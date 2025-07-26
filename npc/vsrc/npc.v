@@ -3,7 +3,6 @@ import "DPI-C" function void ebreak(input int unsigned pc);
 module npc(
     input  wire clk,
     input  wire rst,
-		input  wire [3:0]info_r,
     input  wire [31:0]  inst,
     output wire [31:0]  alu_result,
     output reg  [31:0]  pc
@@ -149,7 +148,6 @@ RegisterFile u_regfile2 (
     .clk(clk),
     .wen(reg_wen),
     .waddr(rd),
-		.info_r(info_r),
     .wdata(alu_result),
     .raddr1(rs1),
     .rdata1(src1)

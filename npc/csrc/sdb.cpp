@@ -166,11 +166,7 @@ static int cmd_info(char* args){
 		return 0;
 	}
 	if(*arg == 'r'){
-		top->info_r = 1;
-		top->clk = 0;
-		top->eval();
-		top->clk = 1;
-		top->eval();
+		reg_display();
 	}
 	if(*arg == 'w'){
 		scan();

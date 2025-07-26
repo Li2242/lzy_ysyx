@@ -238,14 +238,7 @@ int eval(int p,int q,bool *success) {
     }
     //处理寄存器的值
     else if(tokens[p].type == TK_RN){
-			reg_name = tokens[p].str;
-			//跳过寄存器的特殊标志$
-			reg_name++;
-      top->info_r = 2;
-			top->clk = 0;
-			top->eval();
-			top->clk = 1;
-			top->eval();
+     	int reg_num = reg_str2val(tokens[p].str);
       //处理解指针和寄存器的值
 			printf("reg_num = 0x%08x\n",reg_num);
       return reg_num;
