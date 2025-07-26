@@ -3,7 +3,7 @@ VERILATOR = verilator
 VERILATOR_FLAGS = --cc --exe --build --trace --top-module npc
 CFLAGS = -g -O3
 # 头文件路径
-CFLAGS += ./csrc/include/
+CFLAGS += npc/csrc/include/
 CFLAGS += -I /home/lzy14/ysyx/ysyx-workbench/npc/tools/capstone/repo/include
 # Link the readline library
 LDFLAGS = -lreadline
