@@ -10,8 +10,15 @@ void Vnpc___024root____Vdpiexp_npc__DOT__u_regfile2__DOT__get_reg_TOP(Vnpc__Syms
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vdpiexp_npc__DOT__u_regfile2__DOT__get_reg_TOP\n"); );
     // Init
     // Body
-    get_reg__Vfuncrtn = vlSymsp->TOP.npc__DOT__u_regfile2__DOT__rf
-        [(0x1fU & index)];
+    if (VL_LIKELY(((VL_LTES_III(32, 0U, index) & VL_GTS_III(32, 0x20U, index))))) {
+        get_reg__Vfuncrtn = vlSymsp->TOP.npc__DOT__u_regfile2__DOT__rf
+            [(0x1fU & index)];
+    } else {
+        VL_WRITEF_NX("[%0t] %%Warning: RegisterFile.v:37: %Nnpc.u_regfile2.get_reg: Invalid register index: %0d\n",0,
+                     64,VL_TIME_UNITED_Q(1),-12,vlSymsp->name(),
+                     32,index);
+        get_reg__Vfuncrtn = 0U;
+    }
 }
 
 #ifdef VL_DEBUG

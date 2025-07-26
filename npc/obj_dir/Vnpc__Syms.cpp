@@ -33,6 +33,7 @@ Vnpc__Syms::Vnpc__Syms(VerilatedContext* contextp, const char* namep, Vnpc* mode
     TOP____024unit.__Vconfigure(true);
     // Setup scopes
     __Vscope_npc__u_regfile2.configure(this, name(), "npc.u_regfile2", "u_regfile2", "<null>", -12, VerilatedScope::SCOPE_OTHER);
+    __Vscope_npc__u_regfile2__get_reg.configure(this, name(), "npc.u_regfile2.get_reg", "get_reg", "<null>", -12, VerilatedScope::SCOPE_OTHER);
     // Setup export functions
     for (int __Vfinal = 0; __Vfinal < 2; ++__Vfinal) {
         __Vscope_npc__u_regfile2.exportInsert(__Vfinal, "get_reg", (void*)(&Vnpc___024root____Vdpiexp_npc__DOT__u_regfile2__DOT__get_reg_TOP));

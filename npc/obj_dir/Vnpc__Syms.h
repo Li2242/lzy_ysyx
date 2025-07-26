@@ -36,6 +36,7 @@ class alignas(VL_CACHE_LINE_BYTES)Vnpc__Syms final : public VerilatedSyms {
 
     // SCOPE NAMES
     VerilatedScope __Vscope_npc__u_regfile2;
+    VerilatedScope __Vscope_npc__u_regfile2__get_reg;
 
     // CONSTRUCTORS
     Vnpc__Syms(VerilatedContext* contextp, const char* namep, Vnpc* modelp);
