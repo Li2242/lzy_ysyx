@@ -3,7 +3,7 @@ VERILATOR = verilator
 VERILATOR_FLAGS = --cc --exe --build --trace --top-module npc
 CFLAGS = -g -O3
 # 头文件路径
-CFLAGS += -I ./csrc/include/
+CFLAGS += -I $(NPC_HOME)/csrc/include/
 CFLAGS += -I $(NPC_HOME)/tools/capstone/repo/include
 # Link the readline library
 LDFLAGS = -lreadline
@@ -15,6 +15,10 @@ OBJ_DIR = obj_dir
 
 #如果没有传入镜像文件就置为空
 IMG ?=
+
+# Include all filelist.mk to merge file lists
+FILELIST_MK = $(shell find -L ./utils -name "filelist.mk")
+include $(FILELIST_MK)
 
 all:
 	@echo "Write this Makefile by your self."

@@ -37,7 +37,7 @@ VM_PREFIX = Vnpc
 VM_MODPREFIX = Vnpc
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-g -O3 -I /home/lzy14/ysyx/ysyx-workbench/npc/csrc/include/ -I /home/lzy14/ysyx/ysyx-workbench/npc/tools/capstone/repo/include \
+	-g -O3 -I ./csrc/include/ -I /home/lzy14/ysyx/ysyx-workbench/npc/tools/capstone/repo/include \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
