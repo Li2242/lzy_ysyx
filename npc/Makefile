@@ -13,7 +13,10 @@ CSRC = csrc/*.cpp
 CSRC += utils/*.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
+BUILD_DIR = ./build
+$(shell mkdir -p $(BUILD_DIR))
 
+override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 #如果没有传入镜像文件就置为空
 IMG ?=
 
@@ -31,11 +34,11 @@ sim: $(CSRC) $(VSRC)
 
 run: sim $(CSRC) $(VSRC)
 	echo "run"
-	./$(OBJ_DIR)/Vnpc $(IMG)
+	./$(OBJ_DIR)/Vnpc $(ARGS) $(IMG)
 
 
 .PHONY: sim run clean
 
 clean:
-	rm -rf obj_dir waveform.vcd waveform.view
+	rm -rf obj_dir waveform.vcd waveform.view build
 include ../Makefile
