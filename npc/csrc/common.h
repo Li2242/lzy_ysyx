@@ -26,9 +26,6 @@ extern const char *regs[];
 //内存
 extern uint8_t pmem[MSIZE];
 
-//结束标志
-extern int simend;
-
 //函数
 long load_img();
 //仿真三件套
