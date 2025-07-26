@@ -32,9 +32,8 @@ static const __uint32_t memory[] = {
 
 static void trace_and_difftest() {
 		ftrace(logbuf);
-		if(g_print_step){printf( "result = %d pc = %x\n",top->alu_result,top->pc);}
+		if(g_print_step){ printf("%s\n",logbuf);}
 		log_write("%s\n",logbuf);
-		printf("%s\n",logbuf);
   //在Kconfig中可以控制这个宏是否生成
   //扫描监视点
     bool success = false;
