@@ -28,7 +28,7 @@ sim: $(LIBCAPSTONE) $(CSRC) $(VSRC)
 	echo "sim"
 	$(VERILATOR) $(ALL_FLAGS) $(CSRC) $(VSRC)
 
-run: sim $(CSRC) $(VSRC)
+run: sim
 	echo "run"
 	./$(OBJ_DIR)/Vnpc $(IMG)
 
