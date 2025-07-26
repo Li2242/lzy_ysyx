@@ -6,6 +6,7 @@ CFLAGS = -g -O3
 CFLAGS += -I /home/lzy14/ysyx/ysyx-workbench/npc/csrc/include/
 # Link the readline library
 LDFLAGS = -lreadline
+LDFLAGS += -Ltools/capstone/repo -lcapstone
 #-Wall未加
 ALL_FLAGS = $(VERILATOR_FLAGS) -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 CSRC = csrc/*.cpp
@@ -22,7 +23,7 @@ include $(FILELIST_MK)
 all:
 	@echo "Write this Makefile by your self."
 
-sim: $(CSRC) $(VSRC)
+sim: $(LIBCAPSTONE) $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	echo "sim"
 	$(VERILATOR) $(ALL_FLAGS) $(CSRC) $(VSRC)
