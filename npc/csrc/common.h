@@ -4,6 +4,8 @@
 #include <verilated.h>
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
+//访问寄存器
+#include "Vnpc___024root.h"
 #include <string.h>
 
 //NPC状态

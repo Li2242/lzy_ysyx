@@ -1,5 +1,4 @@
 #include "common.h"
-#include "Vnpc___024root.h"
 
 
 int simend = 0;
