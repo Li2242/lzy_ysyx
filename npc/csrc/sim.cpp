@@ -87,10 +87,12 @@ void execute(uint32_t n){
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
+		//pc值要正确
+		int pc = top->pc -4;
 		//ITRACE
 		char* p = logbuf;
 		//先写入pc
-		p += snprintf(p, sizeof(logbuf), "0x%08x:",top->pc);
+		p += snprintf(p, sizeof(logbuf), "0x%08x:",pc);
 		int ilen = 4;
 		int k;
 		uint8_t *inst = (uint8_t *)&top->inst;
@@ -102,7 +104,7 @@ void execute(uint32_t n){
 		memset(p,' ',space_len);
 		p += space_len;
 		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-		disassemble(p,logbuf + 128 - p,top->pc - 4,(uint8_t *)&top->inst,ilen);
+		disassemble(p,logbuf + 128 - p,pc,(uint8_t *)&top->inst,ilen);
 		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
   }
