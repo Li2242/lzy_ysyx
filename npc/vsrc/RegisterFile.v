@@ -19,8 +19,6 @@ module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
 //给C用的寄存器接口
 export  "DPI-C" function get_reg;
 
-
-
 //传出reg的值
 function automatic bit[31:0]  get_reg(input int index);
 	get_reg = rf[index];
