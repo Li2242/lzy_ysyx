@@ -32,7 +32,6 @@ uint32_t reg_str2val(char* name){
   //对比寄存器的名字
     if(strcmp(name,regs[i]) == 0){
       uint32_t reg_num = top->rootp->npc__DOT__u_regfile2__DOT__rf[i];
-			return reg_num;
       break;
     }
   }
@@ -40,6 +39,7 @@ uint32_t reg_str2val(char* name){
   if(strcmp(name,"pc") == 0){
     reg_num = top->pc;
   }
+	return reg_num;
 }
 
 
