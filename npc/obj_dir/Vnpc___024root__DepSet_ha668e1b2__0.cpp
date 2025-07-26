@@ -6,6 +6,14 @@
 #include "Vnpc__Syms.h"
 #include "Vnpc___024root.h"
 
+void Vnpc___024root____Vdpiexp_npc__DOT__u_regfile2__DOT__get_reg_TOP(Vnpc__Syms* __restrict vlSymsp, IData/*31:0*/ index, IData/*31:0*/ &get_reg__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vdpiexp_npc__DOT__u_regfile2__DOT__get_reg_TOP\n"); );
+    // Init
+    // Body
+    get_reg__Vfuncrtn = vlSymsp->TOP.npc__DOT__u_regfile2__DOT__rf
+        [(0x1fU & index)];
+}
+
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vnpc___024root___dump_triggers__ico(Vnpc___024root* vlSelf);
 #endif  // VL_DEBUG
@@ -42,8 +50,6 @@ void Vnpc___024root___eval_triggers__act(Vnpc___024root* vlSelf) {
 #endif
 }
 
-void Vnpc___024unit____Vdpiimwrap_isa_reg_display__Vdpioc2_TOP____024unit(const VlUnpacked<IData/*31:0*/, 32> &rf_data);
-void Vnpc___024unit____Vdpiimwrap_isa_reg_str2val__Vdpioc2_TOP____024unit(const VlUnpacked<IData/*31:0*/, 32> &rf_data);
 void Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(IData/*31:0*/ pc);
 
 VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) {
@@ -58,12 +64,6 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
-    if ((1U == (IData)(vlSelfRef.info_r))) {
-        Vnpc___024unit____Vdpiimwrap_isa_reg_display__Vdpioc2_TOP____024unit(vlSelfRef.npc__DOT__u_regfile2__DOT__rf);
-    }
-    if ((2U == (IData)(vlSelfRef.info_r))) {
-        Vnpc___024unit____Vdpiimwrap_isa_reg_str2val__Vdpioc2_TOP____024unit(vlSelfRef.npc__DOT__u_regfile2__DOT__rf);
-    }
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((0x100073U == vlSelfRef.inst)) {
         Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(

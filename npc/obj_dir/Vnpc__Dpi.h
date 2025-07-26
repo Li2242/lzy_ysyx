@@ -15,13 +15,13 @@ extern "C" {
 #endif
 
 
+    // DPI EXPORTS
+    // DPI export at vsrc/RegisterFile.v:25:31
+    extern svBitVecVal get_reg(int index);
+
     // DPI IMPORTS
     // DPI import at vsrc/npc.v:1:30
     extern void ebreak(unsigned int pc);
-    // DPI import at vsrc/RegisterFile.v:2:30
-    extern void isa_reg_display(const svOpenArrayHandle rf_data);
-    // DPI import at vsrc/RegisterFile.v:3:30
-    extern void isa_reg_str2val(const svOpenArrayHandle rf_data);
 
 #ifdef __cplusplus
 }

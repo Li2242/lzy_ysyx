@@ -18,6 +18,7 @@
 #include "Vnpc___024unit.h"
 
 // DPI TYPES for DPI Export callbacks (Internal use)
+using Vnpc__Vcb_get_reg_t = void (*) (Vnpc__Syms* __restrict vlSymsp, IData/*31:0*/ index, IData/*31:0*/ &get_reg__Vfuncrtn);
 
 // SYMS CLASS (contains all model state)
 class alignas(VL_CACHE_LINE_BYTES)Vnpc__Syms final : public VerilatedSyms {
@@ -32,6 +33,9 @@ class alignas(VL_CACHE_LINE_BYTES)Vnpc__Syms final : public VerilatedSyms {
     // MODULE INSTANCE STATE
     Vnpc___024root                 TOP;
     Vnpc___024unit                 TOP____024unit;
+
+    // SCOPE NAMES
+    VerilatedScope __Vscope_npc__u_regfile2;
 
     // CONSTRUCTORS
     Vnpc__Syms(VerilatedContext* contextp, const char* namep, Vnpc* modelp);

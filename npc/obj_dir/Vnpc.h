@@ -34,7 +34,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc VL_NOT_FINAL : public VerilatedModel {
     // propagate new values into/out from the Verilated model.
     VL_IN8(&clk,0,0);
     VL_IN8(&rst,0,0);
-    VL_IN8(&info_r,3,0);
     VL_IN(&inst,31,0);
     VL_OUT(&alu_result,31,0);
     VL_OUT(&pc,31,0);
@@ -79,6 +78,9 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc VL_NOT_FINAL : public VerilatedModel {
     void trace(VerilatedTraceBaseC* tfp, int levels, int options = 0) { contextp()->trace(tfp, levels, options); }
     /// Retrieve name of this model instance (as passed to constructor).
     const char* name() const;
+
+    /// DPI Export functions
+    static svBitVecVal get_reg(int index);
 
     // Abstract methods from VerilatedModel
     const char* hierName() const override final;

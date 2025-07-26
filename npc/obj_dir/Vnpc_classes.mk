@@ -26,6 +26,7 @@ VM_TRACE_VCD = 1
 # Generated module classes, fast-path, compile with highest optimization
 VM_CLASSES_FAST += \
 	Vnpc \
+	Vnpc__Dpi_Export__0 \
 	Vnpc___024root__DepSet_ha668e1b2__0 \
 	Vnpc___024root__DepSet_h6ead14dd__0 \
 	Vnpc___024unit__DepSet_h8260b3f5__0 \

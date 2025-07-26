@@ -23,7 +23,6 @@ void reg_display(){
     printf("\n");
   }
   printf("pc : 0x%08x\n",top->pc);
-	top->info_r = 0;
 }
 
 //找对应的寄存器的值
@@ -41,7 +40,6 @@ uint32_t reg_str2val(char* name ){
   if(strcmp(name,"pc") == 0){
     reg_num = top->pc;
   }
-	top->info_r = 0;
 }
 
 
