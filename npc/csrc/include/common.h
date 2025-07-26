@@ -67,3 +67,12 @@ void reg_display();
 uint32_t reg_str2val(char* name);
 //仿真记录
 extern char *log_file;
+//写入功能
+#define log_write(...) \
+	do{ \
+			extern FILE* log_fp;\
+			if(log_fp != NULL){ \
+				fprintf(log_fp,__VA_ARGS__); \
+				fflush(log_fp); \
+			} \
+	} while(0)

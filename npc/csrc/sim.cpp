@@ -95,6 +95,7 @@ void execute(uint32_t n){
 		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
 		printf( "result = %d pc = %x\n",top->alu_result,top->pc);
+		log_write("%s\n",logbuf);
 		printf("%s\n",logbuf);
   }
 }
