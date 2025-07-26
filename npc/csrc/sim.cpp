@@ -77,7 +77,7 @@ void execute(uint32_t n){
 		//ITRACE
 		char* p = logbuf;
 		//先写入pc
-		p += snprintf(p, sizeof(logbuf), "%08x:",top->pc);
+		p += snprintf(p, sizeof(logbuf), "0x%08x:",top->pc);
 		int ilen = 4;
 		int k;
 		uint8_t *inst = (uint8_t *)&top->inst;
@@ -93,7 +93,7 @@ void execute(uint32_t n){
 		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
 		printf( "result = %d pc = %x\n",top->alu_result,top->pc);
-		printf("0x%s\n",logbuf);
+		printf("%s\n",logbuf);
   }
 }
 
