@@ -76,7 +76,6 @@ void sim_init(int argc,char** argv){
 //执行
 void execute(uint32_t n){
 	g_print_step = n < MAX_INST_TO_PRINT;
-	printf("%d\n",g_print_step);
   for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
@@ -106,7 +105,6 @@ void execute(uint32_t n){
 		disassemble(p,logbuf + 128 - p,top->pc,(uint8_t *)&top->inst,ilen);
 		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
-
   }
 }
 

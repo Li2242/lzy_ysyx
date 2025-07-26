@@ -66,26 +66,22 @@ void init_elf(){
 
 //ftrace
 void ftrace(char* inst){
-    //找出jal和jalr
-        // char* fun = s.logbuf;
-        // fun+=24;
+
         char fun1[10];
         unsigned int pc, target;
-        // char target[10];
+				//用惊世的智慧使用sscanf提取出pc和指令明还有函数在哪里
         sscanf(inst,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
-        // char* temp = strtok(fun,"\t");
-        //终于找出来了，接下来要进行处理了
-        bool find = 0;
         bool in = 0;
         //jal
         if(strncmp(fun1,"jal",4) ==0){
             in = 1;
             int jal_target = pc + target;
             for(int i =0;i<sym_num;i++){
-                if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&   ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&\
+								  ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC)
+									{
                     printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jal_target);
-                    find = 1;
-                    break;
+                    return;
                 }
             }
         }
@@ -101,10 +97,10 @@ void ftrace(char* inst){
             }
             for(int i =0;i<sym_num;i++){
                 in = 1;
-                if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size &&\
+									 ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
                     printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jalr_target);
-                    find = 1;
-                    break;
+                    return;
                 }
             }
         }
@@ -115,13 +111,12 @@ void ftrace(char* inst){
                 in = 1;
                 if(symtab[i].st_value <= pc && pc < symtab[i].st_value + symtab[i].st_size ){
                     printf("0x%x: %*sret[%s]\n",pc,--count,"",strtab+symtab[i].st_name);
-                    find = 1;
-                    break;
+                    return;
                 }
             }
         }
-        if(find==0 && in==1){
+        if(in==1){
             printf("???\n");
         }
-
+				return;
 }
