@@ -48,6 +48,8 @@ void sim_init(int argc,char** argv){
 		init_wp_pool();
 		//初始化反汇编
 		init_disasm();
+		//初始化日志文件
+		init_log();
     //写入内置程序
     memcpy(pmem,memory,sizeof(memory));
     // 1. 复位初始化

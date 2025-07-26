@@ -1,6 +1,7 @@
 #include "common.h"
 
 static char *img_file = NULL;
+char *log_file = NULL;
  char *reg_name = NULL;
  uint32_t reg_num = 0;
 static void out_of_bound(uint32_t addr);
@@ -38,13 +39,16 @@ int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
     //长选项表的结束标志
+		{"log"      , required_argument, NULL, 'l'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-l:", table, NULL)) != -1) {
     switch (o) {
+			case 'l':log_file = optarg;break;
       case 1: img_file = optarg; return 0;
       default:
+				printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\n");
         exit(0);
     }
@@ -81,6 +85,18 @@ void green_printf(const char *fmt, ...) {
 
     // 设置为绿色：\033[32m，恢复默认颜色：\033[0m
     printf("\033[32m");       // 设置颜色
+    vprintf(fmt, args);       // 实际打印
+    printf("\033[0m");        // 恢复默认
+
+    va_end(args);
+}
+
+void red_printf(const char *fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    // 设置为绿色：\033[32m，恢复默认颜色：\033[0m
+    printf("\033[30m");       // 设置颜色
     vprintf(fmt, args);       // 实际打印
     printf("\033[0m");        // 恢复默认
 

@@ -39,15 +39,21 @@ inline uint32_t host_read(void *addr, int len);
 uint32_t pmem_read(uint32_t addr, int len);
 uint8_t* guest_to_host(uint32_t paddr);
 void sdb_mainloop();
+//不同颜色的printf
 void green_printf(const char *fmt, ...);
+void red_printf(const char *fmt, ...);
 //表达式求值
 int expr(char *e, bool *success);
+// ===========    这里是初始化哦    ============
 //编译正则表达式
 void init_regex();
 //初始化监视点
 void init_wp_pool();
 //初始化反汇编
 void init_disasm();
+//初始化log文件
+void init_log();
+
 int new_wp(char *str);
 void free_wp(int n);
 void scan_watchpoints(bool* success);
@@ -59,3 +65,5 @@ static inline bool in_pmem(uint32_t addr) {
 //打印寄存器
 void reg_display();
 uint32_t reg_str2val(char* name);
+//仿真记录
+extern char *log_file;
