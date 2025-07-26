@@ -60,14 +60,6 @@ void sim_init(int argc,char** argv){
 
 //执行
 void execute(uint32_t n){
-
-	switch (npc_state) {
-    case NPC_END: case NPC_ABORT: case NPC_QUIT:
-      green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
-      return;
-    default: npc_state = NPC_RUNNING;
-  }
-
   for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
@@ -83,14 +75,23 @@ void execute(uint32_t n){
 			green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
 			return ;
 		}
-		//检查监视点是否改变
+		//检查监视点是否改变 运行中检查
 		trace_and_difftest();
     printf( "result = %d pc = %x\n",top->alu_result,top->pc);
   }
 }
 
 void sim_exe(uint32_t n){
+	//运行前检查一下
+	switch (npc_state) {
+    case NPC_END: case NPC_ABORT: case NPC_QUIT:
+      green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
+      return;
+    default: npc_state = NPC_RUNNING;
+  }
+
 	execute(n);
+	//运行后检查一下
 	switch (npc_state) {
 			case NPC_RUNNING: npc_state = NPC_STOP; break;
 			case NPC_END: case NPC_ABORT:
