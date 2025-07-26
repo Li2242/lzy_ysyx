@@ -40,5 +40,5 @@ run: sim $(CSRC) $(VSRC)
 .PHONY: sim run clean
 
 clean:
-	rm -rf obj_dir waveform.vcd waveform.view build
+	rm -rf obj_dir waveform.vcd waveform.view $(BUILD_DIR)
 include ../Makefile
