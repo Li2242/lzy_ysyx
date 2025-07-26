@@ -1,12 +1,11 @@
 //初始化文件
 #include <stdio.h>
 #include <getopt.h>
+#include <string.h>
+//仿真所需要的
 #include <verilated.h>
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
-//访问寄存器
-#include "Vnpc___024root.h"
-#include <string.h>
 
 //NPC状态
 enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
@@ -32,9 +31,11 @@ extern int simend;
 
 //函数
 long load_img();
+//仿真三件套
 void sim_init(int argc,char** argv);
 void sim_exe(uint32_t n);
 void sim_end();
+//解析参数，并且
 int parse_args(int argc, char *argv[]);
 inline uint32_t host_read(void *addr, int len);
 uint32_t pmem_read(uint32_t addr, int len);

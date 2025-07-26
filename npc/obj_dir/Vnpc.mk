@@ -47,6 +47,7 @@ VM_USER_LDLIBS = \
 VM_USER_CLASSES = \
 	exper \
 	main \
+	reg \
 	sdb \
 	sim \
 	tool \
@@ -70,6 +71,8 @@ VPATH += $(VM_USER_DIR)
 exper.o: csrc/exper.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 main.o: csrc/main.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+reg.o: csrc/reg.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 sdb.o: csrc/sdb.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
