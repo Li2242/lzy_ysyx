@@ -30,10 +30,12 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n) {
 __EXPORT uint32_t difftest_regcpy(void *dut, uint32_t pc, bool direction) {
 	if(direction == DIFFTEST_TO_DUT){
 		uint32_t* arr = (uint32_t*)dut;
-		for(int i =0;i<32;i++)
+		for(int i =0;i<32;i++){
 			arr[i] = cpu.gpr[i];
 		}
 		return cpu.pc;
+		}
+
 	//初始化寄存器
 	if(direction == DIFFTEST_TO_REF){
 		uint32_t* arr = (uint32_t*)dut;
@@ -61,5 +63,5 @@ __EXPORT void difftest_init() {
   /* Perform ISA dependent initialization. */
   init_isa();
 	//初始化pc
-	cpu.pc = RESET_VECTOR;
+
 }
