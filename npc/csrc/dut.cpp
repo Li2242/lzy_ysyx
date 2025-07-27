@@ -1,9 +1,8 @@
 #include <dlfcn.h>
 #include "common.h"
-#include <utils.h>
 
 
-void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n) = NULL;
+void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n) = NULL;
 uint32_t (*ref_difftest_regcpy)(void *dut, uint32_t pc, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
@@ -19,22 +18,22 @@ void init_difftest(char *ref_so_file, long img_size) {
 
   //通过动态链接对动态库中的上述API符号进行符号解析和重定位, 返回它们的地址.
 	//此时他们这几个变量就变成了函数
-  ref_difftest_memcpy = dlsym(handle, "difftest_memcpy");
+  ref_difftest_memcpy = (void (*)(uint32_t addr, void *buf, size_t n))dlsym(handle, "difftest_memcpy");
   assert(ref_difftest_memcpy);
 
-  ref_difftest_regcpy = dlsym(handle, "difftest_regcpy");
+  ref_difftest_regcpy = (uint32_t(*)(void *dut, uint32_t pc, bool direction))dlsym(handle, "difftest_regcpy");
   assert(ref_difftest_regcpy);
 
-  ref_difftest_exec = dlsym(handle, "difftest_exec");
+  ref_difftest_exec = (void(*)(uint64_t n))dlsym(handle, "difftest_exec");
   assert(ref_difftest_exec);
 
-  ref_difftest_raise_intr = dlsym(handle, "difftest_raise_intr");
+  ref_difftest_raise_intr = (void(*)(uint64_t NO))dlsym(handle, "difftest_raise_intr");
   assert(ref_difftest_raise_intr);
 
-  void (*ref_difftest_init)(int) = dlsym(handle, "difftest_init");
+  void (*ref_difftest_init)(int) = (void(*)(int))dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
 
-  green_printf("Differential testing: %s\n", ANSI_FMT("ON", ANSI_FG_GREEN));
+  green_printf("Differential testing: NO\n");
   green_printf("The result of every instruction will be compared with %s. "
       "This will help you a lot for debugging, but also significantly reduce the performance. "
       "If it is not necessary, you can turn it off in menuconfig.\n", ref_so_file);
@@ -42,14 +41,15 @@ void init_difftest(char *ref_so_file, long img_size) {
 	//将DUT的guest memory拷贝到REF中.
   ref_difftest_memcpy(MBASE, guest_to_host(MBASE), img_size);
 	//将DUT的寄存器状态拷贝到REF中.
-  ref_difftest_regcpy(const top->rootp->npc__DOT__u_regfile2__DOT__rf, top->pc ,DIFFTEST_TO_REF);
+	void* temp = (void *)&(top->rootp->npc__DOT__u_regfile2__DOT__rf);
+  ref_difftest_regcpy(temp , top->pc , DIFFTEST_TO_REF);
 }
 
 static void checkregs(uint32_t *ref, uint32_t diff_pc) {
   if (!difftest_checkregs(ref, diff_pc)) {
 		//对比结果不一致时, 第二个参数pc应指向导致对比结果不一致的指令,
 		//可用于打印提示信息.
-		printf("DUT:pc=0x%08x  REF:pc=0x%08x\n",top->pc,pc);
+		printf("DUT:pc=0x%08x  REF:pc=0x%08x\n",top->pc,diff_pc);
     npc_state = NPC_ABORT;
     reg_display();
   }
@@ -66,7 +66,7 @@ void difftest_step(uint32_t pc) {
 	uint32_t diff_pc;
 
   ref_difftest_exec(1);
-  diff_pc = ref_difftest_regcpy(diff_reg , DIFFTEST_TO_REF);
+  diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_REF);
 
   checkregs(diff_reg, diff_pc);
 }
