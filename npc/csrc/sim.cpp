@@ -16,7 +16,7 @@ int npc_state = NPC_RUNNING;
 //控制是否打印命令
 static bool g_print_step =false;
 static void trace_and_difftest();
-
+static void execute(uint32_t n);
 //开始
 void sim_init(int argc,char** argv){
     contextp = new VerilatedContext;
@@ -86,7 +86,7 @@ void sim_end(){
 }
 
 //执行
-void execute(uint32_t n){
+static void execute(uint32_t n){
 	g_print_step = n < MAX_INST_TO_PRINT;
   for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
 		//pc值要正确,这是变化前的pc，后面经过执行就变成下一个pc了
