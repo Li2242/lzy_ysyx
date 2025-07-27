@@ -76,7 +76,6 @@ void sim_init(int argc,char** argv){
 		init_log();
 		//初始化elf文件
 		init_elf();
-
 }
 
 //执行

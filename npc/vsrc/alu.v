@@ -27,8 +27,8 @@ assign result_addi  = src1 + imm;
 
 assign result = ({32{alu_op[0]}} & result_auipc)
               | ({32{alu_op[1]}} & result_lui)
-			  | ({32{alu_op[2]}} & result_jal)
-			  | ({32{alu_op[3]}} & result_jalr)
-			  | ({32{alu_op[4]}} & result_addi);
+			  			| ({32{alu_op[2]}} & result_jal)
+			  			| ({32{alu_op[3]}} & result_jalr)
+			  			| ({32{alu_op[4]}} & result_addi);
 
 endmodule

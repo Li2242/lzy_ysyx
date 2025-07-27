@@ -48,8 +48,10 @@ void init_difftest(char *ref_so_file, long img_size) {
 
 static void checkregs(uint32_t *ref, uint32_t diff_pc) {
   if (!difftest_checkregs(ref, diff_pc)) {
+		//不同就停下啦
 		npc_state = NPC_ABORT;
     reg_display();
+		red_printf("BAD TRAP\n");
   }
 }
 
@@ -60,11 +62,15 @@ static void checkregs(uint32_t *ref, uint32_t diff_pc) {
 	并进行对比.
 */
 void difftest_step(uint32_t pc) {
+	//这里装的是REF的寄存器 和 pc
   uint32_t diff_reg[32] = {};
 	uint32_t diff_pc;
+	//REF执行以西
   ref_difftest_exec(1);
+	//把REF中的寄存器和整到DUT中
+	//REF中的pc是这个函数返回的
   diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_DUT);
-	printf("diff_pc=0x%08x\n",diff_pc);
+	//检查REF和DUT的PC和寄存器是否相同
   checkregs(diff_reg, diff_pc);
 }
 
