@@ -30,7 +30,8 @@ static const __uint32_t memory[] = {
   0x00948513   // 10: addi x10, x9, 9    (x10 = 136 + 9 = 145)
 };
 
-static void trace_and_difftest() {
+static void trace_and_difftest(uint32_t pc) {
+	difftest_step(pc);
 		ftrace(logbuf);
 		if(g_print_step){ printf("%s\n",logbuf);}
 		log_write("%s\n",logbuf);
@@ -106,7 +107,7 @@ void execute(uint32_t n){
 		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 		disassemble(p,logbuf + 128 - p,pc,(uint8_t *)&top->inst,ilen);
 		//检查监视点是否改变 运行中检查
-		trace_and_difftest();
+		trace_and_difftest(pc);
   }
 }
 

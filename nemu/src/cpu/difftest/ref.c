@@ -27,12 +27,24 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n) {
 }
 
 //返回值是pc
-__EXPORT uint32_t difftest_regcpy(void *dut) {
-	uint32_t* arr = (uint32_t*)dut;
-  for(int i =0;i<32;i++){
-		arr[i] = cpu.gpr[i];
+__EXPORT uint32_t difftest_regcpy(void *dut, uint32_t pc, bool direction) {
+	if(direction == DIFFTEST_TO_DUT){
+		uint32_t* arr = (uint32_t*)dut;
+		for(int i =0;i<32;i++)
+			arr[i] = cpu.gpr[i];
+		}
+		return cpu.pc;
+
+	if(direction == DIFFTEST_TO_REF){
+		uint32_t* arr = (uint32_t*)dut;
+		for(int i =0; i<32; i++){
+			cpu.gpr[i] = arr[i] ;
+		}
+		cpu.pc = pc;
+		return 0;
 	}
-	return cpu.pc;
+	Log("你的条件多半传错了，一个选型都没有");
+	return 0;
 }
 
 __EXPORT void difftest_exec(uint64_t n) {

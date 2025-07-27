@@ -9,9 +9,15 @@
 #include <assert.h>
 //解析elf文件需要的
 #include <elf.h>
-
+//访问寄存器
+#include "Vnpc___024root.h"
 //NPC状态
 enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
+//diff条件
+enum {DIFFTEST_TO_DUT, DIFFTEST_TO_REF};
+//difftest函数
+bool difftest_checkregs(uint32_t* ref , uint32_t pc);
+void difftest_step(uint32_t pc);
 //npc状态
 extern int npc_state;
 

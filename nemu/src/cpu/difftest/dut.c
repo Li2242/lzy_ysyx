@@ -100,7 +100,6 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
   if (!isa_difftest_checkregs(ref, pc)) {
 		//对比结果不一致时, 第二个参数pc应指向导致对比结果不一致的指令,
 		//可用于打印提示信息.
-		printf("DUT:pc=0x%08x  REF:pc=0x%08x\n",cpu.pc,pc);
     nemu_state.state = NEMU_ABORT;
     nemu_state.halt_pc = pc;
     isa_reg_display();

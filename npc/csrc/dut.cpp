@@ -3,8 +3,8 @@
 #include <utils.h>
 
 
-void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n, bool direction) = NULL;
-uint32_t (*ref_difftest_regcpy)(void *dut) = NULL;
+void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n) = NULL;
+uint32_t (*ref_difftest_regcpy)(void *dut, uint32_t pc, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
@@ -42,16 +42,16 @@ void init_difftest(char *ref_so_file, long img_size) {
 	//将DUT的guest memory拷贝到REF中.
   ref_difftest_memcpy(MBASE, guest_to_host(MBASE), img_size);
 	//将DUT的寄存器状态拷贝到REF中.
-  // ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+  ref_difftest_regcpy(const top->rootp->npc__DOT__u_regfile2__DOT__rf, top->pc ,DIFFTEST_TO_REF);
 }
 
-static void checkregs(CPU_state *ref, vaddr_t pc) {
-  if (!isa_difftest_checkregs(ref, pc)) {
+static void checkregs(uint32_t *ref, uint32_t diff_pc) {
+  if (!difftest_checkregs(ref, diff_pc)) {
 		//对比结果不一致时, 第二个参数pc应指向导致对比结果不一致的指令,
 		//可用于打印提示信息.
-		printf("DUT:pc=0x%08x  REF:pc=0x%08x\n",cpu.pc,pc);
-    npc_state = NEMU_ABORT;
-    isa_reg_display();
+		printf("DUT:pc=0x%08x  REF:pc=0x%08x\n",top->pc,pc);
+    npc_state = NPC_ABORT;
+    reg_display();
   }
 }
 
@@ -61,13 +61,13 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
 	就在difftest_step()中让REF执行相同的指令, 然后读出REF中的寄存器,
 	并进行对比.
 */
-void difftest_step(vaddr_t pc, vaddr_t npc) {
+void difftest_step(uint32_t pc) {
   uint32_t diff_reg[32] = {};
 	uint32_t diff_pc;
 
   ref_difftest_exec(1);
-  diff_pc = ref_difftest_regcpy(&ref_r);
+  diff_pc = ref_difftest_regcpy(diff_reg , DIFFTEST_TO_REF);
 
-  checkregs(diff_reg, pc);
+  checkregs(diff_reg, diff_pc);
 }
 

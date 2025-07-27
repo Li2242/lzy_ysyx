@@ -88,7 +88,26 @@ long load_img() {
   return size;
 }
 
+bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
+	bool is_same = true;
+	for(int i = 0;i<32;i++){
+		uint32_t temp = top->rootp->npc__DOT__u_regfile2__DOT__rf[i];
+		if( temp != ref_r[i]){
+			red_printf("Mismatch in gpr[%d]: dut=0x%08x, ref=0x%08x\n", i, temp, ref_r[i]);
+			is_same = false;
+		}
+	}
+	if(top->pc != diff_pc){
+		red_printf("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", top->pc, diff_pc);
+		is_same = false;
+	}
+  return is_same;
+}
 
+
+
+
+//花式打印
 void green_printf(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);

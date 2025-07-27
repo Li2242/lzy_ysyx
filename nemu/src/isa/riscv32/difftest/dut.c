@@ -27,11 +27,13 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 	bool is_same = true;
 	for(int i = 0;i<32;i++){
 		if(cpu.gpr[i] != ref_r->gpr[i]){
+			Log("Mismatch in gpr[%d]: dut=0x%08x, ref=0x%08x\n", i, cpu.gpr[i], ref_r->gpr[i]);
 			is_same = false;
 		}
 	}
 	if(cpu.pc != pc){
-		is_same = true;
+		Log("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", cpu.pc, pc);
+		is_same = false;
 	}
   return is_same;
 }
