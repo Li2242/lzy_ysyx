@@ -111,13 +111,13 @@ static int cmd_help(char* str){
 //执行完程序
 static int cmd_c(char *args){
 	sim_exe(-1);
-	return -1;
+	return 0;
 }
 
 //退出
 static int cmd_q(char *args){
 	npc_state = NPC_QUIT;
-	return 0;
+	return -1;
 }
 
 //单步执行
