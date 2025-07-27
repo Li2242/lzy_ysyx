@@ -46,7 +46,7 @@ __EXPORT uint32_t difftest_regcpy(void *dut, uint32_t pc, bool direction) {
 			cpu.gpr[i] = arr[i] ;
 		}
 		cpu.pc = pc;
-		Log("cpu.pc = 0x%08x",cpu.pc);
+		Log("difftest_regcpy : DIFFTEST_TO_REF");
 		return 0;
 	}
 	Log("你的条件多半传错了，一个选型都没有");
