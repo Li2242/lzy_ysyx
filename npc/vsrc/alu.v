@@ -23,7 +23,7 @@ assign result_auipc = imm + pc;
 assign result_lui   = imm;
 assign result_jal   = pc + 4;
 assign result_jalr  = pc + 4;
-assign result_addi  = src1 + imm;
+assign result_addi  = src1 - imm;
 
 assign result = ({32{alu_op[0]}} & result_auipc)
               | ({32{alu_op[1]}} & result_lui)
