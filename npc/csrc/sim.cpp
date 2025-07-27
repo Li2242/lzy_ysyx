@@ -30,7 +30,7 @@ static const __uint32_t memory[] = {
   0x00948513   // 10: addi x10, x9, 9    (x10 = 136 + 9 = 145)
 };
 
-static void trace_and_difftest(uint32_t pc) {
+static void trace_and_difftest() {
 	//===============  ITRACING BEGINS ========================
 		//我在考虑是否可以把它放进trace_and_difftest里面
 		char* p = logbuf;
@@ -49,7 +49,8 @@ static void trace_and_difftest(uint32_t pc) {
 		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&top->inst,ilen);
 // ================== ITRACING ENDS ===========================
-		difftest_step(pc);
+
+		difftest_step(cpu_pc);
 		ftrace(logbuf);
 		if(g_print_step){ printf("%s\n",logbuf);}
 		log_write("%s\n",logbuf);
@@ -118,7 +119,7 @@ void execute(uint32_t n){
 //===============  一条命令的结束  =========================
 
 //正如函数名所说它就是TRACE和DIFFTEST的办公场所
-		trace_and_difftest(cpu_pc);
+		trace_and_difftest();
   }
 }
 
