@@ -23,7 +23,7 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n) {
 	uint32_t* img = (uint32_t *)buf;
 	for(int i =0;i<inst_num;i++){
 		paddr_write(addr,4,*img);
-		printf("img[%d]=0x%08x\n",i,*img);
+		// printf("img[%d]=0x%08x\n",i,*img);
 		addr+=4;
 		img++;
 	}
@@ -35,8 +35,8 @@ __EXPORT uint32_t difftest_regcpy(void *dut, uint32_t pc, bool direction) {
 		uint32_t* arr = (uint32_t*)dut;
 		for(int i =0;i<32;i++){
 			arr[i] = cpu.gpr[i];
-			printf("arr[%d]=0x%08x\n",i,arr[i]);
-			printf("cpu.gpr[%d]=0x%08x\n",i,cpu.gpr[i]);
+			// printf("arr[%d]=0x%08x\n",i,arr[i]);
+			// printf("cpu.gpr[%d]=0x%08x\n",i,cpu.gpr[i]);
 		}
 		return cpu.pc;
 	}
