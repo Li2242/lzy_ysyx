@@ -48,9 +48,6 @@ void init_difftest(char *ref_so_file, long img_size) {
 
 static void checkregs(uint32_t *ref, uint32_t diff_pc) {
   if (!difftest_checkregs(ref, diff_pc)) {
-		//对比结果不一致时, 第二个参数pc应指向导致对比结果不一致的指令,
-		//可用于打印提示信息.
-		printf("DUT:pc=0x%08x  REF:pc=0x%08x\n",top->pc,diff_pc);
     npc_state = NPC_ABORT;
     reg_display();
   }
@@ -66,9 +63,8 @@ void difftest_step(uint32_t pc) {
   uint32_t diff_reg[32] = {};
 	uint32_t diff_pc;
   ref_difftest_exec(1);
-	printf("ref_exe后\n");
   diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_REF);
-
+	printf("diff_pc=0x%08x\n",diff_pc);
   checkregs(diff_reg, diff_pc);
 }
 
