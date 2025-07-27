@@ -77,7 +77,7 @@ void sim_init(int argc,char** argv){
 void execute(uint32_t n){
 	g_print_step = n < MAX_INST_TO_PRINT;
   for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
-		//pc值要正确
+		//pc值要正确,这是变化前的pc，后面经过执行就变成下一个pc了
 		int pc = top->pc;
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
