@@ -125,7 +125,7 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 
 
 
-//花式打印
+//颜色打印
 void green_printf(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);

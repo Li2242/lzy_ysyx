@@ -5,9 +5,10 @@ FILE *elf_fp = NULL;
 Elf32_Sym *symtab = NULL;
 char *strtab = NULL;
 int sym_num = 0;
+
 //用于空格
 int count = 0;
-//ftrace
+//ftrace初始化
 void init_elf(){
     //打开文件
     FILE *fp = fopen(elf_file, "r");
@@ -56,7 +57,7 @@ void init_elf(){
 }
 
 
-//ftrace
+//ftrace逻辑
 void ftrace(char* inst){
 
         char fun1[10];

@@ -7,7 +7,7 @@ uint32_t (*ref_difftest_regcpy)(void *dut, uint32_t pc, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
-
+//初始化
 void init_difftest(char *ref_so_file, long img_size) {
   assert(ref_so_file != NULL);
 
@@ -46,6 +46,7 @@ void init_difftest(char *ref_so_file, long img_size) {
   ref_difftest_regcpy(temp , top->pc , DIFFTEST_TO_REF);
 }
 
+//检查
 static void checkregs(uint32_t *ref, uint32_t diff_pc) {
   if (!difftest_checkregs(ref, diff_pc)) {
 		//不同就停下啦
@@ -61,6 +62,7 @@ static void checkregs(uint32_t *ref, uint32_t diff_pc) {
 	就在difftest_step()中让REF执行相同的指令, 然后读出REF中的寄存器,
 	并进行对比.
 */
+//这个是与外界相连接的入口
 void difftest_step(uint32_t pc) {
 	//这里装的是REF的寄存器 和 pc
   uint32_t diff_reg[32] = {};

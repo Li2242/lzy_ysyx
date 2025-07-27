@@ -38,7 +38,7 @@ void init_disasm() {
   assert(ret == CS_ERR_OK);
 
 }
-//反汇编
+//反汇编 与外界的接口
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte) {
 	cs_insn *insn;
 	size_t count = cs_disasm_dl(handle, code, nbyte, pc, 0, &insn);
