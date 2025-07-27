@@ -111,7 +111,7 @@ static int cmd_help(char* str){
 //执行完程序
 static int cmd_c(char *args){
 	sim_exe(-1);
-	return 0;
+	return -1;
 }
 
 //退出
