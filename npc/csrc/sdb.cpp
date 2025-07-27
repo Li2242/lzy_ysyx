@@ -33,8 +33,7 @@ static char* rl_gets(){
 }
 
 
-
-
+//sdb中的指令
 static struct{
 	const char* name;
 	const char* description;
@@ -51,6 +50,7 @@ static struct{
   { "d", "Delete watchpoint",cmd_d}
 };
 
+//现有指令的数量
 #define NR_CMD ARRLEN(cmd_table)
 
 //批处理模式
@@ -60,7 +60,7 @@ void sdb_set_batch_mode() {
 
 //npc主循环
 void sdb_mainloop(){
-	//批处理模式
+	//批处理模式（暂时还未设置）
 	if(is_batch_mode){
 		cmd_c(NULL);
 		return;
@@ -88,6 +88,8 @@ void sdb_mainloop(){
 	}
 }
 
+// =================  下面是sdb指令的实现  ===================
+
 static int cmd_help(char* str){
 	char* arg = strtok(NULL," ");
 	int i;
@@ -114,7 +116,8 @@ static int cmd_c(char *args){
 
 //退出
 static int cmd_q(char *args){
-		return -1;
+	npc_state = NPC_QUIT;
+	return 0;
 }
 
 //单步执行
@@ -158,7 +161,7 @@ static int cmd_x(char *args){
 	}
 	return 0;
 }
-
+//info
 static int cmd_info(char* args){
 	char *arg = strtok(NULL," ");
 	if(arg == NULL){

@@ -7,6 +7,7 @@ char *log_file = NULL;
 char *elf_file = NULL;
 //difftest的镜像文件
 char *diff_so_file = NULL;
+//越界处理
 static void out_of_bound(uint32_t addr);
 
 //内置指令，为传入文件时的指令
@@ -104,6 +105,8 @@ long load_img() {
   return size;
 }
 
+
+//检查DUT和REF的寄存器是否相同（可以说是核心了）
 bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 	bool is_same = true;
 	for(int i = 0;i<32;i++){
@@ -122,16 +125,14 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 
 
 
-
 //花式打印
 void green_printf(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    // 设置为绿色：\033[32m，恢复默认颜色：\033[0m
-    printf("\033[32m");       // 设置颜色
-    vprintf(fmt, args);       // 实际打印
-    printf("\033[0m");        // 恢复默认
+    printf("\033[32m");
+    vprintf(fmt, args);
+    printf("\033[0m");
 
     va_end(args);
 }
@@ -140,10 +141,9 @@ void red_printf(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    // 设置为绿色：\033[32m，恢复默认颜色：\033[0m
-    printf("\033[30m");       // 设置颜色
-    vprintf(fmt, args);       // 实际打印
-    printf("\033[0m");        // 恢复默认
+    printf("\033[30m");
+    vprintf(fmt, args);
+    printf("\033[0m");
 
     va_end(args);
 }

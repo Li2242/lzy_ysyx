@@ -1,5 +1,6 @@
 #include "sdb.h"
 
+//监视点的数量
 #define NR_WP 32
 
 int new_wp(char* s);
@@ -119,7 +120,7 @@ void scan_watchpoints(bool* success){
     }
     wp = wp->next;
   }
-	//为什么没有暂停呢？
+	//如果监视点值变化或者等式成立就停止
   if(*success && npc_state == NPC_RUNNING){
       //你需要将nemu_state.state变量设置为NEMU_STOP来达到暂停的效果
       npc_state = NPC_STOP;

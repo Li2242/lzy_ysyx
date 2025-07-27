@@ -1,7 +1,5 @@
 #include "common.h"
 
-
-
 VerilatedContext* contextp =NULL ;
 VerilatedVcdC* tfp = NULL;
 Vnpc* top;
@@ -15,6 +13,7 @@ char logbuf[128];
 int npc_state = NPC_RUNNING;
 //控制是否打印命令
 static bool g_print_step =false;
+//这个文件单独要用到的函数
 static void trace_and_difftest();
 static void execute(uint32_t n);
 //开始
@@ -57,7 +56,7 @@ void sim_init(int argc,char** argv){
 
 void sim_exe(uint32_t n){
 
-	//观测程序结束
+	//检测程序是否结束
 	switch (npc_state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
       green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
@@ -67,7 +66,7 @@ void sim_exe(uint32_t n){
 
 	execute(n);
 
-	//这边应该是对退出状态的检查
+	//我有了difftest如果不出大问题，这里的退出都是正常退出
 	switch (npc_state) {
 			case NPC_RUNNING: npc_state = NPC_STOP; break;
 			case NPC_END: case NPC_ABORT:
@@ -134,11 +133,14 @@ static void trace_and_difftest() {
 		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&top->inst,ilen);
 // ================== ITRACING ENDS ===========================
 
+//difftest的关键
 		difftest_step(cpu_pc);
+//这里是ftrace的必要
 		ftrace(logbuf);
+//是否打印出反汇编的指令
 		if(g_print_step){ printf("%s\n",logbuf);}
+//反汇编写入日志文件
 		log_write("%s\n",logbuf);
-  //在Kconfig中可以控制这个宏是否生成
   //扫描监视点
     bool success = false;
     scan_watchpoints(&success);
