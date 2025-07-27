@@ -71,10 +71,13 @@ static inline bool in_pmem(uint32_t addr) {
 //打印寄存器
 void reg_display();
 uint32_t reg_str2val(char* name);
+
 //仿真记录
 extern char *log_file;
 //elf文件
 extern char *elf_file;
+//比对的镜像文件
+extern char *diff_so_file;
 
 //写入功能
 #define log_write(...) \

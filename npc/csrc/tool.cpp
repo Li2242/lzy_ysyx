@@ -5,6 +5,8 @@ static char *img_file = NULL;
 char *log_file = NULL;
 //elf文件
 char *elf_file = NULL;
+//difftest的镜像文件
+char *diff_so_file = NULL;
 static void out_of_bound(uint32_t addr);
 //判断以什么形式读出
 inline uint32_t host_read(void *addr, int len) {
@@ -40,6 +42,7 @@ int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
     //长选项表的结束标志
+		{"diff"     , required_argument, NULL, 'd'},
 		{"elf"      , required_argument, NULL, 'e'},
 		{"log"      , required_argument, NULL, 'l'},
     {0          , 0                , NULL,  0 },
@@ -47,10 +50,13 @@ int parse_args(int argc, char *argv[]) {
   int o;
   while ( (o = getopt_long(argc, argv, "-l:e:", table, NULL)) != -1) {
     switch (o) {
+			case 'd':diff_so_file = optarg;break;
 			case 'e':elf_file = optarg;break;
 			case 'l':log_file = optarg;break;
       case 1: img_file = optarg; return 0;
       default:
+				printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
+			 	printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
 				printf("\t-e,--elf=FILE           Open the elf FILE\n");
 				printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\n");
