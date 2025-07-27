@@ -15,6 +15,8 @@ char logbuf[128];
 int npc_state = NPC_RUNNING;
 //控制是否打印命令
 static bool g_print_step =false;
+
+static void trace_and_difftest();
 //为传入文件时的指令
 static const __uint32_t memory[] = {
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
@@ -30,18 +32,6 @@ static const __uint32_t memory[] = {
   0x00948513   // 10: addi x10, x9, 9    (x10 = 136 + 9 = 145)
 };
 
-static void trace_and_difftest() {
-
-
-		difftest_step(cpu_pc);
-		ftrace(logbuf);
-		if(g_print_step){ printf("%s\n",logbuf);}
-		log_write("%s\n",logbuf);
-  //在Kconfig中可以控制这个宏是否生成
-  //扫描监视点
-    bool success = false;
-    scan_watchpoints(&success);
-}
 
 
 //开始
@@ -100,24 +90,7 @@ void execute(uint32_t n){
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
 //===============  一条命令的结束  =========================
-//===============  ITRACING BEGINS ========================
-		//我在考虑是否可以把它放进trace_and_difftest里面
-		char* p = logbuf;
-		//写入pc
-		p += snprintf(p, sizeof(logbuf), "0x%08x:",cpu_pc);
-		int ilen = 4;
-		int k;
-		uint8_t *inst = (uint8_t *)&top->inst;
 
-		for(k = ilen - 1; k >= 0; k --){
-			p += snprintf(p,4," %02x", inst[k]);
-		}
-		int space_len = 1;
-		memset(p,' ',space_len);
-		p += space_len;
-		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&top->inst,ilen);
-// ================== ITRACING ENDS ===========================
 //正如函数名所说它就是TRACE和DIFFTEST的办公场所
 		trace_and_difftest();
   }
@@ -151,4 +124,37 @@ void sim_end(){
   delete top;
   delete tfp;
   delete contextp;
+}
+
+
+static void trace_and_difftest() {
+//===============  ITRACING BEGINS ========================
+		//我在考虑是否可以把它放进trace_and_difftest里面
+		//为什么我把它移进去，我的ftrace失效了，我需要慎重考虑一下
+
+		char* p = logbuf;
+		//写入pc
+		p += snprintf(p, sizeof(logbuf), "0x%08x:",cpu_pc);
+		int ilen = 4;
+		int k;
+		uint8_t *inst = (uint8_t *)&top->inst;
+
+		for(k = ilen - 1; k >= 0; k --){
+			p += snprintf(p,4," %02x", inst[k]);
+		}
+		int space_len = 1;
+		memset(p,' ',space_len);
+		p += space_len;
+		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&top->inst,ilen);
+// ================== ITRACING ENDS ===========================
+
+		difftest_step(cpu_pc);
+		ftrace(logbuf);
+		if(g_print_step){ printf("%s\n",logbuf);}
+		log_write("%s\n",logbuf);
+  //在Kconfig中可以控制这个宏是否生成
+  //扫描监视点
+    bool success = false;
+    scan_watchpoints(&success);
 }
