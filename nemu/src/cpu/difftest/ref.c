@@ -36,6 +36,7 @@ __EXPORT uint32_t difftest_regcpy(void *dut, uint32_t pc, bool direction) {
 		for(int i =0;i<32;i++){
 			arr[i] = cpu.gpr[i];
 			printf("arr[%d]=0x%08x\n",i,arr[i]);
+			printf("cpu.gpr[%d]=0x%08x\n",i,cpu.gpr[i]);
 		}
 		return cpu.pc;
 	}
