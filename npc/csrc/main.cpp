@@ -1,6 +1,7 @@
 #include "common.h"
 
-int simend = 0;
+//当前的pc,我需要他和top->pc区分开
+uint32_t cpu_pc = 0;
 
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);

@@ -52,6 +52,7 @@ void green_printf(const char *fmt, ...);
 void red_printf(const char *fmt, ...);
 //表达式求值
 int expr(char *e, bool *success);
+
 // ===========    这里是初始化哦    ============
 //编译正则表达式
 void init_regex();
@@ -68,6 +69,7 @@ void init_difftest(char *ref_so_file, long img_size);
 //ftrace主逻辑
 void ftrace(char* inst);
 
+//监视点
 int new_wp(char *str);
 void free_wp(int n);
 void scan_watchpoints(bool* success);
@@ -86,6 +88,8 @@ extern char *log_file;
 extern char *elf_file;
 //比对的镜像文件
 extern char *diff_so_file;
+//pc
+extern uint32_t cpu_pc;
 
 //写入功能
 #define log_write(...) \
