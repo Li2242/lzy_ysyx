@@ -68,7 +68,6 @@ void ftrace(char* inst){
         if(strncmp(fun1,"jal",4) ==0){
             in = 1;
             int jal_target = pc + target;
-						printf("jal_target=0x%08x\ntarget=0x%08x\npc=0x%08x\n",jal_target,target,pc);
             for(int i =0;i<sym_num;i++){
                 if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&\
 								  ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC)
