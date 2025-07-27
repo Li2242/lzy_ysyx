@@ -16,7 +16,7 @@ void init_elf(){
 			assert(0);
 		}
 
-    green_printf("The %s Elf is be open to ", elf_file);
+    green_printf("The %s Elf is be open to\n", elf_file);
     //先整header
     Elf32_Ehdr ehdr;
     if(fread(&ehdr,sizeof(ehdr),1,fp) != 1){
@@ -53,14 +53,6 @@ void init_elf(){
       red_printf("Can not open '%s'\n", elf_file);
 			assert(0);
     }
-
-    // //初始化过了，因该如何使用呢？ 这里是吧所有的函数跳出来打印一边
-    // for(int i=0; i<sym_num; i++){
-    //     if(ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-    //         char *name = strtab + symtab[i].st_name;
-    //         printf("%d : %s\n",i,name);
-    //     }
-    // }
 }
 
 
