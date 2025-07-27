@@ -22,7 +22,9 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n) {
   int inst_num = n/4;
 	uint32_t* img = (uint32_t *)buf;
 	for(int i =0;i<inst_num;i++){
-		paddr_write(addr,4,*img++);
+		paddr_write(addr,4,*img);
+		printf("img[%d]=0x%08x\n",i,*img);
+		img++;
 	}
 }
 
