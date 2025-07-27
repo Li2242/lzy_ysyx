@@ -3,6 +3,7 @@
 //当前的pc,我需要他和top->pc区分开
 uint32_t cpu_pc = 0;
 
+//verilog中调用的函数
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
   	npc_state = NPC_END;
