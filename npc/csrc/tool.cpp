@@ -48,7 +48,7 @@ int parse_args(int argc, char *argv[]) {
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-l:e:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-l:e:d:", table, NULL)) != -1) {
     switch (o) {
 			case 'd':diff_so_file = optarg;break;
 			case 'e':elf_file = optarg;break;
