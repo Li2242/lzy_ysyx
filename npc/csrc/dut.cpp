@@ -63,10 +63,10 @@ void difftest_step(uint32_t pc) {
   uint32_t diff_reg[32] = {};
 	uint32_t diff_pc;
   ref_difftest_exec(1);
+  diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_DUT);
 	for(int i = 0;i<32;i++){
 		printf("reg[%d] = 0x%08x\n",i,diff_reg[i]);
 	}
-  diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_DUT);
 	printf("diff_pc=0x%08x\n",diff_pc);
   checkregs(diff_reg, diff_pc);
 }
