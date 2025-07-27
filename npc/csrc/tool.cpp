@@ -9,7 +9,6 @@ char *elf_file = NULL;
 char *diff_so_file = NULL;
 static void out_of_bound(uint32_t addr);
 
-
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
@@ -24,6 +23,9 @@ static const __uint32_t memory[] = {
   0x00840493,  // 9: addi x9, x8, 8      (x9 = 128 + 8 = 136)
   0x00948513   // 10: addi x10, x9, 9    (x10 = 136 + 9 = 145)
 };
+
+//地址转换
+uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - MBASE; }
 //判断以什么形式读出
 inline uint32_t host_read(void *addr, int len) {
   switch (len) {
@@ -42,10 +44,6 @@ uint32_t pmem_read(uint32_t addr, int len) {
 	out_of_bound(addr);
 	return 0;
 }
-
-//地址转换
-uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - MBASE; }
-
 
 //越界处理
 static void out_of_bound(uint32_t addr) {

@@ -16,10 +16,6 @@ int npc_state = NPC_RUNNING;
 //控制是否打印命令
 static bool g_print_step =false;
 
-static void trace_and_difftest();
-
-
-
 
 //开始
 void sim_init(int argc,char** argv){
@@ -39,8 +35,8 @@ void sim_init(int argc,char** argv){
     tfp->dump(contextp->time()); // 记录复位前状态
     contextp->timeInc(10);
 
-
-		//载入外部程序 这个返回值暂时用不上
+// =============== 这里是初始化 ===============
+		//载入镜像文件 外部程序 or 内置指令
     long img_size = load_img();
 		//初始化测试
 		init_difftest(diff_so_file , img_size);
@@ -53,38 +49,15 @@ void sim_init(int argc,char** argv){
 		//初始化日志文件
 		init_log();
 		//初始化elf文件
-		init_elf();
+		if(elf_file != NULL){ init_elf(); }
+//====================  这里是初始化的结束  ===============
 }
 
-//执行
-void execute(uint32_t n){
-	g_print_step = n < MAX_INST_TO_PRINT;
-  for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
-		//pc值要正确,这是变化前的pc，后面经过执行就变成下一个pc了
-		//执行命令前我先存一个pc
-		uint32_t cpu_pc = top->pc;
 
-//===============  一条命令的开始  ========================
-    top->clk = 0;
-    top->inst = pmem_read(top->pc,4);
-    top->eval();
-    tfp->dump(contextp->time());    // 记录波形
-    contextp->timeInc(5);
-
-    top->clk = 1;
-    top->eval();
-    tfp->dump(contextp->time());    // 记录波形
-    contextp->timeInc(5);
-//===============  一条命令的结束  =========================
-
-//正如函数名所说它就是TRACE和DIFFTEST的办公场所
-		trace_and_difftest();
-  }
-}
 
 void sim_exe(uint32_t n){
 
-	//看一下程序是否运行完成
+	//观测程序结束
 	switch (npc_state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
       green_printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
@@ -110,6 +83,32 @@ void sim_end(){
   delete top;
   delete tfp;
   delete contextp;
+}
+
+//执行
+void execute(uint32_t n){
+	g_print_step = n < MAX_INST_TO_PRINT;
+  for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
+		//pc值要正确,这是变化前的pc，后面经过执行就变成下一个pc了
+		//执行命令前我先存一个pc
+		cpu_pc = top->pc;
+
+//===============  一条命令的开始  ========================
+    top->clk = 0;
+    top->inst = pmem_read(top->pc,4);
+    top->eval();
+    tfp->dump(contextp->time());    // 记录波形
+    contextp->timeInc(5);
+
+    top->clk = 1;
+    top->eval();
+    tfp->dump(contextp->time());    // 记录波形
+    contextp->timeInc(5);
+//===============  一条命令的结束  =========================
+
+//正如函数名所说它就是TRACE和DIFFTEST的办公场所
+		trace_and_difftest();
+  }
 }
 
 
