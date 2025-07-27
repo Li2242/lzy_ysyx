@@ -51,7 +51,7 @@ static void checkregs(uint32_t *ref, uint32_t diff_pc) {
 		//不同就停下啦
 		npc_state = NPC_ABORT;
     reg_display();
-		red_printf("HIT BAD TRAP at pc = 0x%08x\n", top->pc - 4);
+		red_printf("npc : HIT BAD TRAP\n");
   }
 }
 
