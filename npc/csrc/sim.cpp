@@ -77,6 +77,8 @@ void sim_init(int argc,char** argv){
 void execute(uint32_t n){
 	g_print_step = n < MAX_INST_TO_PRINT;
   for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
+		//pc值要正确
+		int pc = top->pc;
     top->clk = 0;
     top->inst = pmem_read(top->pc,4);
     top->eval();
@@ -87,8 +89,6 @@ void execute(uint32_t n){
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
-		//pc值要正确
-		int pc = top->pc - 4;
 		//ITRACE
 		char* p = logbuf;
 		//先写入pc
