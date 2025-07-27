@@ -60,6 +60,8 @@ void sim_init(int argc,char** argv){
     tfp->dump(contextp->time()); // 记录复位前状态
     contextp->timeInc(10);
 
+		//写入内置程序
+    memcpy(pmem,memory,sizeof(memory));
 		//载入外部程序 这个返回值暂时用不上
     long img_size = load_img();
 		//初始化测试
@@ -74,8 +76,7 @@ void sim_init(int argc,char** argv){
 		init_log();
 		//初始化elf文件
 		init_elf();
-    //写入内置程序
-    memcpy(pmem,memory,sizeof(memory));
+
 }
 
 //执行

@@ -16,7 +16,7 @@ void init_elf(){
 			assert(0);
 		}
 
-    green_printf("The %s Elf is be open to\n", elf_file);
+    green_printf("The %s Elf is be open \n", elf_file);
     //先整header
     Elf32_Ehdr ehdr;
     if(fread(&ehdr,sizeof(ehdr),1,fp) != 1){
