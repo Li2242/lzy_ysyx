@@ -88,7 +88,7 @@ void execute(uint32_t n){
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
 		//pc值要正确
-		int pc = top->pc -4;
+		int pc = top->pc - 4;
 		//ITRACE
 		char* p = logbuf;
 		//先写入pc
