@@ -47,8 +47,8 @@ void init_difftest(char *ref_so_file, long img_size) {
 }
 
 static void checkregs(uint32_t *ref, uint32_t diff_pc) {
-	npc_state = NPC_ABORT;
   if (!difftest_checkregs(ref, diff_pc)) {
+		npc_state = NPC_ABORT;
     reg_display();
   }
 }
