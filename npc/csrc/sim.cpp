@@ -31,24 +31,7 @@ static const __uint32_t memory[] = {
 };
 
 static void trace_and_difftest() {
-	//===============  ITRACING BEGINS ========================
-		//我在考虑是否可以把它放进trace_and_difftest里面
-		char* p = logbuf;
-		//写入pc
-		p += snprintf(p, sizeof(logbuf), "0x%08x:",cpu_pc);
-		int ilen = 4;
-		int k;
-		uint8_t *inst = (uint8_t *)&top->inst;
 
-		for(k = ilen - 1; k >= 0; k --){
-			p += snprintf(p,4," %02x", inst[k]);
-		}
-		int space_len = 1;
-		memset(p,' ',space_len);
-		p += space_len;
-		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&top->inst,ilen);
-// ================== ITRACING ENDS ===========================
 
 		difftest_step(cpu_pc);
 		ftrace(logbuf);
@@ -117,7 +100,24 @@ void execute(uint32_t n){
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
 //===============  一条命令的结束  =========================
+//===============  ITRACING BEGINS ========================
+		//我在考虑是否可以把它放进trace_and_difftest里面
+		char* p = logbuf;
+		//写入pc
+		p += snprintf(p, sizeof(logbuf), "0x%08x:",cpu_pc);
+		int ilen = 4;
+		int k;
+		uint8_t *inst = (uint8_t *)&top->inst;
 
+		for(k = ilen - 1; k >= 0; k --){
+			p += snprintf(p,4," %02x", inst[k]);
+		}
+		int space_len = 1;
+		memset(p,' ',space_len);
+		p += space_len;
+		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&top->inst,ilen);
+// ================== ITRACING ENDS ===========================
 //正如函数名所说它就是TRACE和DIFFTEST的办公场所
 		trace_and_difftest();
   }
