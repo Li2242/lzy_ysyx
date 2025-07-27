@@ -64,8 +64,8 @@ static void checkregs(uint32_t *ref, uint32_t diff_pc) {
 void difftest_step(uint32_t pc) {
   uint32_t diff_reg[32] = {};
 	uint32_t diff_pc;
-	printf("ref_exe\n");
   ref_difftest_exec(1);
+	printf("ref_exe后\n");
   diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_REF);
 
   checkregs(diff_reg, diff_pc);
