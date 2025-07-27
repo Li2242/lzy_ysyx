@@ -4,14 +4,13 @@
 
 //批处理模式
 static int is_batch_mode = false;
-//函数
+//sdb中函数的声明
 static int cmd_c  (char *args);
 static int cmd_q  (char *args);
 static int cmd_si (char *args);
 static int cmd_x  (char *args);
 static int cmd_info (char* args);
 static int cmd_p (char* args);
-//help
 static int cmd_help(char *args);
 static int cmd_d(char *args);
 static int cmd_w(char *args);
@@ -67,6 +66,7 @@ void sdb_mainloop(){
 	}
 	//循环
 	for(char *str;(str = rl_gets()) != NULL; ){
+		//输入指令的结尾
 		char *str_end = str+strlen(str);
 		//这里是首次发出对输入命令的切割
 		char *cmd = strtok(str," ");
@@ -77,9 +77,11 @@ void sdb_mainloop(){
 		if(args >= str_end){
 			args = NULL;
 		}
+
 		int i;
 		for(i =0; i < NR_CMD ;i++){
 			if(strcmp(cmd,cmd_table[i].name) == 0){
+				//想要退出？你调用函数的返回值要小于0
 				if(cmd_table[i].handler(args) < 0){return;}
 				break;
 			}
@@ -87,6 +89,7 @@ void sdb_mainloop(){
 		if(i == NR_CMD){printf("Unkonwn command '%s'\n",cmd);}
 	}
 }
+
 
 // =================  下面是sdb指令的实现  ===================
 

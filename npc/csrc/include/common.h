@@ -1,19 +1,20 @@
 //初始化文件
 #include <stdio.h>
-#include <getopt.h>
 #include <string.h>
+#include <assert.h>
+#include <getopt.h>
+//解析elf文件需要的
+#include <elf.h>
 //仿真所需要的
 #include <verilated.h>
 #include "Vnpc.h"
 #include "verilated_vcd_c.h"
-#include <assert.h>
-//解析elf文件需要的
-#include <elf.h>
 //访问寄存器
 #include "Vnpc___024root.h"
+
 //NPC状态
 enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
-//diff条件
+//diff条件，准确来说是DUT和REF之间的传输方向
 enum {DIFFTEST_TO_DUT, DIFFTEST_TO_REF};
 //difftest函数
 bool difftest_checkregs(uint32_t* ref , uint32_t pc);
@@ -30,28 +31,44 @@ extern const char *regs[];
 //内存
 #define MBASE 0x80000000
 #define MSIZE 0x10000000
-// calculate the length of an array
-#define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
 //内存
 extern uint8_t pmem[MSIZE];
 
-//函数
+// calculate the length of an array
+#define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
+
+//写入日志功能
+#define log_write(...) \
+	do{ \
+			extern FILE* log_fp;\
+			if(log_fp != NULL){ \
+				fprintf(log_fp,__VA_ARGS__); \
+				fflush(log_fp); \
+			} \
+	} while(0)
+
+// ================= FUNCTIONS =================
+//解析参数
+int parse_args(int argc, char *argv[]);
+//加载镜像文件
 long load_img();
 //仿真三件套
 void sim_init(int argc,char** argv);
 void sim_exe(uint32_t n);
 void sim_end();
-//解析参数，并且
-int parse_args(int argc, char *argv[]);
-inline uint32_t host_read(void *addr, int len);
-uint32_t pmem_read(uint32_t addr, int len);
-uint8_t* guest_to_host(uint32_t paddr);
+//readline的主循环
 void sdb_mainloop();
+//表达式求值
+int expr(char *e, bool *success);
+
+//地址转换和从内存读出内容
+uint32_t pmem_read(uint32_t addr, int len);
+inline uint32_t host_read(void *addr, int len);
+uint8_t* guest_to_host(uint32_t paddr);
+
 //不同颜色的printf
 void green_printf(const char *fmt, ...);
 void red_printf(const char *fmt, ...);
-//表达式求值
-int expr(char *e, bool *success);
 
 // ===========    这里是初始化哦    ============
 //编译正则表达式
@@ -74,6 +91,7 @@ int new_wp(char *str);
 void free_wp(int n);
 void scan_watchpoints(bool* success);
 void scan();
+
 //判断是否在peme中
 static inline bool in_pmem(uint32_t addr) {
   return addr - MBASE < MSIZE;
@@ -82,6 +100,7 @@ static inline bool in_pmem(uint32_t addr) {
 void reg_display();
 uint32_t reg_str2val(char* name);
 
+// ============== 全局变量  ==============
 //仿真记录
 extern char *log_file;
 //elf文件
@@ -91,12 +110,4 @@ extern char *diff_so_file;
 //pc
 extern uint32_t cpu_pc;
 
-//写入功能
-#define log_write(...) \
-	do{ \
-			extern FILE* log_fp;\
-			if(log_fp != NULL){ \
-				fprintf(log_fp,__VA_ARGS__); \
-				fflush(log_fp); \
-			} \
-	} while(0)
+

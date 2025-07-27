@@ -16,6 +16,7 @@ static bool g_print_step =false;
 //这个文件单独要用到的函数
 static void trace_and_difftest();
 static void execute(uint32_t n);
+
 //开始
 void sim_init(int argc,char** argv){
     contextp = new VerilatedContext;
@@ -31,8 +32,8 @@ void sim_init(int argc,char** argv){
     top->rst = 0;
     top->pc = MBASE;
     top->eval();
-    tfp->dump(contextp->time()); // 记录复位前状态
-    contextp->timeInc(10);
+    // tfp->dump(contextp->time()); // 记录复位前状态
+    // contextp->timeInc(10);
 
 // =============== 这里是初始化 ===============
 		//载入镜像文件 外部程序 or 内置指令
