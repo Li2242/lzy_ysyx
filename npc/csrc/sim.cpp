@@ -131,7 +131,7 @@ void sim_exe(uint32_t n){
 	switch (npc_state) {
 			case NPC_RUNNING: npc_state = NPC_STOP; break;
 			case NPC_END: case NPC_ABORT:
-				green_printf("我现在并不知道它是否正确退出，反正是退出了\n");
+				green_printf("HIT GOOD TRA\n");
 				// fall through
 			case NPC_QUIT: return ;
 		}
