@@ -31,7 +31,7 @@ static const __uint32_t memory[] = {
 };
 
 static void trace_and_difftest(uint32_t pc) {
-	difftest_step(pc);
+	// difftest_step(pc);
 		ftrace(logbuf);
 		if(g_print_step){ printf("%s\n",logbuf);}
 		log_write("%s\n",logbuf);
