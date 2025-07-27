@@ -204,15 +204,13 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
     bufp->fullIData(oldp+47,(((0x6fU == (0x7fU & vlSelfRef.inst))
                                ? vlSelfRef.npc__DOT__u_alu__DOT__result_auipc
                                : ((IData)(vlSelfRef.npc__DOT__is_jalr)
-                                   ? (0xfffffffeU & vlSelfRef.npc__DOT__u_alu__DOT__result_addi)
+                                   ? (0xfffffffeU & 
+                                      (vlSelfRef.npc__DOT__imm 
+                                       + vlSelfRef.npc__DOT__src1))
                                    : ((IData)(4U) + vlSelfRef.pc)))),32);
     bufp->fullCData(oldp+48,((7U & (vlSelfRef.inst 
                                     >> 0xcU))),3);
-    bufp->fullIData(oldp+49,(((0U == (0x1fU & (vlSelfRef.inst 
-                                               >> 0xfU)))
-                               ? 0U : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
-                              [(0x1fU & (vlSelfRef.inst 
-                                         >> 0xfU))])),32);
+    bufp->fullIData(oldp+49,(vlSelfRef.npc__DOT__src1),32);
     bufp->fullCData(oldp+50,((0x1fU & (vlSelfRef.inst 
                                        >> 0xfU))),5);
     bufp->fullCData(oldp+51,((0x1fU & (vlSelfRef.inst 
@@ -283,5 +281,6 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
                                                    >> 0xcU))))))),8);
     bufp->fullIData(oldp+61,(vlSelfRef.npc__DOT__u_alu__DOT__result_auipc),32);
     bufp->fullIData(oldp+62,(((IData)(4U) + vlSelfRef.pc)),32);
-    bufp->fullIData(oldp+63,(vlSelfRef.npc__DOT__u_alu__DOT__result_addi),32);
+    bufp->fullIData(oldp+63,((vlSelfRef.npc__DOT__src1 
+                              - vlSelfRef.npc__DOT__imm)),32);
 }
