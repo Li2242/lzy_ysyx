@@ -51,6 +51,10 @@ void sim_init(int argc,char** argv){
     tfp = new VerilatedVcdC;
     top->trace(tfp,99);
     tfp->open("waveform.vcd");
+		//载入外部程序 这个返回值暂时用不上
+    long img_size = load_img();
+		//初始化测试
+		init_difftest(diff_so_file , img_size);
 		//编译正则表达式
 		init_regex();
 		//初始化监视点
@@ -67,8 +71,6 @@ void sim_init(int argc,char** argv){
     top->clk = 0;
     top->rst = 0;
     top->pc = MBASE;
-    //载入外部程序 这个返回值暂时用不上
-    long img_size = load_img();
     top->eval();
     tfp->dump(contextp->time()); // 记录复位前状态
     contextp->timeInc(10);

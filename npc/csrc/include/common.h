@@ -63,6 +63,8 @@ void init_disasm();
 void init_log();
 //初始化elf文件
 void init_elf();
+//初始化difftest测试
+void init_difftest(char *ref_so_file, long img_size);
 //ftrace主逻辑
 void ftrace(char* inst);
 
