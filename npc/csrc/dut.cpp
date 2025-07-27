@@ -42,7 +42,7 @@ void init_difftest(char *ref_so_file, long img_size) {
   ref_difftest_memcpy(MBASE, guest_to_host(MBASE), img_size);
 	//将DUT的寄存器状态拷贝到REF中.
 	void* temp = (void *)&(top->rootp->npc__DOT__u_regfile2__DOT__rf);
-	//初始化寄存器和pc
+	//初始化寄存器和pc 此时还没有pc所以这边传的是MBASE
   ref_difftest_regcpy(temp , top->pc , DIFFTEST_TO_REF);
 }
 
