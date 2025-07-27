@@ -34,7 +34,7 @@ __EXPORT uint32_t difftest_regcpy(void *dut, uint32_t pc, bool direction) {
 			arr[i] = cpu.gpr[i];
 		}
 		return cpu.pc;
-		}
+	}
 
 	//初始化寄存器
 	if(direction == DIFFTEST_TO_REF){
@@ -43,6 +43,7 @@ __EXPORT uint32_t difftest_regcpy(void *dut, uint32_t pc, bool direction) {
 			cpu.gpr[i] = arr[i] ;
 		}
 		cpu.pc = pc;
+		Log("cpu.pc = 0x%08x",cpu.pc);
 		return 0;
 	}
 	Log("你的条件多半传错了，一个选型都没有");
