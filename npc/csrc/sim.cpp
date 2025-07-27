@@ -15,7 +15,7 @@ char logbuf[128];
 int npc_state = NPC_RUNNING;
 //控制是否打印命令
 static bool g_print_step =false;
-
+static void trace_and_difftest();
 
 //开始
 void sim_init(int argc,char** argv){
