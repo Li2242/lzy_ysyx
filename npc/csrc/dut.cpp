@@ -43,7 +43,7 @@ void init_difftest(char *ref_so_file, long img_size) {
 	//将DUT的寄存器状态拷贝到REF中.
 	void* temp = (void *)&(top->rootp->npc__DOT__u_regfile2__DOT__rf);
 	//初始化寄存器和pc
-  ref_difftest_regcpy(temp , top->pc , DIFFTEST_TO_REF);
+  ref_difftest_regcpy(temp , MBASE , DIFFTEST_TO_REF);
 }
 
 static void checkregs(uint32_t *ref, uint32_t diff_pc) {
