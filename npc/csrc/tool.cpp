@@ -108,6 +108,8 @@ int parse_args(int argc, char *argv[]) {
 long load_img() {
   if (img_file == NULL) {
 		//写入内置程序
+	green_printf("===========================================\n");
+
     memcpy(pmem,memory,sizeof(memory));
 		uint32_t addr = MBASE;
 		// for(int i =0;i<32;i++){
