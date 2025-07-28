@@ -17,7 +17,7 @@ Reg#(32,32'h80000000) pc_4(
     .wen     (1)
 );
 
-always @(posedge clk)begin
+always @(*)begin
 		inst <= v_pmem_read(pc);
     if(inst == 32'h00100073) ebreak(pc + 4);
 end
