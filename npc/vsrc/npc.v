@@ -128,7 +128,7 @@ assign is_jal   = is_J ;
 assign is_jalr  = is_I & hot_funct3[0] & hot_opcode[103];
 assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
 assign is_add   = is_R & hot_funct3[0];
-assign is_lw   = is_I & hot_funct3[2] & hot_opcode[3];
+assign is_lw   = is_I  & hot_funct3[2] & hot_opcode[3];
 
 assign reg_wen = 1;
 
@@ -162,19 +162,17 @@ alu u_alu(
 
  	reg [31:0] rdata;
 	wire [31:0] raddr;
-	initial begin
-		raddr <= 32'h80000000;
-	end
-	always @(*) begin
+	always @(posedge clk) begin
 		if (mem_en) begin // 有读写请求时
-			rdata = v_pmem_read(raddr);
+			rdata <= v_pmem_read(raddr);
+		end else begin
+			rdata <= 0;
+		end
+	end
+
 	//     if (mem_wen) begin // 有写请求时
 	//       pmem_write(waddr, wdata, wmask);
 	//     end
-		end else begin
-			rdata = 0;
-		end
-	end
 
 // 寄存器堆实例化
 RegisterFile u_regfile2 (
