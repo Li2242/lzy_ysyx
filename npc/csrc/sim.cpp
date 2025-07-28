@@ -22,17 +22,17 @@ void sim_init(int argc,char** argv){
 
 	contextp = new VerilatedContext;
 	contextp->commandArgs(argc,argv);
-	green_printf("===========================================\n");
-    Verilated::traceEverOn(true);
-    top = new Vnpc;
-    tfp = new VerilatedVcdC;
-    top->trace(tfp,99);
-    tfp->open("waveform.vcd");
+	Verilated::traceEverOn(true);
+	top = new Vnpc;
+	tfp = new VerilatedVcdC;
+	top->trace(tfp,99);
+	tfp->open("waveform.vcd");
 
-		// 1. 复位初始化
-    top->clk = 0;
-    top->rst = 0;
-    top->pc = MBASE;
+	// 1. 复位初始化
+	top->clk = 0;
+	top->rst = 0;
+	top->pc = MBASE;
+	green_printf("===========================================\n");
     top->eval();
 
 
