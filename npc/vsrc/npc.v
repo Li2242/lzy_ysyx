@@ -37,9 +37,10 @@ wire [31:0]  src2;
 wire[4:0]    rs1;
 wire [4:0] 	 rs2;
 wire[4:0]    rd;
-wire[5:0]    alu_op;
+wire[6:0]    alu_op;
 wire         reg_wen;
-
+wire         mem_ren;
+wire         mem_wen;
 //指令BIG类型
 wire is_R;
 wire is_I;
@@ -63,6 +64,7 @@ wire is_jal;
 wire is_jalr;
 wire is_addi;
 wire is_add;
+wire is_lw;
 
 
 //判断类型
@@ -114,9 +116,10 @@ assign is_J = (hot_opcode[111]) ? 1 : 0;
 
 //立即数
 assign imm = ({32{is_I}} & imm_I)
-				| ({32{is_U}} & imm_U)
-		    | ({32{is_J}} & imm_J);
+				   | ({32{is_U}} & imm_U)
+		       | ({32{is_J}} & imm_J);
 				// | ({32{is_S}} & imm_S);
+
 
 //判断指令类型
 assign is_auipc = is_U & hot_opcode[23];
@@ -125,6 +128,7 @@ assign is_jal   = is_J ;
 assign is_jalr  = is_I & hot_funct3[0] & hot_opcode[103];
 assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
 assign is_add   = is_R & hot_funct3[0];
+assign is_lw   = is_I & hot_funct3[2] & hot_opcode[3];
 
 assign reg_wen = 1;
 
@@ -135,9 +139,12 @@ assign alu_op[2] = is_jal;
 assign alu_op[3] = is_jalr;
 assign alu_op[4] = is_addi;
 assign alu_op[5] = is_add;
+assign alu_op[6] = is_lw;
 //读取数据
 //符号扩
 
+//读的地址
+assign raddr = ({32{is_lw}} & (src1 + imm_I) );
 
 //alu
 // output declaration of module alu
@@ -146,23 +153,25 @@ alu u_alu(
     .src1   	(src1    ),
 		.src2      (src2),
     .alu_op 	(alu_op  ),
+		.rdata    (rdata),
     .pc         (pc),
     .next_pc    (next_pc ),
     .result 	(alu_result  )
 );
 
-// reg [31:0] rdata;
-// always @(*) begin
-//   if (valid) begin // 有读写请求时
-//     rdata = pmem_read(raddr);
-//     if (wen) begin // 有写请求时
-//       pmem_write(waddr, wdata, wmask);
-//     end
-//   end
-//   else begin
-//     rdata = 0;
-//   end
-// end
+ 	reg [31:0] rdata;
+	wire [31:0] raddr;
+	always @(*) begin
+		if (mem_ren) begin // 有读写请求时
+			rdata = v_pmem_read(raddr);
+	//     if (mem_wen) begin // 有写请求时
+	//       pmem_write(waddr, wdata, wmask);
+	//     end
+		end
+		else begin
+			rdata = 0;
+		end
+	end
 
 // 寄存器堆实例化
 RegisterFile u_regfile2 (
