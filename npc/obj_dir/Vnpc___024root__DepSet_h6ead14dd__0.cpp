@@ -12,6 +12,9 @@ void Vnpc___024root___eval_act(Vnpc___024root* vlSelf) {
 }
 
 void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf);
+void Vnpc___024root___nba_sequent__TOP__1(Vnpc___024root* vlSelf);
+void Vnpc___024root___nba_sequent__TOP__2(Vnpc___024root* vlSelf);
+void Vnpc___024root___nba_comb__TOP__0(Vnpc___024root* vlSelf);
 
 void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_nba\n"); );
@@ -22,6 +25,65 @@ void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
         Vnpc___024root___nba_sequent__TOP__0(vlSelf);
         vlSelfRef.__Vm_traceActivity[1U] = 1U;
     }
+    if ((2ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+        Vnpc___024root___nba_sequent__TOP__1(vlSelf);
+    }
+    if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+        Vnpc___024root___nba_sequent__TOP__2(vlSelf);
+    }
+    if ((3ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+        Vnpc___024root___nba_comb__TOP__0(vlSelf);
+    }
+}
+
+VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__2(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_sequent__TOP__2\n"); );
+    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Body
+    vlSelfRef.npc__DOT__mem_en = ((IData)(vlSelfRef.npc__DOT__is_I) 
+                                  & (IData)((0x2003U 
+                                             == (0x707fU 
+                                                 & vlSelfRef.npc__DOT__inst))));
+    vlSelfRef.npc__DOT__raddr = ((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
+                                 & (vlSelfRef.npc__DOT__src1 
+                                    + vlSelfRef.npc__DOT__imm_I));
+}
+
+VL_INLINE_OPT void Vnpc___024root___nba_comb__TOP__0(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_comb__TOP__0\n"); );
+    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Body
+    vlSelfRef.alu_result = (((- (IData)((IData)(vlSelfRef.npc__DOT__is_auipc))) 
+                             & vlSelfRef.npc__DOT__u_alu__DOT__result_auipc) 
+                            | (((- (IData)((IData)(vlSelfRef.npc__DOT__is_lui))) 
+                                & vlSelfRef.npc__DOT__imm) 
+                               | (((- (IData)((0x6fU 
+                                               == (0x7fU 
+                                                   & vlSelfRef.npc__DOT__inst)))) 
+                                   & ((IData)(4U) + vlSelfRef.pc)) 
+                                  | (((- (IData)((IData)(vlSelfRef.npc__DOT__is_jalr))) 
+                                      & ((IData)(4U) 
+                                         + vlSelfRef.pc)) 
+                                     | (((- (IData)((IData)(vlSelfRef.npc__DOT__is_addi))) 
+                                         & vlSelfRef.npc__DOT__u_alu__DOT__result_addi) 
+                                        | (((- (IData)((IData)(vlSelfRef.npc__DOT__is_add))) 
+                                            & (vlSelfRef.npc__DOT__src1 
+                                               + ((0U 
+                                                   == 
+                                                   (0x1fU 
+                                                    & (vlSelfRef.npc__DOT__inst 
+                                                       >> 0x14U)))
+                                                   ? 0U
+                                                   : 
+                                                  vlSelfRef.npc__DOT__u_regfile2__DOT__rf
+                                                  [
+                                                  (0x1fU 
+                                                   & (vlSelfRef.npc__DOT__inst 
+                                                      >> 0x14U))]))) 
+                                           | ((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
+                                              & vlSelfRef.npc__DOT__rdata)))))));
 }
 
 void Vnpc___024root___eval_triggers__act(Vnpc___024root* vlSelf);
@@ -31,7 +93,7 @@ bool Vnpc___024root___eval_phase__act(Vnpc___024root* vlSelf) {
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Init
-    VlTriggerVec<1> __VpreTriggered;
+    VlTriggerVec<2> __VpreTriggered;
     CData/*0:0*/ __VactExecute;
     // Body
     Vnpc___024root___eval_triggers__act(vlSelf);

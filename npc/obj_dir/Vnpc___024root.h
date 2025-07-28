@@ -30,9 +30,12 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_7;
     CData/*0:0*/ __VstlFirstIteration;
     CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
+    CData/*0:0*/ __VactDidInit;
     CData/*0:0*/ __VactContinue;
     VL_OUT(alu_result,31,0);
     VL_OUT(pc,31,0);
+    IData/*31:0*/ npc__DOT__rdata;
+    IData/*31:0*/ npc__DOT__raddr;
     IData/*31:0*/ npc__DOT__inst;
     IData/*31:0*/ npc__DOT__next_pc;
     IData/*31:0*/ npc__DOT__imm;
@@ -40,17 +43,16 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     IData/*31:0*/ npc__DOT__imm_R;
     IData/*31:0*/ npc__DOT__imm_I;
     VlWide<4>/*127:0*/ npc__DOT__hot_opcode;
-    IData/*31:0*/ npc__DOT____VdfgExtracted_h414fb206__0;
     IData/*31:0*/ npc__DOT__u_alu__DOT__result_auipc;
     IData/*31:0*/ npc__DOT__u_alu__DOT__result_addi;
     IData/*31:0*/ __Vfunc_v_pmem_read__0__Vfuncout;
-    IData/*31:0*/ __Vfunc_v_pmem_read__2__Vfuncout;
+    IData/*31:0*/ __Vtrigprevexpr___TOP__npc__DOT__raddr__0;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_regfile2__DOT__rf;
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
-    VlTriggerVec<1> __VactTriggered;
-    VlTriggerVec<1> __VnbaTriggered;
+    VlTriggerVec<2> __VactTriggered;
+    VlTriggerVec<2> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vnpc__Syms* const vlSymsp;
