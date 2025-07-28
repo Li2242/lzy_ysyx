@@ -40,7 +40,7 @@ wire[4:0]    rd;
 wire[6:0]    alu_op;
 wire         reg_wen;
 wire         mem_ren;
-wire         mem_wen;
+// wire         mem_wen;
 //指令BIG类型
 wire is_R;
 wire is_I;
@@ -145,7 +145,7 @@ assign alu_op[6] = is_lw;
 
 //读的地址
 assign raddr = ({32{is_lw}} & (src1 + imm_I) );
-
+assign mem_ren = is_lw;
 //alu
 // output declaration of module alu
 alu u_alu(
