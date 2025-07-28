@@ -31,7 +31,7 @@ end
 	wire [31:0] raddr;
 
 	always @(*) begin
-		if (mem_en) begin // 有读写请求时
+		if (0) begin // 有读写请求时
 			rdata = v_pmem_read(raddr);
 //     if (mem_wen) begin // 有写请求时
 //       pmem_write(waddr, wdata, wmask);

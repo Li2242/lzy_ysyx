@@ -13,27 +13,10 @@ VL_ATTR_COLD void Vnpc___024root___eval_static(Vnpc___024root* vlSelf) {
     vlSelfRef.__Vtrigprevexpr___TOP__clk__0 = vlSelfRef.clk;
 }
 
-VL_ATTR_COLD void Vnpc___024root___eval_initial__TOP(Vnpc___024root* vlSelf);
-
 VL_ATTR_COLD void Vnpc___024root___eval_initial(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_initial\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    Vnpc___024root___eval_initial__TOP(vlSelf);
-}
-
-VL_ATTR_COLD void Vnpc___024root___eval_initial__TOP(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_initial__TOP\n"); );
-    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    VL_WRITEF_NX("Initial inst: %x\nInitial opcode: %b\nInitial funct3: %b\nInitial is_I: %b\nInitial is_lw: %b\nInitial mem_en: %b\n",0,
-                 32,vlSelfRef.npc__DOT__inst,7,(0x7fU 
-                                                & vlSelfRef.npc__DOT__inst),
-                 3,(7U & (vlSelfRef.npc__DOT__inst 
-                          >> 0xcU)),1,(IData)(vlSelfRef.npc__DOT__is_I),
-                 1,vlSelfRef.npc__DOT__mem_en,1,(IData)(vlSelfRef.npc__DOT__mem_en));
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_final(Vnpc___024root* vlSelf) {
@@ -190,7 +173,6 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
-    vlSelf->__Vfunc_v_pmem_read__0__Vfuncout = 0;
     vlSelf->__Vfunc_v_pmem_read__2__Vfuncout = 0;
     vlSelf->__Vtrigprevexpr___TOP__clk__0 = VL_RAND_RESET_I(1);
     for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {

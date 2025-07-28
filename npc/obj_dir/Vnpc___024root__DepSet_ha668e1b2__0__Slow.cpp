@@ -30,8 +30,6 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.pc, vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout);
-    vlSelfRef.npc__DOT__inst = vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout;
     vlSelfRef.npc__DOT__hot_opcode[0U] = (((((((0x1fU 
                                                 == 
                                                 (0x7fU 
