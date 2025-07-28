@@ -3,7 +3,7 @@ module alu(
     input[31:0] imm,
     input[31:0] src1,
 		input[31:0] src2,
-    input[6:0] alu_op,
+    input[6:0]  alu_op,
 		input[31:0] rdata,
     input[31:0] pc,
     output[31:0]  next_pc,
@@ -17,12 +17,13 @@ wire [31:0] result_jalr;
 wire [31:0] result_addi;
 wire [31:0] result_add;
 wire [31:0] result_lw;
-//jal jarl
+
+//jal jarl 跳转指令
 assign next_pc = alu_op[2] ? pc+imm :
                  alu_op[3] ? (src1+imm)&~1 :
                  pc+4;
 
-
+//各种指令的结果
 assign result_auipc = imm + pc;
 assign result_lui   = imm;
 assign result_jal   = pc + 4;

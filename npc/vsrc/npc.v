@@ -39,7 +39,7 @@ wire [4:0] 	 rs2;
 wire[4:0]    rd;
 wire[6:0]    alu_op;
 wire         reg_wen;
-wire         mem_ren;
+wire         mem_en;
 // wire         mem_wen;
 //指令BIG类型
 wire is_R;
@@ -145,7 +145,8 @@ assign alu_op[6] = is_lw;
 
 //读的地址
 assign raddr = ({32{is_lw}} & (src1 + imm_I) );
-assign mem_ren = is_lw;
+//读写请求
+assign mem_en = is_lw;
 //alu
 // output declaration of module alu
 alu u_alu(
@@ -162,7 +163,7 @@ alu u_alu(
  	reg [31:0] rdata;
 	wire [31:0] raddr;
 	always @(*) begin
-		if (mem_ren == 1) begin // 有读写请求时
+		if (0) begin // 有读写请求时
 			rdata = v_pmem_read(raddr);
 	//     if (mem_wen) begin // 有写请求时
 	//       pmem_write(waddr, wdata, wmask);
