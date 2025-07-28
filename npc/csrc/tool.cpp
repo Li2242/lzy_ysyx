@@ -56,9 +56,6 @@ static inline void host_write(void *addr,int len, uint32_t data) {
 
 //从物理地址 addr 处读取长度为 len 的数据。
 uint32_t pmem_read(uint32_t addr, int len) {
-	if(addr == 0){
-		addr = 0x80000000;
-	}
    if (in_pmem(addr) == 1){
 		uint32_t ret = host_read(guest_to_host(addr),len);
 		return ret;

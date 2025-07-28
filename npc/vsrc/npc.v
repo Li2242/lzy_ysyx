@@ -33,14 +33,14 @@ end
 	always @(*) begin
 		if (mem_en) begin // 有读写请求时
 			rdata = v_pmem_read(raddr);
+//     if (mem_wen) begin // 有写请求时
+//       pmem_write(waddr, wdata, wmask);
+//     end
 		end else begin
 			rdata = 0;
 		end
 	end
 
-	//     if (mem_wen) begin // 有写请求时
-	//       pmem_write(waddr, wdata, wmask);
-	//     end
 
 //内部信号定义
 reg[31:0]    inst;
@@ -162,7 +162,7 @@ assign alu_op[6] = is_lw;
 //读的地址
 assign raddr = ({32{is_lw}} & (src1 + imm_I) );
 //读写请求
-assign mem_en = is_lw;
+assign mem_en = alu_op[6];
 //alu
 // output declaration of module alu
 alu u_alu(
