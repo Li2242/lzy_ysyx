@@ -17,6 +17,7 @@ Reg#(32,32'h80000000) pc_4(
     .wen     (1)
 );
 
+//取值
 always @(*)begin
 		inst = v_pmem_read(pc);
 end
