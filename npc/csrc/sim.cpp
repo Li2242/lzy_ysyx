@@ -93,8 +93,8 @@ static void execute(uint32_t n){
   for(int i = 0; (i < n) && npc_state == NPC_RUNNING ; i++){
 		//pc值要正确,这是变化前的pc，后面经过执行就变成下一个pc了
 		//执行命令前我先存一个pc
-		// cpu_pc = top->pc;
-		printf("0x%08x\n",cpu_pc);
+		cpu_pc = top->pc;
+		// printf("0x%08x\n",cpu_pc);
 
 //===============  一条命令的开始  ========================
     top->clk = 0;
