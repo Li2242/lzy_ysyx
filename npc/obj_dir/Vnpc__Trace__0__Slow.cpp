@@ -268,9 +268,7 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
                                                (7U 
                                                 & (vlSelfRef.npc__DOT__inst 
                                                    >> 0xcU))))))),8);
-    bufp->fullIData(oldp+29,(((IData)(vlSelfRef.npc__DOT__mem_en)
-                               ? vlSelfRef.npc__DOT____VdfgExtracted_h414fb206__0
-                               : 0U)),32);
+    bufp->fullIData(oldp+29,(vlSelfRef.npc__DOT__rdata),32);
     bufp->fullIData(oldp+30,(((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
                               & (vlSelfRef.npc__DOT__src1 
                                  + vlSelfRef.npc__DOT__imm_I))),32);

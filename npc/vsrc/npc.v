@@ -26,6 +26,22 @@ always @(posedge clk) begin
 	if(inst == 32'h00100073) ebreak(pc + 4);
 end
 
+
+ 	reg [31:0] rdata;
+	wire [31:0] raddr;
+
+	always @(*) begin
+		if (mem_en) begin // 有读写请求时
+			rdata <= v_pmem_read(raddr);
+		end else begin
+			rdata <= 0;
+		end
+	end
+
+	//     if (mem_wen) begin // 有写请求时
+	//       pmem_write(waddr, wdata, wmask);
+	//     end
+
 //内部信号定义
 reg[31:0]    inst;
 wire[6:0]    opcode;
@@ -160,19 +176,7 @@ alu u_alu(
     .result 	(alu_result  )
 );
 
- 	reg [31:0] rdata;
-	wire [31:0] raddr;
-	always @(posedge clk) begin
-		if (mem_en) begin // 有读写请求时
-			rdata <= v_pmem_read(raddr);
-		end else begin
-			rdata <= 0;
-		end
-	end
 
-	//     if (mem_wen) begin // 有写请求时
-	//       pmem_write(waddr, wdata, wmask);
-	//     end
 
 // 寄存器堆实例化
 RegisterFile u_regfile2 (

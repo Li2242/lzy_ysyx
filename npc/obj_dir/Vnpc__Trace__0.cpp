@@ -126,9 +126,7 @@ void Vnpc___024root__trace_chg_0_sub_0(Vnpc___024root* vlSelf, VerilatedVcd::Buf
                                                   (7U 
                                                    & (vlSelfRef.npc__DOT__inst 
                                                       >> 0xcU))))))),8);
-        bufp->chgIData(oldp+28,(((IData)(vlSelfRef.npc__DOT__mem_en)
-                                  ? vlSelfRef.npc__DOT____VdfgExtracted_h414fb206__0
-                                  : 0U)),32);
+        bufp->chgIData(oldp+28,(vlSelfRef.npc__DOT__rdata),32);
         bufp->chgIData(oldp+29,(((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
                                  & (vlSelfRef.npc__DOT__src1 
                                     + vlSelfRef.npc__DOT__imm_I))),32);
