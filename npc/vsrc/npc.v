@@ -146,7 +146,9 @@ assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
 assign is_add   = is_R & hot_funct3[0];
 assign is_lw   = is_I  & hot_funct3[2] & hot_opcode[3];
 
-assign reg_wen = 1;
+//读写请求
+assign mem_en  = is_lw;
+assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw;
 
 //运算符
 assign alu_op[0] = is_auipc;
@@ -161,8 +163,7 @@ assign alu_op[6] = is_lw;
 
 //读的地址
 assign raddr = ({32{is_lw}} & (src1 + imm_I) );
-//读写请求
-assign mem_en = alu_op[6];
+
 //alu
 // output declaration of module alu
 alu u_alu(
