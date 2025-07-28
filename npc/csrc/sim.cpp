@@ -124,16 +124,17 @@ static void trace_and_difftest() {
 		p += snprintf(p, sizeof(logbuf), "0x%08x:",cpu_pc);
 		int ilen = 4;
 		int k;
-		uint8_t *inst = (uint8_t *)&top->inst;
+		uint32_t inst = pmem_read(cpu_pc,4);
+		uint8_t *s_inst = (uint8_t *)inst;
 
 		for(k = ilen - 1; k >= 0; k --){
-			p += snprintf(p,4," %02x", inst[k]);
+			p += snprintf(p,4," %02x", s_inst[k]);
 		}
 		int space_len = 1;
 		memset(p,' ',space_len);
 		p += space_len;
 		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&top->inst,ilen);
+		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&inst,ilen);
 // ================== ITRACING ENDS ===========================
 
 //difftest的关键
