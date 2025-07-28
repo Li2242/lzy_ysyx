@@ -39,7 +39,10 @@ void sim_init(int argc,char** argv){
 		//载入镜像文件 外部程序 or 内置指令
     long img_size = load_img();
 		//初始化测试
+
+	if(diff_so_file != NULL){
 		init_difftest(diff_so_file , img_size);
+	}
 		//编译正则表达式
 		init_regex();
 		//初始化监视点

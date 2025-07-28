@@ -9,10 +9,8 @@ void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
 //初始化
 void init_difftest(char *ref_so_file, long img_size) {
-  // assert(ref_so_file != NULL);
-	if(ref_so_file == NULL){
-		red_printf("Assertion `ref_so_file != NULL' failed");
-	}
+  assert(ref_so_file != NULL);
+
 
   //打开传入的动态库文件ref_so_file
   void *handle;
