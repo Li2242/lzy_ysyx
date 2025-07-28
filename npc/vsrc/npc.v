@@ -1,6 +1,6 @@
 import "DPI-C" function void ebreak(input int unsigned pc);
 import "DPI-C" function int v_pmem_read(input int raddr);
-import "DPI-C" function void pmem_write(input int unsigned waddr, input int wdata, input byte wmask);
+import "DPI-C" function void v_pmem_write(input int unsigned waddr, input int wdata, input byte wmask);
 module npc(
     input  wire clk,
     input  wire rst,
