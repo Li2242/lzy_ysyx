@@ -32,7 +32,6 @@ void sim_init(int argc,char** argv){
     top->rst = 0;
     top->pc = MBASE;
     top->eval();
-	green_printf("===========================================\n");
 
 
 // =============== 这里是初始化 ===============
