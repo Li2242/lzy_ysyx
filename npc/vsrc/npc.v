@@ -162,7 +162,7 @@ alu u_alu(
 
  	reg [31:0] rdata;
 	wire [31:0] raddr;
-	always @(*) begin
+	always @(mem_en) begin
 		if (0) begin // 有读写请求时
 			rdata = v_pmem_read(raddr);
 	//     if (mem_wen) begin // 有写请求时
