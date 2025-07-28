@@ -128,7 +128,10 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
   return is_same;
 }
 
-
+extern "C" void ebreak(uint32_t pc){
+    printf("pc = 0x%x\n",pc);
+  	npc_state = NPC_END;
+}
 
 //颜色打印
 void green_printf(const char *fmt, ...) {
