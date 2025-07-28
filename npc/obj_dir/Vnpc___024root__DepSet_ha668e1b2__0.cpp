@@ -713,6 +713,10 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                 | ((3U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
                                    | (0x67U == (0x7fU 
                                                 & vlSelfRef.npc__DOT__inst))));
+    vlSelfRef.npc__DOT__mem_en = ((IData)(vlSelfRef.npc__DOT__is_I) 
+                                  & (IData)((0x2003U 
+                                             == (0x707fU 
+                                                 & vlSelfRef.npc__DOT__inst))));
     vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_7 
         = ((IData)(vlSelfRef.npc__DOT__is_I) & (0U 
                                                 == 

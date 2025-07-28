@@ -41,10 +41,7 @@ void Vnpc___024root__trace_chg_0_sub_0(Vnpc___024root* vlSelf, VerilatedVcd::Buf
                                          >> 0x14U))),5);
         bufp->chgCData(oldp+8,((0x1fU & (vlSelfRef.npc__DOT__inst 
                                          >> 7U))),5);
-        bufp->chgCData(oldp+9,(((((((IData)(vlSelfRef.npc__DOT__is_I) 
-                                    & (IData)((0x2003U 
-                                               == (0x707fU 
-                                                   & vlSelfRef.npc__DOT__inst)))) 
+        bufp->chgCData(oldp+9,((((((IData)(vlSelfRef.npc__DOT__mem_en) 
                                    << 6U) | ((IData)(
                                                      (0x33U 
                                                       == 
@@ -69,10 +66,7 @@ void Vnpc___024root__trace_chg_0_sub_0(Vnpc___024root* vlSelf, VerilatedVcd::Buf
                                                     == 
                                                     (0x7fU 
                                                      & vlSelfRef.npc__DOT__inst))))))),7);
-        bufp->chgBit(oldp+10,(((IData)(vlSelfRef.npc__DOT__is_I) 
-                               & (IData)((0x2003U == 
-                                          (0x707fU 
-                                           & vlSelfRef.npc__DOT__inst))))));
+        bufp->chgBit(oldp+10,(vlSelfRef.npc__DOT__mem_en));
         bufp->chgBit(oldp+11,((0x33U == (0x7fU & vlSelfRef.npc__DOT__inst))));
         bufp->chgBit(oldp+12,(vlSelfRef.npc__DOT__is_I));
         bufp->chgBit(oldp+13,(vlSelfRef.npc__DOT__is_U));
@@ -132,12 +126,7 @@ void Vnpc___024root__trace_chg_0_sub_0(Vnpc___024root* vlSelf, VerilatedVcd::Buf
                                                   (7U 
                                                    & (vlSelfRef.npc__DOT__inst 
                                                       >> 0xcU))))))),8);
-        bufp->chgIData(oldp+28,(((- (IData)(((IData)(vlSelfRef.npc__DOT__is_I) 
-                                             & (IData)(
-                                                       (0x2003U 
-                                                        == 
-                                                        (0x707fU 
-                                                         & vlSelfRef.npc__DOT__inst)))))) 
+        bufp->chgIData(oldp+28,(((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
                                  & (vlSelfRef.npc__DOT__src1 
                                     + vlSelfRef.npc__DOT__imm_I))),32);
         bufp->chgIData(oldp+29,(vlSelfRef.npc__DOT__u_alu__DOT__result_auipc),32);
