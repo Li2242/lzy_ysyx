@@ -12,6 +12,7 @@ static void out_of_bound(uint32_t addr);
 
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
+	00000413,
 	// 0x06400093,  // addi x1, x0, 100     ; x1 = 100
 	// 0x00008083,  // lw   x1, 0(x1)       ; 从地址 x1 + 0 读32位到 x1（假设内存中地址100处有数据）
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
@@ -142,7 +143,7 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 	for(int i = 0;i<32;i++){
 		uint32_t temp = top->rootp->npc__DOT__u_regfile2__DOT__rf[i];
 		if( temp != ref_r[i]){
-			red_printf("Mismatch in %s: dut=0x%08x, ref=0x%08x\n", regs[i], temp, ref_r[i]);
+			red_printf("Mismatch in '%s': dut=0x%08x, ref=0x%08x\n", regs[i], temp, ref_r[i]);
 			is_same = false;
 		}
 	}

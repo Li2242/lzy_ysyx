@@ -75,7 +75,7 @@ void sim_exe(uint32_t n){
 	switch (npc_state) {
 			case NPC_RUNNING: npc_state = NPC_STOP; break;
 			case NPC_END: case NPC_ABORT:
-				green_printf("npc: HIT GOOD TRAP\n");
+				// green_printf("npc: HIT GOOD TRAP\n");
 				// fall through
 			case NPC_QUIT: return ;
 		}
