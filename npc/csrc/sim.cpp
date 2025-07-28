@@ -32,8 +32,8 @@ void sim_init(int argc,char** argv){
     top->rst = 0;
     top->pc = MBASE;
     top->eval();
-    // tfp->dump(contextp->time()); // 记录复位前状态
-    // contextp->timeInc(10);
+	green_printf("===========================================\n");
+
 
 // =============== 这里是初始化 ===============
 		//载入镜像文件 外部程序 or 内置指令
