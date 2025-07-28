@@ -87,10 +87,10 @@ long load_img() {
 		//写入内置程序
     memcpy(pmem,memory,sizeof(memory));
 		uint32_t addr = MBASE;
-		for(int i =0;i<32;i++){
-			printf("pmem[%d] = 0x%08x\n",i,pmem_read(addr,4));
-			addr+=4;
-		}
+		// for(int i =0;i<32;i++){
+		// 	printf("pmem[%d] = 0x%08x\n",i,pmem_read(addr,4));
+		// 	addr+=4;
+		// }
     green_printf("No image is given. Use the default build-in image.\n");
     return 4096; // built-in image size
   }
@@ -129,6 +129,11 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 }
 
 
+//verilog中调用的函数
+extern "C" void ebreak(uint32_t pc){
+    printf("pc = 0x%x\n",pc);
+  	npc_state = NPC_END;
+}
 
 //颜色打印
 void green_printf(const char *fmt, ...) {
