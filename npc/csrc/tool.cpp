@@ -86,6 +86,11 @@ long load_img() {
   if (img_file == NULL) {
 		//写入内置程序
     memcpy(pmem,memory,sizeof(memory));
+		uint32_t addr = MBASE;
+		for(int i =0;i<32;i++){
+			printf("pmem[%d] = ",i,pmem_read(addr,4));
+			addr+=4;
+		}
     green_printf("No image is given. Use the default build-in image.\n");
     return 4096; // built-in image size
   }
