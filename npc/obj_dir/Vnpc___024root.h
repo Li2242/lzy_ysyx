@@ -19,7 +19,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     // DESIGN SPECIFIC STATE
     VL_IN8(clk,0,0);
     VL_IN8(rst,0,0);
-    CData/*0:0*/ npc__DOT__mem_en;
     CData/*0:0*/ npc__DOT__is_I;
     CData/*0:0*/ npc__DOT__is_U;
     CData/*0:0*/ npc__DOT__is_auipc;
@@ -27,6 +26,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ npc__DOT__is_jalr;
     CData/*0:0*/ npc__DOT__is_addi;
     CData/*0:0*/ npc__DOT__is_add;
+    CData/*0:0*/ npc__DOT__is_lw;
     CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_7;
     CData/*0:0*/ __VstlFirstIteration;
     CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;

@@ -14,6 +14,7 @@ initial begin
     $display("Initial funct3: %b", funct3);
     $display("Initial is_I: %b", is_I);
     $display("Initial is_lw: %b", is_lw);
+    $display("Initial mem_en: %b", mem_en);
 end
 //使用触发器处理pc
 Reg#(32,32'h80000000) pc_4(
