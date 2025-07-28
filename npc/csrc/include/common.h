@@ -64,7 +64,6 @@ int expr(char *e, bool *success);
 
 //地址转换和从内存读出内容
 uint32_t pmem_read(uint32_t addr, int len);
-inline uint32_t host_read(void *addr, int len);
 uint8_t* guest_to_host(uint32_t paddr);
 
 //不同颜色的printf
@@ -111,6 +110,10 @@ extern char *diff_so_file;
 //pc
 extern uint32_t cpu_pc;
 
+// ================= 这里是verilog中的DPI-C ====================
+//停止指令
+extern "C" void ebreak(uint32_t pc);
+extern "C" int v_pmem_read(uint32_t raddr);
+extern "C" void v_pmem_write(int waddr, int wdata, char wmask);
 
-// extern "C" void ebreak(uint32_t pc);
-
+// ==================  请在范围内添加    =========================

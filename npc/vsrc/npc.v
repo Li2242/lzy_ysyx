@@ -1,13 +1,12 @@
 import "DPI-C" function void ebreak(input int unsigned pc);
-
+import "DPI-C" function int v_pmem_read(input int raddr);
+import "DPI-C" function void pmem_write(input int unsigned waddr, input int wdata, input byte wmask);
 module npc(
     input  wire clk,
     input  wire rst,
-    input  wire [31:0]  inst,
     output wire [31:0]  alu_result,
     output reg  [31:0]  pc
 );
-
 
 //使用触发器处理pc
 Reg#(32,32'h80000000) pc_4(
@@ -19,24 +18,26 @@ Reg#(32,32'h80000000) pc_4(
 );
 
 always @(posedge clk)begin
+		inst <= v_pmem_read(pc);
     if(inst == 32'h00100073) ebreak(pc + 4);
 end
 
 //内部信号定义
-wire[6:0] opcode;
-wire[31:0]next_pc;
-wire[31:0]  imm;
-wire[2:0] funct3;
-wire[31:0]  src1;
-// wire [31:0]  src2;
-wire[4:0]   rs1;
-// wire [4:0] 	 rs2;
-wire[4:0]   rd;
-wire        reg_wen;
-wire[4:0] alu_op;
+reg[31:0]    inst;
+wire[6:0]    opcode;
+wire[31:0]   next_pc;
+wire[31:0]   imm;
+wire[2:0]    funct3;
+wire[31:0]   src1;
+wire [31:0]  src2;
+wire[4:0]    rs1;
+wire [4:0] 	 rs2;
+wire[4:0]    rd;
+wire[5:0]    alu_op;
+wire         reg_wen;
 
 //指令BIG类型
-// wire is_R;
+wire is_R;
 wire is_I;
 // wire is_S;
 // wire is_B;
@@ -44,7 +45,7 @@ wire is_U;
 wire is_J;
 
 //立即数
-// wire [31:0]imm_R;
+wire [31:0]imm_R;
 wire [31:0]imm_I;
 // wire [31:0]imm_S;
 // wire [31:0]imm_B;
@@ -57,12 +58,11 @@ wire is_lui;
 wire is_jal;
 wire is_jalr;
 wire is_addi;
-
+wire is_add;
 
 
 //判断类型
 assign opcode  = inst[6:0];
-
 
 //全部符号扩展，待会进alu在处理
 assign imm_I = {{20{inst[31]}},inst[31:20]};
@@ -71,7 +71,7 @@ assign imm_I = {{20{inst[31]}},inst[31:20]};
 assign imm_U = {inst[31:12],{12{1'b0}}};
 assign imm_J = {{11{inst[31]}},inst[31],inst[19:12],inst[20],inst[30:21],1'b0};
 assign rs1    = inst[19:15];
-// assign r2    = inst[24:20];
+assign rs2    = inst[24:20];
 assign rd    = inst[11:7];
 assign funct3 = inst[14:12];
 
@@ -101,8 +101,9 @@ decoder3_8 u_decoder3_8(
 1101111 → J 型
 1100111 → I 型（jalr）
 */
+
 assign is_I = (hot_opcode[19] | hot_opcode[3] | hot_opcode[103]) ? 1 : 0;
-// assign is_R = (hot_opcode[51]) ? 1 : 0;
+assign is_R = (hot_opcode[51]) ? 1 : 0;
 // assign is_S = (hot_opcode[35]) ? 1 : 0;
 assign is_U = (hot_opcode[55] | hot_opcode[23]) ? 1 : 0;
 assign is_J = (hot_opcode[111]) ? 1 : 0;
@@ -111,7 +112,7 @@ assign is_J = (hot_opcode[111]) ? 1 : 0;
 assign imm = ({32{is_I}} & imm_I)
 				| ({32{is_U}} & imm_U)
 		    | ({32{is_J}} & imm_J);
-						//  | ({32{is_S}} & imm_S);
+				// | ({32{is_S}} & imm_S);
 
 //判断指令类型
 assign is_auipc = is_U & hot_opcode[23];
@@ -122,11 +123,13 @@ assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
 
 assign reg_wen = 1;
 
+//运算符
 assign alu_op[0] = is_auipc;
 assign alu_op[1] = is_lui;
 assign alu_op[2] = is_jal;
 assign alu_op[3] = is_jalr;
 assign alu_op[4] = is_addi;
+assign alu_op[5] = is_add;
 //读取数据
 //符号扩
 
@@ -136,12 +139,25 @@ assign alu_op[4] = is_addi;
 alu u_alu(
     .imm    	(imm     ),
     .src1   	(src1    ),
+		.src2      (src2),
     .alu_op 	(alu_op  ),
     .pc         (pc),
     .next_pc    (next_pc ),
     .result 	(alu_result  )
 );
 
+// reg [31:0] rdata;
+// always @(*) begin
+//   if (valid) begin // 有读写请求时
+//     rdata = pmem_read(raddr);
+//     if (wen) begin // 有写请求时
+//       pmem_write(waddr, wdata, wmask);
+//     end
+//   end
+//   else begin
+//     rdata = 0;
+//   end
+// end
 
 // 寄存器堆实例化
 RegisterFile u_regfile2 (
@@ -150,7 +166,9 @@ RegisterFile u_regfile2 (
     .waddr(rd),
     .wdata(alu_result),
     .raddr1(rs1),
-    .rdata1(src1)
+    .rdata1(src1),
+    .raddr2(rs2),
+    .rdata2(src2)
 );
 
 endmodule

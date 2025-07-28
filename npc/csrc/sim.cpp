@@ -97,7 +97,7 @@ static void execute(uint32_t n){
 
 //===============  一条命令的开始  ========================
     top->clk = 0;
-    top->inst = pmem_read(top->pc,4);
+    // top->inst = pmem_read(top->pc,4);
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);

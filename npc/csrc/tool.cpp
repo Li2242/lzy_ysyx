@@ -28,14 +28,24 @@ static const __uint32_t memory[] = {
 //地址转换
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - MBASE; }
 //判断以什么形式读出
-inline uint32_t host_read(void *addr, int len) {
+static inline uint32_t host_read(void *addr, int len) {
   switch (len) {
     case 1: return *(uint8_t  *)addr;
     case 2: return *(uint16_t *)addr;
     case 4: return *(uint32_t *)addr;
-    default:assert(0);
+    default: red_printf("host_read中并不能读出这个长度\n"); assert(0);
   }
 }
+
+static inline void host_write(void *addr,int len, uint32_t data) {
+	switch(len){
+		case 1: *(uint8_t  *)addr = data; return;
+    case 2: *(uint16_t *)addr = data; return;
+    case 4: *(uint32_t *)addr = data; return;
+		default: red_printf("host_write中并不能写入这个长度\n"); assert(0);
+	}
+}
+
 //从物理地址 addr 处读取长度为 len 的数据。
 uint32_t pmem_read(uint32_t addr, int len) {
    if (in_pmem(addr) == 1){
@@ -44,6 +54,12 @@ uint32_t pmem_read(uint32_t addr, int len) {
 	}
 	out_of_bound(addr);
 	return 0;
+}
+
+void pmem_write(uint32_t addr, int len, uint32_t data){
+	if(in_pmem(addr) == 1){
+		host_write(guest_to_host(addr), len, data);
+	}
 }
 
 //越界处理
@@ -127,12 +143,32 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 	}
   return is_same;
 }
-
+// ================= 这里是verilog中的DPI-C ====================
+//停止指令
 extern "C" void ebreak(uint32_t pc){
     printf("pc = 0x%x\n",pc);
   	npc_state = NPC_END;
 }
 
+extern "C" int v_pmem_read(uint32_t raddr){
+	uint32_t addr = raddr & ~0x3u;
+	return pmem_read(addr,4);
+}
+
+extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
+	uint32_t addr = waddr & ~0x3u;
+	uint32_t temp = pmem_read(addr, 4);
+	if(wmask&0x1){temp = (temp & 0xFFFFFF00) | (wdata & 0x000000FF);}
+	if(wmask&0x2){temp = (temp & 0xFFFF00FF) | (wdata & 0x0000FF00);}
+	if(wmask&0x4){temp = (temp & 0xFF00FFFF) | (wdata & 0x00FF0000);}
+	if(wmask&0x8){temp = (temp & 0x00FFFFFF) | (wdata & 0xFF000000);}
+	pmem_write(addr, 4, temp);
+}
+
+// ====================   请在上面的范围内添加    =======================
+
+
+// ====================      小工具        ========================
 //颜色打印
 void green_printf(const char *fmt, ...) {
     va_list args;
