@@ -23,7 +23,7 @@ always @(*)begin
 end
 
 always @(posedge clk) begin
-	if(inst == 32'h00100073) ebreak(pc + 4);
+	if(inst == 32'h00100073) ebreak(pc);
 end
 
 
