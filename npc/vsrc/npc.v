@@ -32,7 +32,7 @@ end
 
 	always @(*) begin
 		if(mem_en)begin
-			v_pmem_read(raddr);
+			rdata = v_pmem_read(raddr);
 		end else begin
 			rdata = 0;
 		end

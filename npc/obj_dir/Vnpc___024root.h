@@ -33,6 +33,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ __VactContinue;
     VL_OUT(alu_result,31,0);
     VL_OUT(pc,31,0);
+    IData/*31:0*/ npc__DOT__rdata;
     IData/*31:0*/ npc__DOT__inst;
     IData/*31:0*/ npc__DOT__next_pc;
     IData/*31:0*/ npc__DOT__imm;
@@ -43,6 +44,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     IData/*31:0*/ npc__DOT__u_alu__DOT__result_auipc;
     IData/*31:0*/ npc__DOT__u_alu__DOT__result_addi;
     IData/*31:0*/ __Vfunc_v_pmem_read__0__Vfuncout;
+    IData/*31:0*/ __Vtask_v_pmem_read__2__Vfuncout;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_regfile2__DOT__rf;
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
