@@ -32,9 +32,9 @@ end
 
 	always @(*) begin
 		if (mem_en) begin // 有读写请求时
-			rdata <= v_pmem_read(raddr);
+			rdata = v_pmem_read(raddr);
 		end else begin
-			rdata <= 0;
+			rdata = 0;
 		end
 	end
 
