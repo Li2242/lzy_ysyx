@@ -19,10 +19,10 @@ static void execute(uint32_t n);
 
 //开始
 void sim_init(int argc,char** argv){
-	green_printf("===========================================\n");
 
-    contextp = new VerilatedContext;
-    contextp->commandArgs(argc,argv);
+	contextp = new VerilatedContext;
+	contextp->commandArgs(argc,argv);
+	green_printf("===========================================\n");
     Verilated::traceEverOn(true);
     top = new Vnpc;
     tfp = new VerilatedVcdC;
