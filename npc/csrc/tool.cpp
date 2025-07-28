@@ -14,7 +14,6 @@ static void out_of_bound(uint32_t addr);
 static const __uint32_t memory[] = {
 	0x00000413,
 	0x06400093,  // addi x1, x0, 100     ; x1 = 100
-	0x00008083,  // lw   x1, 0(x1)       ; x1 = MEM[x1 + 0]
 	0x00408103,  // lw   x2, 4(x1)       ; x2 = MEM[x1 + 4]
 	0x00808183,  // lw   x3, 8(x1)       ; x3 = MEM[x1 + 8]
 	0x00c08203,  // lw   x4, 12(x1)      ; x4 = MEM[x1 + 12]
