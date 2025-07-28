@@ -14,6 +14,7 @@ void Vnpc___024root___eval_act(Vnpc___024root* vlSelf) {
 void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf);
 void Vnpc___024root___nba_sequent__TOP__1(Vnpc___024root* vlSelf);
 void Vnpc___024root___nba_sequent__TOP__2(Vnpc___024root* vlSelf);
+void Vnpc___024root___nba_comb__TOP__0(Vnpc___024root* vlSelf);
 
 void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_nba\n"); );
@@ -26,37 +27,85 @@ void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
     }
     if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
         Vnpc___024root___nba_sequent__TOP__1(vlSelf);
+        vlSelfRef.__Vm_traceActivity[2U] = 1U;
     }
     if ((2ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
         Vnpc___024root___nba_sequent__TOP__2(vlSelf);
-        vlSelfRef.__Vm_traceActivity[2U] = 1U;
+    }
+    if ((3ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+        Vnpc___024root___nba_comb__TOP__0(vlSelf);
+        vlSelfRef.__Vm_traceActivity[3U] = 1U;
     }
 }
 
-VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_sequent__TOP__0\n"); );
+VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__2(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_sequent__TOP__2\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Init
-    IData/*31:0*/ __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0;
-    __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
-    CData/*4:0*/ __VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0;
-    __VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
-    CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
-    __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
-    __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
-    if ((0U != (0x1fU & (vlSelfRef.npc__DOT__inst >> 7U)))) {
-        __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0 
-            = vlSelfRef.alu_result;
-        __VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0 
-            = (0x1fU & (vlSelfRef.npc__DOT__inst >> 7U));
-        __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 1U;
-    }
-    if (__VdlySet__npc__DOT__u_regfile2__DOT__rf__v0) {
-        vlSelfRef.npc__DOT__u_regfile2__DOT__rf[__VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0] 
-            = __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0;
-    }
+    vlSelfRef.pc = ((IData)(vlSelfRef.rst) ? 0x80000000U
+                     : vlSelfRef.npc__DOT__next_pc);
+}
+
+VL_INLINE_OPT void Vnpc___024root___nba_comb__TOP__0(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_comb__TOP__0\n"); );
+    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Body
+    vlSelfRef.npc__DOT__src1 = ((0U == (0x1fU & (vlSelfRef.npc__DOT__inst 
+                                                 >> 0xfU)))
+                                 ? 0U : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
+                                [(0x1fU & (vlSelfRef.npc__DOT__inst 
+                                           >> 0xfU))]);
+    vlSelfRef.npc__DOT__u_alu__DOT__result_auipc = 
+        (vlSelfRef.npc__DOT__imm + vlSelfRef.pc);
+    vlSelfRef.npc__DOT__u_alu__DOT__result_addi = (vlSelfRef.npc__DOT__imm 
+                                                   + vlSelfRef.npc__DOT__src1);
+    vlSelfRef.npc__DOT__next_pc = ((0x6fU == (0x7fU 
+                                              & vlSelfRef.npc__DOT__inst))
+                                    ? vlSelfRef.npc__DOT__u_alu__DOT__result_auipc
+                                    : ((IData)(vlSelfRef.npc__DOT__is_jalr)
+                                        ? (0xfffffffeU 
+                                           & vlSelfRef.npc__DOT__u_alu__DOT__result_addi)
+                                        : ((IData)(4U) 
+                                           + vlSelfRef.pc)));
+    vlSelfRef.alu_result = (((- (IData)(((IData)(vlSelfRef.npc__DOT__is_U) 
+                                         & (0x17U == 
+                                            (0x7fU 
+                                             & vlSelfRef.npc__DOT__inst))))) 
+                             & vlSelfRef.npc__DOT__u_alu__DOT__result_auipc) 
+                            | (((- (IData)(((IData)(vlSelfRef.npc__DOT__is_U) 
+                                            & (0x37U 
+                                               == (0x7fU 
+                                                   & vlSelfRef.npc__DOT__inst))))) 
+                                & vlSelfRef.npc__DOT__imm) 
+                               | (((- (IData)((0x6fU 
+                                               == (0x7fU 
+                                                   & vlSelfRef.npc__DOT__inst)))) 
+                                   & ((IData)(4U) + vlSelfRef.pc)) 
+                                  | (((- (IData)((IData)(vlSelfRef.npc__DOT__is_jalr))) 
+                                      & ((IData)(4U) 
+                                         + vlSelfRef.pc)) 
+                                     | (((- (IData)(
+                                                    ((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_5) 
+                                                     & (0x13U 
+                                                        == 
+                                                        (0x7fU 
+                                                         & vlSelfRef.npc__DOT__inst))))) 
+                                         & vlSelfRef.npc__DOT__u_alu__DOT__result_addi) 
+                                        | ((- (IData)((IData)(vlSelfRef.npc__DOT__is_add))) 
+                                           & (vlSelfRef.npc__DOT__src1 
+                                              + ((0U 
+                                                  == 
+                                                  (0x1fU 
+                                                   & (vlSelfRef.npc__DOT__inst 
+                                                      >> 0x14U)))
+                                                  ? 0U
+                                                  : 
+                                                 vlSelfRef.npc__DOT__u_regfile2__DOT__rf
+                                                 [(0x1fU 
+                                                   & (vlSelfRef.npc__DOT__inst 
+                                                      >> 0x14U))]))))))));
 }
 
 void Vnpc___024root___eval_triggers__act(Vnpc___024root* vlSelf);
