@@ -163,7 +163,7 @@ alu u_alu(
  	reg [31:0] rdata;
 	wire [31:0] raddr;
 	initial begin
-		raddr = 32'h80000000;
+		raddr <= 32'h80000000;
 	end
 	always @(*) begin
 		if (mem_en) begin // 有读写请求时
