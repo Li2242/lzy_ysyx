@@ -173,10 +173,10 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
     // Init
     uint32_t* const oldp VL_ATTR_UNUSED = bufp->oldp(vlSymsp->__Vm_baseCode);
     // Body
-    bufp->fullIData(oldp+1,(((IData)(vlSelfRef.npc__DOT__is_lw)
+    bufp->fullIData(oldp+1,(((IData)(vlSelfRef.npc__DOT__mem_en)
                               ? vlSelfRef.npc__DOT____VdfgExtracted_h414fb206__0
                               : 0U)),32);
-    bufp->fullIData(oldp+2,(((- (IData)((IData)(vlSelfRef.npc__DOT__is_lw))) 
+    bufp->fullIData(oldp+2,(((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
                              & (vlSelfRef.npc__DOT__src1 
                                 + vlSelfRef.npc__DOT__imm_I))),32);
     bufp->fullIData(oldp+3,(vlSelfRef.npc__DOT__inst),32);
@@ -196,7 +196,7 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
                                        >> 0x14U))),5);
     bufp->fullCData(oldp+11,((0x1fU & (vlSelfRef.npc__DOT__inst 
                                        >> 7U))),5);
-    bufp->fullCData(oldp+12,((((((IData)(vlSelfRef.npc__DOT__is_lw) 
+    bufp->fullCData(oldp+12,((((((IData)(vlSelfRef.npc__DOT__mem_en) 
                                  << 6U) | ((IData)(vlSelfRef.npc__DOT__is_add) 
                                            << 5U)) 
                                | (((IData)(vlSelfRef.npc__DOT__is_addi) 
@@ -214,8 +214,8 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
                                   | ((IData)(vlSelfRef.npc__DOT__is_jalr) 
                                      | ((IData)(vlSelfRef.npc__DOT__is_addi) 
                                         | ((IData)(vlSelfRef.npc__DOT__is_add) 
-                                           | (IData)(vlSelfRef.npc__DOT__is_lw)))))))));
-    bufp->fullBit(oldp+14,(vlSelfRef.npc__DOT__is_lw));
+                                           | (IData)(vlSelfRef.npc__DOT__mem_en)))))))));
+    bufp->fullBit(oldp+14,(vlSelfRef.npc__DOT__mem_en));
     bufp->fullBit(oldp+15,((0x33U == (0x7fU & vlSelfRef.npc__DOT__inst))));
     bufp->fullBit(oldp+16,(vlSelfRef.npc__DOT__is_I));
     bufp->fullBit(oldp+17,(vlSelfRef.npc__DOT__is_U));

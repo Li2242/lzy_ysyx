@@ -28,12 +28,12 @@ VL_ATTR_COLD void Vnpc___024root___eval_initial__TOP(Vnpc___024root* vlSelf) {
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    VL_WRITEF_NX("Initial inst: %x\nInitial opcode: %b\nInitial funct3: %b\nInitial is_I: %b\nInitial is_lw: %b\n",0,
+    VL_WRITEF_NX("Initial inst: %x\nInitial opcode: %b\nInitial funct3: %b\nInitial is_I: %b\nInitial is_lw: %b\nInitial mem_en: %b\n",0,
                  32,vlSelfRef.npc__DOT__inst,7,(0x7fU 
                                                 & vlSelfRef.npc__DOT__inst),
                  3,(7U & (vlSelfRef.npc__DOT__inst 
                           >> 0xcU)),1,(IData)(vlSelfRef.npc__DOT__is_I),
-                 1,vlSelfRef.npc__DOT__is_lw);
+                 1,vlSelfRef.npc__DOT__mem_en,1,(IData)(vlSelfRef.npc__DOT__mem_en));
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_final(Vnpc___024root* vlSelf) {
@@ -172,6 +172,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__next_pc = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__imm = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__mem_en = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_I = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_U = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__imm_R = VL_RAND_RESET_I(32);
@@ -181,7 +182,6 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__is_jalr = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_addi = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_add = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__is_lw = VL_RAND_RESET_I(1);
     VL_RAND_RESET_W(128, vlSelf->npc__DOT__hot_opcode);
     vlSelf->npc__DOT____VdfgExtracted_h414fb206__0 = 0;
     vlSelf->npc__DOT____VdfgRegularize_h9a2a8a06_0_7 = VL_RAND_RESET_I(1);

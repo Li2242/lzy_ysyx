@@ -8,14 +8,6 @@ module npc(
     output reg  [31:0]  pc
 );
 
-initial begin
-    $display("Initial inst: %h", inst);
-    $display("Initial opcode: %b", opcode);
-    $display("Initial funct3: %b", funct3);
-    $display("Initial is_I: %b", is_I);
-    $display("Initial is_lw: %b", is_lw);
-    $display("Initial mem_en: %b", mem_en);
-end
 //使用触发器处理pc
 Reg#(32,32'h80000000) pc_4(
     .clk 	 (clk  ),
@@ -26,7 +18,7 @@ Reg#(32,32'h80000000) pc_4(
 );
 
 //取值
-always @(*)begin
+always @(posedge clk)begin
 		inst = v_pmem_read(pc);
 end
 
