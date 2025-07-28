@@ -92,7 +92,7 @@ static int cmd_help(char *args);
 static int cmd_info(char *args);
 //p 表达式的值
 static int cmd_p(char *args);
-//w 
+//w
 static int cmd_w(char *args);
 //d 删除间断点
 static int cmd_d(char *args);
@@ -115,7 +115,6 @@ static struct {
   {"d", "Delete watchpoint",cmd_d},
   {"t", "Expression testing",cmd_test}
   /* TODO: Add more commands */
-
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -222,16 +221,16 @@ static int cmd_p(char *args){
   return 0;
 }
 
-                
+
 //x 扫描内存
 /*
-  在客户程序运行的过程中, 总是使用`vaddr_read()`和`vaddr_write()` 
-  (在`nemu/src/memory/vaddr.c`中定义)来访问模拟的内存. 
+  在客户程序运行的过程中, 总是使用`vaddr_read()`和`vaddr_write()`
+  (在`nemu/src/memory/vaddr.c`中定义)来访问模拟的内存.
 */
 static int cmd_x(char *args){
   char *arg[2];
-  arg[0] = strtok(NULL," "); 
-  arg[1] = strtok(NULL,""); 
+  arg[0] = strtok(NULL," ");
+  arg[1] = strtok(NULL,"");
   bool success = true;
   //计算表达式的结果作为起始地址
   uint32_t addr = expr(arg[1],&success);
@@ -311,18 +310,21 @@ void sdb_mainloop() {
     cmd_c(NULL);
     return;
   }
-  
+
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
+    //如果在nemu中的命令行什么都不输入跳过这个循环
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { continue; }
 
     /* treat the remaining string as the arguments,
      * which may need further parsing
+     * 参数
      */
     char *args = cmd + strlen(cmd) + 1;
+		//判断是否有参数
     if (args >= str_end) {
       args = NULL;
     }
@@ -331,15 +333,16 @@ void sdb_mainloop() {
     extern void sdl_clear_event_queue();
     sdl_clear_event_queue();
 #endif
-
+		//处理参数ing...
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
+				//是否退出
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
       }
     }
-
+		//是否找到命令
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
 }

@@ -51,6 +51,7 @@ DST_DIR   = $(WORK_DIR)/build/$(ARCH)
 $(shell mkdir -p $(DST_DIR))
 
 ### Compilation targets (a binary image or archive)
+# 编译目标
 IMAGE_REL = build/$(NAME)-$(ARCH)
 IMAGE     = $(abspath $(IMAGE_REL))
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
@@ -133,6 +134,7 @@ $(foreach lib, $(LIBS), $(eval $(call LIB_TEMPLATE,$(lib))))
 endif
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `IMAGE.elf`, the final ELF binary to be packed into image (ld)
+# 这里是native命令执行的地方
 $(IMAGE).elf: $(LINKAGE) $(LDSCRIPTS)
 	@echo \# Creating image [$(ARCH)]
 	@echo + LD "->" $(IMAGE_REL).elf

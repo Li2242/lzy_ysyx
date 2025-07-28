@@ -18,25 +18,56 @@
 #include <difftest-def.h>
 #include <memory/paddr.h>
 
-__EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
-  assert(0);
+__EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n) {
+  int inst_num = n/4;
+	uint32_t* img = (uint32_t *)buf;
+	for(int i =0;i<inst_num;i++){
+		paddr_write(addr,4,*img);
+		// printf("img[%d]=0x%08x\n",i,*img);
+		addr+=4;
+		img++;
+	}
 }
 
-__EXPORT void difftest_regcpy(void *dut, bool direction) {
-  assert(0);
+//返回值是pc
+__EXPORT uint32_t difftest_regcpy(void *dut, uint32_t pc, bool direction) {
+	if(direction == DIFFTEST_TO_DUT){
+		uint32_t* arr = (uint32_t*)dut;
+		for(int i =0;i<32;i++){
+			arr[i] = cpu.gpr[i];
+			// printf("arr[%d]=0x%08x\n",i,arr[i]);
+			// printf("cpu.gpr[%d]=0x%08x\n",i,cpu.gpr[i]);
+		}
+		return cpu.pc;
+	}
+
+	//初始化寄存器
+	if(direction == DIFFTEST_TO_REF){
+		uint32_t* arr = (uint32_t*)dut;
+		for(int i =0; i<32; i++){
+			cpu.gpr[i] = arr[i] ;
+		}
+		cpu.pc = pc;
+		Log("difftest_regcpy : DIFFTEST_TO_REF");
+		return 0;
+	}
+	Log("你的条件多半传错了，一个选型都没有");
+	return 0;
 }
 
 __EXPORT void difftest_exec(uint64_t n) {
-  assert(0);
+  cpu_exec(n);
 }
 
 __EXPORT void difftest_raise_intr(word_t NO) {
   assert(0);
 }
 
-__EXPORT void difftest_init(int port) {
+__EXPORT void difftest_init() {
   void init_mem();
   init_mem();
   /* Perform ISA dependent initialization. */
   init_isa();
+	//初始化pc
+
 }

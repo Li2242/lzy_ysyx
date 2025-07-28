@@ -12,7 +12,7 @@
 #
 # See the Mulan PSL v2 for more details.
 #**************************************************************************************/
-
+#反汇编的文件
 ifeq ($(CONFIG_ITRACE)$(CONFIG_IQUEUE),)
 SRCS-BLACKLIST-y += src/utils/disasm.c
 else

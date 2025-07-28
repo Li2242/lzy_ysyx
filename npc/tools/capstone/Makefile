@@ -13,19 +13,19 @@
 # See the Mulan PSL v2 for more details.
 #**************************************************************************************/
 
-#处理文件
-
-SRCS-y += src/nemu-main.c
-DIRS-y += src/cpu src/monitor src/utils
-DIRS-$(CONFIG_MODE_SYSTEM) += src/memory
-#在menuconfig中选中TARGET_AM时, nemu/src/monitor/sdb目录下的所有文件都不会参与编译.
-DIRS-BLACKLIST-$(CONFIG_TARGET_AM) += src/monitor/sdb
-
-SHARE = $(if $(CONFIG_TARGET_SHARE),1,0)
-LIBS += $(if $(CONFIG_TARGET_NATIVE_ELF),-lreadline -ldl -pie,)
-
-ifdef mainargs
-ASFLAGS += -DBIN_PATH=\"$(mainargs)\"
+REPO_PATH = repo
+ifeq ($(wildcard repo/include/capstone/capstone.h),)
+  $(shell git clone --depth=1 -b 5.0.3 git@github.com:capstone-engine/capstone.git $(REPO_PATH))
 endif
-SRCS-$(CONFIG_TARGET_AM) += src/am-bin.S
-.PHONY: src/am-bin.S
+
+CAPSTONE = $(REPO_PATH)/libcapstone.so.5
+$(CAPSTONE):
+	cd $(REPO_PATH) && CAPSTONE_ARCHS="x86|mips|riscv|loongarch" bash make.sh
+
+clean:
+	$(MAKE) -C $(REPO_PATH) clean
+
+all: $(CAPSTONE)
+.DEFAULT_GOAL = all
+
+.PHONY: all clean

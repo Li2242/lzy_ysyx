@@ -63,7 +63,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 // Decode类型的结构体指针s, 这个结构体用于存放在执行一条指令过程中所需的信息, 包括指令的PC, 下一条指令的PC等
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;       //s->pc就是当前指令的PC
-  s->snpc = pc;     //s->snpc则是下一条指令的PC
+  s->snpc = pc;     //s->snpc则是下一条指令的PC，此时还没变
+  //主要是pc的值
   isa_exec_once(s); //它会随着取指的过程修改s->snpc的值, 使得从isa_exec_once()返回后s->snpc正好为下一条指令的PC.
   cpu.pc = s->dnpc; //通过s->dnpc来更新PC
 
@@ -91,7 +92,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   int space_len = ilen_max - ilen;
   if (space_len < 0) space_len = 0;
   space_len = space_len * 3 + 1;
-  //清空了p
+
   memset(p, ' ', space_len);
   p += space_len;
   //写入了反汇编的内容
@@ -106,6 +107,7 @@ static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
+#ifdef CONFIG_ITRACE
     //ring_buf
     ring_buf_fun(s.logbuf);
     //在没有-e选项时不启动
@@ -115,6 +117,7 @@ static void execute(uint64_t n) {
             ftrace(s.logbuf);
         #endif
     }
+#endif
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);

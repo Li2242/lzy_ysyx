@@ -1,19 +1,19 @@
 #include "common.h"
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <string.h>
 
 //批处理模式
 static int is_batch_mode = false;
-//函数
+//sdb中函数的声明
 static int cmd_c  (char *args);
 static int cmd_q  (char *args);
 static int cmd_si (char *args);
 static int cmd_x  (char *args);
 static int cmd_info (char* args);
-//help
+static int cmd_p (char* args);
 static int cmd_help(char *args);
-
+static int cmd_d(char *args);
+static int cmd_w(char *args);
 
 //使用 readline 函数从标准输入读取用户输入的一行命令，如果不为空,将其添加到历史记录中
 //并返回给调用的参数
@@ -32,8 +32,7 @@ static char* rl_gets(){
 }
 
 
-
-
+//sdb中的指令
 static struct{
 	const char* name;
 	const char* description;
@@ -44,9 +43,13 @@ static struct{
 	{ "q", "Exit NPC", cmd_q },
 	{ "si", "Step execution",cmd_si},
 	{ "x", "Scan memory", cmd_x},
-	{ "info", "Print the program status", cmd_info}
+	{ "info", "Print the program status", cmd_info},
+	{ "p", "Expression evaluation",cmd_p},
+	{ "w", "Set watchpoint",cmd_w},
+  { "d", "Delete watchpoint",cmd_d}
 };
 
+//现有指令的数量
 #define NR_CMD ARRLEN(cmd_table)
 
 //批处理模式
@@ -56,13 +59,14 @@ void sdb_set_batch_mode() {
 
 //npc主循环
 void sdb_mainloop(){
-	//批处理模式
+	//批处理模式（暂时还未设置）
 	if(is_batch_mode){
 		cmd_c(NULL);
 		return;
 	}
 	//循环
 	for(char *str;(str = rl_gets()) != NULL; ){
+		//输入指令的结尾
 		char *str_end = str+strlen(str);
 		//这里是首次发出对输入命令的切割
 		char *cmd = strtok(str," ");
@@ -73,9 +77,11 @@ void sdb_mainloop(){
 		if(args >= str_end){
 			args = NULL;
 		}
+
 		int i;
 		for(i =0; i < NR_CMD ;i++){
 			if(strcmp(cmd,cmd_table[i].name) == 0){
+				//想要退出？你调用函数的返回值要小于0
 				if(cmd_table[i].handler(args) < 0){return;}
 				break;
 			}
@@ -83,6 +89,9 @@ void sdb_mainloop(){
 		if(i == NR_CMD){printf("Unkonwn command '%s'\n",cmd);}
 	}
 }
+
+
+// =================  下面是sdb指令的实现  ===================
 
 static int cmd_help(char* str){
 	char* arg = strtok(NULL," ");
@@ -110,7 +119,8 @@ static int cmd_c(char *args){
 
 //退出
 static int cmd_q(char *args){
-		return -1;
+	npc_state = NPC_QUIT;
+	return -1;
 }
 
 //单步执行
@@ -154,7 +164,7 @@ static int cmd_x(char *args){
 	}
 	return 0;
 }
-
+//info
 static int cmd_info(char* args){
 	char *arg = strtok(NULL," ");
 	if(arg == NULL){
@@ -162,8 +172,49 @@ static int cmd_info(char* args){
 		return 0;
 	}
 	if(*arg == 'r'){
-		top->info_r = 1;
-		top->eval();
+		reg_display();
+	}
+	if(*arg == 'w'){
+		scan();
 	}
 	return 0;
+}
+
+//p
+static int cmd_p(char *args){
+  //提取出参数；因为后面的表达式可能有空格所以直接使用，不用strtok进行分割
+  char* arg =args;
+	if(arg==NULL){
+		printf("请输入表达式\n");
+		return 0;
+	}
+  bool success = true;
+  int result = expr(arg,&success);
+   if (success) {
+    printf("Expression result:0x%08x\n", result);
+  } else {
+    printf("\033[31mThe evaluation of the expression failed!\033[0m\n");
+  }
+  return 0;
+}
+
+
+//w
+static int cmd_w(char *args){
+  char* w_arg =  args;
+  int success = new_wp(w_arg);
+  if(success == 0){
+    printf("The watchpoint is  set up successfully.\n");
+  }else{
+    green_printf("The watchpoint settings fails.");
+  }
+  return 0;
+}
+
+//d
+static int cmd_d(char *args){
+  uint32_t num ;
+  sscanf(args,"%u",&num);
+  free_wp(num);
+  return 0;
 }

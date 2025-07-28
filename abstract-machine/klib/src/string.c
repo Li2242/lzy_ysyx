@@ -91,7 +91,7 @@ void *memmove(void *dst, const void *src, size_t n) {
 	if(a+n <= p || p+n <= a){
 		for(size_t i =0; i<n; i++) p[i] = a[i];
 	}else{
-		for(size_t i =n; i>0; i++) p[i-1] = a[i-1];
+		for(size_t i =n; i>0; i--) p[i-1] = a[i-1];
 	}
 	return dst;
 }

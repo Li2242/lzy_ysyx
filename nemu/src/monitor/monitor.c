@@ -171,6 +171,7 @@ if(ftrace_switch){
   long img_size = load_img();
 
   /* Initialize differential testing. */
+  //初始化差异测试
   init_difftest(diff_so_file, img_size, difftest_port);
 
   /* Initialize the simple debugger. */

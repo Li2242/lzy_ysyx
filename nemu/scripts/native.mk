@@ -18,6 +18,7 @@ include $(NEMU_HOME)/scripts/build.mk
 
 include $(NEMU_HOME)/tools/difftest.mk
 
+#一生一芯的跟踪记录无需关心
 compile_git:
 	$(call git_commit, "compile NEMU")
 $(BINARY):: compile_git

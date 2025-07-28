@@ -73,7 +73,7 @@ word_t paddr_read(paddr_t addr, int len) {
 		word_t temp = pmem_read(addr, len);
 		//mtrace
 		#ifdef CONFIG_MTRACE
-			log_write("R  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,temp);
+			log_write("\t\tR  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,temp);
 		#endif
     return temp;
   }
@@ -89,7 +89,7 @@ void paddr_write(paddr_t addr, int len, word_t data) {
 		pmem_write(addr, len, data);
 		//mtrace
 		#ifdef CONFIG_MTRACE
-			log_write("W  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,data);
+			log_write("\t\tW  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,data);
 		#endif
 
 		return;
