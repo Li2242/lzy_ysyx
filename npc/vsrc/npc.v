@@ -17,12 +17,12 @@ Reg#(32,32'h80000000) pc_4(
     .wen     (1)
 );
 
-always @(*)begin
+always @(clk)begin
 		inst = v_pmem_read(pc);
 
 end
 
-always @(clk) begin
+always @(posedge clk) begin
 	if(inst == 32'h00100073) ebreak(pc + 4);
 end
 
