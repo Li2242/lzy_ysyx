@@ -17,7 +17,7 @@ Reg#(32,32'h80000000) pc_4(
     .wen     (1)
 );
 
-//取值
+//取值 必须是组合逻辑
 always @(*)begin
 		inst = v_pmem_read(pc);
 end
@@ -31,11 +31,8 @@ end
 	wire [31:0] raddr;
 
 	always @(*) begin
-		if (0) begin // 有读写请求时
-			rdata = v_pmem_read(raddr);
-//     if (mem_wen) begin // 有写请求时
-//       pmem_write(waddr, wdata, wmask);
-//     end
+		if(mem_en)begin
+			v_pmem_read(raddr);
 		end else begin
 			rdata = 0;
 		end
@@ -163,7 +160,6 @@ assign alu_op[6] = is_lw;
 
 //读的地址
 assign raddr = ({32{is_lw}} & (src1 + imm_I) );
-
 //alu
 // output declaration of module alu
 alu u_alu(

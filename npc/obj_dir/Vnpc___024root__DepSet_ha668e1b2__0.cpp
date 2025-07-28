@@ -42,9 +42,7 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     // Body
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((0x100073U == vlSelfRef.npc__DOT__inst)) {
-        Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(
-                                                           ((IData)(4U) 
-                                                            + vlSelfRef.pc));
+        Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(vlSelfRef.pc);
     }
     if ((((IData)(vlSelfRef.npc__DOT__is_auipc) | ((IData)(vlSelfRef.npc__DOT__is_lui) 
                                                    | ((0x6fU 
