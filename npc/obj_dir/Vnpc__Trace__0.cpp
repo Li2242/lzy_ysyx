@@ -24,7 +24,9 @@ void Vnpc___024root__trace_chg_0_sub_0(Vnpc___024root* vlSelf, VerilatedVcd::Buf
     uint32_t* const oldp VL_ATTR_UNUSED = bufp->oldp(vlSymsp->__Vm_baseCode + 1);
     // Body
     if (VL_UNLIKELY((vlSelfRef.__Vm_traceActivity[1U]))) {
-        bufp->chgIData(oldp+0,(vlSelfRef.npc__DOT__rdata),32);
+        bufp->chgIData(oldp+0,(((IData)(vlSelfRef.npc__DOT__mem_en)
+                                 ? vlSelfRef.npc__DOT____VdfgExtracted_h414fb206__0
+                                 : 0U)),32);
         bufp->chgIData(oldp+1,(((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
                                 & (vlSelfRef.npc__DOT__src1 
                                    + vlSelfRef.npc__DOT__imm_I))),32);
