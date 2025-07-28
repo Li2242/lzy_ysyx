@@ -86,7 +86,7 @@ long load_img() {
   if (img_file == NULL) {
 		//写入内置程序
     memcpy(pmem,memory,sizeof(memory));
-    printf("No image is given. Use the default build-in image.\n");
+    green_printf("No image is given. Use the default build-in image.\n");
     return 4096; // built-in image size
   }
 
