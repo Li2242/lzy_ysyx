@@ -38,6 +38,8 @@ void sim_init(int argc,char** argv){
 // =============== 这里是初始化 ===============
 		//载入镜像文件 外部程序 or 内置指令
   long img_size = load_img();
+	green_printf("===========================================\n");
+
 		//初始化测试
 	if(diff_so_file != NULL){
 		init_difftest(diff_so_file , img_size);
