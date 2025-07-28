@@ -19,6 +19,8 @@ static void execute(uint32_t n);
 
 //开始
 void sim_init(int argc,char** argv){
+	green_printf("===========================================\n");
+
     contextp = new VerilatedContext;
     contextp->commandArgs(argc,argv);
     Verilated::traceEverOn(true);
@@ -32,7 +34,6 @@ void sim_init(int argc,char** argv){
     top->rst = 0;
     top->pc = MBASE;
     top->eval();
-	green_printf("===========================================\n");
 
 
 // =============== 这里是初始化 ===============
