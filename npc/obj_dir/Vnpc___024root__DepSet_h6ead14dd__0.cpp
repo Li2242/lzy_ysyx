@@ -12,15 +12,50 @@ void Vnpc___024root___eval_act(Vnpc___024root* vlSelf) {
 }
 
 void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf);
+void Vnpc___024root___nba_sequent__TOP__1(Vnpc___024root* vlSelf);
+void Vnpc___024root___nba_sequent__TOP__2(Vnpc___024root* vlSelf);
 
 void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_nba\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+    if ((2ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
         Vnpc___024root___nba_sequent__TOP__0(vlSelf);
         vlSelfRef.__Vm_traceActivity[1U] = 1U;
+    }
+    if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+        Vnpc___024root___nba_sequent__TOP__1(vlSelf);
+    }
+    if ((2ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+        Vnpc___024root___nba_sequent__TOP__2(vlSelf);
+        vlSelfRef.__Vm_traceActivity[2U] = 1U;
+    }
+}
+
+VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_sequent__TOP__0\n"); );
+    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Init
+    IData/*31:0*/ __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0;
+    __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
+    CData/*4:0*/ __VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0;
+    __VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
+    CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
+    __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
+    // Body
+    __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
+    if ((0U != (0x1fU & (vlSelfRef.npc__DOT__inst >> 7U)))) {
+        __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0 
+            = vlSelfRef.alu_result;
+        __VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0 
+            = (0x1fU & (vlSelfRef.npc__DOT__inst >> 7U));
+        __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 1U;
+    }
+    if (__VdlySet__npc__DOT__u_regfile2__DOT__rf__v0) {
+        vlSelfRef.npc__DOT__u_regfile2__DOT__rf[__VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0] 
+            = __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0;
     }
 }
 
@@ -31,7 +66,7 @@ bool Vnpc___024root___eval_phase__act(Vnpc___024root* vlSelf) {
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Init
-    VlTriggerVec<1> __VpreTriggered;
+    VlTriggerVec<2> __VpreTriggered;
     CData/*0:0*/ __VactExecute;
     // Body
     Vnpc___024root___eval_triggers__act(vlSelf);

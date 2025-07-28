@@ -24,7 +24,6 @@ VL_ATTR_COLD void Vnpc___024root___eval_triggers__stl(Vnpc___024root* vlSelf) {
 }
 
 void Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(IData/*31:0*/ raddr, IData/*31:0*/ &v_pmem_read__Vfuncrtn);
-void Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(IData/*31:0*/ pc);
 
 VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___stl_sequent__TOP__0\n"); );
@@ -33,11 +32,6 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
     // Body
     Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.pc, vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout);
     vlSelfRef.npc__DOT__inst = vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout;
-    if ((0x100073U == vlSelfRef.npc__DOT__inst)) {
-        Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(
-                                                           ((IData)(4U) 
-                                                            + vlSelfRef.pc));
-    }
     vlSelfRef.npc__DOT__hot_opcode[0U] = (((((((0x1fU 
                                                 == 
                                                 (0x7fU 
