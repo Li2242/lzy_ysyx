@@ -112,5 +112,5 @@ extern char *diff_so_file;
 extern uint32_t cpu_pc;
 
 
-void ebreak(uint32_t pc);
+extern "C" void ebreak(uint32_t pc);
 
