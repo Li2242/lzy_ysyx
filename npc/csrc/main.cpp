@@ -8,8 +8,6 @@ uint32_t cpu_pc = 0;
 int main(int argc,char** argv) {
 	//解析参数(现在的功能只有读入bin文件)
   parse_args(argc, argv);
-	green_printf("===========================================\n");
-
 	//初始化
   sim_init(argc,argv);
   //执行
