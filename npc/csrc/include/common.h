@@ -12,6 +12,7 @@
 //访问寄存器
 #include "Vnpc___024root.h"
 
+
 //NPC状态
 enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
 //diff条件，准确来说是DUT和REF之间的传输方向
@@ -111,3 +112,7 @@ extern char *diff_so_file;
 extern uint32_t cpu_pc;
 
 
+extern "C" void ebreak(uint32_t pc){
+    printf("pc = 0x%x\n",pc);
+  	npc_state = NPC_END;
+}
