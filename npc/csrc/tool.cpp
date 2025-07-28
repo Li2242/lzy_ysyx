@@ -88,7 +88,7 @@ long load_img() {
     memcpy(pmem,memory,sizeof(memory));
 		uint32_t addr = MBASE;
 		for(int i =0;i<32;i++){
-			printf("pmem[%d] = ",i,pmem_read(addr,4));
+			printf("pmem[%d] = 0x%08x\n",i,pmem_read(addr,4));
 			addr+=4;
 		}
     green_printf("No image is given. Use the default build-in image.\n");
