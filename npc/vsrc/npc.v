@@ -124,7 +124,7 @@ assign is_lui   = is_U & hot_opcode[55];
 assign is_jal   = is_J ;
 assign is_jalr  = is_I & hot_funct3[0] & hot_opcode[103];
 assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
-assign is_add   = is_R & hot_funct3[0] & hot_opcode[51];
+assign is_add   = is_R & hot_funct3[0];
 
 assign reg_wen = 1;
 

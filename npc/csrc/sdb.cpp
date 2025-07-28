@@ -120,7 +120,6 @@ static int cmd_c(char *args){
 //退出
 static int cmd_q(char *args){
 	npc_state = NPC_QUIT;
-	printf("%d\n",npc_state);
 	return -1;
 }
 
