@@ -125,7 +125,6 @@ static void trace_and_difftest() {
 		int ilen = 4;
 		int k;
 		uint32_t inst = pmem_read(cpu_pc,4);
-		printf("0x%08x\n",inst);
 		uint8_t *s_inst = (uint8_t *)&inst;
 
 		for(k = ilen - 1; k >= 0; k --){
