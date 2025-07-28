@@ -1,4 +1,4 @@
-import "DPI-C" function int v_pmem_read(input int raddr);
+// import "DPI-C" function int v_pmem_read(input int raddr);
 
 
 module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
