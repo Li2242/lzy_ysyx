@@ -17,9 +17,8 @@ Reg#(32,32'h80000000) pc_4(
     .wen     (1)
 );
 
-always @(clk)begin
+always @(*)begin
 		inst = v_pmem_read(pc);
-
 end
 
 always @(posedge clk) begin
