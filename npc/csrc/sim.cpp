@@ -137,7 +137,9 @@ static void trace_and_difftest() {
 // ================== ITRACING ENDS ===========================
 
 //difftest的关键
-		difftest_step(cpu_pc);
+if(diff_so_file != NULL){
+	difftest_step(cpu_pc);
+}
 //这里是ftrace的必要
 		ftrace(logbuf);
 //是否打印出反汇编的指令
