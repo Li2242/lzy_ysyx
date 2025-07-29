@@ -49,7 +49,7 @@ always @(posedge clk) begin
 					 						v_pmem_read(raddr , 4);
 
 	end else begin
-		rdata = 0;
+		rdata <= 0;
 	end
 end
 
