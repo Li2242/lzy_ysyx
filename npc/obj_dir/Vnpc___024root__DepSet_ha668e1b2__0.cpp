@@ -42,6 +42,13 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
+    if (VL_UNLIKELY((((~ (IData)(vlSelfRef.rst)) & (IData)(vlSelfRef.npc__DOT__reg_wen))))) {
+        VL_WRITEF_NX("RegWrite: rd=%2#,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x\n",0,
+                     5,(0x1fU & (vlSelfRef.npc__DOT__inst 
+                                 >> 7U)),32,vlSelfRef.alu_result,
+                     1,(IData)(vlSelfRef.npc__DOT__mem_en),
+                     32,vlSelfRef.npc__DOT__rdata);
+    }
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((0x100073U == vlSelfRef.npc__DOT__inst)) {
         Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(vlSelfRef.pc);

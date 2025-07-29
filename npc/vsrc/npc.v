@@ -3,25 +3,27 @@ import "DPI-C" function int v_pmem_read(input int raddr);
 import "DPI-C" function void v_pmem_write(input int unsigned waddr, input int wdata, input byte wmask);
 module npc(
     input  wire clk,
-    input  wire rst,
+    input  wire reset,
     output wire [31:0]  alu_result,
     output reg  [31:0]  pc
 );
 
 //更新pc
 //jal jarl 跳转指令
-assign next_pc = is_jal ? pc+imm :
+assign nextpc = is_jal ? pc+imm :
                  is_jalr ? (src1+imm)&~1 :
-                 pc+4;
+                 pc + 32'h4;
 
 //pc寄存器
-Reg#(32,32'h80000000) pc_4(
-    .clk 	 (clk  ),
-    .rst     (rst),
-    .din     (next_pc),
-    .dout    (pc),
-    .wen     (reg_wen)
-);
+wire[31:0]   nextpc;
+always @(posedge clk) begin
+    if (reset) begin
+        pc <= 32'h80000000;     // 复位时的初始值
+    end
+    else begin
+        pc <= nextpc;           // 正常情况下更新为下一条指令地址
+    end
+end
 
 //取值 必须是组合逻辑
 reg[31:0]    inst;
@@ -58,7 +60,6 @@ end
 //内部信号定义
 
 wire[6:0]    opcode;
-wire[31:0]   next_pc;
 wire[31:0]   imm;
 wire[2:0]    funct3;
 wire[31:0]   src1;
@@ -188,7 +189,7 @@ alu u_alu(
 
 // 添加调试显示
 always @(posedge clk) begin
-    if (!rst && reg_wen) begin
+    if (!reset && reg_wen) begin
         $display("RegWrite: rd=%d,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x",
                  rd,  alu_result, mem_en, rdata);
     end
