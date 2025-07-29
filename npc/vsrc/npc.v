@@ -37,28 +37,19 @@ end
 //内存
 reg [31:0] rdata;
 wire [31:0] raddr;
-wire [31:0] waddr;
-wire [31:0] wdata;
 wire mem_en;
-wire         mem_wen;
-
+// wire         mem_wen;
 //内存地址
-assign raddr = ({32{is_lw}} & (src1 + imm))
-             | ({32{is_lbu}} & (src1 + imm));
-
-assign waddr = ({32{is_sw}} & (src1 +imm));
-
-assign wdata = alu_result;
+assign raddr = ({32{is_lw}} & (src1 + imm_I) )
+             | ({32{is_lbu}} & (src1 + imm_I) );
 //都地址
-always @(*) begin
+always @(posedge clk) begin
 	if(mem_en)begin
-		rdata =  is_lbu ? v_pmem_read(raddr,1) & 32'hFF:
-					 						 v_pmem_read(raddr , 4);
-		if (mem_wen) begin // 有写请求时
-      v_pmem_write(waddr, wdata, 4);
-    end
+		rdata <=  is_lbu ? v_pmem_read(raddr,1) & 32'hFF:
+					 						v_pmem_read(raddr , 4);
+
 	end else begin
-		rdata = 0;
+		rdata <= 0;
 	end
 end
 
@@ -88,7 +79,7 @@ wire         reg_wen;
 //指令BIG类型
 wire is_R;
 wire is_I;
-wire is_S;
+// wire is_S;
 // wire is_B;
 wire is_U;
 wire is_J;
@@ -96,7 +87,7 @@ wire is_J;
 //立即数
 wire [31:0]imm_R;
 wire [31:0]imm_I;
-wire [31:0]imm_S;
+// wire [31:0]imm_S;
 // wire [31:0]imm_B;
 wire [31:0]imm_U;
 wire [31:0]imm_J;
@@ -110,14 +101,14 @@ wire is_addi;
 wire is_add;
 wire is_lw;
 wire is_lbu;
-wire is_sw;
+
 
 //判断类型
-assign opcode = inst[6:0];
+assign opcode  = inst[6:0];
 
 //全部符号扩展，待会进alu在处理
 assign imm_I = {{20{inst[31]}},inst[31:20]};
-assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
+// assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
 // assign imm_B = {{19{inst[31]}},inst[31],inst[7],inst[30:25],inst[11:8],0};
 assign imm_U = {inst[31:12],{12{1'b0}}};
 assign imm_J = {{11{inst[31]}},inst[31],inst[19:12],inst[20],inst[30:21],1'b0};
@@ -155,15 +146,15 @@ decoder3_8 u_decoder3_8(
 
 assign is_I = (hot_opcode[19] | hot_opcode[3] | hot_opcode[103]) ? 1 : 0;
 assign is_R = (hot_opcode[51]) ? 1 : 0;
-assign is_S = (hot_opcode[35]) ? 1 : 0;
+// assign is_S = (hot_opcode[35]) ? 1 : 0;
 assign is_U = (hot_opcode[55] | hot_opcode[23]) ? 1 : 0;
 assign is_J = (hot_opcode[111]) ? 1 : 0;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
 				   | ({32{is_U}} & imm_U)
-		       | ({32{is_J}} & imm_J)
-					 | ({32{is_S}} & imm_S);
+		       | ({32{is_J}} & imm_J);
+				// | ({32{is_S}} & imm_S);
 
 
 //指令识别
@@ -175,14 +166,14 @@ assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
 assign is_add   = is_R & hot_funct3[0];
 assign is_lw    = is_I & hot_funct3[2] & hot_opcode[3];
 assign is_lbu   = is_I & hot_funct3[4] & hot_opcode[3];
-assign is_sw    = is_S & hot_funct3[2];
+
 //控制信号
-assign mem_en  = is_lw | is_lbu | mem_wen;
+assign mem_en  = is_lw | is_lbu;
 assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
-assign mem_wen = is_sw;
+
 
 //ALU操作码
-wire[8:0]    alu_op;
+wire[7:0]    alu_op;
 
 assign alu_op[0] = is_auipc;
 assign alu_op[1] = is_lui;
@@ -192,7 +183,6 @@ assign alu_op[4] = is_addi;
 assign alu_op[5] = is_add;
 assign alu_op[6] = is_lw;
 assign alu_op[7] = is_lbu;
-assign alu_op[8] = is_sw;
 //读取数据
 //符号扩
 
@@ -209,6 +199,16 @@ alu u_alu(
     .result 	(alu_result  )
 );
 
+
+// 调试显示
+always @(posedge clk) begin
+    if (reg_wen) begin
+        $display("RegWrite: rd=%d,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x",
+                 rd,  alu_result, mem_en, rdata);
+    end
+end
+
+
 // 寄存器堆
 RegisterFile u_regfile2 (
     .clk(clk),
@@ -220,21 +220,6 @@ RegisterFile u_regfile2 (
     .raddr2(rs2),
     .rdata2(src2)
 );
-
-// 调试显示
-always @(posedge clk) begin
-    if (reg_wen) begin
-        $display("RegWrite: rd=%d,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x",
-                 rd,  alu_result, mem_en, rdata);
-    end
-end
-
-
-always @(posedge clk) begin
-    if (mem_wen) begin
-        $display("SW: waddr=0x%08x, wdata=0x%08x", waddr, wdata);
-    end
-end
 
 endmodule
 
