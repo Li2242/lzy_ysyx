@@ -8,6 +8,7 @@ module npc(
     output reg  [31:0]  pc
 );
 
+
 //更新pc
 //jal jarl 跳转指令
 assign nextpc = is_jal ? pc+imm :
@@ -16,6 +17,7 @@ assign nextpc = is_jal ? pc+imm :
 
 //pc寄存器
 wire[31:0]   nextpc;
+
 always @(posedge clk) begin
     if (reset) begin
         pc <= 32'h80000000;     // 复位时的初始值
@@ -31,7 +33,8 @@ always @(*)begin
 		inst = v_pmem_read(pc);
 end
 
-//
+
+//内存
 reg [31:0] rdata;
 wire [31:0] raddr;
 wire mem_en;
@@ -63,9 +66,9 @@ wire[6:0]    opcode;
 wire[31:0]   imm;
 wire[2:0]    funct3;
 wire[31:0]   src1;
-wire [31:0]  src2;
+wire[31:0]  src2;
 wire[4:0]    rs1;
-wire [4:0] 	 rs2;
+wire[4:0] 	 rs2;
 wire[4:0]    rd;
 wire[6:0]    alu_op;
 wire         reg_wen;
@@ -187,9 +190,10 @@ alu u_alu(
     .result 	(alu_result  )
 );
 
-// 添加调试显示
+
+// 调试显示
 always @(posedge clk) begin
-    if (!reset && reg_wen) begin
+    if (reg_wen) begin
         $display("RegWrite: rd=%d,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x",
                  rd,  alu_result, mem_en, rdata);
     end
