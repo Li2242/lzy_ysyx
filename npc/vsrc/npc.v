@@ -8,39 +8,46 @@ module npc(
     output reg  [31:0]  pc
 );
 
-//使用触发器处理pc
+//pc寄存器
 Reg#(32,32'h80000000) pc_4(
     .clk 	 (clk  ),
     .rst     (rst),
     .din     (next_pc),
     .dout    (pc),
-    .wen     (1)
+    .wen     (reg_wen)
 );
 
 //取值 必须是组合逻辑
-always @(*)begin
+reg[31:0]    inst;
+always @(posedge clk)begin
 		inst = v_pmem_read(pc);
 end
 
+//
+reg [31:0] rdata;
+wire [31:0] raddr;
+wire mem_en;
+
+always @(posedge clk) begin
+	if(mem_en)begin
+		rdata = v_pmem_read(raddr);
+	end else begin
+		rdata = 0;
+	end
+end
+
+
+
+//ebreak 检测
 always @(posedge clk) begin
 	if(inst == 32'h00100073) ebreak(pc);
 end
 
 
- 	reg [31:0] rdata;
-	wire [31:0] raddr;
-
-	always @(posedge clk) begin
-		if(mem_en)begin
-			rdata = v_pmem_read(raddr);
-		end else begin
-			rdata = 0;
-		end
-	end
 
 
 //内部信号定义
-reg[31:0]    inst;
+
 wire[6:0]    opcode;
 wire[31:0]   next_pc;
 wire[31:0]   imm;
@@ -52,7 +59,6 @@ wire [4:0] 	 rs2;
 wire[4:0]    rd;
 wire[6:0]    alu_op;
 wire         reg_wen;
-wire         mem_en;
 // wire         mem_wen;
 //指令BIG类型
 wire is_R;
@@ -86,7 +92,7 @@ assign opcode  = inst[6:0];
 //全部符号扩展，待会进alu在处理
 assign imm_I = {{20{inst[31]}},inst[31:20]};
 // assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
-// assign imm_B = {{19{inst[31]}},instead[31],inst[7],inst[30:25],inst[11:8],0};
+// assign imm_B = {{19{inst[31]}},inst[31],inst[7],inst[30:25],inst[11:8],0};
 assign imm_U = {inst[31:12],{12{1'b0}}};
 assign imm_J = {{11{inst[31]}},inst[31],inst[19:12],inst[20],inst[30:21],1'b0};
 assign rs1    = inst[19:15];
@@ -127,14 +133,14 @@ assign is_R = (hot_opcode[51]) ? 1 : 0;
 assign is_U = (hot_opcode[55] | hot_opcode[23]) ? 1 : 0;
 assign is_J = (hot_opcode[111]) ? 1 : 0;
 
-//立即数
+//立即数的选择
 assign imm = ({32{is_I}} & imm_I)
 				   | ({32{is_U}} & imm_U)
 		       | ({32{is_J}} & imm_J);
 				// | ({32{is_S}} & imm_S);
 
 
-//判断指令类型
+//指令识别
 assign is_auipc = is_U & hot_opcode[23];
 assign is_lui   = is_U & hot_opcode[55];
 assign is_jal   = is_J ;
@@ -143,11 +149,11 @@ assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
 assign is_add   = is_R & hot_funct3[0];
 assign is_lw    = is_I  & hot_funct3[2] & hot_opcode[3];
 
-//读写请求
+//控制信号
 assign mem_en  = is_lw;
 assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw;
 
-//运算符
+//ALU操作码
 assign alu_op[0] = is_auipc;
 assign alu_op[1] = is_lui;
 assign alu_op[2] = is_jal;
@@ -158,7 +164,7 @@ assign alu_op[6] = is_lw;
 //读取数据
 //符号扩
 
-//读的地址
+//内存地址
 assign raddr = ({32{is_lw}} & (src1 + imm_I) );
 //alu
 // output declaration of module alu
@@ -175,7 +181,7 @@ alu u_alu(
 
 
 
-// 寄存器堆实例化
+// 寄存器堆
 RegisterFile u_regfile2 (
     .clk(clk),
     .wen(reg_wen),
