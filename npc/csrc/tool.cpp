@@ -164,7 +164,7 @@ extern "C" void ebreak(uint32_t pc){
 }
 
 extern "C" int v_pmem_read(uint32_t raddr){
-	uint32_t addr = (raddr & ~0x3u) + MBASE;
+	uint32_t addr = (raddr & ~0x3u) + 0x80000000;
 	printf("0x%08x\n",addr);
 	return pmem_read(addr,4);
 }
