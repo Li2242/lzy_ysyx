@@ -113,7 +113,7 @@ extern uint32_t cpu_pc;
 // ================= 这里是verilog中的DPI-C ====================
 //停止指令
 extern "C" void ebreak(uint32_t pc);
-extern "C" int v_pmem_read(uint32_t raddr);
+extern "C" int v_pmem_read(uint32_t raddr, int len);
 extern "C" void v_pmem_write(int waddr, int wdata, char wmask);
 
 // ==================  请在范围内添加    =========================

@@ -26,7 +26,7 @@ void Vnpc___024root___eval_triggers__act(Vnpc___024root* vlSelf) {
 }
 
 void Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(IData/*31:0*/ pc);
-void Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(IData/*31:0*/ raddr, IData/*31:0*/ &v_pmem_read__Vfuncrtn);
+void Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(IData/*31:0*/ raddr, IData/*31:0*/ len, IData/*31:0*/ &v_pmem_read__Vfuncrtn);
 
 VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_sequent__TOP__0\n"); );
@@ -35,6 +35,8 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     // Init
     IData/*31:0*/ __Vfunc_v_pmem_read__1__Vfuncout;
     __Vfunc_v_pmem_read__1__Vfuncout = 0;
+    IData/*31:0*/ __Vfunc_v_pmem_read__2__Vfuncout;
+    __Vfunc_v_pmem_read__2__Vfuncout = 0;
     IData/*31:0*/ __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     CData/*4:0*/ __VdlyDim0__npc__DOT__u_regfile2__DOT__rf__v0;
@@ -48,7 +50,8 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                             | ((IData)(vlSelfRef.npc__DOT__is_jalr) 
                                | ((IData)(vlSelfRef.npc__DOT__is_addi) 
                                   | ((IData)(vlSelfRef.npc__DOT__is_add) 
-                                     | (IData)(vlSelfRef.npc__DOT__mem_en)))))))))) {
+                                     | ((IData)(vlSelfRef.npc__DOT__mem_en) 
+                                        | (IData)(vlSelfRef.npc__DOT__is_lbu))))))))))) {
         VL_WRITEF_NX("RegWrite: rd=%2#,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x\n",0,
                      5,(0x1fU & (vlSelfRef.npc__DOT__inst 
                                  >> 7U)),32,vlSelfRef.alu_result,
@@ -59,15 +62,15 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     if ((0x100073U == vlSelfRef.npc__DOT__inst)) {
         Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(vlSelfRef.pc);
     }
-    if (vlSelfRef.npc__DOT__mem_en) {
-        Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(
-                                                                ((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
-                                                                 & (vlSelfRef.npc__DOT__src1 
-                                                                    + vlSelfRef.npc__DOT__imm_I)), __Vfunc_v_pmem_read__1__Vfuncout);
-        vlSelfRef.npc__DOT__rdata = __Vfunc_v_pmem_read__1__Vfuncout;
-    } else {
-        vlSelfRef.npc__DOT__rdata = 0U;
-    }
+    vlSelfRef.npc__DOT__rdata = ((IData)(vlSelfRef.npc__DOT__mem_en)
+                                  ? ((IData)(vlSelfRef.npc__DOT__is_lbu)
+                                      ? (0xffU & ([&]() {
+                        Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.npc__DOT__raddr, 1U, __Vfunc_v_pmem_read__1__Vfuncout);
+                    }(), __Vfunc_v_pmem_read__1__Vfuncout))
+                                      : ([&]() {
+                    Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.npc__DOT__raddr, 4U, __Vfunc_v_pmem_read__2__Vfuncout);
+                }(), __Vfunc_v_pmem_read__2__Vfuncout))
+                                  : 0U);
     if ((((IData)(vlSelfRef.npc__DOT__is_auipc) | ((IData)(vlSelfRef.npc__DOT__is_lui) 
                                                    | ((0x6fU 
                                                        == 
@@ -76,7 +79,8 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                                       | ((IData)(vlSelfRef.npc__DOT__is_jalr) 
                                                          | ((IData)(vlSelfRef.npc__DOT__is_addi) 
                                                             | ((IData)(vlSelfRef.npc__DOT__is_add) 
-                                                               | (IData)(vlSelfRef.npc__DOT__mem_en))))))) 
+                                                               | ((IData)(vlSelfRef.npc__DOT__mem_en) 
+                                                                  | (IData)(vlSelfRef.npc__DOT__is_lbu)))))))) 
          & (0U != (0x1fU & (vlSelfRef.npc__DOT__inst 
                             >> 7U))))) {
         __VdlyVal__npc__DOT__u_regfile2__DOT__rf__v0 
@@ -91,7 +95,7 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     }
     vlSelfRef.pc = ((IData)(vlSelfRef.reset) ? 0x80000000U
                      : vlSelfRef.npc__DOT__nextpc);
-    Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.pc, vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout);
+    Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.pc, 4U, vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout);
     vlSelfRef.npc__DOT__inst = vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout;
     vlSelfRef.npc__DOT__hot_opcode[0U] = (((((((0x1fU 
                                                 == 
@@ -758,6 +762,10 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                   & (IData)((0x2003U 
                                              == (0x707fU 
                                                  & vlSelfRef.npc__DOT__inst))));
+    vlSelfRef.npc__DOT__is_lbu = ((IData)(vlSelfRef.npc__DOT__is_I) 
+                                  & (IData)((0x4003U 
+                                             == (0x707fU 
+                                                 & vlSelfRef.npc__DOT__inst))));
     vlSelfRef.npc__DOT__imm = (((- (IData)((IData)(vlSelfRef.npc__DOT__is_I))) 
                                 & vlSelfRef.npc__DOT__imm_I) 
                                | ((0xfffff000U & ((- (IData)((IData)(vlSelfRef.npc__DOT__is_U))) 
@@ -781,15 +789,19 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                            | (0x7feU 
                                               & (vlSelfRef.npc__DOT__inst 
                                                  >> 0x14U)))))));
-    vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_7 
+    vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_8 
         = ((IData)(vlSelfRef.npc__DOT__is_I) & (0U 
                                                 == 
                                                 (0x7000U 
                                                  & vlSelfRef.npc__DOT__inst)));
-    vlSelfRef.npc__DOT__is_addi = ((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_7) 
+    vlSelfRef.npc__DOT__raddr = (((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
+                                  | (- (IData)((IData)(vlSelfRef.npc__DOT__is_lbu)))) 
+                                 & (vlSelfRef.npc__DOT__src1 
+                                    + vlSelfRef.npc__DOT__imm_I));
+    vlSelfRef.npc__DOT__is_addi = ((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_8) 
                                    & (0x13U == (0x7fU 
                                                 & vlSelfRef.npc__DOT__inst)));
-    vlSelfRef.npc__DOT__is_jalr = ((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_7) 
+    vlSelfRef.npc__DOT__is_jalr = ((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_8) 
                                    & (0x67U == (0x7fU 
                                                 & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT__nextpc = ((0x6fU == (0x7fU 
@@ -830,6 +842,7 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                                 [(0x1fU 
                                                   & (vlSelfRef.npc__DOT__inst 
                                                      >> 0x14U))]))) 
-                                         | ((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
+                                         | (((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
+                                             | (- (IData)((IData)(vlSelfRef.npc__DOT__is_lbu)))) 
                                             & vlSelfRef.npc__DOT__rdata)))))));
 }
