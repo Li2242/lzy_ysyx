@@ -13,11 +13,11 @@ static void out_of_bound(uint32_t addr);
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
 	0x00000413, //初始化
-	// 0x0040a103, // lw x2, 4(x1)
-	// 0x0000a083, // lw x1, 0(x1)
-	// 0x0080a183, // lw x3, 8(x1)
-	// 0x00c0a203, // lw x4, 12(x1)
-	// 0x0100a283, // lw x5, 16(x1)
+	0x0040a103, // lw x2, 4(x1)
+	0x0000a083, // lw x1, 0(x1)
+	0x0080a183, // lw x3, 8(x1)
+	0x00c0a203, // lw x4, 12(x1)
+	0x0100a283, // lw x5, 16(x1)
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
   0x00108113,  // 2: addi x2, x1, 1      (x2 = 100 + 1 = 101)
   0x00210193,  // 3: addi x3, x2, 2      (x3 = 101 + 2 = 103)
@@ -164,7 +164,7 @@ extern "C" void ebreak(uint32_t pc){
 }
 
 extern "C" int v_pmem_read(uint32_t raddr){
-	uint32_t addr = raddr & ~0x3u;
+	uint32_t addr = (raddr & ~0x3u) + MBASE;
 	return pmem_read(addr,4);
 }
 
