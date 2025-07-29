@@ -219,6 +219,13 @@ always @(posedge clk) begin
 end
 
 
+always @(posedge clk) begin
+    if (mem_wen) begin
+        $display("SW: waddr=0x%08x, wdata=0x%08x", waddr, wdata);
+    end
+end
+
+
 // 寄存器堆
 RegisterFile u_regfile2 (
     .clk(clk),
