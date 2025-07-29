@@ -19,7 +19,7 @@ Reg#(32,32'h80000000) pc_4(
 
 //取值 必须是组合逻辑
 reg[31:0]    inst;
-always @(posedge clk)begin
+always @(*)begin
 		inst = v_pmem_read(pc);
 end
 
