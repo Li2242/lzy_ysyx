@@ -18,6 +18,10 @@ extern "C" {
     // DPI IMPORTS
     // DPI import at vsrc/npc.v:1:30
     extern void ebreak(unsigned int pc);
+    // DPI import at vsrc/npc.v:2:29
+    extern int v_pmem_read(int raddr, int len);
+    // DPI import at vsrc/npc.v:3:30
+    extern void v_pmem_write(unsigned int waddr, int wdata, char wmask);
 
 #ifdef __cplusplus
 }

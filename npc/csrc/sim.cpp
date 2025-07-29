@@ -19,27 +19,31 @@ static void execute(uint32_t n);
 
 //开始
 void sim_init(int argc,char** argv){
-    contextp = new VerilatedContext;
-    contextp->commandArgs(argc,argv);
-    Verilated::traceEverOn(true);
-    top = new Vnpc;
-    tfp = new VerilatedVcdC;
-    top->trace(tfp,99);
-    tfp->open("waveform.vcd");
 
-		// 1. 复位初始化
-    top->clk = 0;
-    top->rst = 0;
-    top->pc = MBASE;
-    top->eval();
-    // tfp->dump(contextp->time()); // 记录复位前状态
-    // contextp->timeInc(10);
+	contextp = new VerilatedContext;
+	contextp->commandArgs(argc,argv);
+	Verilated::traceEverOn(true);
+	top = new Vnpc;
+	tfp = new VerilatedVcdC;
+	top->trace(tfp,99);
+	tfp->open("waveform.vcd");
+
+	// 1. 复位初始化
+	top->clk = 0;
+	top->reset = 0;
+	top->pc = MBASE;
+	top->eval();
+	green_printf("===========================================\n");
+
 
 // =============== 这里是初始化 ===============
 		//载入镜像文件 外部程序 or 内置指令
-    long img_size = load_img();
+  long img_size = load_img();
+
 		//初始化测试
+	if(diff_so_file != NULL){
 		init_difftest(diff_so_file , img_size);
+	}
 		//编译正则表达式
 		init_regex();
 		//初始化监视点
@@ -71,7 +75,7 @@ void sim_exe(uint32_t n){
 	switch (npc_state) {
 			case NPC_RUNNING: npc_state = NPC_STOP; break;
 			case NPC_END: case NPC_ABORT:
-				green_printf("npc: HIT GOOD TRAP\n");
+				// green_printf("npc: HIT GOOD TRAP\n");
 				// fall through
 			case NPC_QUIT: return ;
 		}
@@ -92,10 +96,11 @@ static void execute(uint32_t n){
 		//pc值要正确,这是变化前的pc，后面经过执行就变成下一个pc了
 		//执行命令前我先存一个pc
 		cpu_pc = top->pc;
+		// printf("0x%08x\n",cpu_pc);
 
 //===============  一条命令的开始  ========================
     top->clk = 0;
-    top->inst = pmem_read(top->pc,4);
+    // top->inst = pmem_read(top->pc,4);
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
@@ -122,20 +127,23 @@ static void trace_and_difftest() {
 		p += snprintf(p, sizeof(logbuf), "0x%08x:",cpu_pc);
 		int ilen = 4;
 		int k;
-		uint8_t *inst = (uint8_t *)&top->inst;
+		uint32_t inst = pmem_read(cpu_pc,4);
+		uint8_t *s_inst = (uint8_t *)&inst;
 
 		for(k = ilen - 1; k >= 0; k --){
-			p += snprintf(p,4," %02x", inst[k]);
+			p += snprintf(p,4," %02x", s_inst[k]);
 		}
 		int space_len = 1;
 		memset(p,' ',space_len);
 		p += space_len;
 		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&top->inst,ilen);
+		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&inst,ilen);
 // ================== ITRACING ENDS ===========================
 
 //difftest的关键
-		difftest_step(cpu_pc);
+if(diff_so_file != NULL){
+	difftest_step(cpu_pc);
+}
 //这里是ftrace的必要
 		ftrace(logbuf);
 //是否打印出反汇编的指令

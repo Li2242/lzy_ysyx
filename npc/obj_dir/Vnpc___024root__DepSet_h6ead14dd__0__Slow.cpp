@@ -46,7 +46,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_settle(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__stl(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 3, "", "Settle region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 4, "", "Settle region did not converge.");
         }
         __VstlIterCount = ((IData)(1U) + __VstlIterCount);
         __VstlContinue = 0U;
@@ -72,7 +72,7 @@ VL_ATTR_COLD void Vnpc___024root___dump_triggers__stl(Vnpc___024root* vlSelf) {
 }
 #endif  // VL_DEBUG
 
-void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf);
+VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf);
 VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf);
 
 VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
@@ -81,7 +81,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     if ((1ULL & vlSelfRef.__VstlTriggered.word(0U))) {
-        Vnpc___024root___ico_sequent__TOP__0(vlSelf);
+        Vnpc___024root___stl_sequent__TOP__0(vlSelf);
         Vnpc___024root____Vm_traceActivitySetAll(vlSelf);
     }
 }
@@ -102,21 +102,6 @@ VL_ATTR_COLD bool Vnpc___024root___eval_phase__stl(Vnpc___024root* vlSelf) {
     }
     return (__VstlExecute);
 }
-
-#ifdef VL_DEBUG
-VL_ATTR_COLD void Vnpc___024root___dump_triggers__ico(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___dump_triggers__ico\n"); );
-    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    if ((1U & (~ vlSelfRef.__VicoTriggered.any()))) {
-        VL_DBG_MSGF("         No triggers active\n");
-    }
-    if ((1ULL & vlSelfRef.__VicoTriggered.word(0U))) {
-        VL_DBG_MSGF("         'ico' region trigger index 0 is active: Internal 'ico' trigger - first iteration\n");
-    }
-}
-#endif  // VL_DEBUG
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vnpc___024root___dump_triggers__act(Vnpc___024root* vlSelf) {
@@ -155,7 +140,6 @@ VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSel
     // Body
     vlSelfRef.__Vm_traceActivity[0U] = 1U;
     vlSelfRef.__Vm_traceActivity[1U] = 1U;
-    vlSelfRef.__Vm_traceActivity[2U] = 1U;
 }
 
 VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
@@ -164,24 +148,35 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     vlSelf->clk = VL_RAND_RESET_I(1);
-    vlSelf->rst = VL_RAND_RESET_I(1);
-    vlSelf->inst = VL_RAND_RESET_I(32);
+    vlSelf->reset = VL_RAND_RESET_I(1);
     vlSelf->alu_result = VL_RAND_RESET_I(32);
     vlSelf->pc = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__next_pc = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__nextpc = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__inst = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__rdata = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__raddr = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__mem_en = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__imm = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__is_I = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_U = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__imm_R = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__imm_I = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__is_auipc = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_lui = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_jalr = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_addi = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_add = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_lw = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_lbu = VL_RAND_RESET_I(1);
     VL_RAND_RESET_W(128, vlSelf->npc__DOT__hot_opcode);
-    vlSelf->npc__DOT____VdfgRegularize_h9a2a8a06_0_5 = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__u_alu__DOT__result_auipc = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__u_alu__DOT__result_addi = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT____VdfgRegularize_h9a2a8a06_0_8 = VL_RAND_RESET_I(1);
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
+    vlSelf->__Vfunc_v_pmem_read__0__Vfuncout = 0;
     vlSelf->__Vtrigprevexpr___TOP__clk__0 = VL_RAND_RESET_I(1);
-    for (int __Vi0 = 0; __Vi0 < 3; ++__Vi0) {
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }
 }

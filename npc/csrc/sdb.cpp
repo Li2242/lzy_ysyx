@@ -120,7 +120,7 @@ static int cmd_c(char *args){
 //退出
 static int cmd_q(char *args){
 	npc_state = NPC_QUIT;
-	return -1;
+	return -10;
 }
 
 //单步执行

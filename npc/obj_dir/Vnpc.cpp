@@ -11,8 +11,7 @@ Vnpc::Vnpc(VerilatedContext* _vcontextp__, const char* _vcname__)
     : VerilatedModel{*_vcontextp__}
     , vlSymsp{new Vnpc__Syms(contextp(), _vcname__, this)}
     , clk{vlSymsp->TOP.clk}
-    , rst{vlSymsp->TOP.rst}
-    , inst{vlSymsp->TOP.inst}
+    , reset{vlSymsp->TOP.reset}
     , alu_result{vlSymsp->TOP.alu_result}
     , pc{vlSymsp->TOP.pc}
     , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}

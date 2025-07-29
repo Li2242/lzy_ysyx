@@ -12,30 +12,52 @@ static void out_of_bound(uint32_t addr);
 
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
+	0x00000413, //初始化
+0x123456b7,  // lui   x3, 0x12345         # x3 = 0x12345000
+0x67868693,  // addi  x3, x3, 0x678       # x3 = 0x12345678
+0x800000b7,  // lui   x1, 0x80000         # x1 = 0x80000000
+0x01008093,  // addi  x1, x1, 0x10        # x1 = 0x80000010
+// 0x0030a023,  // sw x3, 0(x1)  ✅ x1 == 0x80000010
+0x0000a103,  // lw    x2, 0(x1)           # x2 = mem[x1]
+0x0000c183,  // lbu   x3, 0(x1)           # x3 = mem[x1] & 0xFF
+// 0x00100073,  // ebreak                    # 结束
+
+
+
+	0x800000b7,  // lui x1, 0x80000
+	0x10008093,  // addi x1, x1, 0x100
+	0x0000a103,  // lw x2, 0(x1)
+	0x0040a183,  // lw x3, 4(x1)
+	0x0080a203,  // lw x4, 8(x1)
+	0x00c0a283,  // lw x5, 12(x1)
+	0x00100073,  // ebreak
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
   0x00108113,  // 2: addi x2, x1, 1      (x2 = 100 + 1 = 101)
-  0x00210193,  // 3: addi x3, x2, 2      (x3 = 101 + 2 = 103)
-  0x00318213,  // 4: addi x4, x3, 3      (x4 = 103 + 3 = 106)
-  0x00100073,
-  0x00420293,  // 5: addi x5, x4, 4      (x5 = 106 + 4 = 110)
-  0x00528313,  // 6: addi x6, x5, 5      (x6 = 110 + 5 = 115)
-  0x00630393,  // 7: addi x7, x6, 6      (x7 = 115 + 6 = 121)
-  0x00738413,  // 8: addi x8, x7, 7      (x8 = 121 + 7 = 128)
-  0x00840493,  // 9: addi x9, x8, 8      (x9 = 128 + 8 = 136)
-  0x00948513   // 10: addi x10, x9, 9    (x10 = 136 + 9 = 145)
+	0x002404B3,  // 9: add x9, x8, x2      (x9 = 429 + 101 = 530)
+	0x00148533,  //10: add x10, x9, x1     (x10 = 530 + 100 = 630)
 };
 
 //地址转换
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - MBASE; }
 //判断以什么形式读出
-inline uint32_t host_read(void *addr, int len) {
+static inline uint32_t host_read(void *addr, int len) {
   switch (len) {
     case 1: return *(uint8_t  *)addr;
     case 2: return *(uint16_t *)addr;
     case 4: return *(uint32_t *)addr;
-    default:assert(0);
+    default: red_printf("host_read中并不能读出这个长度\n"); assert(0);
   }
 }
+
+static inline void host_write(void *addr,int len, uint32_t data) {
+	switch(len){
+		case 1: *(uint8_t  *)addr = data; return;
+    case 2: *(uint16_t *)addr = data; return;
+    case 4: *(uint32_t *)addr = data; return;
+		default: red_printf("host_write中并不能写入这个长度\n"); assert(0);
+	}
+}
+
 //从物理地址 addr 处读取长度为 len 的数据。
 uint32_t pmem_read(uint32_t addr, int len) {
    if (in_pmem(addr) == 1){
@@ -44,6 +66,12 @@ uint32_t pmem_read(uint32_t addr, int len) {
 	}
 	out_of_bound(addr);
 	return 0;
+}
+
+void pmem_write(uint32_t addr, int len, uint32_t data){
+	if(in_pmem(addr) == 1){
+		host_write(guest_to_host(addr), len, data);
+	}
 }
 
 //越界处理
@@ -85,8 +113,15 @@ int parse_args(int argc, char *argv[]) {
 long load_img() {
   if (img_file == NULL) {
 		//写入内置程序
+
+
     memcpy(pmem,memory,sizeof(memory));
-    printf("No image is given. Use the default build-in image.\n");
+		uint32_t addr = MBASE;
+		// for(int i =0;i<32;i++){
+		// 	printf("pmem[%d] = 0x%08x\n",i,pmem_read(addr,4));
+		// 	addr+=4;
+		// }
+    green_printf("No image is given. Use the default build-in image.\n");
     return 4096; // built-in image size
   }
 
@@ -96,7 +131,7 @@ long load_img() {
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
 
-  printf("The image is %s, size = %ld", img_file, size);
+  printf("The image is %s, size = %ld\n", img_file, size);
 
   fseek(fp, 0, SEEK_SET);
   int ret = fread(pmem, size, 1, fp);
@@ -112,7 +147,7 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 	for(int i = 0;i<32;i++){
 		uint32_t temp = top->rootp->npc__DOT__u_regfile2__DOT__rf[i];
 		if( temp != ref_r[i]){
-			red_printf("Mismatch in gpr[%d]: dut=0x%08x, ref=0x%08x\n", i, temp, ref_r[i]);
+			red_printf("Mismatch in '%s': dut=0x%08x, ref=0x%08x\n", regs[i], temp, ref_r[i]);
 			is_same = false;
 		}
 	}
@@ -122,9 +157,32 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 	}
   return is_same;
 }
+// ================= 这里是verilog中的DPI-C ====================
+//停止指令
+extern "C" void ebreak(uint32_t pc){
+    printf("pc = 0x%x\n",pc);
+  	npc_state = NPC_END;
+}
+
+extern "C" int v_pmem_read(uint32_t raddr , int len){
+	uint32_t addr = (raddr & ~0x3u);
+	return pmem_read(addr,len);
+}
+
+extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
+	uint32_t addr = waddr & ~0x3u;
+	uint32_t temp = pmem_read(addr, 4);
+	if(wmask&0x1){temp = (temp & 0xFFFFFF00) | (wdata & 0x000000FF);}
+	if(wmask&0x2){temp = (temp & 0xFFFF00FF) | (wdata & 0x0000FF00);}
+	if(wmask&0x4){temp = (temp & 0xFF00FFFF) | (wdata & 0x00FF0000);}
+	if(wmask&0x8){temp = (temp & 0x00FFFFFF) | (wdata & 0xFF000000);}
+	pmem_write(addr, 4, temp);
+}
+
+// ====================   请在上面的范围内添加    =======================
 
 
-
+// ====================      小工具        ========================
 //颜色打印
 void green_printf(const char *fmt, ...) {
     va_list args;

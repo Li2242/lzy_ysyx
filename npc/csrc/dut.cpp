@@ -11,6 +11,7 @@ void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 void init_difftest(char *ref_so_file, long img_size) {
   assert(ref_so_file != NULL);
 
+
   //打开传入的动态库文件ref_so_file
   void *handle;
   handle = dlopen(ref_so_file, RTLD_LAZY);
