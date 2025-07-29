@@ -186,6 +186,13 @@ alu u_alu(
     .result 	(alu_result  )
 );
 
+// 添加调试显示
+always @(posedge clk) begin
+    if (!rst && reg_wen) begin
+        $display("RegWrite: rd=%d,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x",
+                 rd,  alu_result, mem_en, rdata);
+    end
+end
 
 
 // 寄存器堆
