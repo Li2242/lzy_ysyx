@@ -34,6 +34,9 @@ reg [31:0] rdata;
 wire [31:0] raddr;
 wire mem_en;
 
+//内存地址
+assign raddr = ({32{is_lw}} & (src1 + imm_I) );
+//都地址
 always @(posedge clk) begin
 	if(mem_en)begin
 		rdata = v_pmem_read(raddr);
@@ -106,8 +109,8 @@ assign rs2    = inst[24:20];
 assign rd    = inst[11:7];
 assign funct3 = inst[14:12];
 
-// output declaration of module decoder7_128
 
+// output declaration of module decoder7_128
 wire [127:0] hot_opcode;
 decoder7_128 u_decoder7_128(
 	.in  	(opcode   ),
@@ -170,8 +173,7 @@ assign alu_op[6] = is_lw;
 //读取数据
 //符号扩
 
-//内存地址
-assign raddr = ({32{is_lw}} & (src1 + imm_I) );
+
 //alu
 // output declaration of module alu
 alu u_alu(
