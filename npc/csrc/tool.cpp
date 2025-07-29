@@ -13,12 +13,15 @@ static void out_of_bound(uint32_t addr);
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
 	0x00000413, //初始化
+0x123456b7,  // lui   x3, 0x12345         # x3 = 0x12345000
+0x67868693,  // addi  x3, x3, 0x678       # x3 = 0x12345678
 0x800000b7,  // lui   x1, 0x80000         # x1 = 0x80000000
-0x01008093,  // addi  x1, x1, 0x10       # x1 = 0x80000010
-0x12345023,  // sw    x3, 0(x1)          # mem[x1] = x3 (假设x3初始0x12345678先写入)
-0x0000a103,  // lw    x2, 0(x1)          # x2 = mem[x1]
-0x0000c183,  // lbu   x3, 0(x1)          # x3 = mem[x1] & 0xFF
-0x00100073,  // ebreak                   # 结束
+0x01008093,  // addi  x1, x1, 0x10        # x1 = 0x80000010
+0x00312023,  // sw    x3, 0(x1)           # mem[x1] = x3
+0x0000a103,  // lw    x2, 0(x1)           # x2 = mem[x1]
+0x0000c183,  // lbu   x3, 0(x1)           # x3 = mem[x1] & 0xFF
+0x00100073,  // ebreak                    # 结束
+
 
 
 	0x800000b7,  // lui x1, 0x80000
