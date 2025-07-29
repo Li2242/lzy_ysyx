@@ -151,6 +151,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->rst = VL_RAND_RESET_I(1);
     vlSelf->alu_result = VL_RAND_RESET_I(32);
     vlSelf->pc = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__rdata = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__inst = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__next_pc = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__imm = VL_RAND_RESET_I(32);
@@ -166,7 +167,6 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__is_addi = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_add = VL_RAND_RESET_I(1);
     VL_RAND_RESET_W(128, vlSelf->npc__DOT__hot_opcode);
-    vlSelf->npc__DOT____VdfgExtracted_h414fb206__0 = 0;
     vlSelf->npc__DOT____VdfgRegularize_h9a2a8a06_0_7 = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__u_alu__DOT__result_auipc = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__u_alu__DOT__result_addi = VL_RAND_RESET_I(32);
@@ -174,7 +174,6 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
     vlSelf->__Vfunc_v_pmem_read__0__Vfuncout = 0;
-    vlSelf->__Vfunc_v_pmem_read__2__Vfuncout = 0;
     vlSelf->__Vtrigprevexpr___TOP__clk__0 = VL_RAND_RESET_I(1);
     for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;

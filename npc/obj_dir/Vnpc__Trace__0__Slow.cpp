@@ -173,9 +173,7 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
     // Init
     uint32_t* const oldp VL_ATTR_UNUSED = bufp->oldp(vlSymsp->__Vm_baseCode);
     // Body
-    bufp->fullIData(oldp+1,(((IData)(vlSelfRef.npc__DOT__mem_en)
-                              ? vlSelfRef.npc__DOT____VdfgExtracted_h414fb206__0
-                              : 0U)),32);
+    bufp->fullIData(oldp+1,(vlSelfRef.npc__DOT__rdata),32);
     bufp->fullIData(oldp+2,(((- (IData)((IData)(vlSelfRef.npc__DOT__mem_en))) 
                              & (vlSelfRef.npc__DOT__src1 
                                 + vlSelfRef.npc__DOT__imm_I))),32);

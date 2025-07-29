@@ -13,6 +13,7 @@ static void out_of_bound(uint32_t addr);
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
 	0x00000413, //初始化
+	0x06400093,  // addi x1, x0, 100
 	0x0040a103, // lw x2, 4(x1)
 	0x0000a083, // lw x1, 0(x1)
 	0x0080a183, // lw x3, 8(x1)
