@@ -35,7 +35,7 @@ end
 
 
 //内存
-reg [31:0] rdata;
+wire [31:0] rdata;
 wire [31:0] raddr;
 wire [31:0] waddr;
 wire [31:0] wdata;
