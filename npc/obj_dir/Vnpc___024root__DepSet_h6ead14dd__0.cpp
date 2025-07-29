@@ -115,7 +115,7 @@ void Vnpc___024root___eval_debug_assertions(Vnpc___024root* vlSelf) {
     // Body
     if (VL_UNLIKELY(((vlSelfRef.clk & 0xfeU)))) {
         Verilated::overWidthError("clk");}
-    if (VL_UNLIKELY(((vlSelfRef.rst & 0xfeU)))) {
-        Verilated::overWidthError("rst");}
+    if (VL_UNLIKELY(((vlSelfRef.reset & 0xfeU)))) {
+        Verilated::overWidthError("reset");}
 }
 #endif  // VL_DEBUG

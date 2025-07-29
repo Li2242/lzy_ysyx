@@ -30,7 +30,7 @@ void sim_init(int argc,char** argv){
 
 	// 1. 复位初始化
 	top->clk = 0;
-	top->rst = 0;
+	top->reset = 0;
 	top->pc = MBASE;
 	top->eval();
 	green_printf("===========================================\n");
