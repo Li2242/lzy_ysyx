@@ -30,7 +30,7 @@ end
  	reg [31:0] rdata;
 	wire [31:0] raddr;
 
-	always @(raddr) begin
+	always @(*) begin
 		if(mem_en)begin
 			rdata = v_pmem_read(raddr);
 		end else begin
