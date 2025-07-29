@@ -166,7 +166,6 @@ extern "C" void ebreak(uint32_t pc){
 
 extern "C" int v_pmem_read(uint32_t raddr , int len){
 	uint32_t addr = (raddr & ~0x3u);
-	printf(">>> v_pmem_read called: raddr = 0x%08x, aligned = 0x%08x\n", raddr, addr);
 	return pmem_read(addr,len);
 }
 
