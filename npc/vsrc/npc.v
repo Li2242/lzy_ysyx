@@ -50,10 +50,10 @@ assign waddr = ({32{is_sw}} & (src1 +imm));
 
 assign wdata = alu_result;
 //都地址
-always @(posedge clk) begin
+always @(*) begin
 	if(mem_en)begin
 		rdata <=  is_lbu ? v_pmem_read(raddr,1) & 32'hFF:
-					 						v_pmem_read(raddr , 4);
+					 						 v_pmem_read(raddr , 4);
 		if (mem_wen) begin // 有写请求时
       v_pmem_write(waddr, wdata, 4);
     end
@@ -209,6 +209,17 @@ alu u_alu(
     .result 	(alu_result  )
 );
 
+// 寄存器堆
+RegisterFile u_regfile2 (
+    .clk(clk),
+    .wen(reg_wen),
+    .waddr(rd),
+    .wdata(alu_result),
+    .raddr1(rs1),
+    .rdata1(src1),
+    .raddr2(rs2),
+    .rdata2(src2)
+);
 
 // 调试显示
 always @(posedge clk) begin
@@ -224,19 +235,6 @@ always @(posedge clk) begin
         $display("SW: waddr=0x%08x, wdata=0x%08x", waddr, wdata);
     end
 end
-
-
-// 寄存器堆
-RegisterFile u_regfile2 (
-    .clk(clk),
-    .wen(reg_wen),
-    .waddr(rd),
-    .wdata(alu_result),
-    .raddr1(rs1),
-    .rdata1(src1),
-    .raddr2(rs2),
-    .rdata2(src2)
-);
 
 endmodule
 
