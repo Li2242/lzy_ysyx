@@ -45,7 +45,7 @@ assign raddr = ({32{is_lw}} & (src1 + imm_I) )
 //都地址
 always @(posedge clk) begin
 	if(mem_en)begin
-		rdata =  is_lbu ? v_pmem_read(raddr,1) & 32'hFF:
+		rdata <=  is_lbu ? v_pmem_read(raddr,1) & 32'hFF:
 					 						v_pmem_read(raddr , 4);
 
 	end else begin
@@ -168,7 +168,7 @@ assign is_lw    = is_I & hot_funct3[2] & hot_opcode[3];
 assign is_lbu   = is_I & hot_funct3[4] & hot_opcode[3];
 
 //控制信号
-assign mem_en  = is_lw;
+assign mem_en  = is_lw | is_lbu;
 assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
 
 
