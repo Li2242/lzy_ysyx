@@ -3,7 +3,7 @@ module alu(
     input[31:0] imm,
     input[31:0] src1,
 		input[31:0] src2,
-    input[8:0]  alu_op,
+    input[7:0]  alu_op,
 		input[31:0] rdata,
     input[31:0] pc,
     output[31:0] result
@@ -17,7 +17,6 @@ wire [31:0] result_addi;
 wire [31:0] result_add;
 wire [31:0] result_lw;
 wire [31:0] result_lbu;
-wire [31:0] result_sw;
 
 
 
@@ -30,7 +29,6 @@ assign result_addi  = src1 + imm;
 assign result_add   = src1 + src2;
 assign result_lw    = rdata;
 assign result_lbu   = rdata;
-assign result_sw    = src2;
 
 assign result = ({32{alu_op[0]}} & result_auipc)
               | ({32{alu_op[1]}} & result_lui)
@@ -39,7 +37,6 @@ assign result = ({32{alu_op[0]}} & result_auipc)
 			  			| ({32{alu_op[4]}} & result_addi)
 			  			| ({32{alu_op[5]}} & result_add)
 			  			| ({32{alu_op[6]}} & result_lw)
-			  			| ({32{alu_op[7]}} & result_lbu)
-			  			| ({32{alu_op[8]}} & result_sw);
+			  			| ({32{alu_op[7]}} & result_lbu);
 
 endmodule
