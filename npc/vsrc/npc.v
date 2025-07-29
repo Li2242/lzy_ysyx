@@ -113,7 +113,7 @@ wire is_lbu;
 wire is_sw;
 
 //判断类型
-assign opcode = inst[7:0];
+assign opcode = inst[6:0];
 
 //全部符号扩展，待会进alu在处理
 assign imm_I = {{20{inst[31]}},inst[31:20]};

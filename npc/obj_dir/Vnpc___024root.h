@@ -19,7 +19,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     // DESIGN SPECIFIC STATE
     VL_IN8(clk,0,0);
     VL_IN8(reset,0,0);
-    CData/*0:0*/ npc__DOT__mem_en;
+    CData/*0:0*/ npc__DOT__mem_wen;
     CData/*0:0*/ npc__DOT__is_I;
     CData/*0:0*/ npc__DOT__is_U;
     CData/*0:0*/ npc__DOT__is_auipc;
@@ -29,7 +29,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ npc__DOT__is_add;
     CData/*0:0*/ npc__DOT__is_lw;
     CData/*0:0*/ npc__DOT__is_lbu;
-    CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_8;
+    CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_9;
+    CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_11;
     CData/*0:0*/ __VstlFirstIteration;
     CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
     CData/*0:0*/ __VactContinue;
@@ -41,9 +42,10 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     IData/*31:0*/ npc__DOT__raddr;
     IData/*31:0*/ npc__DOT__imm;
     IData/*31:0*/ npc__DOT__src1;
+    IData/*31:0*/ npc__DOT__src2;
     IData/*31:0*/ npc__DOT__imm_R;
-    IData/*31:0*/ npc__DOT__imm_I;
     VlWide<4>/*127:0*/ npc__DOT__hot_opcode;
+    IData/*31:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_0;
     IData/*31:0*/ __Vfunc_v_pmem_read__0__Vfuncout;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_regfile2__DOT__rf;
