@@ -8,6 +8,12 @@ module npc(
     output reg  [31:0]  pc
 );
 
+//更新pc
+//jal jarl 跳转指令
+assign next_pc = is_jal ? pc+imm :
+                 is_jalr ? (src1+imm)&~1 :
+                 pc+4;
+
 //pc寄存器
 Reg#(32,32'h80000000) pc_4(
     .clk 	 (clk  ),
@@ -175,7 +181,6 @@ alu u_alu(
     .alu_op 	(alu_op  ),
 		.rdata    (rdata),
     .pc         (pc),
-    .next_pc    (next_pc ),
     .result 	(alu_result  )
 );
 
