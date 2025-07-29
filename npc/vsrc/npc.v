@@ -1,5 +1,5 @@
 import "DPI-C" function void ebreak(input int unsigned pc);
-import "DPI-C" function int v_pmem_read(input int raddr);
+import "DPI-C" function int v_pmem_read(input int raddr, int len);
 import "DPI-C" function void v_pmem_write(input int unsigned waddr, input int wdata, input byte wmask);
 module npc(
     input  wire clk,
@@ -11,7 +11,7 @@ module npc(
 
 //更新pc
 //jal jarl 跳转指令
-assign nextpc = is_jal ? pc+imm :
+assign nextpc =  is_jal ?  pc+imm :
                  is_jalr ? (src1+imm)&~1 :
                  pc + 32'h4;
 
@@ -30,7 +30,7 @@ end
 //取值 必须是组合逻辑
 reg[31:0]    inst;
 always @(*)begin
-		inst = v_pmem_read(pc);
+		inst = v_pmem_read(pc,4);
 end
 
 
@@ -40,11 +40,14 @@ wire [31:0] raddr;
 wire mem_en;
 
 //内存地址
-assign raddr = ({32{is_lw}} & (src1 + imm_I) );
+assign raddr = ({32{is_lw}} & (src1 + imm_I) )
+             | ({32{is_lbu}} & (src1 + imm_I) );
 //都地址
 always @(posedge clk) begin
 	if(mem_en)begin
-		rdata = v_pmem_read(raddr);
+		rdata =  is_lbu ? v_pmem_read(raddr,1) & 32'hFF:
+					 						v_pmem_read(raddr , 4);
+
 	end else begin
 		rdata = 0;
 	end
@@ -70,7 +73,7 @@ wire[31:0]  src2;
 wire[4:0]    rs1;
 wire[4:0] 	 rs2;
 wire[4:0]    rd;
-wire[6:0]    alu_op;
+
 wire         reg_wen;
 // wire         mem_wen;
 //指令BIG类型
@@ -97,6 +100,7 @@ wire is_jalr;
 wire is_addi;
 wire is_add;
 wire is_lw;
+wire is_lbu;
 
 
 //判断类型
@@ -160,13 +164,17 @@ assign is_jal   = is_J ;
 assign is_jalr  = is_I & hot_funct3[0] & hot_opcode[103];
 assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
 assign is_add   = is_R & hot_funct3[0];
-assign is_lw    = is_I  & hot_funct3[2] & hot_opcode[3];
+assign is_lw    = is_I & hot_funct3[2] & hot_opcode[3];
+assign is_lbu   = is_I & hot_funct3[4] & hot_opcode[3];
 
 //控制信号
 assign mem_en  = is_lw;
-assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw;
+assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
+
 
 //ALU操作码
+wire[7:0]    alu_op;
+
 assign alu_op[0] = is_auipc;
 assign alu_op[1] = is_lui;
 assign alu_op[2] = is_jal;
@@ -174,6 +182,7 @@ assign alu_op[3] = is_jalr;
 assign alu_op[4] = is_addi;
 assign alu_op[5] = is_add;
 assign alu_op[6] = is_lw;
+assign alu_op[7] = is_lbu;
 //读取数据
 //符号扩
 
@@ -186,7 +195,7 @@ alu u_alu(
 		.src2      (src2),
     .alu_op 	(alu_op  ),
 		.rdata    (rdata),
-    .pc         (pc),
+    .pc        (pc),
     .result 	(alu_result  )
 );
 

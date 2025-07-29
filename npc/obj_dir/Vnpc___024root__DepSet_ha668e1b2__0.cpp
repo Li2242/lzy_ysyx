@@ -42,14 +42,13 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
-    if (VL_UNLIKELY((((~ (IData)(vlSelfRef.reset)) 
-                      & ((IData)(vlSelfRef.npc__DOT__is_auipc) 
-                         | ((IData)(vlSelfRef.npc__DOT__is_lui) 
-                            | ((0x6fU == (0x7fU & vlSelfRef.npc__DOT__inst)) 
-                               | ((IData)(vlSelfRef.npc__DOT__is_jalr) 
-                                  | ((IData)(vlSelfRef.npc__DOT__is_addi) 
-                                     | ((IData)(vlSelfRef.npc__DOT__is_add) 
-                                        | (IData)(vlSelfRef.npc__DOT__mem_en))))))))))) {
+    if (VL_UNLIKELY((((IData)(vlSelfRef.npc__DOT__is_auipc) 
+                      | ((IData)(vlSelfRef.npc__DOT__is_lui) 
+                         | ((0x6fU == (0x7fU & vlSelfRef.npc__DOT__inst)) 
+                            | ((IData)(vlSelfRef.npc__DOT__is_jalr) 
+                               | ((IData)(vlSelfRef.npc__DOT__is_addi) 
+                                  | ((IData)(vlSelfRef.npc__DOT__is_add) 
+                                     | (IData)(vlSelfRef.npc__DOT__mem_en)))))))))) {
         VL_WRITEF_NX("RegWrite: rd=%2#,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x\n",0,
                      5,(0x1fU & (vlSelfRef.npc__DOT__inst 
                                  >> 7U)),32,vlSelfRef.alu_result,

@@ -13,6 +13,36 @@ static void out_of_bound(uint32_t addr);
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
 	0x00000413, //初始化
+
+	// ====== lui ======
+	0x123450B7, // lui x1, 0x12345          => x1 = 0x12345000
+
+	// ====== auipc ======
+	0x00000117, // auipc x2, 0x0            => x2 = PC + 0x0 (假设 PC = 0x4, 则 x2 = 0x4)
+	0x00400117, // auipc x2, 0x4            => x2 = PC + 0x4000
+
+	// ====== addi ======
+	0x06400193, // addi x3, x0, 100         => x3 = 100
+	0x00318213, // addi x4, x3, 3           => x4 = 100 + 3 = 103
+
+	// ====== add ======
+	0x0041a2b3, // add x5, x3, x4           => x5 = 100 + 103 = 203
+
+	// ====== jal ======
+	0x004000ef, // jal x1, 4                => x1 = PC+4, jump to PC+4
+	0x0000006f, // jal x0, 0                => PC = PC (infinite loop or trap)
+
+	// ====== jalr ======
+	0x00008093, // addi x1, x1, 0           => x1 = x1 (prepare x1 for jalr)
+	0x000080e7, // jalr x1, 0(x1)           => PC = x1 + 0; x1 = return addr
+
+	// ====== lw ======
+	0x00100113, // addi x2, x0, 1           => x2 = 1
+	0x00012283, // lw x5, 0(x2)             => x5 = mem[x2 + 0] （从地址1加载，通常非法）
+
+	// ====== lbu ======
+	0x00012303, // lbu x6, 0(x2)            => x6 = zero-extend(mem[x2 + 0])
+
 	0x800000b7,  // lui x1, 0x80000
 	0x10008093,  // addi x1, x1, 0x100
 	0x0000a103,  // lw x2, 0(x1)
@@ -22,20 +52,8 @@ static const __uint32_t memory[] = {
 	0x00100073,  // ebreak
   0x06400093,  // 1: addi x1, x0, 100    (x1 = 0 + 100 = 100)
   0x00108113,  // 2: addi x2, x1, 1      (x2 = 100 + 1 = 101)
-  0x00210193,  // 3: addi x3, x2, 2      (x3 = 101 + 2 = 103)
-  0x00318213,  // 4: addi x4, x3, 3      (x4 = 103 + 3 = 106)
-  0x00420293,  // 5: addi x5, x4, 4      (x5 = 106 + 4 = 110)
-	0x00528333,  // 6: add x6, x5, x5      (x6 = 110 + 110 = 220)
-	0x004303B3,  // 7: add x7, x6, x4      (x7 = 220 + 106 = 326)
-	0x00338433,  // 8: add x8, x7, x3      (x8 = 326 + 103 = 429)
 	0x002404B3,  // 9: add x9, x8, x2      (x9 = 429 + 101 = 530)
 	0x00148533,  //10: add x10, x9, x1     (x10 = 530 + 100 = 630)
-  0x00100073,
-  0x00528313,  // 6: addi x6, x5, 5      (x6 = 110 + 5 = 115)
-  0x00630393,  // 7: addi x7, x6, 6      (x7 = 115 + 6 = 121)
-  0x00738413,  // 8: addi x8, x7, 7      (x8 = 121 + 7 = 128)
-  0x00840493,  // 9: addi x9, x8, 8      (x9 = 128 + 8 = 136)
-  0x00948513   // 10: addi x10, x9, 9    (x10 = 136 + 9 = 145)
 };
 
 //地址转换
@@ -165,10 +183,10 @@ extern "C" void ebreak(uint32_t pc){
   	npc_state = NPC_END;
 }
 
-extern "C" int v_pmem_read(uint32_t raddr){
+extern "C" int v_pmem_read(uint32_t raddr , int len){
 	uint32_t addr = (raddr & ~0x3u);
 	printf(">>> v_pmem_read called: raddr = 0x%08x, aligned = 0x%08x\n", raddr, addr);
-	return pmem_read(addr,4);
+	return pmem_read(addr,len);
 }
 
 extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
