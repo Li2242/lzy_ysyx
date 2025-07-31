@@ -88,7 +88,11 @@ wire is_ebreak;
 always @(*)begin
 	if(!reset)begin
 		inst	 <= v_pmem_read(pc,4);
+	end else begin
+
 	end
+
+
 end
 
 
