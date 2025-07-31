@@ -142,12 +142,12 @@ assign is_ebreak = (inst == 32'h00100073);
 
 //控制信号 3.加指令改
 assign mem_en  = is_lw | is_lbu;
+assign mem_wen       = is_sw | is_sb;
 assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
 
 assign reg_from_mem  = is_lw | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
-assign mem_wen       = is_sw | is_sb;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
