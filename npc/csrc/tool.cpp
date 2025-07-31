@@ -12,7 +12,7 @@ static void out_of_bound(uint32_t addr);
 
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
-00000413,
+0x00000413,
 0x123450b7,  // lui   x1, 0x12345         # x1 = 0x12345000
 0x00009117,  // auipc x2, 0x9             # x2 = PC + 0x9000
 
