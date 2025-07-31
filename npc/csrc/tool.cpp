@@ -168,10 +168,10 @@ extern "C" void ebreak(uint32_t pc){
 }
 
 extern "C" int v_pmem_read(uint32_t raddr , int len){
-	// green_printf("read : ");
+	green_printf("read : ");
 	uint32_t addr = (raddr & ~0x3u);
 	uint32_t value = pmem_read(addr,len);
-	// green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", addr, value);
+	green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", addr, value);
 	return value;
 }
 
