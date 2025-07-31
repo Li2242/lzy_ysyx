@@ -109,7 +109,7 @@ static void execute(uint32_t n){
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
 //===============  一条命令的结束  =========================
-
+printf("第一条命令以及执行完了，不是npc的问题");
 //正如函数名所说它就是TRACE和DIFFTEST的办公场所
 		trace_and_difftest();
   }
