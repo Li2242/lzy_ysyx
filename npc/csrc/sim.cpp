@@ -58,8 +58,8 @@ void sim_init(int argc,char** argv){
 	top->eval();     // 应用复位状态
 
 	top->clk = 1;
-
 	top->eval();     // 应用复位状态
+
   top->reset = 0;
 	green_printf("===========================================\n");
 
