@@ -212,6 +212,9 @@ always @(*) begin
 	end else begin
 		rdata = 0;
 	end
+end
+//写
+always @(posedge clk)begin
 	if  (mem_wen) begin // 有写请求时
       v_pmem_write(waddr, wdata, wmask);
     end
