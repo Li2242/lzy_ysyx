@@ -209,10 +209,9 @@ always @(posedge clk) begin
 		rdata <=  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
-		if (mem_wen) begin // 有写请求时
+	end else if  (mem_wen) begin // 有写请求时
       v_pmem_write(waddr, wdata, wmask);
-    end
-	end else begin
+    end else begin
 		rdata <= 0;
 	end
 end
