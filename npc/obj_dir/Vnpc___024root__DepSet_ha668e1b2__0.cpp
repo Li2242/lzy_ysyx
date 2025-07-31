@@ -119,6 +119,22 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                           ? vlSelfRef.npc__DOT____VdfgExtracted_hfee1d2e3__0
                           : 0U));
     }
+    if (VL_UNLIKELY(((1U & (~ (IData)(vlSelfRef.reset)))))) {
+        VL_WRITEF_NX("PC: 0x%08x, nextpc: 0x%08x, is_jalr: %b, src1: 0x%08x, imm: 0x%08x\n",0,
+                     32,vlSelfRef.pc,32,((IData)(vlSelfRef.npc__DOT__is_jalr)
+                                          ? (0xfffffffeU 
+                                             & vlSelfRef.npc__DOT__raddr)
+                                          : ((0x6fU 
+                                              == (0x7fU 
+                                                  & vlSelfRef.npc__DOT__inst))
+                                              ? (vlSelfRef.pc 
+                                                 + vlSelfRef.npc__DOT__imm)
+                                              : ((IData)(4U) 
+                                                 + vlSelfRef.pc))),
+                     1,(IData)(vlSelfRef.npc__DOT__is_jalr),
+                     32,vlSelfRef.npc__DOT__src1,32,
+                     vlSelfRef.npc__DOT__imm);
+    }
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
           | ((0x37U == (0x7fU & vlSelfRef.npc__DOT__inst)) 

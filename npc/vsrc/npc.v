@@ -85,8 +85,7 @@ wire is_ebreak;
 
 
 //肢解第一件事 ： 先取出来
-
-  assign inst = v_pmem_read(pc, 4);  // 仿真中通过 DPI 取指令
+	assign	inst = v_pmem_read(pc,4);
 
 //全部符号扩展，待会在处理
 assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
@@ -251,13 +250,6 @@ always @(posedge clk) begin
 end
 
 // 调试显示
-always @(posedge clk) begin
-  if (!reset) begin
-    $display("PC: 0x%08x, nextpc: 0x%08x, is_jalr: %b, src1: 0x%08x, imm: 0x%08x", pc, nextpc, is_jalr, src1, imm);
-  end
-end
-
-
 always @(posedge clk) begin
     if (reg_wen) begin
         $display("RegWrite: rd=%d,  final_result=0x%08x, mem_en=%b, rdata=0x%08x",
