@@ -85,13 +85,8 @@ wire is_ebreak;
 
 
 //肢解第一件事 ： 先取出来
-always @(posedge clk) begin
-    if (reset) begin
-        inst <= 32'h80000000;  // 或者你想设的初值
-    end else begin
-        inst <= v_pmem_read(pc, 4);
-    end
-end
+assign	inst = v_pmem_read(pc,4);
+
 
 //全部符号扩展，待会在处理
 assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
@@ -210,16 +205,20 @@ assign wmask = is_sb ? 8'b00000001 :
 							 8'b00001111;
 
 //读地址
-always @(posedge clk) begin
+always @(*) begin
 	if(mem_en)begin
 		rdata <=  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
-	end else if  (mem_wen) begin // 有写请求时
-      v_pmem_write(waddr, wdata, wmask);
-    end else begin
+	end else begin
 		rdata <= 0;
 	end
+end
+//写地址
+always @(posedge clk)begin
+ if  (mem_wen) begin // 有写请求时
+      v_pmem_write(waddr, wdata, wmask);
+    end
 end
 // ========================== 内存读写结束   =====================================
 
