@@ -237,8 +237,6 @@ always @(*) begin
 		rdata = 0;
 	end
 end
-
-
 //写地址
 always @(posedge clk)begin
  if  (mem_wen) begin // 有写请求时
