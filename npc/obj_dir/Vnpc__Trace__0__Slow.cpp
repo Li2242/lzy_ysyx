@@ -281,11 +281,7 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
                                    ? 0U : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
                                   [(0x1fU & (vlSelfRef.npc__DOT__inst 
                                              >> 0x14U))]))),32);
-    bufp->fullIData(oldp+41,(((IData)(vlSelfRef.npc__DOT__mem_en)
-                               ? ((IData)(vlSelfRef.npc__DOT__is_lbu)
-                                   ? vlSelfRef.npc__DOT____VdfgExtracted_h2f0326d4__0
-                                   : vlSelfRef.npc__DOT____VdfgExtracted_h040d35e9__0)
-                               : 0U)),32);
+    bufp->fullIData(oldp+41,(vlSelfRef.npc__DOT__rdata),32);
     bufp->fullIData(oldp+42,(vlSelfRef.npc__DOT__raddr),32);
     bufp->fullIData(oldp+43,((((IData)((0x2023U == 
                                         (0x707fU & vlSelfRef.npc__DOT__inst))) 
@@ -341,19 +337,13 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
                                       + vlSelfRef.npc__DOT__imm)
                                    : ((IData)(4U) + vlSelfRef.pc)))),32);
     bufp->fullIData(oldp+82,(((IData)(vlSelfRef.npc__DOT__mem_en)
-                               ? ((IData)(vlSelfRef.npc__DOT__mem_en)
-                                   ? ((IData)(vlSelfRef.npc__DOT__is_lbu)
-                                       ? vlSelfRef.npc__DOT____VdfgExtracted_h2f0326d4__0
-                                       : vlSelfRef.npc__DOT____VdfgExtracted_h040d35e9__0)
-                                   : 0U) : ((IData)(vlSelfRef.npc__DOT__reg_from_pc_4)
-                                             ? ((IData)(4U) 
-                                                + vlSelfRef.pc)
-                                             : ((0x37U 
-                                                 == 
-                                                 (0x7fU 
-                                                  & vlSelfRef.npc__DOT__inst))
-                                                 ? vlSelfRef.npc__DOT__imm
-                                                 : vlSelfRef.alu_result)))),32);
+                               ? vlSelfRef.npc__DOT__rdata
+                               : ((IData)(vlSelfRef.npc__DOT__reg_from_pc_4)
+                                   ? ((IData)(4U) + vlSelfRef.pc)
+                                   : ((0x37U == (0x7fU 
+                                                 & vlSelfRef.npc__DOT__inst))
+                                       ? vlSelfRef.npc__DOT__imm
+                                       : vlSelfRef.alu_result)))),32);
     bufp->fullIData(oldp+83,(((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst))
                                ? vlSelfRef.pc : vlSelfRef.npc__DOT__src1)),32);
     bufp->fullIData(oldp+84,((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst))
