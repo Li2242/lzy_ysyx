@@ -225,8 +225,8 @@ wire [31:0] waddr;
 wire [31:0] wdata;
 wire [7:0]  wmask;
 //内存地址
-assign raddr = src1 + imm;
-assign waddr = src1 + imm;
+assign raddr = mem_en ? src1 + imm : 32'h80000000;
+assign waddr = mem_wen ? src1 + imm : 32'h80000000;
 assign wdata = src2;
 //掩码
 assign wmask = is_sb ? 8'b00000001 :
