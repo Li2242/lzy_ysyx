@@ -29,12 +29,16 @@ void sim_init(int argc,char** argv){
 	tfp->open("waveform.vcd");
 
 	// 1. 复位初始化
-	top->clk = 0;
-	top->reset = 0;
-	top->pc = MBASE;
-	top->eval();
-	green_printf("===========================================\n");
+top->reset = 1;
+top->clk = 0;
+top->eval();
 
+top->clk = 1;
+top->eval();   // 触发 reset 初始化逻辑中的 pc <= 0x80000000
+
+top->reset = 0;
+top->clk = 0;
+top->eval();
 
 // =============== 这里是初始化 ===============
 		//载入镜像文件 外部程序 or 内置指令
