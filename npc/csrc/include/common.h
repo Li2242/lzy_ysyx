@@ -85,7 +85,8 @@ void init_elf();
 void init_difftest(char *ref_so_file, long img_size);
 //ftrace主逻辑
 void ftrace(char* inst);
-
+//批处理
+void sdb_set_batch_mode();
 //监视点
 int new_wp(char *str);
 void free_wp(int n);

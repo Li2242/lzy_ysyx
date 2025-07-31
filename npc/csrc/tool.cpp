@@ -88,20 +88,23 @@ int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
     //长选项表的结束标志
+		{"batch"    , no_argument      , NULL, 'b'},
 		{"diff"     , required_argument, NULL, 'd'},
 		{"elf"      , required_argument, NULL, 'e'},
 		{"log"      , required_argument, NULL, 'l'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-l:e:d:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bl:e:d:", table, NULL)) != -1) {
     switch (o) {
+			case 'b': sdb_set_batch_mode(); break;
 			case 'd':diff_so_file = optarg;break;
 			case 'e':elf_file = optarg;break;
 			case 'l':log_file = optarg;break;
       case 1: img_file = optarg; return 0;
       default:
 				printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
+				printf("\t-b,--batch              run with batch mode\n");
 			 	printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
 				printf("\t-e,--elf=FILE           Open the elf FILE\n");
 				printf("\t-l,--log=FILE           output log to FILE\n");
