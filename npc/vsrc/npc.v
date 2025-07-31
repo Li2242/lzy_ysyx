@@ -84,7 +84,7 @@ wire is_ebreak;
 
 
 
-//肢解第一件事 ： 先取出来
+//取出inst
 assign inst = v_pmem_read(pc,4);
 
 

@@ -72,7 +72,7 @@ VL_ATTR_COLD void Vnpc___024root___dump_triggers__stl(Vnpc___024root* vlSelf) {
 }
 #endif  // VL_DEBUG
 
-void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf);
+VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf);
 VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf);
 
 VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
@@ -81,7 +81,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     if ((1ULL & vlSelfRef.__VstlTriggered.word(0U))) {
-        Vnpc___024root___ico_sequent__TOP__0(vlSelf);
+        Vnpc___024root___stl_sequent__TOP__0(vlSelf);
         Vnpc___024root____Vm_traceActivitySetAll(vlSelf);
     }
 }
@@ -102,21 +102,6 @@ VL_ATTR_COLD bool Vnpc___024root___eval_phase__stl(Vnpc___024root* vlSelf) {
     }
     return (__VstlExecute);
 }
-
-#ifdef VL_DEBUG
-VL_ATTR_COLD void Vnpc___024root___dump_triggers__ico(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___dump_triggers__ico\n"); );
-    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    if ((1U & (~ vlSelfRef.__VicoTriggered.any()))) {
-        VL_DBG_MSGF("         No triggers active\n");
-    }
-    if ((1ULL & vlSelfRef.__VicoTriggered.word(0U))) {
-        VL_DBG_MSGF("         'ico' region trigger index 0 is active: Internal 'ico' trigger - first iteration\n");
-    }
-}
-#endif  // VL_DEBUG
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vnpc___024root___dump_triggers__act(Vnpc___024root* vlSelf) {
@@ -155,7 +140,6 @@ VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSel
     // Body
     vlSelfRef.__Vm_traceActivity[0U] = 1U;
     vlSelfRef.__Vm_traceActivity[1U] = 1U;
-    vlSelfRef.__Vm_traceActivity[2U] = 1U;
 }
 
 VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
@@ -187,11 +171,10 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
     vlSelf->__Vfunc_v_pmem_read__0__Vfuncout = 0;
-    vlSelf->__Vfunc_v_pmem_read__1__Vfuncout = 0;
+    vlSelf->__Vfunc_v_pmem_read__3__Vfuncout = 0;
     vlSelf->__Vfunc_v_pmem_read__4__Vfuncout = 0;
-    vlSelf->__Vfunc_v_pmem_read__5__Vfuncout = 0;
     vlSelf->__Vtrigprevexpr___TOP__clk__0 = VL_RAND_RESET_I(1);
-    for (int __Vi0 = 0; __Vi0 < 3; ++__Vi0) {
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }
 }

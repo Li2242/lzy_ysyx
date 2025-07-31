@@ -5,36 +5,6 @@
 #include "Vnpc__pch.h"
 #include "Vnpc___024root.h"
 
-void Vnpc___024root___ico_sequent__TOP__0(Vnpc___024root* vlSelf);
-
-void Vnpc___024root___eval_ico(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_ico\n"); );
-    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    if ((1ULL & vlSelfRef.__VicoTriggered.word(0U))) {
-        Vnpc___024root___ico_sequent__TOP__0(vlSelf);
-        vlSelfRef.__Vm_traceActivity[1U] = 1U;
-    }
-}
-
-void Vnpc___024root___eval_triggers__ico(Vnpc___024root* vlSelf);
-
-bool Vnpc___024root___eval_phase__ico(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_phase__ico\n"); );
-    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Init
-    CData/*0:0*/ __VicoExecute;
-    // Body
-    Vnpc___024root___eval_triggers__ico(vlSelf);
-    __VicoExecute = vlSelfRef.__VicoTriggered.any();
-    if (__VicoExecute) {
-        Vnpc___024root___eval_ico(vlSelf);
-    }
-    return (__VicoExecute);
-}
-
 void Vnpc___024root___eval_act(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_act\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -50,7 +20,7 @@ void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
     // Body
     if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
         Vnpc___024root___nba_sequent__TOP__0(vlSelf);
-        vlSelfRef.__Vm_traceActivity[2U] = 1U;
+        vlSelfRef.__Vm_traceActivity[1U] = 1U;
     }
 }
 
@@ -90,9 +60,6 @@ bool Vnpc___024root___eval_phase__nba(Vnpc___024root* vlSelf) {
 }
 
 #ifdef VL_DEBUG
-VL_ATTR_COLD void Vnpc___024root___dump_triggers__ico(Vnpc___024root* vlSelf);
-#endif  // VL_DEBUG
-#ifdef VL_DEBUG
 VL_ATTR_COLD void Vnpc___024root___dump_triggers__nba(Vnpc___024root* vlSelf);
 #endif  // VL_DEBUG
 #ifdef VL_DEBUG
@@ -104,28 +71,9 @@ void Vnpc___024root___eval(Vnpc___024root* vlSelf) {
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Init
-    IData/*31:0*/ __VicoIterCount;
-    CData/*0:0*/ __VicoContinue;
     IData/*31:0*/ __VnbaIterCount;
     CData/*0:0*/ __VnbaContinue;
     // Body
-    __VicoIterCount = 0U;
-    vlSelfRef.__VicoFirstIteration = 1U;
-    __VicoContinue = 1U;
-    while (__VicoContinue) {
-        if (VL_UNLIKELY(((0x64U < __VicoIterCount)))) {
-#ifdef VL_DEBUG
-            Vnpc___024root___dump_triggers__ico(vlSelf);
-#endif
-            VL_FATAL_MT("vsrc/npc.v", 5, "", "Input combinational region did not converge.");
-        }
-        __VicoIterCount = ((IData)(1U) + __VicoIterCount);
-        __VicoContinue = 0U;
-        if (Vnpc___024root___eval_phase__ico(vlSelf)) {
-            __VicoContinue = 1U;
-        }
-        vlSelfRef.__VicoFirstIteration = 0U;
-    }
     __VnbaIterCount = 0U;
     __VnbaContinue = 1U;
     while (__VnbaContinue) {
