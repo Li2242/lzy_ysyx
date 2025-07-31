@@ -21,9 +21,6 @@ static const __uint32_t memory[] = {
 0x0000a103,  // lw    x2, 0(x1)           # x2 = mem[x1]
 0x0000c183,  // lbu   x3, 0(x1)           # x3 = mem[x1] & 0xFF
 // 0x00100073,  // ebreak                    # 结束
-
-
-
 	0x800000b7,  // lui x1, 0x80000
 	0x10008093,  // addi x1, x1, 0x100
 	0x0000a103,  // lw x2, 0(x1)

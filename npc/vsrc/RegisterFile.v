@@ -1,6 +1,4 @@
 
-
-
 module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   input wire clk,
   //写端口
