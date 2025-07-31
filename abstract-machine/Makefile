@@ -51,7 +51,6 @@ DST_DIR   = $(WORK_DIR)/build/$(ARCH)
 $(shell mkdir -p $(DST_DIR))
 
 ### Compilation targets (a binary image or archive)
-# 编译目标
 IMAGE_REL = build/$(NAME)-$(ARCH)
 IMAGE     = $(abspath $(IMAGE_REL))
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
@@ -124,7 +123,7 @@ $(ARCHIVE): $(OBJS)
 else
 # $(1): library name
 define LIB_TEMPLATE =
-$$(AM_HOME)/$(1)/build/$(1)-$$(ARCH).a:
+$$(AM_HOME)/$(1)/build/$(1)-$$(ARCH).a: force
 	@$$(MAKE) -s -C $$(AM_HOME)/$(1) archive
 LINKAGE += $$(AM_HOME)/$(1)/build/$(1)-$$(ARCH).a
 endef
@@ -134,7 +133,6 @@ $(foreach lib, $(LIBS), $(eval $(call LIB_TEMPLATE,$(lib))))
 endif
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `IMAGE.elf`, the final ELF binary to be packed into image (ld)
-# 这里是native命令执行的地方
 $(IMAGE).elf: $(LINKAGE) $(LDSCRIPTS)
 	@echo \# Creating image [$(ARCH)]
 	@echo + LD "->" $(IMAGE_REL).elf
@@ -155,9 +153,13 @@ archive: $(ARCHIVE)
 image-dep: $(IMAGE).elf
 .PHONY: image image-dep archive run
 
+### Force to rebuild a rule
+force:
+.PHONY: force
+
 ### Clean a single project (remove `build/`)
 clean:
-	rm -rf Makefile.html $(WORK_DIR)/build/  
+	rm -rf Makefile.html $(WORK_DIR)/build/
 .PHONY: clean
 
 ### Clean all sub-projects within depth 2 (and ignore errors)
