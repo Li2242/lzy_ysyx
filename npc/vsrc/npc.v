@@ -87,7 +87,7 @@ wire is_ebreak;
 //肢解第一件事 ： 先取出来
 always @(*)begin
 	if(!reset)begin
-		inst	 = v_pmem_read(pc,4);
+		inst	 <= v_pmem_read(pc,4);
 	end
 end
 

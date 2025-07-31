@@ -23,7 +23,9 @@ void Vnpc___024root__trace_chg_0_sub_0(Vnpc___024root* vlSelf, VerilatedVcd::Buf
     // Init
     uint32_t* const oldp VL_ATTR_UNUSED = bufp->oldp(vlSymsp->__Vm_baseCode + 1);
     // Body
-    if (VL_UNLIKELY((vlSelfRef.__Vm_traceActivity[1U]))) {
+    if (VL_UNLIKELY(((vlSelfRef.__Vm_traceActivity[1U] 
+                      | vlSelfRef.__Vm_traceActivity
+                      [2U])))) {
         bufp->chgIData(oldp+0,(vlSelfRef.npc__DOT__inst),32);
         bufp->chgCData(oldp+1,((0x7fU & vlSelfRef.npc__DOT__inst)),7);
         bufp->chgCData(oldp+2,((7U & (vlSelfRef.npc__DOT__inst 
@@ -151,6 +153,8 @@ void Vnpc___024root__trace_chg_0_sub_0(Vnpc___024root* vlSelf, VerilatedVcd::Buf
                                           (0x707fU 
                                            & vlSelfRef.npc__DOT__inst)))
                                   ? 1U : 0xfU)),8);
+    }
+    if (VL_UNLIKELY((vlSelfRef.__Vm_traceActivity[2U]))) {
         bufp->chgIData(oldp+43,(vlSelfRef.npc__DOT__u_regfile2__DOT__rf[0]),32);
         bufp->chgIData(oldp+44,(vlSelfRef.npc__DOT__u_regfile2__DOT__rf[1]),32);
         bufp->chgIData(oldp+45,(vlSelfRef.npc__DOT__u_regfile2__DOT__rf[2]),32);
@@ -228,4 +232,5 @@ void Vnpc___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {
     vlSymsp->__Vm_activity = false;
     vlSymsp->TOP.__Vm_traceActivity[0U] = 0U;
     vlSymsp->TOP.__Vm_traceActivity[1U] = 0U;
+    vlSymsp->TOP.__Vm_traceActivity[2U] = 0U;
 }
