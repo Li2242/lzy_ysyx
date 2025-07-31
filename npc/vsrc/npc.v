@@ -132,8 +132,8 @@ assign is_add   =  opcode_d[51]  &  funct3_d[0];
 //I
 assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];
-// assign is_lw    =  opcode_d[3]   &  funct3_d[2];
-// assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
+assign is_lw    =  opcode_d[3]   &  funct3_d[2];
+assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
@@ -219,7 +219,7 @@ assign raddr = src1 + imm;
 always @(posedge clk) begin
 	if(mem_en)begin
 		rdata <=  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
-							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF
+							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
 		// if (mem_wen) begin // 有写请求时
     //   v_pmem_write(waddr, wdata, wmask);

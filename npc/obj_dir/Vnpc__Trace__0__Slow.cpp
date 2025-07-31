@@ -240,17 +240,15 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
                                                 & (vlSelfRef.npc__DOT__inst 
                                                    >> 0xcU))))))),8);
     bufp->fullBit(oldp+29,(((IData)(vlSelfRef.npc__DOT__is_add) 
-                            | (IData)(vlSelfRef.npc__DOT__is_addi))));
-    bufp->fullBit(oldp+30,(((IData)(vlSelfRef.npc__DOT__is_addi) 
-                            | (0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)))));
+                            | (IData)(vlSelfRef.npc__DOT__src2_is_imm))));
+    bufp->fullBit(oldp+30,(vlSelfRef.npc__DOT__src2_is_imm));
     bufp->fullIData(oldp+31,(vlSelfRef.npc__DOT__src1),32);
     bufp->fullIData(oldp+32,(((0U == (0x1fU & (vlSelfRef.npc__DOT__inst 
                                                >> 0x14U)))
                                ? 0U : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
                               [(0x1fU & (vlSelfRef.npc__DOT__inst 
                                          >> 0x14U))])),32);
-    bufp->fullIData(oldp+33,((((IData)(vlSelfRef.npc__DOT__is_addi) 
-                               | (0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)))
+    bufp->fullIData(oldp+33,(((IData)(vlSelfRef.npc__DOT__src2_is_imm)
                                ? vlSelfRef.npc__DOT__imm
                                : ((0U == (0x1fU & (vlSelfRef.npc__DOT__inst 
                                                    >> 0x14U)))
@@ -314,9 +312,7 @@ VL_ATTR_COLD void Vnpc___024root__trace_full_0_sub_0(Vnpc___024root* vlSelf, Ver
                                        : vlSelfRef.alu_result)))),32);
     bufp->fullIData(oldp+75,((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst))
                                 ? vlSelfRef.pc : vlSelfRef.npc__DOT__src1) 
-                              + (((IData)(vlSelfRef.npc__DOT__is_addi) 
-                                  | (0x17U == (0x7fU 
-                                               & vlSelfRef.npc__DOT__inst)))
+                              + ((IData)(vlSelfRef.npc__DOT__src2_is_imm)
                                   ? vlSelfRef.npc__DOT__imm
                                   : ((0U == (0x1fU 
                                              & (vlSelfRef.npc__DOT__inst 
