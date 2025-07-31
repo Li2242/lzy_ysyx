@@ -48,7 +48,7 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     if (VL_UNLIKELY((((IData)((0x2023U == (0x707fU 
                                            & vlSelfRef.npc__DOT__inst))) 
                       | (IData)(vlSelfRef.npc__DOT__is_sb))))) {
-        VL_WRITEF_NX("MemWrite: waddr=%10#,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x\n",0,
+        VL_WRITEF_NX("MemWrite: waddr=0x%08x,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x\n",0,
                      32,vlSelfRef.npc__DOT__raddr,32,
                      vlSelfRef.npc__DOT__src2,1,((IData)(
                                                          (0x2023U 
