@@ -117,13 +117,12 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                       : ([&]() {
                     Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.npc__DOT__raddr, 4U, __Vfunc_v_pmem_read__2__Vfuncout);
                 }(), __Vfunc_v_pmem_read__2__Vfuncout));
-        if (((IData)((0x2023U == (0x707fU & vlSelfRef.npc__DOT__inst))) 
-             | (IData)(vlSelfRef.npc__DOT__is_sb))) {
-            Vnpc___024unit____Vdpiimwrap_v_pmem_write_TOP____024unit(vlSelfRef.npc__DOT__raddr, vlSelfRef.npc__DOT__src2, 
-                                                                     ((IData)(vlSelfRef.npc__DOT__is_sb)
-                                                                       ? 1U
-                                                                       : 0xfU));
-        }
+    } else if (((IData)((0x2023U == (0x707fU & vlSelfRef.npc__DOT__inst))) 
+                | (IData)(vlSelfRef.npc__DOT__is_sb))) {
+        Vnpc___024unit____Vdpiimwrap_v_pmem_write_TOP____024unit(vlSelfRef.npc__DOT__raddr, vlSelfRef.npc__DOT__src2, 
+                                                                 ((IData)(vlSelfRef.npc__DOT__is_sb)
+                                                                   ? 1U
+                                                                   : 0xfU));
     } else {
         vlSelfRef.npc__DOT__rdata = 0U;
     }
