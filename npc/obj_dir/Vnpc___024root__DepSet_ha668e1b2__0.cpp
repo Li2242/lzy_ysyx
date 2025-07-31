@@ -34,6 +34,8 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Init
+    IData/*31:0*/ __Vfunc_v_pmem_read__0__Vfuncout;
+    __Vfunc_v_pmem_read__0__Vfuncout = 0;
     IData/*31:0*/ __Vfunc_v_pmem_read__1__Vfuncout;
     __Vfunc_v_pmem_read__1__Vfuncout = 0;
     IData/*31:0*/ __Vfunc_v_pmem_read__2__Vfuncout;
@@ -126,10 +128,14 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     } else {
         vlSelfRef.npc__DOT__rdata = 0U;
     }
+    if (vlSelfRef.reset) {
+        vlSelfRef.npc__DOT__inst = 0x80000000U;
+    } else {
+        Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.pc, 4U, __Vfunc_v_pmem_read__0__Vfuncout);
+        vlSelfRef.npc__DOT__inst = __Vfunc_v_pmem_read__0__Vfuncout;
+    }
     vlSelfRef.pc = ((IData)(vlSelfRef.reset) ? 0x80000000U
                      : vlSelfRef.npc__DOT__nextpc);
-    Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.pc, 4U, vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout);
-    vlSelfRef.npc__DOT__inst = vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout;
     vlSelfRef.npc__DOT__opcode_d[0U] = (((((((0x1fU 
                                               == (0x7fU 
                                                   & vlSelfRef.npc__DOT__inst)) 

@@ -52,7 +52,7 @@ void sim_init(int argc,char** argv){
 		if(elf_file != NULL){ init_elf(); }
 	// 1. 复位初始化
 		top->reset = 1;
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 4; i++) {
 				top->clk = 0; top->eval();
 				top->clk = 1; top->eval();
 		}
