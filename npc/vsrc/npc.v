@@ -263,6 +263,13 @@ always @(posedge clk) begin
     end
 end
 
+always @(posedge clk) begin
+    if (mem_wen) begin
+        $display("MemWrite: waddr=%d,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x",
+                 waddr,  wdata, mem_wen, wmask);
+    end
+end
+
 
 endmodule
 
