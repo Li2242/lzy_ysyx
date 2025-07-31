@@ -40,7 +40,7 @@ wire[4:0]    rd;
 //使能信号
 wire    reg_wen;
 wire    mem_en;
-// wire         mem_wen;
+wire         mem_wen;
 wire reg_from_mem;
 wire reg_from_pc_4;
 wire reg_from_imm;
@@ -50,7 +50,7 @@ wire [31:0]imm_R;
 wire [31:0]imm_I;
 wire [31:0]imm_U;
 wire [31:0]imm_J;
-// wire [31:0]imm_S;
+wire [31:0]imm_S;
 // wire [31:0]imm_B;
 
 //指令大类型(个人感觉这是处理立即数所需要的)
@@ -58,7 +58,7 @@ wire is_R;
 wire is_I;
 wire is_U;
 wire is_J;
-// wire is_S;
+wire is_S;
 // wire is_B;
 
 //指令小类型
@@ -75,7 +75,7 @@ wire is_addi;
 wire is_lw;
 wire is_lbu;
 //S
-
+wire is_sw;
 //B
 
 //ebreak(end)
@@ -87,7 +87,7 @@ wire is_ebreak;
 	assign	inst = v_pmem_read(pc,4);
 
 //全部符号扩展，待会在处理
-// assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
+assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
 // assign imm_B = {{19{inst[31]}},inst[31],inst[7],inst[30:25],inst[11:8],0};
 assign imm_I = {{20{inst[31]}},inst[31:20]};
 assign imm_U = {inst[31:12],{12{1'b0}}};
@@ -118,7 +118,7 @@ assign is_U = opcode_d[55] | opcode_d[23] ;                // 0110111 or 0010111
 assign is_J = opcode_d[111] ;                              // 1101111 → J 型
 assign is_R = opcode_d[51] ;                               // 0110011 → R 型
 // assign is_B = opcode_[99] ;                             // 1100011 → B 型
-// assign is_S = opcode_d[35] ;                            // 0100011 → S 型
+assign is_S = opcode_d[35] ;                            // 0100011 → S 型
 
 
 //指令识别
@@ -149,8 +149,8 @@ assign mem_wen       = is_sw;
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
 				   | ({32{is_U}} & imm_U)
-		       | ({32{is_J}} & imm_J);
-				// | ({32{is_S}} & imm_S);
+		       | ({32{is_J}} & imm_J)
+				   | ({32{is_S}} & imm_S);
 
 // ======================= 解析指令 END ===================================
 
@@ -173,34 +173,13 @@ assign alu_src2 = src2_is_imm ? imm : src2;
 assign alu_op[0] = is_add | is_addi | is_auipc;
 
 
-// //ALU操作码
-// wire[7:0]    alu_op;
-
-// assign alu_op[0] = is_auipc;
-// assign alu_op[1] = is_lui;
-// assign alu_op[2] = is_jal;
-// assign alu_op[3] = is_jalr;
-// assign alu_op[4] = is_addi;
-// assign alu_op[5] = is_add;
-// assign alu_op[6] = is_lw;
-// assign alu_op[7] = is_lbu;
-// //读取数据
-//符号扩
-
-
 //alu
-// output declaration of module alu
 alu u_alu(
     .src1   	(alu_src1    ),
 		.src2      (alu_src2),
     .alu_op 	(alu_op  ),
     .alu_result 	(alu_result  )
 );
-
-
-
-
-
 
 // ========================== ALU END ========================================
 
@@ -212,13 +191,13 @@ reg  [31:0] rdata;
 wire [31:0] raddr;
 wire [31:0] waddr;
 wire [31:0] wdata;
-wire [3:1]  wmask;
+wire [7:0]  wmask;
 //内存地址
 assign raddr = src1 + imm;
 assign waddr = src1 + imm;
 assign wdata = src2;
 //掩码
-assign wmask = 4'b1111;
+assign wmask = 8'b00001111;
 
 //读地址
 always @(posedge clk) begin
