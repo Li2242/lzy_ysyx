@@ -254,6 +254,8 @@ always @(posedge clk) begin
         $display("RegWrite: rd=%d,  final_result=0x%08x, mem_en=%b, rdata=0x%08x",
                  rd,  final_result, mem_en, rdata);
     end
+		$display("mem_en=%b,is_lw=%b ,is_lbu=%b",
+                  mem_en,is_lw,is_lbu);
 end
 
 always @(posedge clk) begin
