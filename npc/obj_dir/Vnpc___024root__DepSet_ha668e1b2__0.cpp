@@ -45,14 +45,19 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
-    if (VL_UNLIKELY(((IData)((0x2023U == (0x707fU & vlSelfRef.npc__DOT__inst)))))) {
-        VL_WRITEF_NX("MemWrite: waddr=%10#,  wdata=0x%08x, mem_wen=%b, wmask=0x0000000f\n",0,
+    if (VL_UNLIKELY((((IData)((0x2023U == (0x707fU 
+                                           & vlSelfRef.npc__DOT__inst))) 
+                      | (IData)(vlSelfRef.npc__DOT__is_sb))))) {
+        VL_WRITEF_NX("MemWrite: waddr=%10#,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x\n",0,
                      32,vlSelfRef.npc__DOT__raddr,32,
-                     vlSelfRef.npc__DOT__src2,1,(IData)(
-                                                        (0x2023U 
-                                                         == 
-                                                         (0x707fU 
-                                                          & vlSelfRef.npc__DOT__inst))));
+                     vlSelfRef.npc__DOT__src2,1,((IData)(
+                                                         (0x2023U 
+                                                          == 
+                                                          (0x707fU 
+                                                           & vlSelfRef.npc__DOT__inst))) 
+                                                 | (IData)(vlSelfRef.npc__DOT__is_sb)),
+                     8,((IData)(vlSelfRef.npc__DOT__is_sb)
+                         ? 1U : 0xfU));
     }
     if (VL_UNLIKELY((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
                       | ((0x37U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
@@ -100,8 +105,12 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                       : ([&]() {
                     Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.npc__DOT__raddr, 4U, __Vfunc_v_pmem_read__2__Vfuncout);
                 }(), __Vfunc_v_pmem_read__2__Vfuncout));
-        if ((IData)((0x2023U == (0x707fU & vlSelfRef.npc__DOT__inst)))) {
-            Vnpc___024unit____Vdpiimwrap_v_pmem_write_TOP____024unit(vlSelfRef.npc__DOT__raddr, vlSelfRef.npc__DOT__src2, 0xfU);
+        if (((IData)((0x2023U == (0x707fU & vlSelfRef.npc__DOT__inst))) 
+             | (IData)(vlSelfRef.npc__DOT__is_sb))) {
+            Vnpc___024unit____Vdpiimwrap_v_pmem_write_TOP____024unit(vlSelfRef.npc__DOT__raddr, vlSelfRef.npc__DOT__src2, 
+                                                                     ((IData)(vlSelfRef.npc__DOT__is_sb)
+                                                                       ? 1U
+                                                                       : 0xfU));
         }
     } else {
         vlSelfRef.npc__DOT__rdata = 0U;
@@ -742,6 +751,8 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                                        == 
                                                        (0x7fU 
                                                         & vlSelfRef.npc__DOT__inst)))))));
+    vlSelfRef.npc__DOT__is_sb = (IData)((0x23U == (0x707fU 
+                                                   & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT__is_lbu = (IData)((0x4003U == 
                                           (0x707fU 
                                            & vlSelfRef.npc__DOT__inst)));

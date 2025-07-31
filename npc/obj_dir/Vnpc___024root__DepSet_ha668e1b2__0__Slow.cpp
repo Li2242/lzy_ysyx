@@ -664,6 +664,8 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                                        == 
                                                        (0x7fU 
                                                         & vlSelfRef.npc__DOT__inst)))))));
+    vlSelfRef.npc__DOT__is_sb = (IData)((0x23U == (0x707fU 
+                                                   & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT__is_lbu = (IData)((0x4003U == 
                                           (0x707fU 
                                            & vlSelfRef.npc__DOT__inst)));
