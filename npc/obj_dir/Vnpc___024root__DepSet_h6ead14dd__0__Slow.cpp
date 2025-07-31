@@ -164,7 +164,6 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     VL_RAND_RESET_W(128, vlSelf->npc__DOT__opcode_d);
     vlSelf->npc__DOT__src2_is_imm = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__rdata = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__raddr = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT____VdfgExtracted_hfee1d2e3__0 = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT____VdfgRegularize_h9a2a8a06_0_0 = VL_RAND_RESET_I(32);
