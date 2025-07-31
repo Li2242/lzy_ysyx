@@ -86,7 +86,7 @@ void ftrace(char* inst){
             bool success_flag = false;
             uint32_t jalr_target = reg_str2val(str_t);
             if(!success_flag){
-                printf("寄存器取值失败!\n");
+                // printf("寄存器取值失败!\n");
             }
             for(int i =0;i<sym_num;i++){
                 in = 1;
@@ -109,7 +109,7 @@ void ftrace(char* inst){
             }
         }
         if(in==1){
-            printf("???\n");
+            // printf("???\n");
         }
 				return;
 }
