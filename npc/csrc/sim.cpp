@@ -59,9 +59,6 @@ void sim_init(int argc,char** argv){
 	top->clk = 1;
 	top->eval();     // 应用复位状态
 
-	top->clk = 0;
-	top->reset = 0;  // 先置位复位
-	top->eval();     // 应用复位状态
 	green_printf("===========================================\n");
 //====================  这里是初始化的结束  ===============
 }
@@ -77,7 +74,7 @@ void sim_exe(uint32_t n){
       return;
     default: npc_state = NPC_RUNNING;
   }
-
+	top->reset = 0;
 	execute(n);
 
 	//我有了difftest如果不出大问题，这里的退出都是正常退出
