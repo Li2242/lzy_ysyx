@@ -1,5 +1,3 @@
-
-//列出了AM中的所有API
 #ifndef AM_H__
 #define AM_H__
 

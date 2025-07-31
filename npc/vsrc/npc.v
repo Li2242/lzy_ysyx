@@ -1,6 +1,7 @@
 import "DPI-C" function void ebreak(input int unsigned pc);
 import "DPI-C" function int v_pmem_read(input int raddr, int len);
 import "DPI-C" function void v_pmem_write(input int unsigned waddr, input int wdata, input byte wmask);
+
 module npc(
     input  wire clk,
     input  wire reset,
@@ -8,16 +9,14 @@ module npc(
     output reg  [31:0]  pc
 );
 
+// =========================== PC ==================================
+wire [31:0] nextpc;
+
+assign nextpc =  is_jalr ? (src1+imm) & ~1 :
+                 is_jal  ?  pc + imm :  //未来B型指令要加在这里因为他们都是 pc + 4;
+                 pc + 32'h4 ;
 
 //更新pc
-//jal jarl 跳转指令
-assign nextpc =  is_jal ?  pc+imm :
-                 is_jalr ? (src1+imm)&~1 :
-                 pc + 32'h4;
-
-//pc寄存器
-wire[31:0]   nextpc;
-
 always @(posedge clk) begin
     if (reset) begin
         pc <= 32'h80000000;     // 复位时的初始值
@@ -26,179 +25,239 @@ always @(posedge clk) begin
         pc <= nextpc;           // 正常情况下更新为下一条指令地址
     end
 end
+// =========================  PC END ===================================
 
-//取值 必须是组合逻辑
+
+
+// ========================= 解析指令 ===================================
 reg[31:0]    inst;
-always @(*)begin
-		inst = v_pmem_read(pc,4);
-end
-
-
-//内存
-reg [31:0] rdata;
-wire [31:0] raddr;
-wire mem_en;
-// wire         mem_wen;
-//内存地址
-assign raddr = ({32{is_lw}} & (src1 + imm_I) )
-             | ({32{is_lbu}} & (src1 + imm_I) );
-//都地址
-always @(posedge clk) begin
-	if(mem_en)begin
-		rdata <=  is_lbu ? v_pmem_read(raddr,1) & 32'hFF:
-					 						v_pmem_read(raddr , 4);
-
-	end else begin
-		rdata <= 0;
-	end
-end
-
-
-
-//ebreak 检测
-always @(posedge clk) begin
-	if(inst == 32'h00100073) ebreak(pc);
-end
-
-
-
-
-//内部信号定义
-
+//肢解inst
 wire[6:0]    opcode;
-wire[31:0]   imm;
 wire[2:0]    funct3;
-wire[31:0]   src1;
-wire[31:0]  src2;
 wire[4:0]    rs1;
 wire[4:0] 	 rs2;
 wire[4:0]    rd;
-
-wire         reg_wen;
-
-//指令BIG类型
-wire is_R;
-wire is_I;
-// wire is_S;
-// wire is_B;
-wire is_U;
-wire is_J;
-
+//使能信号
+wire    reg_wen;
+wire    mem_en;
+wire    mem_wen;
+wire reg_from_mem;
+wire reg_from_pc_4;
+wire reg_from_imm;
 //立即数
+wire [31:0]imm;
 wire [31:0]imm_R;
 wire [31:0]imm_I;
-// wire [31:0]imm_S;
-// wire [31:0]imm_B;
 wire [31:0]imm_U;
 wire [31:0]imm_J;
+wire [31:0]imm_S;
+// wire [31:0]imm_B;
 
-//指令类型
-wire is_auipc;
+//指令大类型(个人感觉这是处理立即数所需要的)
+wire is_R;
+wire is_I;
+wire is_U;
+wire is_J;
+wire is_S;
+// wire is_B;
+
+//指令小类型
+//U(end)
 wire is_lui;
+wire is_auipc;
+//J(end)
 wire is_jal;
+//R
+wire is_add;
+//I
 wire is_jalr;
 wire is_addi;
-wire is_add;
 wire is_lw;
 wire is_lbu;
+//S
+wire is_sw;
+wire is_sb;
+//B
+
+//ebreak(end)
+wire is_ebreak;
 
 
-//判断类型
-assign opcode  = inst[6:0];
 
-//全部符号扩展，待会进alu在处理
-assign imm_I = {{20{inst[31]}},inst[31:20]};
-// assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
+//肢解第一件事 ： 先取出来
+	assign	inst = v_pmem_read(pc,4);
+
+//全部符号扩展，待会在处理
+assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
 // assign imm_B = {{19{inst[31]}},inst[31],inst[7],inst[30:25],inst[11:8],0};
+assign imm_I = {{20{inst[31]}},inst[31:20]};
 assign imm_U = {inst[31:12],{12{1'b0}}};
 assign imm_J = {{11{inst[31]}},inst[31],inst[19:12],inst[20],inst[30:21],1'b0};
-assign rs1    = inst[19:15];
-assign rs2    = inst[24:20];
-assign rd    = inst[11:7];
-assign funct3 = inst[14:12];
+//判断类型
+assign opcode  = inst[6:0];
+assign rs1     = inst[19:15];
+assign rs2     = inst[24:20];
+assign rd      = inst[11:7];
+assign funct3  = inst[14:12];
 
 
-// output declaration of module decoder7_128
-wire [127:0] hot_opcode;
+//独热码
+wire [127:0] opcode_d;
 decoder7_128 u_decoder7_128(
 	.in  	(opcode   ),
-	.out 	(hot_opcode  )
+	.out 	(opcode_d  )
 );
 
-// output declaration of module decoder3_8
-wire [7:0] hot_funct3;
+wire [7:0] funct3_d;
 decoder3_8 u_decoder3_8(
 	.in  	(funct3   ),
-	.out 	(hot_funct3  )
+	.out 	(funct3_d  )
 );
+//大类
+assign is_I = opcode_d[19] | opcode_d[3] | opcode_d[103] ; // 0010011 or 0000011 or 1100111 → I 型
+assign is_U = opcode_d[55] | opcode_d[23] ;                // 0110111 or 0010111 → U 型
+assign is_J = opcode_d[111] ;                              // 1101111 → J 型
+assign is_R = opcode_d[51] ;                               // 0110011 → R 型
+// assign is_B = opcode_[99] ;                             // 1100011 → B 型
+assign is_S = opcode_d[35] ;                            // 0100011 → S 型
 
 
-/*
-0110011 → R 型
-0010011 → I 型
-0000011 → I 型（load）
-0100011 → S 型
-1100011 → B 型
-0110111 or 0010111 → U 型
-1101111 → J 型
-1100111 → I 型（jalr）
-*/
+//指令识别
+//U
+assign is_auipc =  opcode_d[23];
+assign is_lui   =  opcode_d[55];
+// //J
+assign is_jal   =  opcode_d[111];
+//R
+assign is_add   =  opcode_d[51]  &  funct3_d[0];
+//I
+assign is_jalr  =  opcode_d[103] &  funct3_d[0];
+assign is_addi  =  opcode_d[19]  &  funct3_d[0];
+assign is_lw    =  opcode_d[3]   &  funct3_d[2];
+assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
+assign is_sw    =  opcode_d[35]  &  funct3_d[2];
+assign is_sb    =  opcode_d[35]  &  funct3_d[0];
+//ebreak
+assign is_ebreak = (inst == 32'h00100073);
 
-assign is_I = (hot_opcode[19] | hot_opcode[3] | hot_opcode[103]) ? 1 : 0;
-assign is_R = (hot_opcode[51]) ? 1 : 0;
-// assign is_S = (hot_opcode[35]) ? 1 : 0;
-assign is_U = (hot_opcode[55] | hot_opcode[23]) ? 1 : 0;
-assign is_J = (hot_opcode[111]) ? 1 : 0;
+//控制信号 3.加指令改
+assign mem_en  = is_lw | is_lbu;
+assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
+
+assign reg_from_mem  = is_lw | is_lbu;
+assign reg_from_pc_4 = is_jal | is_jalr;
+assign reg_from_imm  = is_lui;
+assign mem_wen       = is_sw | is_sb;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
 				   | ({32{is_U}} & imm_U)
-		       | ({32{is_J}} & imm_J);
-				// | ({32{is_S}} & imm_S);
+		       | ({32{is_J}} & imm_J)
+				   | ({32{is_S}} & imm_S);
 
+// ======================= 解析指令 END ===================================
 
-//指令识别
-assign is_auipc = is_U & hot_opcode[23];
-assign is_lui   = is_U & hot_opcode[55];
-assign is_jal   = is_J ;
-assign is_jalr  = is_I & hot_funct3[0] & hot_opcode[103];
-assign is_addi  = is_I & hot_funct3[0] & hot_opcode[19];
-assign is_add   = is_R & hot_funct3[0];
-assign is_lw    = is_I & hot_funct3[2] & hot_opcode[3];
-assign is_lbu   = is_I & hot_funct3[4] & hot_opcode[3];
+// =======================    ALU  ========================================
+wire [0:0]  alu_op;           //1.加指令时需要改
+wire        src1_is_pc;
+wire        src2_is_imm;
+wire [31:0]   src1;
+wire [31:0]   src2;
+wire [31:0] alu_src1;
+wire [31:0] alu_src2;
 
-//控制信号
-assign mem_en  = is_lw | is_lbu;
-assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
+//2.加指令时这里需要改
+assign src1_is_pc = is_auipc;
+assign src2_is_imm = is_addi | is_auipc;
 
-
-//ALU操作码
-wire[7:0]    alu_op;
-
-assign alu_op[0] = is_auipc;
-assign alu_op[1] = is_lui;
-assign alu_op[2] = is_jal;
-assign alu_op[3] = is_jalr;
-assign alu_op[4] = is_addi;
-assign alu_op[5] = is_add;
-assign alu_op[6] = is_lw;
-assign alu_op[7] = is_lbu;
-//读取数据
-//符号扩
+assign alu_src1 = src1_is_pc ? pc : src1;
+assign alu_src2 = src2_is_imm ? imm : src2;
+//4.改
+assign alu_op[0] = is_add | is_addi | is_auipc;
 
 
 //alu
-// output declaration of module alu
 alu u_alu(
-    .imm    	(imm     ),
-    .src1   	(src1    ),
-		.src2      (src2),
+    .src1   	(alu_src1    ),
+		.src2      (alu_src2),
     .alu_op 	(alu_op  ),
-		.rdata    (rdata),
-    .pc        (pc),
-    .result 	(alu_result  )
+    .alu_result 	(alu_result  )
 );
 
+// ========================== ALU END ========================================
+
+
+
+// ========================== 内存的读写 =====================================
+//内存
+reg  [31:0] rdata;
+wire [31:0] raddr;
+wire [31:0] waddr;
+wire [31:0] wdata;
+wire [7:0]  wmask;
+//内存地址
+assign raddr = src1 + imm;
+assign waddr = src1 + imm;
+assign wdata = src2;
+//掩码
+assign wmask = is_sb ? 8'b00000001 :
+							 8'b00001111;
+
+//读地址
+always @(posedge clk) begin
+	if(mem_en)begin
+		rdata <=  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
+							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
+					 						 v_pmem_read(raddr , 4);
+		if (mem_wen) begin // 有写请求时
+      v_pmem_write(waddr, wdata, wmask);
+    end
+	end else begin
+		rdata <= 0;
+	end
+end
+// ========================== 内存读写结束   =====================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+wire [31:0] final_result;
+
+
+
+assign final_result = reg_from_mem  ?  rdata  :
+									    reg_from_pc_4 ?  pc + 4 :
+											reg_from_imm  ?  imm    :
+											alu_result;
+
+// 寄存器堆
+RegisterFile u_regfile2 (
+    .clk(clk),
+    .wen(reg_wen),
+    .waddr(rd),
+    .wdata(final_result),
+    .raddr1(rs1),
+    .rdata1(src1),
+    .raddr2(rs2),
+    .rdata2(src2)
+);
+
+
+//ebreak 检测
+always @(posedge clk) begin
+	if(is_ebreak) ebreak(pc);
+end
 
 // 调试显示
 always @(posedge clk) begin
@@ -208,18 +267,13 @@ always @(posedge clk) begin
     end
 end
 
+always @(posedge clk) begin
+    if (mem_wen) begin
+        $display("MemWrite: waddr=%d,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x",
+                 waddr,  wdata, mem_wen, wmask);
+    end
+end
 
-// 寄存器堆
-RegisterFile u_regfile2 (
-    .clk(clk),
-    .wen(reg_wen),
-    .waddr(rd),
-    .wdata(alu_result),
-    .raddr1(rs1),
-    .rdata1(src1),
-    .raddr2(rs2),
-    .rdata2(src2)
-);
 
 endmodule
 
