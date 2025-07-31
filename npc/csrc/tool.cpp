@@ -25,7 +25,7 @@ static const __uint32_t memory[] = {
 // 0x0030a0a3,  // sb   x3, 1(x1)          # mem[x1 + 1] = x3[7:0] (0x56)
 
 0x0000a283,  // lw   x5, 0(x1)          # x5 = mem[x1] → 应为 0x00000123
-// 0x0010c383,  // lbu  x7, 1(x1)          # x7 = mem[x1 + 1] & 0xFF → 应为 0x56
+0x0010c383,  // lbu  x7, 1(x1)          # x7 = mem[x1 + 1] & 0xFF → 应为 0x56
 
 0x0040006f,  // jal  x0, 4              # 跳过下一条 addi
 0x11100113,  // addi x2, x0, 0x111      # 不执行
@@ -168,10 +168,10 @@ extern "C" void ebreak(uint32_t pc){
 }
 
 extern "C" int v_pmem_read(uint32_t raddr , int len){
-	green_printf("read : ");
+	// green_printf("read : ");
 	uint32_t addr = (raddr & ~0x3u);
 	uint32_t value = pmem_read(addr,len);
-	green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", addr, value);
+	// green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", addr, value);
 	return value;
 }
 

@@ -230,7 +230,7 @@ assign wmask = is_sb ? 8'b00000001 :
 always @(*) begin
 	if(mem_en)begin
 		$display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
-		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
+		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'h000000FF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
 	end else begin
