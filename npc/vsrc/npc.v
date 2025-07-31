@@ -76,6 +76,7 @@ wire is_lw;
 wire is_lbu;
 //S
 wire is_sw;
+wire is_sb;
 //B
 
 //ebreak(end)
@@ -135,6 +136,7 @@ assign is_addi  =  opcode_d[19]  &  funct3_d[0];
 assign is_lw    =  opcode_d[3]   &  funct3_d[2];
 assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
 assign is_sw    =  opcode_d[35]  &  funct3_d[2];
+assign is_sb    =  opcode_d[35]  &  funct3_d[0];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
@@ -145,7 +147,7 @@ assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw
 assign reg_from_mem  = is_lw | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
-assign mem_wen       = is_sw;
+assign mem_wen       = is_sw | is_sb;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -198,7 +200,8 @@ assign raddr = src1 + imm;
 assign waddr = src1 + imm;
 assign wdata = src2;
 //掩码
-assign wmask = 8'b00001111;
+assign wmask = is_sb ? 8'b00000001 :
+							 8'b00001111;
 
 //读地址
 always @(posedge clk) begin

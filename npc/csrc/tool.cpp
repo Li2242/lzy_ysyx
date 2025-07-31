@@ -13,33 +13,36 @@ static void out_of_bound(uint32_t addr);
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
 // 初始化常量寄存器
-0x123450b7,  // lui   x1, 0x12345       # x1 = 0x12345000            --> is_lui
-0x00009117,  // auipc x2, 0x9           # x2 = PC + 0x9000           --> is_auipc
+0x123450b7,  // lui   x1, 0x12345         # x1 = 0x12345000          --> is_lui
+0x00009117,  // auipc x2, 0x9             # x2 = PC + 0x9000         --> is_auipc
 
 // 设置地址基址用于访存
-0x800000b7,  // lui   x1, 0x80000       # x1 = 0x80000000
-0x00008093,  // addi  x1, x1, 0         # x1 = 0x80000000            --> is_addi
-0x00100113,  // addi  x2, x0, 1         # x2 = 1                     --> is_addi
-0x002081b3,  // add   x3, x1, x2        # x3 = x1 + x2               --> is_add
+0x800000b7,  // lui   x1, 0x80000         # x1 = 0x80000000          --> is_lui
+0x00008093,  // addi  x1, x1, 0           # x1 = x1 + 0 = 0x80000000 --> is_addi
+0x00100113,  // addi  x2, x0, 1           # x2 = 1                   --> is_addi
+0x002081b3,  // add   x3, x1, x2          # x3 = x1 + x2             --> is_add
 
 // 存储 x3 到内存[x1]
-0x0030a023,  // sw    x3, 0(x1)         # mem[x1] = x3               --> is_sw
+0x0030a023,  // sw    x3, 0(x1)           # mem[x1] = x3             --> is_sw
 
 // 加载回来看是否写成功
-0x0000a303,  // lw    x6, 0(x1)         # x6 = mem[x1]               --> is_lw
-0x0000c383,  // lbu   x7, 0(x1)         # x7 = mem[x1] & 0xFF        --> is_lbu
+0x0000a303,  // lw    x6, 0(x1)           # x6 = mem[x1]             --> is_lw
+0x0000c383,  // lbu   x7, 0(x1)           # x7 = mem[x1] & 0xFF      --> is_lbu
+
+// 新增两条 sb 指令，存储最低字节
+0x34100123,  // sb    x1, 1(x2)           # mem[x2+1] = x1 & 0xFF    --> is_sb
+0x78210213,  // sb    x2, 2(x4)           # mem[x4+2] = x2 & 0xFF    --> is_sb
 
 // 测试 jal 跳转（跳过下一条 addi 指令）
-0x0040006f,  // jal   x0, 4             # 跳过下一条                 --> is_jal
-0x11100113,  // addi  x2, x0, 0x111     # 不应该执行
+0x0040006f,  // jal   x0, 4               # 跳过下一条               --> is_jal
+0x11100113,  // addi  x2, x0, 0x111       # 不应执行（被跳过）
 
-// 测试 jalr 跳转回地址
-0x008000ef,  // jal   x1, 8             # x1 = return addr
-0x00008067,  // jalr  x0, 0(x1)         # 跳回                        --> is_jalr
+// 测试 jalr 跳转回地址（x1 储存了 ra）
+0x008000ef,  // jal   x1, 8               # x1 = return addr         --> is_jal
+0x00008067,  // jalr  x0, 0(x1)           # 跳回                     --> is_jalr
 
 // 程序结束
-0x00100073   // ebreak                  # 停止执行
-
+0x00100073   // ebreak                    # 停止执行
 };
 
 //地址转换
