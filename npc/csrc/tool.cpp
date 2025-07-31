@@ -74,7 +74,7 @@ void pmem_write(uint32_t addr, int len, uint32_t data){
 
 //越界处理
 static void out_of_bound(uint32_t addr) {
-  printf("\033[31mERROR = address = 0x%08x is out of bound of pmem [0x%08x, 0x%08x] at pc =  0x%08x\033[0m\n",addr, MBASE, MBASE+MSIZE, top->pc);
+  red_printf("\033[31mERROR = address = 0x%08x is out of bound of pmem [0x%08x, 0x%08x] at pc =  0x%08x\033[0m\n",addr, MBASE, MBASE+MSIZE, top->pc);
 	assert(0);
 }
 
