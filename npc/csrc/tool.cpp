@@ -172,21 +172,21 @@ extern "C" void ebreak(uint32_t pc){
 
 extern "C" int v_pmem_read(uint32_t raddr , int len){
 	green_printf("read : ");
-	uint32_t addr = (raddr & ~0x3u);
-	uint32_t value = pmem_read(addr,len);
-	green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", addr, value);
+	// uint32_t addr = (raddr & ~0x3u);
+	uint32_t value = pmem_read(raddr,len);
+	green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", raddr, value);
 	return value;
 }
 
 extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
 	green_printf("write : ");
-	uint32_t addr = waddr & ~0x3u;
-	uint32_t temp = pmem_read(addr, 4);
+	// uint32_t addr = waddr & ~0x3u;
+	uint32_t temp = pmem_read(waddr, 4);
 	if(wmask&0x1){temp = (temp & 0xFFFFFF00) | (wdata & 0x000000FF);}
 	if(wmask&0x2){temp = (temp & 0xFFFF00FF) | (wdata & 0x0000FF00);}
 	if(wmask&0x4){temp = (temp & 0xFF00FFFF) | (wdata & 0x00FF0000);}
 	if(wmask&0x8){temp = (temp & 0x00FFFFFF) | (wdata & 0xFF000000);}
-	pmem_write(addr, 4, temp);
+	pmem_write(waddr, 4, temp);
 }
 
 // ====================   请在上面的范围内添加    =======================
