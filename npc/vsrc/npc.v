@@ -40,7 +40,7 @@ wire[4:0]    rd;
 //使能信号
 wire    reg_wen;
 wire    mem_en;
-wire         mem_wen;
+wire    mem_wen;
 wire reg_from_mem;
 wire reg_from_pc_4;
 wire reg_from_imm;
@@ -134,6 +134,7 @@ assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];
 assign is_lw    =  opcode_d[3]   &  funct3_d[2];
 assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
+assign is_sw    =  opcode_d[35]  &  funct3_d[2];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 

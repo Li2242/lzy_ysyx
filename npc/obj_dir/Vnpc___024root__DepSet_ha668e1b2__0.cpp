@@ -45,6 +45,11 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
+    if (VL_UNLIKELY((vlSelfRef.npc__DOT__is_sw))) {
+        VL_WRITEF_NX("MemWrite: waddr=%10#,  wdata=0x%08x, mem_wen=%b, wmask=0x0000000f\n",0,
+                     32,vlSelfRef.npc__DOT__raddr,32,
+                     vlSelfRef.npc__DOT__src2,1,(IData)(vlSelfRef.npc__DOT__is_sw));
+    }
     if (VL_UNLIKELY((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
                       | ((0x37U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
                          | ((IData)(vlSelfRef.npc__DOT__reg_from_pc_4) 
