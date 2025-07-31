@@ -163,6 +163,11 @@ extern "C" void ebreak(uint32_t pc){
 }
 
 extern "C" int v_pmem_read(uint32_t raddr , int len){
+	if (raddr < MBASE || raddr + len > MBASE + MSIZE) {
+    printf("read : ERROR = address = 0x%08x is out of bound of pmem [%08x, %08x]\n",
+            raddr, MBASE, MBASE + MSIZE);
+    return 0; // return dummy value instead of triggering abort
+  }
 	green_printf("read : ");
 	uint32_t addr = (raddr & ~0x3u);
 	uint32_t value = pmem_read(addr,len);
