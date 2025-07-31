@@ -73,7 +73,7 @@ uint32_t pmem_read(uint32_t addr, int len) {
 void pmem_write(uint32_t addr, int len, uint32_t data){
 	if(in_pmem(addr) == 1){
 		host_write(guest_to_host(addr), len, data);
-		green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
+		// green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
 	}
 }
 
