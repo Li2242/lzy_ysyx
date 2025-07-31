@@ -234,7 +234,7 @@ assign wmask = is_sb ? 8'b00000001 :
 
 //读地址
 always @(*) begin
-	if(0)begin
+	if(mem_en)begin
 		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
