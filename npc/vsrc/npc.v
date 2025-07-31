@@ -85,7 +85,7 @@ wire is_ebreak;
 
 
 //肢解第一件事 ： 先取出来
-	assign	inst = v_pmem_read(pc+4,4);
+	assign	inst = v_pmem_read(pc,4);
 
 //全部符号扩展，待会在处理
 assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
@@ -204,7 +204,7 @@ assign wmask = is_sb ? 8'b00000001 :
 							 8'b00001111;
 
 //读地址
-always @(*) begin
+always @(posedge clk) begin
 	if(mem_en)begin
 		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:

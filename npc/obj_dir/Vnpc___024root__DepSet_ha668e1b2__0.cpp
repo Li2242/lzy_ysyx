@@ -147,7 +147,9 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     }
     vlSelfRef.pc = ((IData)(vlSelfRef.reset) ? 0x80000000U
                      : vlSelfRef.npc__DOT__nextpc);
-    Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.pc, 4U, vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout);
+    Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(
+                                                            ((IData)(4U) 
+                                                             + vlSelfRef.pc), 4U, vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout);
     vlSelfRef.npc__DOT__inst = vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout;
     vlSelfRef.npc__DOT__opcode_d[0U] = (((((((0x1fU 
                                               == (0x7fU 
