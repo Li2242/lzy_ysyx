@@ -89,7 +89,7 @@ always @(*)begin
 	if(!reset)begin
 		inst	<= v_pmem_read(pc,4);
 	end else begin
-		nextpc <= 32'h80000000;
+		inst  <= v_pmem_read(32'h80000000,4);
 	end
 
 
