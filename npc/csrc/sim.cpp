@@ -51,7 +51,7 @@ void sim_init(int argc,char** argv){
 	top->clk = 0;
 	top->reset = 0;
 	top->pc = MBASE;
-	// top->eval();
+	top->eval();
 	green_printf("===========================================\n");
 
 //====================  这里是初始化的结束  ===============
