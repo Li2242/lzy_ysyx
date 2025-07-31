@@ -32,7 +32,7 @@ void sim_init(int argc,char** argv){
 	top->clk = 0;
 	top->reset = 0;
 	top->pc = MBASE;
-	// top->eval();
+	top->eval();
 	green_printf("===========================================\n");
 
 
