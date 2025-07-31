@@ -226,7 +226,7 @@ assign wmask = is_sb ? 8'b00000001 :
 
 //读地址
 always @(*) begin
-	if(0)begin
+	if(mem_en == 1)begin
 		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
@@ -254,8 +254,8 @@ always @(posedge clk) begin
         $display("RegWrite: rd=%d,  final_result=0x%08x, mem_en=%b, rdata=0x%08x",
                  rd,  final_result, mem_en, rdata);
     end
-		$display("mem_en=%b,is_lw=%b ,is_lbu=%b",
-                  mem_en,is_lw,is_lbu);
+		// $display("mem_en=%b,is_lw=%b ,is_lbu=%b",
+    //               mem_en,is_lw,is_lbu);
 end
 
 always @(posedge clk) begin
