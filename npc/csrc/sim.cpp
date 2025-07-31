@@ -27,15 +27,6 @@ void sim_init(int argc,char** argv){
 	tfp = new VerilatedVcdC;
 	top->trace(tfp,99);
 	tfp->open("waveform.vcd");
-
-	// 1. 复位初始化
-	top->clk = 0;
-	top->reset = 1;
-	top->pc = MBASE;
-	top->eval();
-	green_printf("===========================================\n");
-
-
 // =============== 这里是初始化 ===============
 		//载入镜像文件 外部程序 or 内置指令
   long img_size = load_img();
@@ -54,6 +45,13 @@ void sim_init(int argc,char** argv){
 		init_log();
 		//初始化elf文件
 		if(elf_file != NULL){ init_elf(); }
+
+			// 1. 复位初始化
+	top->clk = 0;
+	top->reset = 1;
+	top->pc = MBASE;
+	top->eval();
+	green_printf("===========================================\n");
 //====================  这里是初始化的结束  ===============
 }
 
