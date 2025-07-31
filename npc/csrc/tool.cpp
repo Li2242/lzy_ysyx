@@ -13,17 +13,15 @@ static void out_of_bound(uint32_t addr);
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
 // 起始地址：PC = 0x80000000
-0x00000313,   // li   t1, 0              # t1 = 0
-0x10000393,   // addi t2, t1, 1          # t2 = t1 + 1 = 1
-0x00000413 ,  // li   t3, 0              # t3 = 0
-// 0x0000f06f,   // j    8                  # 跳转到 PC + 8（即跳过接下来的 addi 指令）
+0x00000413,   // addi  s0, zero, 0       # s0 = 0
+0x80000517,   // auipc a0, 0x80000       # a0 = PC + 0x80000000 (假设PC=0)
+0x00058513,   // addi  a0, a0, 0        # a0 = a0 + 0
+0x00100593,   // addi  a1, zero, 1       # a1 = 1
+0x00b52023,   // sw    a1, 0(a0)         # mem[a0+0] = a1
+0x00052503,   // lw    a0, 0(a0)         # a0 = mem[a0+0]
+0x00050793,   // addi  a5, a0, 0         # a5 = a0
+0x00000073,   // ebreak                  # 触发ebreak中断，程序结束
 
-0x00400093,   // addi t4, t1, 4          # t4 = t1 + 4 = 4
-0x00000073,   // ebreak                  # 程序终止
-
-0x0012a023,   // sw   t2, 0(t4)          # mem[t4] = t2 (0x1)
-0x0030a083,   // lw   t5, 0(t4)          # t5 = mem[t4] → 应为 0x1
-0x000000e3   // nop                     # 不执行任何操作（占位）
 
 
 
