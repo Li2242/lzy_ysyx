@@ -85,7 +85,13 @@ wire is_ebreak;
 
 
 //肢解第一件事 ： 先取出来
-	assign	inst = v_pmem_read(pc,4);
+always @(posedge clk) begin
+    if (reset) begin
+        inst <= 32'h80000000;  // 或者你想设的初值
+    end else begin
+        inst <= v_pmem_read(pc, 4);
+    end
+end
 
 //全部符号扩展，待会在处理
 assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
