@@ -53,8 +53,15 @@ void sim_init(int argc,char** argv){
 	// 1. 复位初始化
 		// 在仿真环境中
 	top->clk = 0;
+	top->reset = 1;  // 先置位复位
+	top->eval();     // 应用复位状态
+
+	top->clk = 1;
+	top->eval();     // 应用复位状态
+
+	top->clk = 0;
 	top->reset = 0;  // 先置位复位
-	top->pc = MBASE; // 0x80000000
+	top->eval();     // 应用复位状态
 	green_printf("===========================================\n");
 //====================  这里是初始化的结束  ===============
 }
