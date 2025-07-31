@@ -51,12 +51,20 @@ void sim_init(int argc,char** argv){
 		//初始化elf文件
 		if(elf_file != NULL){ init_elf(); }
 	// 1. 复位初始化
-		top->reset = 1;
-		for (int i = 0; i < 4; i++) {
-				top->clk = 0; top->eval();
-				top->clk = 1; top->eval();
-		}
-		top->reset = 0;
+		// 在仿真环境中
+	top->clk = 0;
+	top->reset = 1;  // 先置位复位
+	top->pc = MBASE; // 0x80000000
+	top->eval();     // 应用复位状态
+
+	// 生成一个完整的时钟周期来确认复位
+	top->clk = 1;
+	top->eval();
+	top->clk = 0;
+	top->reset = 0;  // 释放复位
+	top->eval();
+
+	green_printf("===========================================\n");
 //====================  这里是初始化的结束  ===============
 }
 
