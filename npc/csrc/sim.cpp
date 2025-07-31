@@ -155,8 +155,8 @@ static void trace_and_difftest() {
 if(diff_so_file != NULL){
 	difftest_step(cpu_pc);
 }
-//这里是ftrace的必要
-		ftrace(logbuf);
+//这里是ftrace的必要(被关了)
+		// ftrace(logbuf);
 //是否打印出反汇编的指令
 		if(g_print_step){ printf("%s\n",logbuf);}
 //反汇编写入日志文件
