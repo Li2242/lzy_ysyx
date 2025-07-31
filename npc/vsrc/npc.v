@@ -227,16 +227,29 @@ assign wmask = is_sb ? 8'b00000001 :
 							 8'b00001111;
 
 //读地址
+// always @(*) begin
+// 	if(mem_en)begin
+// 		$display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
+// 		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'h000000FF:
+// 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
+// 					 						 v_pmem_read(raddr , 4);
+// 	end else begin
+// 		rdata = 0;
+// 	end
+// end
+
 always @(*) begin
-	if(mem_en)begin
-		$display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
-		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'h000000FF:
-							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
-					 						 v_pmem_read(raddr , 4);
+	if(mem_en) begin
+		if (is_lbu)
+			rdata = v_pmem_read(raddr, 1) & 32'hff;
+		else
+			rdata = v_pmem_read(raddr, 4);
 	end else begin
 		rdata = 0;
 	end
 end
+
+
 //写地址
 always @(posedge clk)begin
  if  (mem_wen) begin // 有写请求时
