@@ -85,15 +85,7 @@ wire is_ebreak;
 
 
 //肢解第一件事 ： 先取出来
-always @(*)begin
-	if(!reset)begin
-		inst	= v_pmem_read(pc,4);
-	end else begin
-		inst  = v_pmem_read(32'h80000000,4);
-	end
-
-
-end
+assign inst = v_pmem_read(pc,4);
 
 
 //全部符号扩展，待会在处理
