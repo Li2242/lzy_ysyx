@@ -86,9 +86,7 @@ wire is_ebreak;
 
 //肢解第一件事 ： 先取出来
 
-  assign  inst = v_pmem_read(pc, 4);
-
-
+  assign inst = v_pmem_read(pc, 4);  // 仿真中通过 DPI 取指令
 
 //全部符号扩展，待会在处理
 assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
