@@ -27,6 +27,15 @@ void sim_init(int argc,char** argv){
 	tfp = new VerilatedVcdC;
 	top->trace(tfp,99);
 	tfp->open("waveform.vcd");
+
+	// 1. 复位初始化
+	top->clk = 0;
+	top->reset = 0;
+	top->pc = MBASE;
+	top->eval();
+	green_printf("===========================================\n");
+
+
 // =============== 这里是初始化 ===============
 		//载入镜像文件 外部程序 or 内置指令
   long img_size = load_img();
@@ -45,14 +54,6 @@ void sim_init(int argc,char** argv){
 		init_log();
 		//初始化elf文件
 		if(elf_file != NULL){ init_elf(); }
-
-
-	// 1. 复位初始化
-	top->clk = 0;
-	top->reset = 0;
-	top->pc = MBASE;
-	green_printf("===========================================\n");
-
 //====================  这里是初始化的结束  ===============
 }
 
@@ -98,13 +99,12 @@ static void execute(uint32_t n){
 		// printf("0x%08x\n",cpu_pc);
 
 //===============  一条命令的开始  ========================
-
     top->clk = 0;
     // top->inst = pmem_read(top->pc,4);
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
-green_printf("第一条命令以及执行完了，不是npc的问题");
+
     top->clk = 1;
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
