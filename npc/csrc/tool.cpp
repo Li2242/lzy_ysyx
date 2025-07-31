@@ -165,7 +165,9 @@ extern "C" void ebreak(uint32_t pc){
 extern "C" int v_pmem_read(uint32_t raddr , int len){
 		green_printf("读了\n");
 	uint32_t addr = (raddr & ~0x3u);
-	return pmem_read(addr,len);
+	uint32_t value = pmem_read(addr,len);
+	green_printf("读取地址: 0x%x, 返回值: 0x%x\n", addr, value);
+	return value;
 }
 
 extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
