@@ -98,13 +98,13 @@ static void execute(uint32_t n){
 		// printf("0x%08x\n",cpu_pc);
 
 //===============  一条命令的开始  ========================
-green_printf("第一条命令以及执行完了，不是npc的问题");
+
     top->clk = 0;
     // top->inst = pmem_read(top->pc,4);
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
     contextp->timeInc(5);
-
+green_printf("第一条命令以及执行完了，不是npc的问题");
     top->clk = 1;
     top->eval();
     tfp->dump(contextp->time());    // 记录波形
