@@ -158,6 +158,27 @@ assign imm = ({32{is_I}} & imm_I)
 
 // ======================= 解析指令 END ===================================
 
+// ======================= 寄存器堆 ============================
+wire [31:0] final_result;
+
+assign final_result = reg_from_mem  ?  rdata  :
+									    reg_from_pc_4 ?  pc + 4 :
+											reg_from_imm  ?  imm    :
+											alu_result;
+
+RegisterFile u_regfile2 (
+    .clk(clk),
+    .wen(reg_wen),
+    .waddr(rd),
+    .wdata(final_result),
+    .raddr1(rs1),
+    .rdata1(src1),
+    .raddr2(rs2),
+    .rdata2(src2)
+);
+
+// ================================= 寄存器END  ======================================
+
 // =======================    ALU  ========================================
 wire [0:0]  alu_op;           //1.加指令时需要改
 wire        src1_is_pc;
@@ -188,7 +209,6 @@ alu u_alu(
 // ========================== ALU END ========================================
 
 
-
 // ========================== 内存的读写 =====================================
 //内存
 reg  [31:0] rdata;
@@ -207,11 +227,11 @@ assign wmask = is_sb ? 8'b00000001 :
 //读地址
 always @(*) begin
 	if(mem_en)begin
-		rdata <=  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
+		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
 	end else begin
-		rdata <= 0;
+		rdata = 0;
 	end
 end
 //写地址
@@ -221,28 +241,6 @@ always @(posedge clk)begin
     end
 end
 // ========================== 内存读写结束   =====================================
-
-
-
-
-wire [31:0] final_result;
-
-assign final_result = reg_from_mem  ?  rdata  :
-									    reg_from_pc_4 ?  pc + 4 :
-											reg_from_imm  ?  imm    :
-											alu_result;
-
-// 寄存器堆
-RegisterFile u_regfile2 (
-    .clk(clk),
-    .wen(reg_wen),
-    .waddr(rd),
-    .wdata(final_result),
-    .raddr1(rs1),
-    .rdata1(src1),
-    .raddr2(rs2),
-    .rdata2(src2)
-);
 
 
 //ebreak 检测
