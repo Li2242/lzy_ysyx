@@ -217,8 +217,10 @@ wire [31:0] waddr;
 wire [31:0] wdata;
 wire [7:0]  wmask;
 //内存地址
-assign raddr = mem_en ? src1 + imm : 32'h80000004;
-assign waddr = mem_wen ? src1 + imm : 32'h80000000;
+assign raddr = src1 + imm ;
+assign waddr = src1 + imm;
+// assign raddr = mem_en ? src1 + imm : 32'h80000004;
+// assign waddr = mem_wen ? src1 + imm : 32'h80000000;
 assign wdata = src2;
 //掩码
 assign wmask = is_sb ? 8'b00000001 :
@@ -226,7 +228,7 @@ assign wmask = is_sb ? 8'b00000001 :
 
 //读地址
 always @(*) begin
-	if(mem_en == 1)begin
+	if(mem_en)begin
 		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
