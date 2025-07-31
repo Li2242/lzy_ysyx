@@ -59,20 +59,32 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                      8,((IData)(vlSelfRef.npc__DOT__is_sb)
                          ? 1U : 0xfU));
     }
+    if ((0x100073U == vlSelfRef.npc__DOT__inst)) {
+        Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(vlSelfRef.pc);
+    }
     if (VL_UNLIKELY((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
                       | ((0x37U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
                          | ((IData)(vlSelfRef.npc__DOT__reg_from_pc_4) 
                             | ((IData)(vlSelfRef.npc__DOT__is_addi) 
                                | ((IData)(vlSelfRef.npc__DOT__is_add) 
                                   | (IData)(vlSelfRef.npc__DOT__mem_en))))))))) {
-        VL_WRITEF_NX("RegWrite: rd=%2#,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x\n",0,
+        VL_WRITEF_NX("RegWrite: rd=%2#,  final_result=0x%08x, mem_en=%b, rdata=0x%08x\n",0,
                      5,(0x1fU & (vlSelfRef.npc__DOT__inst 
-                                 >> 7U)),32,vlSelfRef.alu_result,
+                                 >> 7U)),32,((IData)(vlSelfRef.npc__DOT__mem_en)
+                                              ? vlSelfRef.npc__DOT__rdata
+                                              : ((IData)(vlSelfRef.npc__DOT__reg_from_pc_4)
+                                                  ? 
+                                                 ((IData)(4U) 
+                                                  + vlSelfRef.pc)
+                                                  : 
+                                                 ((0x37U 
+                                                   == 
+                                                   (0x7fU 
+                                                    & vlSelfRef.npc__DOT__inst))
+                                                   ? vlSelfRef.npc__DOT__imm
+                                                   : vlSelfRef.alu_result))),
                      1,(IData)(vlSelfRef.npc__DOT__mem_en),
                      32,vlSelfRef.npc__DOT__rdata);
-    }
-    if ((0x100073U == vlSelfRef.npc__DOT__inst)) {
-        Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(vlSelfRef.pc);
     }
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
