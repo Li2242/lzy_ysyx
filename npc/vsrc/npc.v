@@ -252,6 +252,13 @@ end
 
 // 调试显示
 always @(posedge clk) begin
+  if (!reset) begin
+    $display("PC: 0x%08x, nextpc: 0x%08x, is_jalr: %b, src1: 0x%08x, imm: 0x%08x", pc, nextpc, is_jalr, src1, imm);
+  end
+end
+
+
+always @(posedge clk) begin
     if (reg_wen) begin
         $display("RegWrite: rd=%d,  final_result=0x%08x, mem_en=%b, rdata=0x%08x",
                  rd,  final_result, mem_en, rdata);
