@@ -226,7 +226,7 @@ assign wdata = src2;
 assign wmask = is_sb ? 8'b00000001 :
 							 8'b00001111;
 
-读地址
+//读地址
 always @(*) begin
 	if(mem_en)begin
 		$display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
