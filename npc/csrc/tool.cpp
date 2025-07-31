@@ -170,7 +170,6 @@ extern "C" int v_pmem_read(uint32_t raddr , int len){
 }
 
 extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
-		green_printf("写了\n");
 	uint32_t addr = waddr & ~0x3u;
 	uint32_t temp = pmem_read(addr, 4);
 	if(wmask&0x1){temp = (temp & 0xFFFFFF00) | (wdata & 0x000000FF);}
