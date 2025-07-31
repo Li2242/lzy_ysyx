@@ -85,7 +85,7 @@ wire is_ebreak;
 
 
 //取出inst
-assign inst = !mem_en ? v_pmem_read(pc,4) : 0;
+assign inst = v_pmem_read(pc,4);
 
 
 //全部符号扩展，待会在处理
