@@ -46,7 +46,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_settle(Vnpc___024root* vlSelf) {
 #ifdef VL_DEBUG
             Vnpc___024root___dump_triggers__stl(vlSelf);
 #endif
-            VL_FATAL_MT("vsrc/npc.v", 4, "", "Settle region did not converge.");
+            VL_FATAL_MT("vsrc/npc.v", 5, "", "Settle region did not converge.");
         }
         __VstlIterCount = ((IData)(1U) + __VstlIterCount);
         __VstlContinue = 0U;
@@ -153,24 +153,19 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->pc = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__nextpc = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__inst = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__rdata = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__raddr = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__mem_en = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__reg_from_pc_4 = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__imm = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__is_I = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__is_U = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__imm_R = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__imm_I = VL_RAND_RESET_I(32);
-    vlSelf->npc__DOT__is_auipc = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__is_lui = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_add = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_jalr = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_addi = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__is_add = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_lw = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_lbu = VL_RAND_RESET_I(1);
-    VL_RAND_RESET_W(128, vlSelf->npc__DOT__hot_opcode);
-    vlSelf->npc__DOT____VdfgRegularize_h9a2a8a06_0_8 = VL_RAND_RESET_I(1);
+    VL_RAND_RESET_W(128, vlSelf->npc__DOT__opcode_d);
+    vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__rdata = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__raddr = VL_RAND_RESET_I(32);
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
