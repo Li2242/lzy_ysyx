@@ -41,8 +41,46 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     CData/*0:0*/ __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0;
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0;
     // Body
-    if (((IData)((0x2023U == (0x707fU & vlSelfRef.npc__DOT__inst))) 
-         | (IData)((0x23U == (0x707fU & vlSelfRef.npc__DOT__inst))))) {
+    if (VL_UNLIKELY((((IData)((0x2023U == (0x707fU 
+                                           & vlSelfRef.npc__DOT__inst))) 
+                      | (IData)((0x23U == (0x707fU 
+                                           & vlSelfRef.npc__DOT__inst))))))) {
+        VL_WRITEF_NX("MemWrite: waddr=0x%08x,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x\n",0,
+                     32,(((IData)((0x2023U == (0x707fU 
+                                               & vlSelfRef.npc__DOT__inst))) 
+                          | (IData)((0x23U == (0x707fU 
+                                               & vlSelfRef.npc__DOT__inst))))
+                          ? vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_0
+                          : 0x80000000U),32,((0U == 
+                                              (0x1fU 
+                                               & (vlSelfRef.npc__DOT__inst 
+                                                  >> 0x14U)))
+                                              ? 0U : 
+                                             vlSelfRef.npc__DOT__u_regfile2__DOT__rf
+                                             [(0x1fU 
+                                               & (vlSelfRef.npc__DOT__inst 
+                                                  >> 0x14U))]),
+                     1,((IData)((0x2023U == (0x707fU 
+                                             & vlSelfRef.npc__DOT__inst))) 
+                        | (IData)((0x23U == (0x707fU 
+                                             & vlSelfRef.npc__DOT__inst)))),
+                     8,((IData)((0x23U == (0x707fU 
+                                           & vlSelfRef.npc__DOT__inst)))
+                         ? 1U : 0xfU));
+    }
+    if (VL_UNLIKELY((((IData)((0x2023U == (0x707fU 
+                                           & vlSelfRef.npc__DOT__inst))) 
+                      | (IData)((0x23U == (0x707fU 
+                                           & vlSelfRef.npc__DOT__inst))))))) {
+        VL_WRITEF_NX("mem_wen=%b, is_sw=%b, is_sb=%b, raddr=0x%08x\n",0,
+                     1,((IData)((0x2023U == (0x707fU 
+                                             & vlSelfRef.npc__DOT__inst))) 
+                        | (IData)((0x23U == (0x707fU 
+                                             & vlSelfRef.npc__DOT__inst)))),
+                     1,(IData)((0x2023U == (0x707fU 
+                                            & vlSelfRef.npc__DOT__inst))),
+                     1,(IData)((0x23U == (0x707fU & vlSelfRef.npc__DOT__inst))),
+                     32,vlSelfRef.npc__DOT__raddr);
         Vnpc___024unit____Vdpiimwrap_v_pmem_write_TOP____024unit(
                                                                  (((IData)(
                                                                            (0x2023U 
@@ -76,33 +114,6 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                                                    ? 1U
                                                                    : 0xfU));
     }
-    if (VL_UNLIKELY((((IData)((0x2023U == (0x707fU 
-                                           & vlSelfRef.npc__DOT__inst))) 
-                      | (IData)((0x23U == (0x707fU 
-                                           & vlSelfRef.npc__DOT__inst))))))) {
-        VL_WRITEF_NX("MemWrite: waddr=0x%08x,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x\n",0,
-                     32,(((IData)((0x2023U == (0x707fU 
-                                               & vlSelfRef.npc__DOT__inst))) 
-                          | (IData)((0x23U == (0x707fU 
-                                               & vlSelfRef.npc__DOT__inst))))
-                          ? vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_0
-                          : 0x80000000U),32,((0U == 
-                                              (0x1fU 
-                                               & (vlSelfRef.npc__DOT__inst 
-                                                  >> 0x14U)))
-                                              ? 0U : 
-                                             vlSelfRef.npc__DOT__u_regfile2__DOT__rf
-                                             [(0x1fU 
-                                               & (vlSelfRef.npc__DOT__inst 
-                                                  >> 0x14U))]),
-                     1,((IData)((0x2023U == (0x707fU 
-                                             & vlSelfRef.npc__DOT__inst))) 
-                        | (IData)((0x23U == (0x707fU 
-                                             & vlSelfRef.npc__DOT__inst)))),
-                     8,((IData)((0x23U == (0x707fU 
-                                           & vlSelfRef.npc__DOT__inst)))
-                         ? 1U : 0xfU));
-    }
     if ((0x100073U == vlSelfRef.npc__DOT__inst)) {
         Vnpc___024unit____Vdpiimwrap_ebreak_TOP____024unit(vlSelfRef.pc);
     }
@@ -130,13 +141,6 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                      1,(IData)(vlSelfRef.npc__DOT__mem_en),
                      32,vlSelfRef.npc__DOT__rdata);
     }
-    VL_WRITEF_NX("mem_en=%b,is_lw=%b ,is_lbu=%b\n",0,
-                 1,vlSelfRef.npc__DOT__mem_en,1,(IData)(
-                                                        (0x2003U 
-                                                         == 
-                                                         (0x707fU 
-                                                          & vlSelfRef.npc__DOT__inst))),
-                 1,vlSelfRef.npc__DOT__is_lbu);
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
           | ((0x37U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
