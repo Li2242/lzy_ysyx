@@ -240,6 +240,7 @@ end
 //写地址
 always @(posedge clk)begin
  if  (mem_wen) begin // 有写请求时
+			$display("mem_wen=%b, is_sw=%b, is_sb=%b, raddr=0x%08x", mem_wen, is_sw, is_sb, raddr);
       v_pmem_write(waddr, wdata, wmask);
     end
 end
@@ -257,8 +258,8 @@ always @(posedge clk) begin
         $display("RegWrite: rd=%d,  final_result=0x%08x, mem_en=%b, rdata=0x%08x",
                  rd,  final_result, mem_en, rdata);
     end
-		 $display("mem_en=%b,is_lw=%b ,is_lbu=%b",
-                   mem_en,is_lw,is_lbu);
+		//  $display("mem_en=%b,is_lw=%b ,is_lbu=%b",
+    //                mem_en,is_lw,is_lbu);
 end
 
 always @(posedge clk) begin

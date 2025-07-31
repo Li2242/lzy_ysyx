@@ -130,6 +130,13 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                      1,(IData)(vlSelfRef.npc__DOT__mem_en),
                      32,vlSelfRef.npc__DOT__rdata);
     }
+    VL_WRITEF_NX("mem_en=%b,is_lw=%b ,is_lbu=%b\n",0,
+                 1,vlSelfRef.npc__DOT__mem_en,1,(IData)(
+                                                        (0x2003U 
+                                                         == 
+                                                         (0x707fU 
+                                                          & vlSelfRef.npc__DOT__inst))),
+                 1,vlSelfRef.npc__DOT__is_lbu);
     __VdlySet__npc__DOT__u_regfile2__DOT__rf__v0 = 0U;
     if ((((0x17U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
           | ((0x37U == (0x7fU & vlSelfRef.npc__DOT__inst)) 
