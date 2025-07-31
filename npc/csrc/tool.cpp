@@ -20,7 +20,7 @@ static const __uint32_t memory[] = {
 0x00100113,  // addi x2, x0, 1          # x2 = 1
 0x002081b3,  // add  x3, x1, x2         # x3 = x1 + x2 = 0x80000001
 
-// 0x0030a023,  // sw   x3, 0(x1)          # mem[x1] = x3
+0x0030a023,  // sw   x3, 0(x1)          # mem[x1] = x3
 0x0000a303,  // lw   x6, 0(x1)          # x6 = mem[x1] => 0x80000001
 0x0000c383,  // lbu  x7, 0(x1)          # x7 = mem[x1] & 0xFF
 

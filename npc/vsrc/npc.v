@@ -221,20 +221,7 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 wire [31:0] final_result;
-
-
 
 assign final_result = reg_from_mem  ?  rdata  :
 									    reg_from_pc_4 ?  pc + 4 :
