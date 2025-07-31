@@ -727,6 +727,9 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                                        == 
                                                        (0x7fU 
                                                         & vlSelfRef.npc__DOT__inst)))))));
+    vlSelfRef.npc__DOT__is_lbu = (IData)((0x4003U == 
+                                          (0x707fU 
+                                           & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT__is_add = (IData)((0x33U == 
                                           (0x707fU 
                                            & vlSelfRef.npc__DOT__inst)));
@@ -785,6 +788,10 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                            | (0x7feU 
                                               & (vlSelfRef.npc__DOT__inst 
                                                  >> 0x14U)))))));
+    vlSelfRef.npc__DOT__mem_en = ((IData)((0x2003U 
+                                           == (0x707fU 
+                                               & vlSelfRef.npc__DOT__inst))) 
+                                  | (IData)(vlSelfRef.npc__DOT__is_lbu));
     vlSelfRef.npc__DOT__reg_from_pc_4 = ((0x6fU == 
                                           (0x7fU & vlSelfRef.npc__DOT__inst)) 
                                          | (IData)(vlSelfRef.npc__DOT__is_jalr));

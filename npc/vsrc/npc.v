@@ -141,10 +141,10 @@ assign is_ebreak = (inst == 32'h00100073);
 assign mem_en  = is_lw | is_lbu;
 assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
 
-assign reg_from_mem = is_lw | is_lbu;
+assign reg_from_mem  = is_lw | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
-// assign mem_wen = ;
+assign mem_wen       = is_sw;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -208,12 +208,17 @@ alu u_alu(
 
 // ========================== 内存的读写 =====================================
 //内存
-reg [31:0] rdata;
+reg  [31:0] rdata;
 wire [31:0] raddr;
+wire [31:0] waddr;
+wire [31:0] wdata;
+wire [3:1]  wmask;
 //内存地址
 assign raddr = src1 + imm;
-// assign waddr = src1 + imm;
-// assign wdata = src2;
+assign waddr = src1 + imm;
+assign wdata = src2;
+//掩码
+assign wmask = 4'b1111;
 
 //读地址
 always @(posedge clk) begin
@@ -221,9 +226,9 @@ always @(posedge clk) begin
 		rdata <=  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
-		// if (mem_wen) begin // 有写请求时
-    //   v_pmem_write(waddr, wdata, wmask);
-    // end
+		if (mem_wen) begin // 有写请求时
+      v_pmem_write(waddr, wdata, wmask);
+    end
 	end else begin
 		rdata <= 0;
 	end

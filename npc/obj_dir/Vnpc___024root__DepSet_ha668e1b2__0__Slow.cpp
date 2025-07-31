@@ -30,8 +30,6 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    vlSelfRef.npc__DOT__mem_en = ((IData)(vlSelfRef.npc__DOT__is_lbu) 
-                                  | (IData)(vlSelfRef.npc__DOT__is_lw));
     Vnpc___024unit____Vdpiimwrap_v_pmem_read_TOP____024unit(vlSelfRef.pc, 4U, vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout);
     vlSelfRef.npc__DOT__inst = vlSelfRef.__Vfunc_v_pmem_read__0__Vfuncout;
     vlSelfRef.npc__DOT__opcode_d[0U] = (((((((0x1fU 
@@ -666,6 +664,9 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                                        == 
                                                        (0x7fU 
                                                         & vlSelfRef.npc__DOT__inst)))))));
+    vlSelfRef.npc__DOT__is_lbu = (IData)((0x4003U == 
+                                          (0x707fU 
+                                           & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT__is_add = (IData)((0x33U == 
                                           (0x707fU 
                                            & vlSelfRef.npc__DOT__inst)));
@@ -724,6 +725,10 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                            | (0x7feU 
                                               & (vlSelfRef.npc__DOT__inst 
                                                  >> 0x14U)))))));
+    vlSelfRef.npc__DOT__mem_en = ((IData)((0x2003U 
+                                           == (0x707fU 
+                                               & vlSelfRef.npc__DOT__inst))) 
+                                  | (IData)(vlSelfRef.npc__DOT__is_lbu));
     vlSelfRef.npc__DOT__reg_from_pc_4 = ((0x6fU == 
                                           (0x7fU & vlSelfRef.npc__DOT__inst)) 
                                          | (IData)(vlSelfRef.npc__DOT__is_jalr));
