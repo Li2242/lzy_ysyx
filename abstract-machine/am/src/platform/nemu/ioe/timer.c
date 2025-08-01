@@ -5,6 +5,7 @@ void __am_timer_init() {
 }
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
+	putch('0');
 	uint32_t low32 = inl(0x48);
 	putch('1');
 	uint32_t high32= inl(RTC_ADDR);
