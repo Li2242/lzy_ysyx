@@ -84,8 +84,9 @@ wire is_ebreak;
 
 
 
-//肢解第一件事 ： 先取出来
-	assign	inst = v_pmem_read(pc,4);
+//取出inst
+assign inst = v_pmem_read(pc,4);
+
 
 //全部符号扩展，待会在处理
 assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
@@ -141,13 +142,13 @@ assign is_sb    =  opcode_d[35]  &  funct3_d[0];
 assign is_ebreak = (inst == 32'h00100073);
 
 //控制信号 3.加指令改
-assign mem_en  = is_lw | is_lbu;
-assign reg_wen = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
+assign mem_en   = is_lw | is_lbu;
+assign mem_wen  = is_sw | is_sb;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
 
-assign reg_from_mem  = is_lw | is_lbu;
+assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
-assign mem_wen       = is_sw | is_sb;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -156,6 +157,27 @@ assign imm = ({32{is_I}} & imm_I)
 				   | ({32{is_S}} & imm_S);
 
 // ======================= 解析指令 END ===================================
+
+// ======================= 寄存器堆 ============================
+wire [31:0] final_result;
+
+assign final_result = reg_from_mem  ?  rdata  :
+									    reg_from_pc_4 ?  pc + 4 :
+											reg_from_imm  ?  imm    :
+											alu_result;
+
+RegisterFile u_regfile2 (
+    .clk(clk),
+    .wen(reg_wen),
+    .waddr(rd),
+    .wdata(final_result),
+    .raddr1(rs1),
+    .rdata1(src1),
+    .raddr2(rs2),
+    .rdata2(src2)
+);
+
+// ================================= 寄存器END  ======================================
 
 // =======================    ALU  ========================================
 wire [0:0]  alu_op;           //1.加指令时需要改
@@ -187,7 +209,6 @@ alu u_alu(
 // ========================== ALU END ========================================
 
 
-
 // ========================== 内存的读写 =====================================
 //内存
 reg  [31:0] rdata;
@@ -196,62 +217,34 @@ wire [31:0] waddr;
 wire [31:0] wdata;
 wire [7:0]  wmask;
 //内存地址
-assign raddr = src1 + imm;
-assign waddr = src1 + imm;
+// assign raddr = src1 + imm ;
+// assign waddr = src1 + imm;
+assign raddr = mem_en ? src1 + imm : 32'h80000004;
+assign waddr = mem_wen ? src1 + imm : 32'h80000000;
 assign wdata = src2;
 //掩码
 assign wmask = is_sb ? 8'b00000001 :
 							 8'b00001111;
 
 //读地址
-always @(posedge clk) begin
+always @(*) begin
 	if(mem_en)begin
-		rdata <=  is_lbu ? v_pmem_read(raddr , 1) & 32'hFF:
+		// $display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
+		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'h000000FF:
 							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
 					 						 v_pmem_read(raddr , 4);
-		if (mem_wen) begin // 有写请求时
-      v_pmem_write(waddr, wdata, wmask);
-    end
 	end else begin
-		rdata <= 0;
+		rdata = 0;
 	end
 end
+//写地址
+always @(posedge clk)begin
+ if  (mem_wen) begin // 有写请求时
+			// $display("mem_wen=%b, is_sw=%b, is_sb=%b, raddr=0x%08x", mem_wen, is_sw, is_sb, raddr);
+      v_pmem_write(waddr, wdata, wmask);
+    end
+end
 // ========================== 内存读写结束   =====================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-wire [31:0] final_result;
-
-
-
-assign final_result = reg_from_mem  ?  rdata  :
-									    reg_from_pc_4 ?  pc + 4 :
-											reg_from_imm  ?  imm    :
-											alu_result;
-
-// 寄存器堆
-RegisterFile u_regfile2 (
-    .clk(clk),
-    .wen(reg_wen),
-    .waddr(rd),
-    .wdata(final_result),
-    .raddr1(rs1),
-    .rdata1(src1),
-    .raddr2(rs2),
-    .rdata2(src2)
-);
 
 
 //ebreak 检测
@@ -260,19 +253,21 @@ always @(posedge clk) begin
 end
 
 // 调试显示
-always @(posedge clk) begin
-    if (reg_wen) begin
-        $display("RegWrite: rd=%d,  alu_result=0x%08x, mem_en=%b, rdata=0x%08x",
-                 rd,  alu_result, mem_en, rdata);
-    end
-end
+// always @(posedge clk) begin
+//     if (reg_wen) begin
+//         $display("RegWrite: rd=%d,  final_result=0x%08x, mem_en=%b, rdata=0x%08x",
+//                  rd,  final_result, mem_en, rdata);
+//     end
+// 		//  $display("mem_en=%b,is_lw=%b ,is_lbu=%b",
+//     //                mem_en,is_lw,is_lbu);
+// end
 
-always @(posedge clk) begin
-    if (mem_wen) begin
-        $display("MemWrite: waddr=%d,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x",
-                 waddr,  wdata, mem_wen, wmask);
-    end
-end
+// always @(posedge clk) begin
+//     if (mem_wen) begin
+//         $display("MemWrite: waddr=0x%08x,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x",
+//                  waddr,  wdata, mem_wen, wmask);
+//     end
+// end
 
 
 endmodule

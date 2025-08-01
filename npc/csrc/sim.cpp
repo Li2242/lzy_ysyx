@@ -28,12 +28,8 @@ void sim_init(int argc,char** argv){
 	top->trace(tfp,99);
 	tfp->open("waveform.vcd");
 
-	// 1. 复位初始化
-	top->clk = 0;
-	top->reset = 0;
-	top->pc = MBASE;
-	top->eval();
-	green_printf("===========================================\n");
+
+
 
 
 // =============== 这里是初始化 ===============
@@ -54,6 +50,21 @@ void sim_init(int argc,char** argv){
 		init_log();
 		//初始化elf文件
 		if(elf_file != NULL){ init_elf(); }
+
+		// 1. 复位初始化
+		// 在仿真环境中
+	top->clk = 0;
+	top->reset = 1;
+	top->pc = MBASE;
+	top->eval();     // 应用复位状态
+
+	top->clk = 1;
+	top->eval();     // 应用复位状态
+
+
+	top->reset = 0;
+	green_printf("===========================================\n");
+
 //====================  这里是初始化的结束  ===============
 }
 
@@ -68,7 +79,7 @@ void sim_exe(uint32_t n){
       return;
     default: npc_state = NPC_RUNNING;
   }
-
+	top->reset = 0;
 	execute(n);
 
 	//我有了difftest如果不出大问题，这里的退出都是正常退出
@@ -144,8 +155,8 @@ static void trace_and_difftest() {
 if(diff_so_file != NULL){
 	difftest_step(cpu_pc);
 }
-//这里是ftrace的必要
-		ftrace(logbuf);
+//这里是ftrace的必要(被关了)
+		// ftrace(logbuf);
 //是否打印出反汇编的指令
 		if(g_print_step){ printf("%s\n",logbuf);}
 //反汇编写入日志文件

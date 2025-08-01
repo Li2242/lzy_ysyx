@@ -12,29 +12,30 @@ static void out_of_bound(uint32_t addr);
 
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
-0x00000413,
-0x123450b7,  // lui   x1, 0x12345         # x1 = 0x12345000
-0x00009117,  // auipc x2, 0x9             # x2 = PC + 0x9000
+// 起始地址：PC = 0x80000000
+0x800000b7,  // lui   x1, 0x80000        # x1 = 0x80000000，基地址
+0x00008093,  // addi  x1, x1, 0         # 保持 x1 不变
 
-0x800000b7,  // lui   x1, 0x80000         # x1 = 0x80000000
-0x00008093,  // addi  x1, x1, 0           # x1 = x1 + 0 = 0x80000000
-0x00100113,  // addi  x2, x0, 1           # x2 = 1
-0x002081b3,  // add   x3, x1, x2          # x3 = x1 + x2
+0x00000113,  // addi  x2, x0, 1         # x2 = 1
+0x12300213,  // addi  x4, x0, 0x123     # x4 = 0x123
 
-0x0030a023,  // sw    x3, 0(x1)           # mem[x1] = x3
-0x0000a303,  // lw    x6, 0(x1)           # x6 = mem[x1]
-0x0000c383,  // lbu   x7, 0(x1)           # x7 = mem[x1] & 0xFF
+0x0020a023,  // sw    x2, 0(x1)         # mem[0x80000000] = 1
+0x0040a423,  // sw    x4, 4(x1)         # mem[0x80000004] = 0x123
 
-0x00110023,  // sb    x1, 1(x0)           # mem[0 + 1] = x1 & 0xFF
-0x00211023,  // sb    x2, 2(x0)           # mem[0 + 2] = x2 & 0xFF
+0x0000a283,  // lw    x5, 0(x1)         # x5 = mem[0x80000000]，应为1
+0x0010c383,  // lbu   x7, 1(x1)         # x7 = mem[0x80000001]，取最低字节
 
-0x0040006f,  // jal   x0, 4               # 跳过下一条 addi 指令
-0x11100113,  // addi  x2, x0, 0x111       # 不执行
+0x0040006f,  // jal   x0, 4             # 跳过下一条指令（跳过 addi）
 
-0x008000ef,  // jal   x1, 8               # x1 = return addr
-0x00008067,  // jalr  x0, 0(x1)           # 跳回
+0x11100113,  // addi  x2, x0, 0x111     # 不执行（被跳过）
 
-0x00100073   // ebreak                    # 程序结束
+0x008000ef,  // jal   x1, 8             # x1 = PC + 8，跳转到 PC + 8 + 4 = 下一条+8字节的指令地址
+0x00008067,  // jalr  x0, 0(x1)         # 跳转到 x1 指向的地址（跳转回来）
+
+0x00100073,  // ebreak                  # 程序终止
+
+
+
 
 };
 
@@ -72,6 +73,7 @@ uint32_t pmem_read(uint32_t addr, int len) {
 void pmem_write(uint32_t addr, int len, uint32_t data){
 	if(in_pmem(addr) == 1){
 		host_write(guest_to_host(addr), len, data);
+		// green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
 	}
 }
 
@@ -86,20 +88,23 @@ int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     //{长选项名称，是否需要参数，NULL，短选项名称}
     //长选项表的结束标志
+		{"batch"    , no_argument      , NULL, 'b'},
 		{"diff"     , required_argument, NULL, 'd'},
 		{"elf"      , required_argument, NULL, 'e'},
 		{"log"      , required_argument, NULL, 'l'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-l:e:d:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bl:e:d:", table, NULL)) != -1) {
     switch (o) {
+			case 'b': sdb_set_batch_mode(); break;
 			case 'd':diff_so_file = optarg;break;
 			case 'e':elf_file = optarg;break;
 			case 'l':log_file = optarg;break;
       case 1: img_file = optarg; return 0;
       default:
 				printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
+				printf("\t-b,--batch              run with batch mode\n");
 			 	printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
 				printf("\t-e,--elf=FILE           Open the elf FILE\n");
 				printf("\t-l,--log=FILE           output log to FILE\n");
@@ -166,18 +171,22 @@ extern "C" void ebreak(uint32_t pc){
 }
 
 extern "C" int v_pmem_read(uint32_t raddr , int len){
-	uint32_t addr = (raddr & ~0x3u);
-	return pmem_read(addr,len);
+	// green_printf("read : ");
+	// uint32_t addr = (raddr & ~0x3u);
+	uint32_t value = pmem_read(raddr,len);
+	// green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", raddr, value);
+	return value;
 }
 
 extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
-	uint32_t addr = waddr & ~0x3u;
-	uint32_t temp = pmem_read(addr, 4);
+	// green_printf("write : ");
+	// uint32_t addr = waddr & ~0x3u;
+	uint32_t temp = pmem_read(waddr, 4);
 	if(wmask&0x1){temp = (temp & 0xFFFFFF00) | (wdata & 0x000000FF);}
 	if(wmask&0x2){temp = (temp & 0xFFFF00FF) | (wdata & 0x0000FF00);}
 	if(wmask&0x4){temp = (temp & 0xFF00FFFF) | (wdata & 0x00FF0000);}
 	if(wmask&0x8){temp = (temp & 0x00FFFFFF) | (wdata & 0xFF000000);}
-	pmem_write(addr, 4, temp);
+	pmem_write(waddr, 4, temp);
 }
 
 // ====================   请在上面的范围内添加    =======================
