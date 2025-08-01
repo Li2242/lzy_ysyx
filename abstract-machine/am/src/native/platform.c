@@ -170,7 +170,7 @@ static void init_platform() {
 
   // set stdout unbuffered
   setbuf(stdout, NULL);
-
+//从 环境变量 中获取名为 "mainargs" 的值，并将其存储在 args 指针中。
   const char *args = getenv("mainargs");
   halt(main(args ? args : "")); // call main here!
 }
