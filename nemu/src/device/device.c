@@ -28,6 +28,7 @@ void init_i8042();
 void init_audio();
 void init_disk();
 void init_sdcard();
+//定时器(alarm)相关的初始化工作
 void init_alarm();
 
 void send_key(uint8_t, bool);
