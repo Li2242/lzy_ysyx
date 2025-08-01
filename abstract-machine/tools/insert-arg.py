@@ -2,9 +2,13 @@
 
 from sys import argv
 
+#要操作的bin文件
 bin = argv[1]
+#参数最大长度
 max_len = int(argv[2])
+#镜像中用于标记参数位置的占位符
 placeholder = argv[3]
+#要注入的参数字符串
 mainargs = argv[4]
 
 if len(mainargs) >= max_len:
