@@ -24,9 +24,9 @@ static void rtc_io_handler(uint32_t offset, int len, bool is_write) {
   if (!is_write && offset == 4) {
     uint64_t us = get_time();       // 获取当前系统运行时间（单位：微秒）
     rtc_port_base[0] = (uint32_t)us;// 低 32 位写入偏移 0
-		printf("%d\n",rtc_port_base[0]);
+		// printf("%d\n",rtc_port_base[0]);
     rtc_port_base[1] = us >> 32;    // 高 32 位写入偏移 4
-		printf("%d\n",rtc_port_base[1]);
+		// printf("%d\n",rtc_port_base[1]);
   }
 }
 
