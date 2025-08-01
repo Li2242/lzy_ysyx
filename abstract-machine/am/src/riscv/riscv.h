@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+//内存映射 I/O 的封装，用来访问设备寄存器或内存中的特定位置
 static inline uint8_t  inb(uintptr_t addr) { return *(volatile uint8_t  *)addr; }
 static inline uint16_t inw(uintptr_t addr) { return *(volatile uint16_t *)addr; }
 static inline uint32_t inl(uintptr_t addr) { return *(volatile uint32_t *)addr; }

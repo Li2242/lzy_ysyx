@@ -22,12 +22,13 @@ static uint32_t *rtc_port_base = NULL;
 static void rtc_io_handler(uint32_t offset, int len, bool is_write) {
   assert(offset == 0 || offset == 4);
   if (!is_write && offset == 4) {
-    uint64_t us = get_time();
-    rtc_port_base[0] = (uint32_t)us;
-    rtc_port_base[1] = us >> 32;
+    uint64_t us = get_time();       // 获取当前系统运行时间（单位：微秒）
+    rtc_port_base[0] = (uint32_t)us;// 低 32 位写入偏移 0
+    rtc_port_base[1] = us >> 32;    // 高 32 位写入偏移 4
   }
 }
 
+//时钟终端，目前用不上
 #ifndef CONFIG_TARGET_AM
 static void timer_intr() {
   if (nemu_state.state == NEMU_RUNNING) {
@@ -37,6 +38,7 @@ static void timer_intr() {
 }
 #endif
 
+//初始化，设备初始化 init_timer
 void init_timer() {
   rtc_port_base = (uint32_t *)new_space(8);
 #ifdef CONFIG_HAS_PORT_IO

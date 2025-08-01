@@ -19,6 +19,10 @@
 /* http://en.wikibooks.org/wiki/Serial_Programming/8250_UART_Programming */
 // NOTE: this is compatible to 16550
 
+
+//模拟了串口的功能
+
+//串口的寄存器偏移地址
 #define CH_OFFSET 0
 
 static uint8_t *serial_base = NULL;

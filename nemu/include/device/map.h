@@ -21,12 +21,14 @@
 typedef void(*io_callback_t)(uint32_t, int, bool);
 uint8_t* new_space(int size);
 
+//映射
 typedef struct {
   const char *name;
   // we treat ioaddr_t as paddr_t here
   paddr_t low;
   paddr_t high;
   void *space;
+	//回调函数
   io_callback_t callback;
 } IOMap;
 
@@ -34,6 +36,7 @@ static inline bool map_inside(IOMap *map, paddr_t addr) {
   return (addr >= map->low && addr <= map->high);
 }
 
+//跳过与REF的检查.
 static inline int find_mapid_by_addr(IOMap *maps, int size, paddr_t addr) {
   int i;
   for (i = 0; i < size; i ++) {

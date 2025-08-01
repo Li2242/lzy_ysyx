@@ -1,6 +1,11 @@
 #include <am.h>
 #include <klib-macros.h>
 
+/*
+	实现了上述的三个IOE API, ioe_read()和ioe_write()都是通过抽象寄存器的编号索引到一个处理函数,
+ 	然后调用它. 处理函数的具体功能和寄存器编号相关
+*/
+
 void __am_timer_init();
 void __am_gpu_init();
 void __am_audio_init();

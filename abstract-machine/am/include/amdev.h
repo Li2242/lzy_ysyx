@@ -1,6 +1,6 @@
 #ifndef __AMDEV_H__
 #define __AMDEV_H__
-
+//常见设备的"抽象寄存器"编号和相应的结构.
 // **MAY SUBJECT TO CHANGE IN THE FUTURE**
 
 #define AM_DEVREG(id, reg, perm, ...) \

@@ -73,7 +73,11 @@ void sdl_clear_event_queue() {
   while (SDL_PollEvent(&event));
 #endif
 }
-
+/*
+	1.调用init_map()进行初始化.
+ 	2.对上述设备进行初始化, 其中在初始化VGA时还会进行一些和SDL相关的初始化工作, 包括创建窗口, 设置显示模式等;
+ 	3.然后会进行定时器(alarm)相关的初始化工作. 定时器的功能在PA4最后才会用到, 目前可以忽略它.
+*/
 void init_device() {
   IFDEF(CONFIG_TARGET_AM, ioe_init());
   init_map();
@@ -85,6 +89,6 @@ void init_device() {
   IFDEF(CONFIG_HAS_AUDIO, init_audio());
   IFDEF(CONFIG_HAS_DISK, init_disk());
   IFDEF(CONFIG_HAS_SDCARD, init_sdcard());
-
+	//进行定时器(alarm)相关的初始化工作.
   IFNDEF(CONFIG_TARGET_AM, init_alarm());
 }
