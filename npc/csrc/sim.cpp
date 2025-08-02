@@ -55,7 +55,7 @@ void sim_init(int argc,char** argv){
 		// 在仿真环境中
 	top->clk = 0;
 	top->reset = 1;
-	top->pc = MBASE;
+	// top->pc = MBASE;
 	top->eval();     // 应用复位状态
 
 	top->clk = 1;
