@@ -48,6 +48,7 @@ void *malloc(size_t size) {
 		return NULL;
 	} 
 	addr_offset += size;
+	memset(m_addr, 0, size);
 	return m_addr;
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
   panic("Not implemented");
