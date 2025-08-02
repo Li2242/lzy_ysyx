@@ -31,7 +31,7 @@ int atoi(const char* nptr) {
 
 	int addr_offset = 0;
 
-#define ALIGN32(x) (((x) + 31) & ~31)
+#define ALIGN8(x) (((x) + 7) & ~7)
 
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
@@ -41,7 +41,7 @@ void *malloc(size_t size) {
 	void *m_addr = heap.start + addr_offset;
 	
 	//size对齐
-	size = ALIGN32(size);
+	size = ALIGN8(size);
 
 	if(m_addr + size > heap.end){
 		printf("空间不足,分配失败!\n");
