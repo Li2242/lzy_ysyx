@@ -5,6 +5,7 @@
 void __am_timer_init() {
 }
 
+//我在这里面改变了传进来uptime的值
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
 	uint32_t high32= inl(RTC_ADDR + 4);
 	uint32_t low32 = inl(RTC_ADDR);

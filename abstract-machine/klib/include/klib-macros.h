@@ -16,9 +16,16 @@
   ({ for (const char *p = s; *p; p++) putch(*p); })
 
 //io_read()和io_write()这两个宏, 它们分别对ioe_read()和ioe_write()这两个API进行了进一步的封装.
-
+//宏调用时会把整个 ({ ... }) 看作一个表达式
+/*展开之后
+({
+   reg##_T __io_param;         // 1. 定义变量
+   ioe_read(reg, &__io_param); // 2. 调用函数填充 __io_param
+   __io_param;                 // 3. 这是最后的表达式，决定整个 ({ ... }) 的值
+})
+*/
 #define io_read(reg) \
-  ({ reg##_T __io_param; \
+  ({ reg##_T __io_param;  \
     ioe_read(reg, &__io_param); \
     __io_param; })
 
