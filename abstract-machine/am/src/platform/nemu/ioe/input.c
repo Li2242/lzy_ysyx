@@ -11,6 +11,6 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 		return;
 	}
   kbd->keydown = (key_code & 0x80000000) == 0 ? 1 : 0;
-	kbd->keycode = key_code & 0x7FFFFFFF;
+	kbd->keycode = key_code;
   return;
 }
