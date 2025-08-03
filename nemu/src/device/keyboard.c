@@ -41,7 +41,7 @@ enum {
 #define SDL_KEYMAP(k) keymap[SDL_SCANCODE_ ## k] = NEMU_KEY_ ## k;
 static uint32_t keymap[256] = {};
 
-static void init_keymap() {
+static void  init_keymap() {
   MAP(NEMU_KEYS, SDL_KEYMAP)
 }
 
