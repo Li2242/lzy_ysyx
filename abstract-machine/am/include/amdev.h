@@ -17,11 +17,13 @@ AM_DEVREG( 5, TIMER_RTC,    RD, int year, month, day, hour, minute, second); //�
 AM_DEVREG( 6, TIMER_UPTIME, RD, uint64_t us); //程序运行的时间
 AM_DEVREG( 7, INPUT_CONFIG, RD, bool present); 
 AM_DEVREG( 8, INPUT_KEYBRD, RD, bool keydown; int keycode); //键盘控制器
-AM_DEVREG( 9, GPU_CONFIG,   RD, bool present, has_accel; int width, height, vmemsz);
+
+AM_DEVREG( 9, GPU_CONFIG,   RD, bool present, has_accel; int width, height, vmemsz); //AM显示控制器信息
 AM_DEVREG(10, GPU_STATUS,   RD, bool ready);
-AM_DEVREG(11, GPU_FBDRAW,   WR, int x, y; void *pixels; int w, h; bool sync);
+AM_DEVREG(11, GPU_FBDRAW,   WR, int x, y; void *pixels; int w, h; bool sync);  //AM帧缓冲控制器
 AM_DEVREG(12, GPU_MEMCPY,   WR, uint32_t dest; void *src; int size);
 AM_DEVREG(13, GPU_RENDER,   WR, uint32_t root);
+
 AM_DEVREG(14, AUDIO_CONFIG, RD, bool present; int bufsize);
 AM_DEVREG(15, AUDIO_CTRL,   WR, int freq, channels, samples);
 AM_DEVREG(16, AUDIO_STATUS, RD, int count);
