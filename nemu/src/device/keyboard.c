@@ -89,8 +89,10 @@ static void i8042_data_io_handler(uint32_t offset, int len, bool is_write) {
 }
 
 void init_i8042() {
+	//注册0x60处长度为4个字节的端口
   i8042_data_port_base = (uint32_t *)new_space(4);
   i8042_data_port_base[0] = NEMU_KEY_NONE;
+	//注冊0xa0000060处长度为4字节的MMIO空间
 #ifdef CONFIG_HAS_PORT_IO
   add_pio_map ("keyboard", CONFIG_I8042_DATA_PORT, i8042_data_port_base, 4, i8042_data_io_handler);
 #else

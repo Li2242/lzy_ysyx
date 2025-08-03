@@ -1,6 +1,6 @@
 #include <am.h>
 #include <nemu.h>
-#include "/home/lzy14/ysyx/ysyx-workbench/abstract-machine/klib/include/klib.h"
+// #include "/home/lzy14/ysyx/ysyx-workbench/abstract-machine/klib/include/klib.h"
 
 void __am_timer_init() {
 }
