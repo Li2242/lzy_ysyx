@@ -10,7 +10,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 		kbd->keycode = AM_KEY_NONE;
 		return;
 	}
-  kbd->keydown = (key_code & 0x80000000) == 0 ? 1 : 0;
-	kbd->keycode = key_code;
+  kbd->keydown = key_code & KEYDOWN_MASK ? 0 : 1;
+	kbd->keycode = key_code & ~KEYDOWN_MASK;
   return;
 }
