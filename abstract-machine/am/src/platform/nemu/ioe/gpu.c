@@ -26,8 +26,10 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	int width = inw(VGACTL_ADDR+2);
 
 	uint32_t* fb = (uint32_t*)FB_ADDR;
+	
+	//有点难想啊，还好想明白了
 	for (int j = 0; j < h; j++) {       
-		for (int i = 0; i < w; i++) {     
+		for (int i = 0; i < w; i++) {  
 			int screen_index = (y + j) * width + (x + i);
 			int pixel_index = j * w + i;
 			fb[screen_index] = pixels[pixel_index];
