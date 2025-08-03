@@ -1,6 +1,18 @@
 #include <am.h>
 #include <klib-macros.h>
 
+/*
+	实现了上述的三个IOE API, ioe_read()和ioe_write()都是通过抽象寄存器的编号索引到一个处理函数,
+ 	然后调用它. 处理函数的具体功能和寄存器编号相关
+*/
+
+/*
+	需要注意的是, 这里的`reg`寄存器并不是上文讨论的设备寄存器, 因为设备寄存器的编号是架构相关的.
+	在IOE中, 我们希望采用一种架构无关的"抽象寄存器",这个reg其实是一个 ‘功能编号’ , 
+	我们约定在不同的架构中, 同一个功能编号的含义也是相同的, 
+	这样就实现了设备寄存器的抽象.
+*/
+
 void __am_timer_init();
 void __am_gpu_init();
 void __am_audio_init();
@@ -46,14 +58,19 @@ static void *lut[128] = {
 
 static void fail(void *buf) { panic("access nonexist register"); }
 
+//进行IOE相关的初始化操作
 bool ioe_init() {
   for (int i = 0; i < LENGTH(lut); i++)
     if (!lut[i]) lut[i] = fail;
+	
+	//这些初始化怎么都是空的
   __am_gpu_init();
   __am_timer_init();
   __am_audio_init();
   return true;
 }
 
+//从编号为reg的寄存器中读出内容到缓冲区buf中
 void ioe_read (int reg, void *buf) { ((handler_t)lut[reg])(buf); }
+//往编号为reg寄存器中写入缓冲区buf中的内容
 void ioe_write(int reg, void *buf) { ((handler_t)lut[reg])(buf); }

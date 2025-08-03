@@ -31,6 +31,7 @@ void __am_pmem_map(void *va, void *pa, int prot);
 void __am_pmem_unmap(void *va);
 
 // per-cpu structure
+//CPU结构
 typedef struct {
   void *vm_head;
   uintptr_t ksp;

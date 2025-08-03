@@ -18,22 +18,32 @@
 
 #include <cpu/difftest.h>
 
+//给这种函数指针起了个名字：io_callback_t
 typedef void(*io_callback_t)(uint32_t, int, bool);
+
 uint8_t* new_space(int size);
 
+//内存映射，寄存器的信息
 typedef struct {
+	//名字
   const char *name;
   // we treat ioaddr_t as paddr_t here
+	//起始地址
   paddr_t low;
+	//结束地址
   paddr_t high;
+	//映射的目标空间
   void *space;
+	//回调函数
   io_callback_t callback;
 } IOMap;
 
+//是否在map的规定内存内
 static inline bool map_inside(IOMap *map, paddr_t addr) {
   return (addr >= map->low && addr <= map->high);
 }
 
+//跳过与REF的检查.（这个不太懂）
 static inline int find_mapid_by_addr(IOMap *maps, int size, paddr_t addr) {
   int i;
   for (i = 0; i < size; i ++) {
@@ -44,7 +54,7 @@ static inline int find_mapid_by_addr(IOMap *maps, int size, paddr_t addr) {
   }
   return -1;
 }
-
+//添加设备
 void add_pio_map(const char *name, ioaddr_t addr,
         void *space, uint32_t len, io_callback_t callback);
 void add_mmio_map(const char *name, paddr_t addr,

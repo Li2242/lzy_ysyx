@@ -77,14 +77,18 @@ word_t paddr_read(paddr_t addr, int len) {
 		#endif
     return temp;
   }
-  //先不管
+  //不在nemu物理内存中，那就在设备中了
+	//直接根据地址读数据
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
-  //是否越界
+
+  //越~界~喽~
   out_of_bound(addr);
   return 0;
 }
+
 //写
 void paddr_write(paddr_t addr, int len, word_t data) {
+	//是否在nemu物理内存中
   if (likely(in_pmem(addr))) {
 		pmem_write(addr, len, data);
 		//mtrace
@@ -94,8 +98,11 @@ void paddr_write(paddr_t addr, int len, word_t data) {
 
 		return;
 		}
-  //先不管
+
+  //不在nemu物理内存中，那就在设备中了
+	//直接根据地址写数据
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
-  //是否越界
+
+  //越~界~喽~
   out_of_bound(addr);
 }

@@ -29,10 +29,26 @@ int atoi(const char* nptr) {
   return x;
 }
 
+	int addr_offset = 0;
+
+#define ALIGN8(x) (((x) + 7) & ~7)
+
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
+	if(size == 0) return NULL;
+	void *m_addr = heap.start + addr_offset;
+	
+	//size对齐
+	size = ALIGN8(size);
+
+	if(m_addr + size > heap.end){
+		printf("空间不足,分配失败!\n");
+		return NULL;
+	} 
+	addr_offset += size;
+	return m_addr;
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
   panic("Not implemented");
 #endif

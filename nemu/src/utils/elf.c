@@ -1,9 +1,11 @@
 #include <common.h>
 
+
 FILE *elf_fp = NULL;
 Elf32_Sym *symtab = NULL;
 char *strtab = NULL;
 int sym_num = 0;
+
 
 //ftrace
 void init_elf(const char *elf_file) {
@@ -23,7 +25,7 @@ void init_elf(const char *elf_file) {
         Assert(0,"shdr读取失败");
     }
     //找到节区后从节区中找到符号表和字符串表
-    Elf32_Shdr u_symtab,u_strtab;
+    Elf32_Shdr u_symtab = {0}, u_strtab = {0};
     for(int i=0; i<ehdr.e_shnum; i++){
         if(shdr[i].sh_type == SHT_SYMTAB) u_symtab = shdr[i];
         if(shdr[i].sh_type && i != ehdr.e_shstrndx) u_strtab = shdr[i];
