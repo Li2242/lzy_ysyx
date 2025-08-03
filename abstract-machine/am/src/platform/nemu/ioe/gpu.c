@@ -20,10 +20,12 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	int y = ctl->y;
 	int w = ctl->w;
 	int h = ctl->h;
+	bool sync = ctl->sync;
 	uint32_t *pixels = ctl->pixels;
+	//屏幕宽度
 	int width = inw(VGACTL_ADDR+2);
-	uint32_t* fb = (uint32_t*)FB_ADDR;
 
+	uint32_t* fb = (uint32_t*)FB_ADDR;
 	for (int j = 0; j < h; j++) {       
 		for (int i = 0; i < w; i++) {     
 			int screen_index = (y + j) * width + (x + i);
@@ -31,6 +33,10 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 			fb[screen_index] = pixels[pixel_index];
 		}
 	}
+	//触发刷新
+	if (sync) {
+    outl(SYNC_ADDR, 1);  
+  }
 
 }
 
