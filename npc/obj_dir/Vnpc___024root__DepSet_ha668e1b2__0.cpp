@@ -851,7 +851,7 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
                                           + vlSelfRef.pc)));
     vlSelfRef.npc__DOT__raddr = ((IData)(vlSelfRef.npc__DOT__mem_en)
                                   ? vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_0
-                                  : 0x80000004U);
+                                  : 0x80000000U);
     vlSelfRef.npc__DOT____VdfgExtracted_hfee1d2e3__0 
         = ((IData)(vlSelfRef.npc__DOT__is_lbu) ? (0xffU 
                                                   & ([&]() {
