@@ -82,6 +82,7 @@ void ftrace(char* inst){
         if(strncmp(fun1,"jalr",5)==0){
             in = 1;
             char str_t[10];
+						printf("%x\n",target);
             sprintf(str_t,"%x",target);
 						printf("%s\n",str_t);
             bool success_flag = false;
