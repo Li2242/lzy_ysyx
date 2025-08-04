@@ -172,12 +172,12 @@ extern "C" void ebreak(uint32_t pc){
 }
 
 extern "C" int v_pmem_read(uint32_t raddr , int len){
-	if(raddr != 0x80000000)
-		green_printf("read : ");
+	// if(raddr != 0x80000000)
+		// green_printf("read : ");
 	uint32_t addr = (raddr & ~0x3u);
 	uint32_t value = pmem_read(raddr,len);
-	if(addr != 0x80000000)
-		green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", raddr, value);
+	// if(addr != 0x80000000)
+	// 	green_printf("读取地址: 0x%x, 返回值: 0x%08x\n", raddr, value);
 	return value;
 }
 
