@@ -50,6 +50,7 @@ VM_USER_CLASSES = \
 	main \
 	reg \
 	sdb \
+	serial \
 	sim \
 	tool \
 	watchpoint \
@@ -82,6 +83,8 @@ main.o: csrc/main.cpp
 reg.o: csrc/reg.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 sdb.o: csrc/sdb.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+serial.o: csrc/serial.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 sim.o: csrc/sim.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
