@@ -83,6 +83,7 @@ void ftrace(char* inst){
             in = 1;
             char str_t[10];
             sprintf(str_t,"%x",target);
+						printf("%s\n",str_t);
             bool success_flag = false;
             uint32_t jalr_target = reg_str2val(str_t);
             if(!success_flag){
