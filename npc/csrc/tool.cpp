@@ -75,9 +75,9 @@ void pmem_write(uint32_t addr, int len, uint32_t data){
 		host_write(guest_to_host(addr), len, data);
 		// green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
 	}
-	if(addr == 0xa00003f8){
-		putchar(data);
-	}
+	// if(addr == 0xa00003f8){
+	// 	putchar(data);
+	// }
 }
 
 //越界处理
