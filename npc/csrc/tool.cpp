@@ -76,8 +76,9 @@ void pmem_write(uint32_t addr, int len, uint32_t data){
 		// green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
 	}
 	if(addr == 0xa00003f8){
-		char* s = (char*)(0xa00003F8);
-		putchar(*s);
+		static uint8_t *serial_base = NULL;
+		serial_base = (uint8_t *)0xa00003F8;
+		putchar(serial_base[0]);
 	}
 }
 
