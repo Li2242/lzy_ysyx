@@ -86,11 +86,9 @@ void ftrace(char* inst){
         //jalr
         if(strncmp(fun1,"jalr",5)==0){
             in = 1;
-            char str_t[10];
-            sprintf(str_t,"%x",target);
             uint32_t jalr_target = reg_str2val_num(rd);
+
             for(int i =0;i<sym_num;i++){
-                in = 1;
                 if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size &&\
 									 ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
                     printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jalr_target);
