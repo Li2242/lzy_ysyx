@@ -59,6 +59,11 @@ void init_elf(){
 
 //ftrace逻辑
 void ftrace(char* inst){
+				uint32_t inst_t = pmem_read(cpu_pc,4);
+				uint32_t rd  = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
+
+
+
 
         char fun1[10];
         unsigned int pc, target;
@@ -86,7 +91,7 @@ void ftrace(char* inst){
             sprintf(str_t,"%x",target);
 						printf("%s\n",str_t);
             bool success_flag = false;
-            uint32_t jalr_target = reg_str2val(str_t);
+            uint32_t jalr_target = reg_str2val_num(rd);
             if(!success_flag){
                 printf("寄存器取值失败!\n");
             }

@@ -19,7 +19,7 @@ void reg_display(){
 }
 
 //找对应的寄存器的值
-uint32_t reg_str2val(char* name){
+uint32_t reg_str2val_name(char* name){
 	uint32_t reg_num;
 	for(int i = 0;i<32;i++){
   //对比寄存器的名字
@@ -33,4 +33,10 @@ uint32_t reg_str2val(char* name){
     reg_num = top->pc;
   }
 	return reg_num;
+}
+
+//找对应的寄存器的值
+uint32_t reg_str2val_num(int n){
+	uint32_t reg_num;
+	return top->rootp->npc__DOT__u_regfile2__DOT__rf[n];
 }
