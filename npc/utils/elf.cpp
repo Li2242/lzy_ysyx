@@ -101,11 +101,9 @@ void ftrace(char* inst){
         //ret
         if(inst_t == 0x00008067){
             in = 1;
-						char *ret = "ra";
-						uint32_t ret_target = reg_str2val_name(ret);
             for(int i =0;i<sym_num;i++){
                 in = 1;
-                if(symtab[i].st_value <= ret_target && ret_target < symtab[i].st_value + symtab[i].st_size ){
+                if(symtab[i].st_value <= pc && pc < symtab[i].st_value + symtab[i].st_size ){
                     printf("0x%x: %*sret[%s]\n",pc,--count,"",strtab+symtab[i].st_name);
                     return;
                 }
