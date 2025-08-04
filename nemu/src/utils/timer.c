@@ -23,6 +23,7 @@ IFDEF(CONFIG_TIMER_CLOCK_GETTIME,
 
 static uint64_t boot_time = 0;
 
+//获取当前系统信息并返回
 static uint64_t get_time_internal() {
 #if defined(CONFIG_TARGET_AM)
   uint64_t us = io_read(AM_TIMER_UPTIME).us;
@@ -46,6 +47,7 @@ uint64_t get_time() {
   return now - boot_time;
 }
 
+//随机数初始化
 void init_rand() {
   srand(get_time_internal());
 }

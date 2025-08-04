@@ -61,9 +61,8 @@ void init_map() {
 word_t map_read(paddr_t addr, int len, IOMap *map) {
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
-	//偏移量
   paddr_t offset = addr - map->low;
-	//准备好要读的数据
+	//准备好要读的数据(其实就是直接往地址里写内容)
   invoke_callback(map->callback, offset, len, false); // prepare data to read
   word_t ret = host_read(map->space + offset, len);
 	IFDEF(CONFIG_DTRACE , printf("%s: addr = 0x%08x, len = %d, data = 0x%08x\n",map->name,addr,len,ret));

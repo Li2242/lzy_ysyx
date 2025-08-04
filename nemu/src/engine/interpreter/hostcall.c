@@ -18,6 +18,7 @@
 #include <isa.h>
 #include <cpu/difftest.h>
 
+//nemu状态
 void set_nemu_state(int state, vaddr_t pc, int halt_ret) {
   difftest_skip_ref();
   nemu_state.state = state;
@@ -25,6 +26,8 @@ void set_nemu_state(int state, vaddr_t pc, int halt_ret) {
   nemu_state.halt_ret = halt_ret;
 }
 
+
+//无效指令
 __attribute__((noinline))
 void invalid_inst(vaddr_t thispc) {
   uint32_t temp[2];
@@ -47,5 +50,6 @@ void invalid_inst(vaddr_t thispc) {
         "* The machine is always right!\n"
         "* Every line of untested code is always wrong!\n\n", ANSI_FG_RED), isa_logo);
 
+	//设施nemu的状态
   set_nemu_state(NEMU_ABORT, thispc, -1);
 }

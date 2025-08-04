@@ -16,7 +16,7 @@
 #include <isa.h>
 #include "local-include/reg.h"
 
-
+//寄存器
 const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
   "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
@@ -24,6 +24,7 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
+//打印寄存器
 void isa_reg_display() {
   for(int i=0;i<32;i+=4){
     //寄存器在cpu-exec.c中

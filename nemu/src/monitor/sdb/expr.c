@@ -13,10 +13,6 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-/*
-  我发现了解决前面有很多负号的方法，就是找主符号的时候让主符号尽量靠右
-  但这又与一生一芯要求不符，需要解决
-*/
 
 #include <isa.h>
 /* We use the POSIX regex functions to process regular expressions.

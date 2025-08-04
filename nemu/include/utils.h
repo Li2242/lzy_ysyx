@@ -54,8 +54,11 @@ uint64_t get_time();
 #define ANSI_BG_WHITE   "\33[1;47m"
 #define ANSI_NONE       "\33[0m"
 
+//给字符串 str 加上 ANSI 转义序列 fmt（比如设置为红色、加粗等），
+//并在结尾加上重置格式的 ANSI_NONE，保证只影响这个字符串的显示效果
 #define ANSI_FMT(str, fmt) fmt str ANSI_NONE
 
+//写入日志
 #define log_write(...) IFDEF(CONFIG_TARGET_NATIVE_ELF, \
   do { \
     extern FILE* log_fp; \
@@ -68,7 +71,7 @@ uint64_t get_time();
 )
 
 
-
+//及打印到终端又写入日志
 #define _Log(...) \
   do { \
     printf(__VA_ARGS__); \

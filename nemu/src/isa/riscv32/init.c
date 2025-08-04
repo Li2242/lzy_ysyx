@@ -18,6 +18,7 @@
 
 // this is not consistent with uint8_t
 // but it is ok since we do not access the array directly
+//如果没有镜像文件就用这几条指令
 static const uint32_t img [] = {
   0x00000297,  // auipc t0,0
   0x00028823,  // sb  zero,16(t0)
@@ -26,6 +27,7 @@ static const uint32_t img [] = {
   0xdeadbeef,  // some data
 };
 
+//初始化pc和寄存器
 static void restart() {
   /* Set the initial program counter. */
   cpu.pc = RESET_VECTOR;

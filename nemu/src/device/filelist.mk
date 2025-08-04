@@ -13,6 +13,9 @@
 # See the Mulan PSL v2 for more details.
 #**************************************************************************************/
 
+### 所有的与硬件有关的文件
+
+
 DIRS-y += src/device/io
 SRCS-$(CONFIG_DEVICE) += src/device/device.c src/device/alarm.c src/device/intr.c
 SRCS-$(CONFIG_HAS_SERIAL) += src/device/serial.c

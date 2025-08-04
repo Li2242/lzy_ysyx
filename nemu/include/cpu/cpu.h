@@ -21,9 +21,11 @@
 void cpu_exec(uint64_t n);
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);
+//出现无效指令输出的内容
 void invalid_inst(vaddr_t thispc);
-
+//nemu结束了
 #define NEMUTRAP(thispc, code) set_nemu_state(NEMU_END, thispc, code)
+//无效指令
 #define INV(thispc) invalid_inst(thispc)
 
 #endif
