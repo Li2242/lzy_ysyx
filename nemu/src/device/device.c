@@ -55,8 +55,11 @@ void device_update() {
       // If a key was pressed
       case SDL_KEYDOWN:
       case SDL_KEYUP: {
+				//扫描码
         uint8_t k = event.key.keysym.scancode;
+				//是否按下
         bool is_keydown = (event.key.type == SDL_KEYDOWN);
+				//接收到的键码
         send_key(k, is_keydown);
         break;
       }

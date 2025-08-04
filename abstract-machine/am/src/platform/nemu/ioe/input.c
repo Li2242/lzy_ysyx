@@ -3,6 +3,7 @@
 
 #define KEYDOWN_MASK 0x8000
 
+//从nemu中写入的地址读出键码
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
 	uint32_t key_code = inl(KBD_ADDR);
 	if(key_code == AM_KEY_NONE){

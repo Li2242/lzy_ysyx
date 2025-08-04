@@ -46,17 +46,24 @@ static void  init_keymap() {
 }
 
 #define KEY_QUEUE_LEN 1024
+//缓冲区队列
 static int key_queue[KEY_QUEUE_LEN] = {};
+//头指针和目前位置指针
 static int key_f = 0, key_r = 0;
 
+//这是第二步=对转化成AM 键码的值进行操作
+//键盘事件环形缓冲区（循环队列）入队函数
 static void key_enqueue(uint32_t am_scancode) {
   key_queue[key_r] = am_scancode;
+	//防止溢出（环形缓冲区）
   key_r = (key_r + 1) % KEY_QUEUE_LEN;
   Assert(key_r != key_f, "key queue overflow!");
 }
 
+
 static uint32_t key_dequeue() {
   uint32_t key = NEMU_KEY_NONE;
+	//防止溢出（环形缓冲区）
   if (key_f != key_r) {
     key = key_queue[key_f];
     key_f = (key_f + 1) % KEY_QUEUE_LEN;
@@ -64,8 +71,11 @@ static uint32_t key_dequeue() {
   return key;
 }
 
+//这是第一步，获取到外界是否按下和按下的什么按键
 void send_key(uint8_t scancode, bool is_keydown) {
+
   if (nemu_state.state == NEMU_RUNNING && keymap[scancode] != NEMU_KEY_NONE) {
+		//把原始的 SDL 扫描码（scancode）转换为 AM 框架定义的键码（AM 键码）格式
     uint32_t am_scancode = keymap[scancode] | (is_keydown ? KEYDOWN_MASK : 0);
     key_enqueue(am_scancode);
   }
@@ -82,12 +92,15 @@ static uint32_t key_dequeue() {
 
 static uint32_t *i8042_data_port_base = NULL;
 
+//写入内存中，外部回调这个函数
 static void i8042_data_io_handler(uint32_t offset, int len, bool is_write) {
   assert(!is_write);
   assert(offset == 0);
   i8042_data_port_base[0] = key_dequeue();
 }
 
+
+//两种不同的访问方式分配的是一块内存
 void init_i8042() {
 	//注册0x60处长度为4个字节的端口
   i8042_data_port_base = (uint32_t *)new_space(4);
@@ -96,7 +109,7 @@ void init_i8042() {
 #ifdef CONFIG_HAS_PORT_IO
   add_pio_map ("keyboard", CONFIG_I8042_DATA_PORT, i8042_data_port_base, 4, i8042_data_io_handler);
 #else
-  add_mmio_map("keyboard", CONFIG_I8042_DATA_MMIO, i8042_data_port_base, 4, i8042_data_io_handler);
 #endif
+add_mmio_map("keyboard", CONFIG_I8042_DATA_MMIO, i8042_data_port_base, 4, i8042_data_io_handler);
   IFNDEF(CONFIG_TARGET_AM, init_keymap());
 }
