@@ -75,11 +75,6 @@ void pmem_write(uint32_t addr, int len, uint32_t data){
 		host_write(guest_to_host(addr), len, data);
 		// green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
 	}
-	if(addr == 0xa00003f8){
-		printf("1=======================================\n");
-		volatile uint8_t *serial_base = (uint8_t *)0xa00003F8;
-		putchar(serial_base[0]);
-	}
 }
 
 //越界处理
@@ -191,7 +186,15 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
 	if(wmask&0x2){temp = (temp & 0xFFFF00FF) | (wdata & 0x0000FF00);}
 	if(wmask&0x4){temp = (temp & 0xFF00FFFF) | (wdata & 0x00FF0000);}
 	if(wmask&0x8){temp = (temp & 0x00FFFFFF) | (wdata & 0xFF000000);}
-	pmem_write(waddr, 4, temp);
+
+	if(in_pmem(waddr) == 1){
+		pmem_write(waddr, 4, temp);
+	}
+	if(waddr == 0xa00003f8){
+		static uint8_t *serial_base = NULL;
+		serial_base = (uint8_t *)0xa00003f8;
+		putchar(serial_base[1]);
+	}
 }
 
 // ====================   请在上面的范围内添加    =======================
