@@ -74,7 +74,7 @@ void ftrace(char* inst){
         //jal
         if(strncmp(fun1,"jal",4) ==0){
             in = 1;
-            int jal_target = pc + target;
+            int jal_target = cpu_pc + target;
             for(int i =0;i<sym_num;i++){
                 if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&\
 								  ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC)
@@ -84,14 +84,14 @@ void ftrace(char* inst){
                 }
             }
         }
-        //jalr
+        //jalr(未使用Itrace)
         if(strncmp(fun1,"jalr",5)==0){
             in = 1;
             uint32_t jalr_target = imm_I + reg_str2val_num(rs1);
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size &&\
 									 ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jalr_target);
+                    printf("0x%x: %*scall [%s@0x%x]\n",cpu_pc,++count,"",strtab+symtab[i].st_name,jalr_target);
                     return;
                 }
             }
