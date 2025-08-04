@@ -59,13 +59,14 @@ void init_elf(){
 
 //ftrace逻辑
 void ftrace(char* inst){
+	     //jalr
 				uint32_t inst_t = pmem_read(cpu_pc,4);
 				uint32_t rd  = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
 				uint32_t rs1 = (inst_t >> 15) & 0x1f;
 				int32_t imm_I = (int32_t)(inst_t) >> 20;  // sign-extend
 
 
-
+				//ret和jal
         char fun1[10];
         unsigned int pc, target;
 				//用惊世的智慧使用sscanf提取出pc和指令明还有函数在哪里
@@ -84,6 +85,7 @@ void ftrace(char* inst){
                 }
             }
         }
+
         //jalr(未使用Itrace)
         if(strncmp(fun1,"jalr",5)==0){
             in = 1;
@@ -97,11 +99,13 @@ void ftrace(char* inst){
             }
         }
         //ret
-        if(strncmp(fun1,"ret",3)==0){
+        if(inst_t == 0x00008067){
             in = 1;
+						char *ret = "ra";
+						uint32_t ret_target = reg_str2val_name(ret);
             for(int i =0;i<sym_num;i++){
                 in = 1;
-                if(symtab[i].st_value <= pc && pc < symtab[i].st_value + symtab[i].st_size ){
+                if(symtab[i].st_value <= ret_target && ret_target < symtab[i].st_value + symtab[i].st_size ){
                     printf("0x%x: %*sret[%s]\n",pc,--count,"",strtab+symtab[i].st_name);
                     return;
                 }
