@@ -61,7 +61,8 @@ void init_elf(){
 void ftrace(char* inst){
 				uint32_t inst_t = pmem_read(cpu_pc,4);
 				uint32_t rd  = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
-
+				uint32_t rs1 = (inst_t >> 15) & 0x1f;
+				int32_t imm_I = (int32_t)(inst_t) >> 20;  // sign-extend
 
 
 
@@ -86,8 +87,7 @@ void ftrace(char* inst){
         //jalr
         if(strncmp(fun1,"jalr",5)==0){
             in = 1;
-            uint32_t jalr_target = reg_str2val_num(rd);
-
+            uint32_t jalr_target = imm_I + reg_str2val_num(rs1);
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size &&\
 									 ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
