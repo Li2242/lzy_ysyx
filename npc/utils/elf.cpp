@@ -90,11 +90,7 @@ void ftrace(char* inst){
 						printf("%x\n",target);
             sprintf(str_t,"%x",target);
 						printf("%s\n",str_t);
-            bool success_flag = false;
             uint32_t jalr_target = reg_str2val_num(rd);
-            if(!success_flag){
-                printf("寄存器取值失败!\n");
-            }
             for(int i =0;i<sym_num;i++){
                 in = 1;
                 if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size &&\
