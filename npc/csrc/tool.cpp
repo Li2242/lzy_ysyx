@@ -191,6 +191,7 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
 		pmem_write(waddr, 4, temp);
 	}
 	if(waddr == 0xa00003f8){
+		printf("1\n");
 		static uint8_t *serial_base = NULL;
 		serial_base = (uint8_t *)0xa00003f8;
 		putchar(serial_base[1]);
