@@ -77,8 +77,7 @@ void pmem_write(uint32_t addr, int len, uint32_t data){
 	}
 	if(addr == 0xa00003f8){
 		printf("1\n");
-		static uint8_t *serial_base = NULL;
-		serial_base = (uint8_t *)0xa00003F8;
+		volatile uint8_t *serial_base = (uint8_t *)0xa00003F8;
 		putchar(serial_base[0]);
 	}
 }
