@@ -60,7 +60,7 @@ static void key_enqueue(uint32_t am_scancode) {
   Assert(key_r != key_f, "key queue overflow!");
 }
 
-
+//从键盘的队列缓冲区里读出一条
 static uint32_t key_dequeue() {
   uint32_t key = NEMU_KEY_NONE;
 	//防止溢出（环形缓冲区）

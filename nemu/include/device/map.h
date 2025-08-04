@@ -43,11 +43,12 @@ static inline bool map_inside(IOMap *map, paddr_t addr) {
   return (addr >= map->low && addr <= map->high);
 }
 
-//跳过与REF的检查.（这个不太懂）
+//在所有注册的I/O映射(maps)中,查找给定地址addr属于哪个设备映射,并返回该设备的下标。
 static inline int find_mapid_by_addr(IOMap *maps, int size, paddr_t addr) {
   int i;
   for (i = 0; i < size; i ++) {
     if (map_inside(maps + i, addr)) {
+			//为了避免误判设备访问指令为错误指令
       difftest_skip_ref();
       return i;
     }

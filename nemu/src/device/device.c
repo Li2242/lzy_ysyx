@@ -46,6 +46,7 @@ void device_update() {
 
 #ifndef CONFIG_TARGET_AM
   SDL_Event event;
+	//检查用户是否点击关闭窗口
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
       case SDL_QUIT:
@@ -70,6 +71,7 @@ void device_update() {
 #endif
 }
 
+//清空所有 SDL（Simple DirectMedia Layer）事件队列中的事件，防止旧事件影响当前帧的处理。
 void sdl_clear_event_queue() {
 #ifndef CONFIG_TARGET_AM
   SDL_Event event;
@@ -77,6 +79,7 @@ void sdl_clear_event_queue() {
 #endif
 }
 
+//设备初始化
 void init_device() {
   IFDEF(CONFIG_TARGET_AM, ioe_init());
 	//1.调用init_map()进行初始化.

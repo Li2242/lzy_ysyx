@@ -21,6 +21,7 @@ extern uint64_t g_nr_guest_inst;
 #ifndef CONFIG_TARGET_AM
 FILE *log_fp = NULL;
 
+//初始化日志写入文件
 void init_log(const char *log_file) {
   //日志输出的目标设置为标准输出
   log_fp = stdout;
@@ -32,6 +33,8 @@ void init_log(const char *log_file) {
   Log("Log is written to %s", log_file ? log_file : "stdout");
 }
 
+//是否可以往日志文件中输入指令
+//目前可以输出10000条
 bool log_enable() {
   return MUXDEF(CONFIG_TRACE, (g_nr_guest_inst >= CONFIG_TRACE_START) &&
          (g_nr_guest_inst <= CONFIG_TRACE_END), false);

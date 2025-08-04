@@ -13,6 +13,9 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+//  ================================ 做目标文件时 ================================
+
+
 #include <dlfcn.h>
 
 #include <isa.h>
@@ -33,7 +36,9 @@ static int skip_dut_nr_inst = 0;
 
 // this is used to let ref skip instructions which
 // can not produce consistent behavior with NEMU
+// 跳过当前指令，不再比较这条指令的执行行为。
 void difftest_skip_ref() {
+	//设置 is_skip_ref = true：这条指令不进行参考模型比较；
   is_skip_ref = true;
   // If such an instruction is one of the instruction packing in QEMU
   // (see below), we end the process of catching up with QEMU's pc to
@@ -42,6 +47,7 @@ void difftest_skip_ref() {
   // already write some memory, and the incoming instruction in NEMU
   // will load that memory, we will encounter false negative. But such
   // situation is infrequent.
+	// 重置 skip_dut_nr_inst = 0：跳过逻辑计数器（详见 NEMU 内部逻辑）
   skip_dut_nr_inst = 0;
 }
 
@@ -51,6 +57,8 @@ void difftest_skip_ref() {
 // The semantic is
 //   Let REF run `nr_ref` instructions first.
 //   We expect that DUT will catch up with REF within `nr_dut` instructions.
+// 让 参考模型（ref，例如 QEMU）继续执行 nr_ref 条指令，
+// 而让 NEMU（被测模型，DUT）跳过 nr_dut 条指令的比较。
 void difftest_skip_dut(int nr_ref, int nr_dut) {
   skip_dut_nr_inst += nr_dut;
 
@@ -59,6 +67,7 @@ void difftest_skip_dut(int nr_ref, int nr_dut) {
   }
 }
 
+//初始化difftest
 void init_difftest(char *ref_so_file, long img_size, int port) {
   assert(ref_so_file != NULL);
 
@@ -83,19 +92,23 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
   void (*ref_difftest_init)(int) = dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
-
+	//向终端打印初始化信息
   Log("Differential testing: %s", ANSI_FMT("ON", ANSI_FG_GREEN));
   Log("The result of every instruction will be compared with %s. "
       "This will help you a lot for debugging, but also significantly reduce the performance. "
       "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
+
 	//对REF的DIffTest功能进行初始化, 具体行为因REF而异.
   ref_difftest_init(port);
-	//将DUT的guest memory拷贝到REF中.
+
+	//将nemu的guest memory拷贝到REF中.
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
-	//将DUT的寄存器状态拷贝到REF中.
+
+	//将nemu的寄存器状态拷贝到REF中.
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
 }
 
+//检查寄存器
 static void checkregs(CPU_state *ref, vaddr_t pc) {
   if (!isa_difftest_checkregs(ref, pc)) {
 		//对比结果不一致时, 第二个参数pc应指向导致对比结果不一致的指令,
@@ -115,20 +128,26 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
 void difftest_step(vaddr_t pc, vaddr_t npc) {
   CPU_state ref_r;
 
+	// 如果 nemu 还处于“跳过指令比较”的阶段
+	// 就不停检查 REF 是否执行到了和 nemu 同步的PC地址。
+	// 此时REF是不会执行指令的
   if (skip_dut_nr_inst > 0) {
 		//读入寄存器的值
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+		//如果追上了就进行一次寄存器比较（然后返回）
     if (ref_r.pc == npc) {
       skip_dut_nr_inst = 0;
       checkregs(&ref_r, npc);
       return;
     }
     skip_dut_nr_inst --;
+		//如果跳过计数用尽仍没追上 REF PC，触发错误（panic）
     if (skip_dut_nr_inst == 0)
       panic("can not catch up with ref.pc = " FMT_WORD " at pc = " FMT_WORD, ref_r.pc, pc);
     return;
   }
 
+	//如果is_skip_ref是true直接跳过这条指令的对比
   if (is_skip_ref) {
     // to skip the checking of an instruction, just copy the reg state to reference design
     ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);

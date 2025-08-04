@@ -18,13 +18,16 @@
 
 #include <common.h>
 
+//在运行时检查传入寄存器编号是否在合法范围内。
 static inline int check_reg_idx(int idx) {
   IFDEF(CONFIG_RT_CHECK, assert(idx >= 0 && idx < MUXDEF(CONFIG_RVE, 16, 32)));
   return idx;
 }
 
+//这都对外的gpr，那我之前cpu.gpr[i]岂不是特别小丑
 #define gpr(idx) (cpu.gpr[check_reg_idx(idx)])
 
+//这还有个传入编号返回名字的，我太小丑了
 static inline const char* reg_name(int idx) {
   extern const char* regs[];
   return regs[check_reg_idx(idx)];

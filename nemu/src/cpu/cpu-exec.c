@@ -40,7 +40,7 @@ void ring_buf_fun();
 
 //ftrace
 void ftrace();
-//用于空格
+//用于ftrace输出的空格
 int count = 0;
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
@@ -49,6 +49,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
     //如果走的步数少于MAX_INST_TO_PRINT就打印步骤
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
+	//如果要difftest就进入difftest进行
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
   //在Kconfig中可以控制这个宏是否生成
@@ -79,6 +80,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   int i;
   uint8_t *inst = (uint8_t *)&s->isa.inst;
 
+	//一个字节一个字节的写入
 #ifdef CONFIG_ISA_x86
   for (i = 0; i < ilen; i ++) {
 #else
@@ -142,6 +144,7 @@ static void execute(uint64_t n) {
         }
         break;
     }
+		//设备相关的
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
@@ -179,6 +182,7 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
+		//输出程序结束信息
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
@@ -193,7 +197,8 @@ void cpu_exec(uint64_t n) {
   }
 }
 
-//ringbuf
+
+//ringbuf(这个应该可以用%进行优化，暂时不想优化)
 void ring_buf_fun(char* inst){
     //加的环形缓冲区
     if(ring_buf_count<8){
@@ -207,7 +212,7 @@ void ring_buf_fun(char* inst){
 }
 
 
-//ftrace
+//ftrace(我这个是根据ITRACE的反汇编写的)
 void ftrace(char* inst){
     //找出jal和jalr
         // char* fun = s.logbuf;
