@@ -191,9 +191,9 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
 	if(wmask&0x4){temp = (temp & 0xFF00FFFF) | (wdata & 0x00FF0000);}
 	if(wmask&0x8){temp = (temp & 0x00FFFFFF) | (wdata & 0xFF000000);}
 
-	// if(in_pmem(waddr) == 1){
-	// 	pmem_write(waddr, 4, temp);
-	// }
+	if(in_pmem(waddr) == 1){
+		pmem_write(waddr, 4, temp);
+	}
 	// if(waddr == 0xa00003f8){
 	// 	static uint8_t *serial_base = NULL;
 	// 	serial_base = (uint8_t *)0xa00003f8;
