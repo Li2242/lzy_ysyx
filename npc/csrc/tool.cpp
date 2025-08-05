@@ -194,11 +194,11 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
 	if(in_pmem(waddr) == 1){
 		pmem_write(waddr, 4, temp);
 	}
-	// if(waddr == 0xa00003f8){
-	// 	static uint8_t *serial_base = NULL;
-	// 	serial_base = (uint8_t *)0xa00003f8;
-	// 	putchar(serial_base[1]);
-	// }
+	if(waddr == 0xa00003f8){
+		static uint8_t *serial_base = NULL;
+		serial_base = (uint8_t *)0xa00003f8;
+		putchar(serial_base[0]);
+	}
 }
 
 // ====================   请在上面的范围内添加    =======================

@@ -1,8 +1,8 @@
-#include "common.h"
+// #include "common.h"
 
-void init_device() {
-	init_map();
+// void init_device() {
+// 	init_map();
 
-	// init_serial();
+// 	// init_serial();
 
-}
+// }
