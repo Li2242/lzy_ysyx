@@ -15,11 +15,15 @@ int printf(const char *fmt, ...) {
   va_start(ap,fmt);
   while(*fmt != '\0'){
 		if(*fmt == '%'){
-			putstr("0");
 			switch(*++fmt){
 				case 's':{
 					char* str = va_arg(ap,char*);
 					putstr(str);
+					break;
+				}
+				case 'c':{
+					char c = va_arg(ap,int );
+					putch(c);
 					break;
 				}
 				case 'd':{
