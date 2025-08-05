@@ -77,11 +77,12 @@ uint32_t pmem_read(uint32_t addr, int len) {
 void pmem_write(uint32_t addr, int len, uint32_t data){
 	if(in_pmem(addr) == 1){
 		host_write(guest_to_host(addr), len, data);
-	//串口
 	}
+	//串口
 	if(addr == 0xa00003f8){
 		host_write(serial_base, len, data);
 	}
+
 		// if(addr != 0x80000000)
 		// 	green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
 		out_of_bound(addr);
@@ -129,8 +130,6 @@ int parse_args(int argc, char *argv[]) {
 long load_img() {
   if (img_file == NULL) {
 		//写入内置程序
-
-
     memcpy(pmem,memory,sizeof(memory));
 		uint32_t addr = MBASE;
 		// for(int i =0;i<32;i++){
