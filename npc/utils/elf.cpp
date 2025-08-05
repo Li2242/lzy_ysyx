@@ -77,23 +77,11 @@ void ftrace(char* inst){
 				| (BITS(inst_t,20,20)<<11) |  (BITS(inst_t,30,21)<<1),21);
 
 
-				//ret和jal
-        char fun1[10];
-        unsigned int pc, target;
-				//用惊世的智慧使用sscanf提取出pc和指令明还有函数在哪里
-        sscanf(inst,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
         bool in = 0;
 				//ret
         if(inst_t == 0x00008067){
             in = 1;
-						uint32_t ret_target = imm_I + reg_str2val_num(rs1);
-            for(int i =0;i<sym_num;i++){
-                in = 1;
-                if(symtab[i].st_value <= ret_target && ret_target < symtab[i].st_value + symtab[i].st_size ){
-                    printf("0x%x: %*sret[%s]\n",cpu_pc,--count,"",strtab+symtab[i].st_name);
-                    return;
-                }
-            }
+
         }
         //jal
         if(opcode == 111 ){
@@ -112,7 +100,19 @@ void ftrace(char* inst){
         //jalr(未使用Itrace)
         if(opcode == 103 && funct3==0){
             in = 1;
-            uint32_t jalr_target = imm_I + reg_str2val_num(rs1);
+						//ret
+						if(rd == 0 && rs1 == 1 && imm_I == 0){
+							uint32_t ret_target = imm_I + reg_str2val_num(rs1);
+							for(int i =0;i<sym_num;i++){
+									in = 1;
+									if(symtab[i].st_value <= ret_target && ret_target < symtab[i].st_value + symtab[i].st_size ){
+											printf("0x%x: %*sret[%s]\n",cpu_pc,--count,"",strtab+symtab[i].st_name);
+											return;
+									}
+							}
+						}
+						//jalr
+						uint32_t jalr_target = imm_I + reg_str2val_num(rs1);
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size &&\
 									 ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
