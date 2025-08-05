@@ -50,7 +50,7 @@ void sim_init(int argc,char** argv){
 		init_log();
 		//初始化elf文件
 		if(elf_file != NULL){ init_elf(); }
-		// init_device();
+		init_device();
 
 		// 1. 复位初始化
 		// 在仿真环境中

@@ -124,3 +124,20 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask);
 extern uint8_t* new_space(int size);
 extern void init_map();
 extern void init_device();
+extern void init_serial();
+extern uint8_t *serial_base;
+
+
+// //内存映射，寄存器的信息
+// typedef struct {
+// 	//名字
+//   const char *name;
+//   // we treat ioaddr_t as paddr_t here
+// 	//起始地址
+//   uint32_t low;
+// 	//结束地址
+//   uint32_t high;
+// 	//映射的目标空间
+//   void *space;
+// 	//回调函数
+// } IOMap;
