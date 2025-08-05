@@ -72,8 +72,8 @@ void ftrace(char* inst){
 	 			uint32_t rd  = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
 				uint32_t rs1 = (inst_t >> 15) & 0x1f;
 				uint32_t rs2 = (inst_t >> 20) & 0x1f;
-				uint32_t imm_I = SEXT(BITS(inst_t, 31, 20), 12);  // sign-extend
-				uint32_t imm_J = SEXT( (BITS(inst_t,31,31)<<20) | (BITS(inst_t,19,12)<<12) \
+				int32_t imm_I = SEXT(BITS(inst_t, 31, 20), 12);  // sign-extend
+				int32_t imm_J = SEXT( (BITS(inst_t,31,31)<<20) | (BITS(inst_t,19,12)<<12) \
 				| (BITS(inst_t,20,20)<<11) |  (BITS(inst_t,30,21)<<1),21);
 
 
