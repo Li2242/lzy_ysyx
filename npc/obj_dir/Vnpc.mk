@@ -45,6 +45,8 @@ VM_USER_LDLIBS = \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
+	map \
+	serial \
 	dut \
 	exper \
 	main \
@@ -61,6 +63,7 @@ VM_USER_CLASSES = \
 VM_USER_DIR = \
 	.. \
 	../csrc \
+	../csrc/device \
 	../utils \
 
 
@@ -73,6 +76,10 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
+map.o: csrc/device/map.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+serial.o: csrc/device/serial.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 dut.o: csrc/dut.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 exper.o: csrc/exper.cpp 

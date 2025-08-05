@@ -24,7 +24,7 @@ uint8_t* new_space(int size) {
 
 //初始化映射内存
 void init_map() {
-  io_space = malloc(IO_SPACE_MAX);
+  io_space = (uint8_t *)malloc(IO_SPACE_MAX);
   assert(io_space);
   p_space = io_space;
 }
