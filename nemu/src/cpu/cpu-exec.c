@@ -245,7 +245,6 @@ void ftrace(Decode *s){
 						if(rd == 0 && rs1 == 1 && imm_I == 0){
 							uint32_t ret_target = cpu.pc;
 							for(int i =0;i<sym_num;i++){
-									in = 1;
 									if(symtab[i].st_value <= ret_target && ret_target < symtab[i].st_value + symtab[i].st_size ){
 											printf("0x%x: %*sret[%s]\n",s->pc,(--count)*2,"",strtab+symtab[i].st_name);
 											return;
@@ -262,7 +261,6 @@ void ftrace(Decode *s){
                 }
             }
         }
-
         if(in==1){
             printf("???\n");
         }
