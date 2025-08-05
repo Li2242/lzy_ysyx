@@ -90,7 +90,7 @@ void ftrace(char* inst){
             for(int i =0;i<sym_num;i++){
                 in = 1;
                 if(symtab[i].st_value <= ret_target && ret_target < symtab[i].st_value + symtab[i].st_size ){
-                    printf("0x%x: %*sret[%s]\n",cpu_pc,count--,"",strtab+symtab[i].st_name);
+                    printf("0x%x: %*sret[%s]\n",--cpu_pc,count,"",strtab+symtab[i].st_name);
                     return;
                 }
             }
