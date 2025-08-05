@@ -56,14 +56,25 @@ void init_elf(){
     }
 }
 
+#define BITMASK(bits) ((1ull << (bits)) - 1)
+//位抽取
+#define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
+//符号扩展
+#define SEXT(x, len) ({ struct { int64_t n : len; } __x = { .n = x }; (uint64_t)__x.n; })
+
 
 //ftrace逻辑
 void ftrace(char* inst){
 	     //jalr
 				uint32_t inst_t = pmem_read(cpu_pc,4);
-				uint32_t rd  = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
+				uint32_t opcode = inst_t & 0x7f;
+				uint32_t funct3 = (inst_t >> 12) & 0x7;
+	 			uint32_t rd  = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
 				uint32_t rs1 = (inst_t >> 15) & 0x1f;
-				int32_t imm_I = (int32_t)(inst_t) >> 20;  // sign-extend
+				uint32_t rs2 = (inst_t >> 20) & 0x1f;
+				uint32_t imm_I = SEXT(BITS(inst_t, 31, 20), 12);  // sign-extend
+				uint32_t imm_J = SEXT( (BITS(inst_t,31,31)<<20) | (BITS(inst_t,19,12)<<12) \
+				| (BITS(inst_t,20,20)<<11) |  (BITS(inst_t,30,21)<<1),21);
 
 
 				//ret和jal
@@ -73,9 +84,9 @@ void ftrace(char* inst){
         sscanf(inst,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
         bool in = 0;
         //jal
-        if(strncmp(fun1,"jal",4) ==0){
+        if(opcode == 111 ){
             in = 1;
-            int jal_target = cpu_pc + target;
+            int jal_target = imm_J + cpu_pc;
             for(int i =0;i<sym_num;i++){
                 if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&\
 								  ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC)
@@ -87,7 +98,7 @@ void ftrace(char* inst){
         }
 
         //jalr(未使用Itrace)
-        if(strncmp(fun1,"jalr",5)==0){
+        if(opcode == 103 && funct3==0){
             in = 1;
             uint32_t jalr_target = imm_I + reg_str2val_num(rs1);
             for(int i =0;i<sym_num;i++){
