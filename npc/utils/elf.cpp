@@ -78,11 +78,6 @@ void ftrace(char* inst){
 
 
         bool in = 0;
-				//ret
-        if(inst_t == 0x00008067){
-            in = 1;
-
-        }
         //jal
         if(opcode == 111 ){
             in = 1;
