@@ -75,8 +75,7 @@ void ftrace(char* inst){
 				int32_t imm_I = SEXT(BITS(inst_t, 31, 20), 12);  // sign-extend
 				int32_t imm_J = SEXT( (BITS(inst_t,31,31)<<20) | (BITS(inst_t,19,12)<<12) \
 				| (BITS(inst_t,20,20)<<11) |  (BITS(inst_t,30,21)<<1),21);
-
-
+				//判断是否出现了跳转但是无名字的现象
         bool in = 0;
         //jal
         if(opcode == 111 ){
