@@ -23,7 +23,7 @@ void rtc_io_handler() {
     uint64_t us = get_time();       // 获取当前系统运行时间（单位：微秒）
     rtc_port_base[0] = (uint32_t)us;// 低 32 位写入偏移 0
     rtc_port_base[1] = us >> 32;    // 高 32 位写入偏移 4
-		printf("%d %d",rtc_port_base[1],rtc_port_base[0]);
+		printf("   %d %d",rtc_port_base[1],rtc_port_base[0]);
 }
 
 
