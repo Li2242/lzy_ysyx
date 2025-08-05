@@ -59,8 +59,8 @@ void init_elf(){
 #define BITMASK(bits) ((1ull << (bits)) - 1)
 //位抽取
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
-//符号扩展
-#define SEXT(x, len) ({ struct { int64_t n : len; } __x = { .n = x }; (uint64_t)__x.n; })
+// 符号扩展：用算术右移代替位域
+#define SEXT(x, len) ((int32_t)((x) << (32 - (len))) >> (32 - (len))) // 先左移，再右移进行符号扩展
 
 
 //ftrace逻辑
