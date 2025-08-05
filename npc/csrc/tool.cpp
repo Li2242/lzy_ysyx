@@ -85,7 +85,6 @@ void pmem_write(uint32_t addr, int len, uint32_t data){
 
 		// if(addr != 0x80000000)
 		// 	green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
-		out_of_bound(addr);
 }
 
 //越界处理
