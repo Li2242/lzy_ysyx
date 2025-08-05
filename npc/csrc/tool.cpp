@@ -66,7 +66,7 @@ uint32_t pmem_read(uint32_t addr, int len) {
 		uint32_t ret = host_read(guest_to_host(addr),len);
 		return ret;
 	}
-	if(addr = (uint32_t)serial_base){
+	if(addr = 0xa00003f8){
 		uint32_t ret = host_read(serial_base,len);
 		return ret;
 	}
@@ -75,13 +75,15 @@ uint32_t pmem_read(uint32_t addr, int len) {
 }
 
 void pmem_write(uint32_t addr, int len, uint32_t data){
-	if(in_pmem(addr) == 1 ){
+	if(in_pmem(addr) == 1){
 		host_write(guest_to_host(addr), len, data);
+	//串口
+	if(addr == 0xa00003f8){
+		host_write(serial_base, len, data);
+	}
 		// if(addr != 0x80000000)
 		// 	green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
-	}
-	if(addr == (uint32_t)serial_base){
-		host_write((void *)addr, len, data);
+		out_of_bound(addr);
 	}
 }
 
@@ -198,10 +200,9 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
 	if(wmask&0x4){temp = (temp & 0xFF00FFFF) | (wdata & 0x00FF0000);}
 	if(wmask&0x8){temp = (temp & 0x00FFFFFF) | (wdata & 0xFF000000);}
 
-	if(in_pmem(waddr) == 1 || waddr == (uint32_t)serial_base){
-		pmem_write(waddr, 4, temp);
-	}
-	if(waddr == (uint32_t)serial_base){
+	pmem_write(waddr, 4, temp);
+
+	if(waddr == 0xa00003f8){
 		putchar(serial_base[0]);
 	}
 }
