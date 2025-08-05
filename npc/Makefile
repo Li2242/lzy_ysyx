@@ -17,7 +17,7 @@ OBJ_DIR = obj_dir
 BUILD_DIR = ./build
 $(shell mkdir -p $(BUILD_DIR))
 
-override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt -d $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
+override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt -d $(NPC_HOME)/tools/riscv32-nemu-interpreter-so
 #如果没有传入镜像文件就置为空
 IMG ?=
 
