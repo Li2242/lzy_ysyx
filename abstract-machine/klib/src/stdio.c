@@ -28,6 +28,7 @@ int printf(const char *fmt, ...) {
 					putstr(str);
 					break;
 				}
+				default : ;
 			}
 			fmt++;
 		}else{
