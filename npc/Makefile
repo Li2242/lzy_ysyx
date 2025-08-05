@@ -11,6 +11,7 @@ LDFLAGS = -lreadline
 ALL_FLAGS = $(VERILATOR_FLAGS) -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 CSRC = csrc/*.cpp
 CSRC += utils/*.cpp
+CSRC += csrc/device/*.cpp
 VSRC = vsrc/*.v
 OBJ_DIR = obj_dir
 BUILD_DIR = ./build
