@@ -1,8 +1,7 @@
 #include "common.h"
 #include <sys/time.h>
 uint32_t *rtc_port_base = NULL;
-
-
+static uint64_t boot_time = 0;
 
 //获取当前系统信息并返回
 static uint64_t get_time_internal() {
@@ -15,17 +14,25 @@ static uint64_t get_time_internal() {
 
 //当前程序运行多长时间
 uint64_t get_time() {
-  boot_time = get_time_internal();
+  if (boot_time == 0) boot_time = get_time_internal();
   uint64_t now = get_time_internal();
   return now - boot_time;
 }
-
 
 void rtc_io_handler() {
     uint64_t us = get_time();       // 获取当前系统运行时间（单位：微秒）
     rtc_port_base[0] = (uint32_t)us;// 低 32 位写入偏移 0
     rtc_port_base[1] = us >> 32;    // 高 32 位写入偏移 4
 }
+
+
+
+
+
+
+
+
+
 
 
 //设备初始化 init_timer
