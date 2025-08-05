@@ -232,7 +232,7 @@ void ftrace(Decode *s){
                 if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&\
 								  ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC)
 									{
-                    printf("0x%x: %*scall [%s@0x%x]\n",s->pc,count++,"",strtab+symtab[i].st_name,jal_target);
+                    printf("0x%x: %*scall [%s@0x%x]\n",s->pc,++count,"",strtab+symtab[i].st_name,jal_target);
                     return;
                 }
             }
@@ -257,7 +257,7 @@ void ftrace(Decode *s){
             for(int i =0;i<sym_num;i++){
                 if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size &&\
 									 ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("0x%x: %*scall [%s@0x%x]\n",s->pc,count++,"",strtab+symtab[i].st_name,jalr_target);
+                    printf("0x%x: %*scall [%s@0x%x]\n",s->pc,++count,"",strtab+symtab[i].st_name,jalr_target);
                     return;
                 }
             }
