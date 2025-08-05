@@ -28,7 +28,7 @@ int printf(const char *fmt, ...) {
 					putstr(str);
 					break;
 				}
-				default : ;
+				default : putch(*fmt);
 			}
 			fmt++;
 		}else{
