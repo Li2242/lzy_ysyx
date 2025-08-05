@@ -1,6 +1,6 @@
 #include "common.h"
-uint32_t *rtc_port_base = NULL;
 #include <sys/time.h>
+uint32_t *rtc_port_base = NULL;
 
 void rtc_io_handler() {
     uint64_t us = get_time();       // 获取当前系统运行时间（单位：微秒）
