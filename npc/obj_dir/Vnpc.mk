@@ -48,6 +48,7 @@ VM_USER_CLASSES = \
 	device \
 	map \
 	serial \
+	timer \
 	dut \
 	exper \
 	main \
@@ -82,6 +83,8 @@ device.o: csrc/device/device.cpp
 map.o: csrc/device/map.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 serial.o: csrc/device/serial.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+timer.o: csrc/device/timer.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 dut.o: csrc/dut.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<

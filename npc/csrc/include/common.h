@@ -124,10 +124,14 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask);
 extern uint8_t* new_space(int size);
 extern void init_map();
 extern void init_device();
+//串口
 extern void init_serial();
 extern uint8_t *serial_base;
-
-
+//时钟
+extern void init_timer();
+extern uint32_t *rtc_port_base;
+extern uint64_t get_time();
+extern void rtc_io_handler();
 // //内存映射，寄存器的信息
 // typedef struct {
 // 	//名字
