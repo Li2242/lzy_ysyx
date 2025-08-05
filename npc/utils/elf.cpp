@@ -92,7 +92,7 @@ void ftrace(char* inst){
             }
         }
 
-        //jalr(未使用Itrace)
+        //jalr和ret
         if(opcode == 103 && funct3==0){
             in = 1;
 						//ret
