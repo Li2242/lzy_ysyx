@@ -99,7 +99,8 @@ static inline bool in_pmem(uint32_t addr) {
 }
 //打印寄存器
 void reg_display();
-uint32_t reg_str2val(char* name);
+uint32_t reg_str2val_name(char* name);
+uint32_t reg_str2val_num(int n);
 
 // ============== 全局变量  ==============
 //仿真记录
