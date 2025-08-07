@@ -56,7 +56,7 @@ assign xor_result = src1 ^ src2;
 //or
 assign or_result  = src1 | src2;
 
-assign alu_result = ({32{add}}  & add_sub_result)
+assign alu_result = ({32{add | sub}}  & add_sub_result)
                   | ({32{sltu}} & sltu_result)
 			  			    | ({32{bne}}  & bne_result)
 			  			    | ({32{xor0}} & xor_result)
