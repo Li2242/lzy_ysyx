@@ -2,21 +2,24 @@
 module alu(
     input[31:0] src1,
 		input[31:0] src2,
-    input[2:0]  alu_op,
+    input[3:0]  alu_op,
     output[31:0] alu_result
 );
 
 wire add;
 wire sltu;
 wire bne;
+wire xor0;
 
 assign add  = alu_op[0];
 assign sltu = alu_op[1];
 assign bne  = alu_op[2];
+assign xor0  = alu_op[3];
 
 wire [31:0] add_sub_result;
 wire [31:0] sltu_result;
 wire [31:0] bne_result;
+wire [31:0] xor_result;
 
 //加减法
 wire [31:0] adder_a;
@@ -43,10 +46,13 @@ assign sltu_result[0] = ~adder_cout;
 assign bne_result[31:1] = 31'b0;
 assign bne_result[0]    = |add_sub_result;
 
+//xor
+assign xor_result = src1 ^ src2;
+
 assign alu_result = ({32{add}}  & add_sub_result)
                   | ({32{sltu}} & sltu_result)
-			  			    | ({32{bne}}  & bne_result);
-// 			  			| ({32{alu_op[3]}} & result_jalr)
+			  			    | ({32{bne}}  & bne_result)
+			  			    | ({32{xor0}} & xor_result);
 // 			  			| ({32{alu_op[4]}} & result_addi)
 // 			  			| ({32{alu_op[5]}} & result_add)
 // 			  			| ({32{alu_op[6]}} & result_lw)
