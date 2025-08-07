@@ -12,8 +12,8 @@ module npc(
 // =========================== PC ==================================
 wire [31:0] nextpc;
 
-assign nextpc =  is_jalr ? (src1+imm) & ~1 :
-                 is_jal  ?  pc + imm :  //未来B型指令要加在这里因为他们都是 pc + 4;
+assign nextpc =  is_jalr          ? (src1+imm) & ~1 :
+                 (is_jal | is_correct_b)  ?  pc + imm :       //未来B型指令要加在这里因为他们都是 pc + 4;
                  pc + 32'h4 ;
 
 //更新pc
@@ -51,7 +51,7 @@ wire [31:0]imm_I;
 wire [31:0]imm_U;
 wire [31:0]imm_J;
 wire [31:0]imm_S;
-// wire [31:0]imm_B;
+wire [31:0]imm_B;
 
 //指令大类型(个人感觉这是处理立即数所需要的)
 wire is_R;
@@ -59,7 +59,7 @@ wire is_I;
 wire is_U;
 wire is_J;
 wire is_S;
-// wire is_B;
+wire is_B;
 
 //指令小类型
 //U(end)
@@ -79,7 +79,8 @@ wire is_sltiu;
 wire is_sw;
 wire is_sb;
 //B
-
+wire is_correct_b;
+wire is_bne;
 //ebreak(end)
 wire is_ebreak;
 
@@ -91,7 +92,7 @@ assign inst = v_pmem_read(pc,4);
 
 //全部符号扩展，待会在处理
 assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
-// assign imm_B = {{19{inst[31]}},inst[31],inst[7],inst[30:25],inst[11:8],0};
+assign imm_B = {{19{inst[31]}},inst[31],inst[7],inst[30:25],inst[11:8],1'b0};
 assign imm_I = {{20{inst[31]}},inst[31:20]};
 assign imm_U = {inst[31:12],{12{1'b0}}};
 assign imm_J = {{11{inst[31]}},inst[31],inst[19:12],inst[20],inst[30:21],1'b0};
@@ -120,8 +121,8 @@ assign is_I = opcode_d[19] | opcode_d[3] | opcode_d[103] ; // 0010011 or 0000011
 assign is_U = opcode_d[55] | opcode_d[23] ;                // 0110111 or 0010111 → U 型
 assign is_J = opcode_d[111] ;                              // 1101111 → J 型
 assign is_R = opcode_d[51] ;                               // 0110011 → R 型
-// assign is_B = opcode_[99] ;                             // 1100011 → B 型
-assign is_S = opcode_d[35] ;                            // 0100011 → S 型
+assign is_B = opcode_d[99] ;                                // 1100011 → B 型
+assign is_S = opcode_d[35] ;                               // 0100011 → S 型
 
 
 //指令识别
@@ -140,6 +141,8 @@ assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
 assign is_sw    =  opcode_d[35]  &  funct3_d[2];
 assign is_sb    =  opcode_d[35]  &  funct3_d[0];
 assign is_sltiu =  opcode_d[19]  &  funct3_d[3];
+//B
+assign is_bne   =  opcode_d[99]  &  funct3_d[1];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
@@ -152,10 +155,12 @@ assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 
+assign is_correct_b  = (is_bne) && (alu_result == 1) ;
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
 				   | ({32{is_U}} & imm_U)
 		       | ({32{is_J}} & imm_J)
+		       | ({32{is_B}} & imm_B)
 				   | ({32{is_S}} & imm_S);
 
 // ======================= 解析指令 END ===================================
@@ -182,7 +187,7 @@ RegisterFile u_regfile2 (
 // ================================= 寄存器END  ======================================
 
 // =======================    ALU  ========================================
-wire [1:0]  alu_op;           //1.加指令时需要改
+wire [2:0]  alu_op;           //1.加指令时需要改
 wire        src1_is_pc;
 wire        src2_is_imm;
 wire [31:0]   src1;
@@ -191,7 +196,7 @@ wire [31:0] alu_src1;
 wire [31:0] alu_src2;
 
 //2.加指令时这里需要改
-assign src1_is_pc = is_auipc;
+assign src1_is_pc  = is_auipc;
 assign src2_is_imm = is_addi | is_auipc | is_sltiu;
 
 assign alu_src1 = src1_is_pc ? pc : src1;
@@ -199,6 +204,7 @@ assign alu_src2 = src2_is_imm ? imm : src2;
 //4.改
 assign alu_op[0] = is_add | is_addi | is_auipc;
 assign alu_op[1] = is_sltiu;
+assign alu_op[2] = is_bne;
 
 //alu
 alu u_alu(
@@ -218,10 +224,11 @@ wire [31:0] raddr;
 wire [31:0] waddr;
 wire [31:0] wdata;
 wire [7:0]  wmask;
+
 //内存地址
-// assign raddr = src1 + imm ;
-// assign waddr = src1 + imm;
-assign raddr = mem_en ? src1 + imm : 32'h80000000;
+//这里verilator会编译之后会出现mem_en未0的情况下取调用v_pmem_read去读地址
+//为了防止出现读到其他内存，这里就设置了可读的地址
+assign raddr = mem_en  ? src1 + imm : 32'h80000000;
 assign waddr = mem_wen ? src1 + imm : 32'h80000000;
 assign wdata = src2;
 //掩码
