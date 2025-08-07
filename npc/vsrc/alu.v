@@ -67,7 +67,7 @@ assign alu_result = ({32{add | sub}}  & add_sub_result)
 			  			    | ({32{bne}}  & bne_result)
 			  			    | ({32{xor0}} & xor_result)
 			  			    | ({32{or0}}  & or_result)
-			  			    | ({32{sra}} & xor_result);
+			  			    | ({32{sra}} & sra_result);
 // 			  			| ({32{alu_op[4]}} & result_addi)
 // 			  			| ({32{alu_op[5]}} & result_add)
 // 			  			| ({32{alu_op[6]}} & result_lw)
