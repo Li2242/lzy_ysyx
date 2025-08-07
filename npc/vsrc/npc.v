@@ -79,6 +79,7 @@ wire is_and;
 wire is_srl;
 wire is_srli;
 wire is_slt;
+wire is_sra;
 //I
 wire is_jalr;
 wire is_addi;
@@ -171,6 +172,7 @@ assign is_sll   =  opcode_d[51]  &  funct3_d[1] & inst31_25_d[0];
 assign is_and   =  opcode_d[51]  &  funct3_d[7] & inst31_25_d[0];
 assign is_srl   =  opcode_d[51]  &  funct3_d[5] & inst31_25_d[0];
 assign is_slt   =  opcode_d[51]  &  funct3_d[2] & inst31_25_d[0];
+assign is_sra   =  opcode_d[51]  &  funct3_d[5] & inst31_25_d[32];
 //I
 assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];
@@ -202,7 +204,7 @@ assign is_ebreak = (inst == 32'h00100073);
 //控制信号 3.加指令改
 assign mem_en   = is_lw | is_lbu | is_lh | is_lhu;
 assign mem_wen  = is_sw | is_sb | is_sh;
-assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli | is_slt | is_lh | is_lhu;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli | is_slt | is_lh | is_lhu | sra;
 
 assign reg_from_mem  = is_lw  | is_lbu | is_lh | is_lhu;
 assign reg_from_pc_4 = is_jal | is_jalr;
@@ -263,7 +265,7 @@ assign alu_op[2] = is_bne;
 assign alu_op[3] = is_xor | is_xori;
 assign alu_op[4] = is_or;
 assign alu_op[5] = is_sub;
-assign alu_op[6] = is_srai;
+assign alu_op[6] = is_srai | sra;
 assign alu_op[7] = is_sll | is_slli;
 assign alu_op[8] = is_and | is_andi;
 //blt 利用了slt的有符号比较
