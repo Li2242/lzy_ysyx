@@ -11,6 +11,7 @@ wire sltu;
 wire bne;
 wire xor0;
 wire or0;
+wire sub;
 
 assign add  = alu_op[0];
 assign sltu = alu_op[1];
