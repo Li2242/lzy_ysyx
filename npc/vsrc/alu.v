@@ -2,7 +2,7 @@
 module alu(
     input[31:0] src1,
 		input[31:0] src2,
-    input[4:0]  alu_op,
+    input[5:0]  alu_op,
     output[31:0] alu_result
 );
 
@@ -17,6 +17,7 @@ assign sltu = alu_op[1];
 assign bne  = alu_op[2];
 assign xor0  = alu_op[3];
 assign or0  = alu_op[4];
+assign sub = alu_op[5];
 
 wire [31:0] add_sub_result;
 wire [31:0] sltu_result;
@@ -31,8 +32,8 @@ wire        adder_cin;
 wire [31:0] adder_result;
 wire        adder_cout;
 assign adder_a   = src1;
-assign adder_b   = (sltu | bne) ? ~src2 : src2;
-assign adder_cin = (sltu | bne) ? 1'b1  : 1'b0;
+assign adder_b   = (sltu | bne | sub) ? ~src2 : src2;
+assign adder_cin = (sltu | bne | sub) ? 1'b1  : 1'b0;
 
 assign {adder_cout , adder_result} = {1'b0,adder_a} + {1'b0,adder_b} + {32'b0,adder_cin};
 
