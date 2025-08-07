@@ -2,7 +2,7 @@
 module alu(
     input[31:0] src1,
 		input[31:0] src2,
-    input[6:0]  alu_op,
+    input[7:0]  alu_op,
     output[31:0] alu_result
 );
 
@@ -13,6 +13,7 @@ wire xor0;
 wire or0;
 wire sub;
 wire sra;
+wire sll;
 
 assign add  = alu_op[0];
 assign sltu = alu_op[1];
@@ -21,6 +22,7 @@ assign xor0  = alu_op[3];
 assign or0  = alu_op[4];
 assign sub = alu_op[5];
 assign sra = alu_op[6];
+assign sll = alu_op[7];
 
 wire [31:0] add_sub_result;
 wire [31:0] sltu_result;
@@ -28,6 +30,7 @@ wire [31:0] bne_result;
 wire [31:0] xor_result;
 wire [31:0] or_result;
 wire [31:0] sra_result;
+wire [31:0] sll_result;
 
 //加减法
 wire [31:0] adder_a;
@@ -61,6 +64,8 @@ assign or_result  = src1 | src2;
 
 //sra
 assign sra_result = src1 >>> src2[4:0];
+//sll
+assign sll_result = src1 << src2[4:0];
 
 assign alu_result = ({32{add | sub}}  & add_sub_result)
                   | ({32{sltu}} & sltu_result)
