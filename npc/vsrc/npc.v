@@ -100,6 +100,7 @@ wire is_bge;
 wire is_beq;
 wire is_bgeu;
 wire is_bltu;
+wire is_blt;
 //ebreak(end)
 wire is_ebreak;
 
@@ -190,6 +191,7 @@ assign is_bge   =  opcode_d[99]  &  funct3_d[5];
 assign is_beq   =  opcode_d[99]  &  funct3_d[0];
 assign is_bgeu   =  opcode_d[99]  &  funct3_d[7];
 assign is_bltu   =  opcode_d[99]  &  funct3_d[6];
+assign is_blt   =  opcode_d[99]  &  funct3_d[4];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
@@ -202,7 +204,7 @@ assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 //这条判断的B指令是否正确
-assign is_correct_b  = ((is_bne | is_beq | is_bltu) && (alu_result == 1)) | ((is_bgeu | is_bge) && alu_result==0);
+assign is_correct_b  = ((is_bne | is_beq | is_bltu | is_blt) && (alu_result == 1)) | ((is_bgeu | is_bge) && alu_result==0);
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -260,9 +262,10 @@ assign alu_op[5] = is_sub;
 assign alu_op[6] = is_srai;
 assign alu_op[7] = is_sll | is_slli;
 assign alu_op[8] = is_and | is_andi;
-assign alu_op[9] = is_slt | is_bge;
+//blt 利用了slt的有符号比较
+assign alu_op[9] = is_slt | is_bge | is_blt;
 assign alu_op[10] = is_beq;
-assign alu_op[11] = is_srl | is_srli;
+assign alu_op[11] = is_srl | is_srli ;
 
 //alu
 alu u_alu(
