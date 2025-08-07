@@ -98,6 +98,7 @@ wire is_bne;
 wire is_bge;
 wire is_beq;
 wire is_bgeu;
+wire is_bltu;
 //ebreak(end)
 wire is_ebreak;
 
@@ -186,19 +187,20 @@ assign is_bne   =  opcode_d[99]  &  funct3_d[1];
 assign is_bge   =  opcode_d[99]  &  funct3_d[5];
 assign is_beq   =  opcode_d[99]  &  funct3_d[0];
 assign is_bgeu   =  opcode_d[99]  &  funct3_d[7];
+assign is_bltu   =  opcode_d[99]  &  funct3_d[6];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
 //控制信号 3.加指令改
 assign mem_en   = is_lw | is_lbu;
 assign mem_wen  = is_sw | is_sb | is_sh;
-assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli ;
 
 assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 //这条判断的B指令是否正确
-assign is_correct_b  = ((is_bne | is_bge | is_beq) && (alu_result == 1)) | (is_bgeu && alu_result==0) ;
+assign is_correct_b  = ((is_bne | is_bge | is_beq | is_bltu) && (alu_result == 1)) | (is_bgeu && alu_result==0) ;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -247,8 +249,8 @@ assign alu_src1 = src1_is_pc ? pc : src1;
 assign alu_src2 = src2_is_imm ? imm : src2;
 //4.改
 assign alu_op[0] = is_add | is_addi | is_auipc;
-//bgeu利用了sltu的无符号比较
-assign alu_op[1] = is_sltiu | is_sltu | is_bgeu;
+//bgeu bltu利用了sltu的无符号比较
+assign alu_op[1] = is_sltiu | is_sltu | is_bgeu | is_bltu;
 assign alu_op[2] = is_bne;
 assign alu_op[3] = is_xor | is_xori;
 assign alu_op[4] = is_or;
