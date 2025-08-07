@@ -64,6 +64,7 @@ assign add_sub_result = adder_result;
 //sltu(无符号比较)a<b
 assign sltu_result[31:1] = 31'b0;
 assign sltu_result[0] = ~adder_cout;
+
 //bge(补码比较)
 assign bge_result[31:1] = 31'b0;
 assign bge_result[0]    = ~((src1[31] != src2[31]) ? src1[31] : adder_result[31]);

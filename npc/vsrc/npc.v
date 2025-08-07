@@ -97,6 +97,7 @@ wire is_correct_b;
 wire is_bne;
 wire is_bge;
 wire is_beq;
+wire is_bgeu;
 //ebreak(end)
 wire is_ebreak;
 
@@ -184,6 +185,7 @@ assign is_sh    =  opcode_d[35]  &  funct3_d[1];
 assign is_bne   =  opcode_d[99]  &  funct3_d[1];
 assign is_bge   =  opcode_d[99]  &  funct3_d[5];
 assign is_beq   =  opcode_d[99]  &  funct3_d[0];
+assign is_bgeu   =  opcode_d[99]  &  funct3_d[7];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
@@ -196,7 +198,7 @@ assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 //这条判断的B指令是否正确
-assign is_correct_b  = (is_bne | is_bge | is_beq) && (alu_result == 1) ;
+assign is_correct_b  = ((is_bne | is_bge | is_beq) && (alu_result == 1)) | (is_bgeu && alu_result==0) ;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -245,7 +247,8 @@ assign alu_src1 = src1_is_pc ? pc : src1;
 assign alu_src2 = src2_is_imm ? imm : src2;
 //4.改
 assign alu_op[0] = is_add | is_addi | is_auipc;
-assign alu_op[1] = is_sltiu | is_sltu;
+//bgeu利用了sltu的无符号比较
+assign alu_op[1] = is_sltiu | is_sltu | is_bgeu;
 assign alu_op[2] = is_bne;
 assign alu_op[3] = is_xor | is_xori;
 assign alu_op[4] = is_or;
