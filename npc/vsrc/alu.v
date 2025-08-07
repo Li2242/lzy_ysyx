@@ -8,6 +8,7 @@ module alu(
 
 wire add;
 wire sltu;
+wire bne;
 
 assign add  = alu_op[0];
 assign sltu = alu_op[1];

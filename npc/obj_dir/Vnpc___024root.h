@@ -25,8 +25,9 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ npc__DOT__is_addi;
     CData/*0:0*/ npc__DOT__is_lw;
     CData/*0:0*/ npc__DOT__is_lbu;
+    CData/*0:0*/ npc__DOT__is_bne;
     CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_9;
-    CData/*0:0*/ npc__DOT__u_alu__DOT__sltiu;
+    CData/*0:0*/ npc__DOT__u_alu__DOT__sltu;
     CData/*0:0*/ __VstlFirstIteration;
     CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
     CData/*0:0*/ __VactContinue;
@@ -41,6 +42,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     IData/*31:0*/ npc__DOT__raddr;
     IData/*31:0*/ npc__DOT____VdfgExtracted_hfee1d2e3__0;
     IData/*31:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_0;
+    IData/*31:0*/ npc__DOT__u_alu__DOT__add_sub_result;
     IData/*31:0*/ npc__DOT__u_alu__DOT__adder_b;
     IData/*31:0*/ __Vfunc_v_pmem_read__0__Vfuncout;
     IData/*31:0*/ __Vfunc_v_pmem_read__3__Vfuncout;
