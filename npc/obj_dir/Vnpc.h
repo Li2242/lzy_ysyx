@@ -13,6 +13,7 @@
 
 class Vnpc__Syms;
 class Vnpc___024root;
+class VerilatedVcdC;
 class Vnpc___024unit;
 
 
@@ -26,7 +27,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc VL_NOT_FINAL : public VerilatedModel {
 
     // CONSTEXPR CAPABILITIES
     // Verilated with --trace?
-    static constexpr bool traceCapable = false;
+    static constexpr bool traceCapable = true;
 
     // PORTS
     // The application code writes and reads these signals to
@@ -87,6 +88,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc VL_NOT_FINAL : public VerilatedModel {
     /// Re-init after cloning the model at the process level (e.g. fork in Linux)
     /// Re-allocate necessary resources. Called after cloning.
     void atClone() const;
+    std::unique_ptr<VerilatedTraceConfig> traceConfig() const override final;
   private:
     // Internal functions - trace registration
     void traceBaseModel(VerilatedTraceBaseC* tfp, int levels, int options);

@@ -1,7 +1,7 @@
 #include "common.h"
 
 VerilatedContext* contextp =NULL ;
-#ifdef ENABLE_TRACE
+#ifdef VTRACE
 	VerilatedVcdC* tfp = NULL;
 #endif
 Vnpc* top;
@@ -26,11 +26,12 @@ void sim_init(int argc,char** argv){
 	contextp->commandArgs(argc,argv);
 	Verilated::traceEverOn(true);
 	top = new Vnpc;
-#ifdef ENABLE_TRACE
+#ifdef VTRACE
 	tfp = new VerilatedVcdC;
 	top->trace(tfp,99);
 	tfp->open("waveform.vcd");
 #endif
+
 
 
 
@@ -98,7 +99,7 @@ void sim_exe(uint32_t n){
 
 //结束
 void sim_end(){
-#ifdef ENABLE_TRACE
+#ifdef VTRACE
   tfp->close();
   delete tfp;
 #endif
@@ -119,16 +120,17 @@ static void execute(uint32_t n){
     top->clk = 0;
     // top->inst = pmem_read(top->pc,4);
     top->eval();
-#ifdef ENABLE_TRACE
+	#ifdef VTRACE
     tfp->dump(contextp->time());    // 记录波形
+	#endif
     contextp->timeInc(5);
-#endif
+
     top->clk = 1;
     top->eval();
-#ifdef ENABLE_TRACE
+	#ifdef VTRACE
     tfp->dump(contextp->time());    // 记录波形
+	#endif
     contextp->timeInc(5);
-#endif
 //===============  一条命令的结束  =========================
 
 //正如函数名所说它就是TRACE和DIFFTEST的办公场所

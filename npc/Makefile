@@ -22,11 +22,11 @@ override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt -d $(NPC_HOME)/tools/riscv32-nem
 IMG ?=
 
 #是否加上波形文件
-TRACE ?= 0
+trace ?= 0
 
-ifeq ($(TRACE),1)
+ifeq ($(trace),1)
     VERILATOR_FLAGS += --trace
-    CFLAGS += -DENABLE_TRACE
+    CFLAGS += -DVTRACE
 endif
 
 # Include all filelist.mk to merge file lists

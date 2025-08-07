@@ -5,3 +5,4 @@ void init_device() {
 	init_serial();
 	init_timer();
 }
+

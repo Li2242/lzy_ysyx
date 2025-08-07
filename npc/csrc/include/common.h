@@ -9,7 +9,7 @@
 #include <verilated.h>
 #include "Vnpc.h"
 
-#ifdef ENABLE_TRACE
+#ifdef VTRACE
 	#include "verilated_vcd_c.h"
 #endif
 
@@ -29,7 +29,7 @@ extern int npc_state;
 
 //仿真
 extern VerilatedContext* contextp ;
-#ifdef ENABLE_TRACE
+#ifdef VTRACE
 	extern VerilatedVcdC* tfp ;
 #endif
 extern Vnpc* top;
