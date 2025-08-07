@@ -55,7 +55,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     IData/*31:0*/ __Vfunc_v_pmem_read__3__Vfuncout;
     IData/*31:0*/ __Vfunc_v_pmem_read__4__Vfuncout;
     IData/*31:0*/ __VactIterCount;
-    QData/*32:0*/ npc__DOT__inst31_25_d__BRA__32__03a0__KET__;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_regfile2__DOT__rf;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VactTriggered;

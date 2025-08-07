@@ -244,11 +244,12 @@ VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__0(Vnpc___024root* vlSelf) 
     vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_0 
         = (vlSelfRef.npc__DOT__src1 + vlSelfRef.npc__DOT__imm);
     vlSelfRef.npc__DOT__is_add = ((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_8) 
-                                  & (IData)(vlSelfRef.npc__DOT__inst31_25_d__BRA__32__03a0__KET__));
+                                  & (0U == (vlSelfRef.npc__DOT__inst 
+                                            >> 0x19U)));
     vlSelfRef.npc__DOT__u_alu__DOT__sub = ((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_8) 
-                                           & (IData)(
-                                                     (vlSelfRef.npc__DOT__inst31_25_d__BRA__32__03a0__KET__ 
-                                                      >> 0x20U)));
+                                           & (0x20U 
+                                              == (vlSelfRef.npc__DOT__inst 
+                                                  >> 0x19U)));
     vlSelfRef.npc__DOT__u_alu__DOT__sltu = ((IData)(vlSelfRef.npc__DOT__is_sltiu) 
                                             | (IData)(vlSelfRef.npc__DOT__is_sltu));
     vlSelfRef.npc__DOT__alu_src2 = (((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_12) 
