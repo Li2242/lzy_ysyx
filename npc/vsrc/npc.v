@@ -83,6 +83,7 @@ wire is_lw;
 wire is_lbu;
 wire is_sltiu;
 wire is_srai;
+wire is_xori;
 //S
 wire is_sw;
 wire is_sh;
@@ -163,6 +164,7 @@ assign is_lw    =  opcode_d[3]   &  funct3_d[2];
 assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
 assign is_sltiu =  opcode_d[19]  &  funct3_d[3];
 assign is_srai  =  opcode_d[19]  &  funct3_d[5] & inst31_25_d[32];
+assign is_xori  =  opcode_d[19]  &  funct3_d[4];
 //S
 assign is_sb    =  opcode_d[35]  &  funct3_d[0];
 assign is_sw    =  opcode_d[35]  &  funct3_d[2];
@@ -176,7 +178,7 @@ assign is_ebreak = (inst == 32'h00100073);
 //控制信号 3.加指令改
 assign mem_en   = is_lw | is_lbu;
 assign mem_wen  = is_sw | is_sb | is_sh;
-assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori;
 
 assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
@@ -225,7 +227,7 @@ wire [31:0] alu_src2;
 
 //2.加指令时这里需要改
 assign src1_is_pc  = is_auipc;
-assign src2_is_imm = is_addi | is_auipc | is_sltiu | is_srai;
+assign src2_is_imm = is_addi | is_auipc | is_sltiu | is_srai | is_xori;
 
 assign alu_src1 = src1_is_pc ? pc : src1;
 assign alu_src2 = src2_is_imm ? imm : src2;
@@ -233,7 +235,7 @@ assign alu_src2 = src2_is_imm ? imm : src2;
 assign alu_op[0] = is_add | is_addi | is_auipc;
 assign alu_op[1] = is_sltiu | is_sltu;
 assign alu_op[2] = is_bne;
-assign alu_op[3] = is_xor;
+assign alu_op[3] = is_xor | is_xori;
 assign alu_op[4] = is_or;
 assign alu_op[5] = is_sub;
 assign alu_op[6] = is_srai;
