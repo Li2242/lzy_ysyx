@@ -166,6 +166,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__is_bge = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_bgeu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_bltu = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_blt = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__alu_src1 = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__alu_src2 = VL_RAND_RESET_I(32);
