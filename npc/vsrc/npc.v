@@ -74,6 +74,7 @@ wire is_jalr;
 wire is_addi;
 wire is_lw;
 wire is_lbu;
+wire is_sltiu;
 //S
 wire is_sw;
 wire is_sb;
@@ -138,13 +139,14 @@ assign is_lw    =  opcode_d[3]   &  funct3_d[2];
 assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
 assign is_sw    =  opcode_d[35]  &  funct3_d[2];
 assign is_sb    =  opcode_d[35]  &  funct3_d[0];
+assign is_sltiu =  opcode_d[19]  &  funct3_d[3];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
 //控制信号 3.加指令改
 assign mem_en   = is_lw | is_lbu;
 assign mem_wen  = is_sw | is_sb;
-assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu;
 
 assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
@@ -180,7 +182,7 @@ RegisterFile u_regfile2 (
 // ================================= 寄存器END  ======================================
 
 // =======================    ALU  ========================================
-wire [0:0]  alu_op;           //1.加指令时需要改
+wire [1:0]  alu_op;           //1.加指令时需要改
 wire        src1_is_pc;
 wire        src2_is_imm;
 wire [31:0]   src1;
@@ -190,13 +192,13 @@ wire [31:0] alu_src2;
 
 //2.加指令时这里需要改
 assign src1_is_pc = is_auipc;
-assign src2_is_imm = is_addi | is_auipc;
+assign src2_is_imm = is_addi | is_auipc | is_sltiu;
 
 assign alu_src1 = src1_is_pc ? pc : src1;
 assign alu_src2 = src2_is_imm ? imm : src2;
 //4.改
 assign alu_op[0] = is_add | is_addi | is_auipc;
-
+assign alu_op[1] = is_sltiu;
 
 //alu
 alu u_alu(
