@@ -106,7 +106,7 @@ assign rs1     = inst[19:15];
 assign rs2     = inst[24:20];
 assign rd      = inst[11:7];
 assign funct3  = inst[14:12];
-
+assign inst31_25 = inst[31:25];
 
 //独热码
 wire [127:0] opcode_d;
@@ -120,6 +120,14 @@ decoder3_8 u_decoder3_8(
 	.in  	(funct3   ),
 	.out 	(funct3_d  )
 );
+
+wire [127:0] inst31_25_d;
+decoder7_128 u1_decoder7_128(
+	.in  	(inst31_25   ),
+	.out 	(inst32_25_d)
+);
+
+
 //大类
 assign is_I = opcode_d[19] | opcode_d[3] | opcode_d[103] ; // 0010011 or 0000011 or 1100111 → I 型
 assign is_U = opcode_d[55] | opcode_d[23] ;                // 0110111 or 0010111 → U 型
@@ -136,11 +144,11 @@ assign is_lui   =  opcode_d[55];
 //J
 assign is_jal   =  opcode_d[111];
 //R
-assign is_add   =  opcode_d[51]  &  funct3_d[0];
+assign is_add   =  opcode_d[51]  &  funct3_d[0] & inst31_25_d[0];
 assign is_xor   =  opcode_d[51]  &  funct3_d[4];
 assign is_or   =   opcode_d[51]  &  funct3_d[6];
 assign is_sltu  =  opcode_d[51]  &  funct3_d[3];
-assign is_sub   =  opcode_d[51]  &  funct3_d[0];
+assign is_sub   =  opcode_d[51]  &  funct3_d[0] & inst31_25_d[32];
 //I
 assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];
