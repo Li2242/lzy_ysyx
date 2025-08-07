@@ -83,6 +83,7 @@ wire is_sltiu;
 wire is_srai;
 //S
 wire is_sw;
+wire is_sh;
 wire is_sb;
 //B
 wire is_correct_b;
@@ -156,10 +157,13 @@ assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];
 assign is_lw    =  opcode_d[3]   &  funct3_d[2];
 assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
-assign is_sw    =  opcode_d[35]  &  funct3_d[2];
-assign is_sb    =  opcode_d[35]  &  funct3_d[0];
 assign is_sltiu =  opcode_d[19]  &  funct3_d[3];
 assign is_srai  =  opcode_d[19]  &  funct3_d[5] & inst31_25_d[32];
+//S
+assign is_sb    =  opcode_d[35]  &  funct3_d[0];
+assign is_sw    =  opcode_d[35]  &  funct3_d[2];
+assign is_sh    =  opcode_d[35]  &  funct3_d[1];
+
 //B
 assign is_bne   =  opcode_d[99]  &  funct3_d[1];
 //ebreak
@@ -167,7 +171,7 @@ assign is_ebreak = (inst == 32'h00100073);
 
 //控制信号 3.加指令改
 assign mem_en   = is_lw | is_lbu;
-assign mem_wen  = is_sw | is_sb;
+assign mem_wen  = is_sw | is_sb | is_sh;
 assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai;
 
 assign reg_from_mem  = is_lw  | is_lbu;
@@ -256,7 +260,8 @@ assign waddr = mem_wen ? src1 + imm : 32'h80000000;
 assign wdata = src2;
 //掩码
 assign wmask = is_sb ? 8'b00000001 :
-							 8'b00001111;
+							 is_sh ? 8'b00000011 :
+							         8'b00001111 ;
 
 //读地址
 always @(*) begin
