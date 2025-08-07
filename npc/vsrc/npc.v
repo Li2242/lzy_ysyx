@@ -125,7 +125,7 @@ decoder3_8 u_decoder3_8(
 wire [127:0] inst31_25_d;
 decoder7_128 u1_decoder7_128(
 	.in  	(inst31_25   ),
-	.out 	(inst32_25_d)
+	.out 	(inst31_25_d)
 );
 
 
