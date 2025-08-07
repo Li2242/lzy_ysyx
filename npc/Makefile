@@ -1,6 +1,6 @@
 VERILATOR = verilator
 #参数
-VERILATOR_FLAGS = --cc --exe --build  --top-module npc  --trace
+VERILATOR_FLAGS = --cc --exe  --build  --top-module npc
 CFLAGS = -g -O3
 # 头文件路径
 CFLAGS += -I $(NPC_HOME)/csrc/include/
@@ -20,6 +20,14 @@ $(shell mkdir -p $(BUILD_DIR))
 override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt -d $(NPC_HOME)/tools/riscv32-nemu-interpreter-so
 #如果没有传入镜像文件就置为空
 IMG ?=
+
+#是否加上波形文件
+TRACE ?= 0
+
+ifeq ($(TRACE),1)
+    VERILATOR_FLAGS += --trace
+    CFLAGS += -DENABLE_TRACE
+endif
 
 # Include all filelist.mk to merge file lists
 FILELIST_MK = $(shell find -L ./utils -name "filelist.mk")

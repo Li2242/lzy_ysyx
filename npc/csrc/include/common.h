@@ -8,7 +8,11 @@
 //仿真所需要的
 #include <verilated.h>
 #include "Vnpc.h"
-#include "verilated_vcd_c.h"
+
+#ifdef ENABLE_TRACE
+	#include "verilated_vcd_c.h"
+#endif
+
 //访问寄存器
 #include "Vnpc___024root.h"
 
