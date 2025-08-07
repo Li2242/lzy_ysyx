@@ -84,7 +84,7 @@ assign or_result  = src1 | src2;
 assign and_result = src1 & src2;
 
 //sra
-assign sra_result = src1 >>> src2[4:0];
+assign sra_result = $signed(src1) >>> src2[4:0];
 //sll
 assign sll_result = src1 << src2[4:0];
 //srl
