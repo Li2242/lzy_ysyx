@@ -20,6 +20,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     VL_IN8(clk,0,0);
     VL_IN8(reset,0,0);
     CData/*0:0*/ npc__DOT__mem_en;
+    CData/*0:0*/ npc__DOT__is_add;
     CData/*0:0*/ npc__DOT__is_xor;
     CData/*0:0*/ npc__DOT__is_or;
     CData/*0:0*/ npc__DOT__is_sltu;
@@ -28,7 +29,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ npc__DOT__is_lw;
     CData/*0:0*/ npc__DOT__is_lbu;
     CData/*0:0*/ npc__DOT__is_sltiu;
-    CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_11;
+    CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_8;
+    CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_12;
     CData/*0:0*/ npc__DOT__u_alu__DOT__sltu;
     CData/*0:0*/ npc__DOT__u_alu__DOT__bne;
     CData/*0:0*/ npc__DOT__u_alu__DOT__sub;
@@ -53,6 +55,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     IData/*31:0*/ __Vfunc_v_pmem_read__3__Vfuncout;
     IData/*31:0*/ __Vfunc_v_pmem_read__4__Vfuncout;
     IData/*31:0*/ __VactIterCount;
+    QData/*32:0*/ npc__DOT__inst31_25_d__BRA__32__03a0__KET__;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_regfile2__DOT__rf;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VactTriggered;
