@@ -31,8 +31,8 @@ wire        adder_cin;
 wire [31:0] adder_result;
 wire        adder_cout;
 assign adder_a   = src1;
-assign adder_b   = (sltu) ? ~src2 : src2;
-assign adder_cin = (sltu) ? 1'b1  : 1'b0;
+assign adder_b   = (sltu | bne) ? ~src2 : src2;
+assign adder_cin = (sltu | bne) ? 1'b1  : 1'b0;
 
 assign {adder_cout , adder_result} = {1'b0,adder_a} + {1'b0,adder_b} + {32'b0,adder_cin};
 
