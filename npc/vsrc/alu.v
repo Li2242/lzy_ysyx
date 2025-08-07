@@ -25,7 +25,7 @@ assign adder_a   = src1;
 assign adder_b   = (sltiu) ? ~src2 : src2;
 assign adder_cin = (sltiu) ? 1'b1  : 1'b0;
 
-assign {adder_cout , adder_result} = adder_a + adder_b + adder_cin;
+assign {adder_cout , adder_result} = {1'b0,adder_a} + {1'b0,adder_b} + {32'b0,adder_cin};
 
 
 
