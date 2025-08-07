@@ -278,10 +278,9 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                    ? (0xfffffffeU & vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_0)
                                    : (((0x6fU == (0x7fU 
                                                   & vlSelfRef.npc__DOT__inst)) 
-                                       | ((IData)(vlSelfRef.npc__DOT__u_alu__DOT__bne) 
-                                          | ((IData)(vlSelfRef.npc__DOT__is_bge) 
-                                             | (1U 
-                                                == vlSelfRef.alu_result))))
+                                       | (((IData)(vlSelfRef.npc__DOT__u_alu__DOT__bne) 
+                                           | (IData)(vlSelfRef.npc__DOT__is_bge)) 
+                                          & (1U == vlSelfRef.alu_result)))
                                        ? (vlSelfRef.pc 
                                           + vlSelfRef.npc__DOT__imm)
                                        : ((IData)(4U) 
