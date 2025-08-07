@@ -100,9 +100,9 @@ void sim_exe(uint32_t n){
 void sim_end(){
 #ifdef ENABLE_TRACE
   tfp->close();
+  delete tfp;
 #endif
   delete top;
-  delete tfp;
   delete contextp;
 }
 

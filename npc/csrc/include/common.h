@@ -29,7 +29,9 @@ extern int npc_state;
 
 //仿真
 extern VerilatedContext* contextp ;
-extern VerilatedVcdC* tfp ;
+#ifdef ENABLE_TRACE
+	extern VerilatedVcdC* tfp ;
+#endif
 extern Vnpc* top;
 //寄存器
 extern const char *regs[];
