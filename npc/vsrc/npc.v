@@ -89,6 +89,7 @@ wire is_srai;
 wire is_xori;
 wire is_andi;
 wire is_slli;
+wire is_lh;
 //S
 wire is_sw;
 wire is_sh;
@@ -180,6 +181,7 @@ assign is_xori  =  opcode_d[19]  &  funct3_d[4];
 assign is_andi  =  opcode_d[19]  &  funct3_d[7];
 assign is_srli  =  opcode_d[19]  &  funct3_d[5] & inst31_25_d[0];
 assign is_slli  =  opcode_d[19]  &  funct3_d[1] & inst31_25_d[0];
+assign is_lh    =  opcode_d[3]   &  funct3_d[1];
 //S
 assign is_sb    =  opcode_d[35]  &  funct3_d[0];
 assign is_sw    =  opcode_d[35]  &  funct3_d[2];
@@ -196,11 +198,11 @@ assign is_blt   =  opcode_d[99]  &  funct3_d[4];
 assign is_ebreak = (inst == 32'h00100073);
 
 //控制信号 3.加指令改
-assign mem_en   = is_lw | is_lbu;
+assign mem_en   = is_lw | is_lbu | is_lh;
 assign mem_wen  = is_sw | is_sb | is_sh;
-assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli | is_slt;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli | is_slt | is_lh;
 
-assign reg_from_mem  = is_lw  | is_lbu;
+assign reg_from_mem  = is_lw  | is_lbu | is_lh;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 //这条判断的B指令是否正确
@@ -285,6 +287,7 @@ wire [31:0] raddr;
 wire [31:0] waddr;
 wire [31:0] wdata;
 wire [7:0]  wmask;
+wire [31:0] pmem_read_data;
 
 //内存地址
 //这里verilator会编译之后会出现mem_en未0的情况下取调用v_pmem_read去读地址
@@ -296,14 +299,17 @@ assign wdata = src2;
 assign wmask = is_sb ? 8'b00000001 :
 							 is_sh ? 8'b00000011 :
 							         8'b00001111 ;
-
+//数据
+assign pmem_read_data = is_lbu ? v_pmem_read(raddr , 1) :
+						 					  is_lh  ? v_pmem_read(raddr , 2) :
+					 						           v_pmem_read(raddr , 4);
 //读地址
 always @(*) begin
 	if(mem_en)begin
 		// $display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
-		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'h000000FF:
-							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
-					 						 v_pmem_read(raddr , 4);
+		rdata =  is_lbu ? pmem_read_data & 32'h000000FF:
+						 is_lh  ? {{16{pmem_read_data[15]}},pmem_read_data[15:0]}:
+					 						pmem_read_data;
 	end else begin
 		rdata = 0;
 	end
