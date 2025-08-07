@@ -188,7 +188,7 @@ assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 //这条判断的B指令是否正确
-assign is_correct_b  = (is_bne | is_bge) || (alu_result == 1) ;
+assign is_correct_b  = (is_bne | is_bge) && (alu_result == 1) ;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
