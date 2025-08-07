@@ -140,7 +140,7 @@ assign is_add   =  opcode_d[51]  &  funct3_d[0];
 assign is_xor   =  opcode_d[51]  &  funct3_d[4];
 assign is_or   =   opcode_d[51]  &  funct3_d[6];
 assign is_sltu  =  opcode_d[51]  &  funct3_d[3];
-assign is_sub   =  opcode_d[52]  &  funct3_d[0];
+assign is_sub   =  opcode_d[51]  &  funct3_d[0];
 //I
 assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];

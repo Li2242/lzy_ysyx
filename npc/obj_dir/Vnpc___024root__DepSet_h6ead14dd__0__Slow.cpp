@@ -148,7 +148,6 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__is_xor = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_or = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_sltu = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__is_sub = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_jalr = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_addi = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_lw = VL_RAND_RESET_I(1);
@@ -166,6 +165,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     }
     vlSelf->npc__DOT__u_alu__DOT__sltu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__u_alu__DOT__bne = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__u_alu__DOT__sub = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__u_alu__DOT__add_sub_result = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__u_alu__DOT__adder_b = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__u_alu__DOT__adder_cin = VL_RAND_RESET_I(1);
