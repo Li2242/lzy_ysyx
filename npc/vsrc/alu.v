@@ -2,7 +2,7 @@
 module alu(
     input[31:0] src1,
 		input[31:0] src2,
-    input[10:0]  alu_op,
+    input[11:0]  alu_op,
     output[31:0] alu_result
 );
 
@@ -17,6 +17,7 @@ wire sll;
 wire and0;
 wire bge;
 wire beq;
+wire srl;
 
 assign add  = alu_op[0];
 assign sltu = alu_op[1];
@@ -29,6 +30,7 @@ assign sll = alu_op[7];
 assign and0 = alu_op[8];
 assign bge = alu_op[9];
 assign beq = alu_op[10];
+assign srl = alu_op[11];
 
 wire [31:0] add_sub_result;
 wire [31:0] sltu_result;
@@ -40,6 +42,7 @@ wire [31:0] sll_result;
 wire [31:0] and_result;
 wire [31:0] bge_result;
 wire [31:0] beq_result;
+wire [31:0] srl_result;
 
 //加减法
 wire [31:0] adder_a;
@@ -83,6 +86,8 @@ assign and_result = src1 & src2;
 assign sra_result = src1 >>> src2[4:0];
 //sll
 assign sll_result = src1 << src2[4:0];
+//srl
+assign srl_result = src1 >> src2[4:0];
 
 assign alu_result = ({32{add | sub}}  & add_sub_result)
                   | ({32{sltu}} & sltu_result)
@@ -93,7 +98,8 @@ assign alu_result = ({32{add | sub}}  & add_sub_result)
 			  			    | ({32{sll}}  & sll_result)
 			  			    | ({32{and0}} & and_result)
 			  			    | ({32{bge}}  & bge_result)
-			  			    | ({32{beq}}  & beq_result);
+			  			    | ({32{beq}}  & beq_result)
+			  			    | ({32{srl}}  & srl_result);
 // 			  			| ({32{alu_op[4]}} & result_addi)
 // 			  			| ({32{alu_op[5]}} & result_add)
 // 			  			| ({32{alu_op[6]}} & result_lw)
