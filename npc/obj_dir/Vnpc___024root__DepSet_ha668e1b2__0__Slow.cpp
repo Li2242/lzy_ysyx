@@ -66,12 +66,6 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
     vlSelfRef.npc__DOT__is_andi = (IData)((0x7013U 
                                            == (0x707fU 
                                                & vlSelfRef.npc__DOT__inst)));
-    vlSelfRef.npc__DOT__is_slt = (IData)((0x2033U == 
-                                          (0xfe00707fU 
-                                           & vlSelfRef.npc__DOT__inst)));
-    vlSelfRef.npc__DOT__is_sltu = (IData)((0x3033U 
-                                           == (0x707fU 
-                                               & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT__is_addi = (IData)((0x13U == 
                                            (0x707fU 
                                             & vlSelfRef.npc__DOT__inst)));
@@ -155,6 +149,14 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                                  | (0x1fU 
                                                     & (vlSelfRef.npc__DOT__inst 
                                                        >> 7U)))))))));
+    vlSelfRef.npc__DOT__is_slt = (IData)((0x2033U == 
+                                          (0xfe00707fU 
+                                           & vlSelfRef.npc__DOT__inst)));
+    vlSelfRef.npc__DOT__is_sltu = (IData)((0x3033U 
+                                           == (0x707fU 
+                                               & vlSelfRef.npc__DOT__inst)));
+    vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_23 
+        = (IData)((0x1000U == (0xfe007000U & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT__u_alu__DOT__bne = (IData)((0x1063U 
                                                    == 
                                                    (0x707fU 
@@ -177,8 +179,6 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                                & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_8 
         = (IData)((0x33U == (0x707fU & vlSelfRef.npc__DOT__inst)));
-    vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_23 
-        = (IData)((0x1000U == (0xfe007000U & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT__is_sltiu = (IData)((0x3013U 
                                             == (0x707fU 
                                                 & vlSelfRef.npc__DOT__inst)));
@@ -203,6 +203,12 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                                     & vlSelfRef.npc__DOT__inst)));
     vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_0 
         = (vlSelfRef.npc__DOT__src1 + vlSelfRef.npc__DOT__imm);
+    vlSelfRef.npc__DOT__is_sll = ((0x33U == (0x7fU 
+                                             & vlSelfRef.npc__DOT__inst)) 
+                                  & (IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_23));
+    vlSelfRef.npc__DOT__is_slli = ((0x13U == (0x7fU 
+                                              & vlSelfRef.npc__DOT__inst)) 
+                                   & (IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_23));
     vlSelfRef.npc__DOT__u_alu__DOT__slt = ((IData)(vlSelfRef.npc__DOT__is_slt) 
                                            | ((IData)(vlSelfRef.npc__DOT__is_bge) 
                                               | (IData)(vlSelfRef.npc__DOT__is_blt)));
@@ -213,12 +219,6 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                            & (0x20U 
                                               == (vlSelfRef.npc__DOT__inst 
                                                   >> 0x19U)));
-    vlSelfRef.npc__DOT__is_sll = ((0x33U == (0x7fU 
-                                             & vlSelfRef.npc__DOT__inst)) 
-                                  & (IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_23));
-    vlSelfRef.npc__DOT__is_slli = ((0x13U == (0x7fU 
-                                              & vlSelfRef.npc__DOT__inst)) 
-                                   & (IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_23));
     vlSelfRef.npc__DOT__u_alu__DOT__sltu = ((IData)(vlSelfRef.npc__DOT__is_sltiu) 
                                             | ((IData)(vlSelfRef.npc__DOT__is_sltu) 
                                                | ((IData)(vlSelfRef.npc__DOT__is_bgeu) 
@@ -256,10 +256,6 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
     vlSelfRef.npc__DOT__raddr = ((IData)(vlSelfRef.npc__DOT__mem_en)
                                   ? vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_0
                                   : 0x80000000U);
-    vlSelfRef.npc__DOT__u_alu__DOT__sra_result = (vlSelfRef.npc__DOT__alu_src1 
-                                                  >> 
-                                                  (0x1fU 
-                                                   & vlSelfRef.npc__DOT__alu_src2));
     vlSelfRef.npc__DOT__u_alu__DOT__adder_b = ((IData)(vlSelfRef.npc__DOT__u_alu__DOT__adder_cin)
                                                 ? (~ vlSelfRef.npc__DOT__alu_src2)
                                                 : vlSelfRef.npc__DOT__alu_src2);
@@ -300,7 +296,9 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                          & (vlSelfRef.npc__DOT__alu_src1 
                                             | vlSelfRef.npc__DOT__alu_src2)) 
                                         | (((- (IData)((IData)(vlSelfRef.npc__DOT__is_srai))) 
-                                            & vlSelfRef.npc__DOT__u_alu__DOT__sra_result) 
+                                            & VL_SHIFTRS_III(32,32,5, vlSelfRef.npc__DOT__alu_src1, 
+                                                             (0x1fU 
+                                                              & vlSelfRef.npc__DOT__alu_src2))) 
                                            | (((- (IData)(
                                                           ((IData)(vlSelfRef.npc__DOT__is_sll) 
                                                            | (IData)(vlSelfRef.npc__DOT__is_slli)))) 
@@ -332,7 +330,10 @@ VL_ATTR_COLD void Vnpc___024root___stl_sequent__TOP__0(Vnpc___024root* vlSelf) {
                                                                         (0U 
                                                                          != vlSelfRef.npc__DOT__u_alu__DOT__add_sub_result))))) 
                                                        | ((- (IData)((IData)(vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_21))) 
-                                                          & vlSelfRef.npc__DOT__u_alu__DOT__sra_result)))))))))));
+                                                          & (vlSelfRef.npc__DOT__alu_src1 
+                                                             >> 
+                                                             (0x1fU 
+                                                              & vlSelfRef.npc__DOT__alu_src2)))))))))))));
     vlSelfRef.npc__DOT__nextpc = ((IData)(vlSelfRef.npc__DOT__is_jalr)
                                    ? (0xfffffffeU & vlSelfRef.npc__DOT____VdfgRegularize_h9a2a8a06_0_0)
                                    : (((0x6fU == (0x7fU 
