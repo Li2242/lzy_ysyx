@@ -93,6 +93,7 @@ wire is_sb;
 wire is_correct_b;
 wire is_bne;
 wire is_bge;
+wire is_beq;
 //ebreak(end)
 wire is_ebreak;
 
@@ -176,6 +177,7 @@ assign is_sh    =  opcode_d[35]  &  funct3_d[1];
 //B
 assign is_bne   =  opcode_d[99]  &  funct3_d[1];
 assign is_bge   =  opcode_d[99]  &  funct3_d[5];
+assign is_beq   =  opcode_d[99]  &  funct3_d[0];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
@@ -188,7 +190,7 @@ assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 //这条判断的B指令是否正确
-assign is_correct_b  = (is_bne | is_bge) && (alu_result == 1) ;
+assign is_correct_b  = (is_bne | is_bge | is_beq) && (alu_result == 1) ;
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -221,7 +223,7 @@ RegisterFile u_regfile2 (
 // ================================= 寄存器END  ======================================
 
 // =======================    ALU  ========================================
-wire [9:0]  alu_op;           //1.加指令时需要改
+wire [10:0]  alu_op;           //1.加指令时需要改
 wire        src1_is_pc;
 wire        src2_is_imm;
 wire [31:0]   src1;
@@ -246,6 +248,7 @@ assign alu_op[6] = is_srai;
 assign alu_op[7] = is_sll;
 assign alu_op[8] = is_and | is_andi;
 assign alu_op[9] = is_bge;
+assign alu_op[10] = is_beq;
 //alu
 alu u_alu(
     .src1   	(alu_src1    ),

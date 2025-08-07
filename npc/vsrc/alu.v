@@ -2,7 +2,7 @@
 module alu(
     input[31:0] src1,
 		input[31:0] src2,
-    input[9:0]  alu_op,
+    input[10:0]  alu_op,
     output[31:0] alu_result
 );
 
@@ -16,6 +16,7 @@ wire sra;
 wire sll;
 wire and0;
 wire bge;
+wire beq;
 
 assign add  = alu_op[0];
 assign sltu = alu_op[1];
@@ -27,6 +28,7 @@ assign sra = alu_op[6];
 assign sll = alu_op[7];
 assign and0 = alu_op[8];
 assign bge = alu_op[9];
+assign beq = alu_op[10];
 
 wire [31:0] add_sub_result;
 wire [31:0] sltu_result;
@@ -37,6 +39,7 @@ wire [31:0] sra_result;
 wire [31:0] sll_result;
 wire [31:0] and_result;
 wire [31:0] bge_result;
+wire [31:0] beq_result;
 
 //加减法
 wire [31:0] adder_a;
@@ -45,8 +48,8 @@ wire        adder_cin;
 wire [31:0] adder_result;
 wire        adder_cout;
 assign adder_a   = src1;
-assign adder_b   = (sltu | bne | sub | bge) ? ~src2 : src2;
-assign adder_cin = (sltu | bne | sub | bge) ? 1'b1  : 1'b0;
+assign adder_b   = (sltu | bne | sub | bge | beq) ? ~src2 : src2;
+assign adder_cin = (sltu | bne | sub | bge | beq) ? 1'b1  : 1'b0;
 
 assign {adder_cout , adder_result} = {1'b0,adder_a} + {1'b0,adder_b} + {32'b0,adder_cin};
 
@@ -65,6 +68,9 @@ assign bge_result[0]    = ~((src1[31] != src2[31]) ? src1[31] : adder_result[31]
 //bne
 assign bne_result[31:1] = 31'b0;
 assign bne_result[0]    = |add_sub_result;
+//beq
+assign beq_result[31:1] = 31'b0;
+assign beq_result[0] = ~(|add_sub_result);
 
 //xor
 assign xor_result = src1 ^ src2;
@@ -86,7 +92,8 @@ assign alu_result = ({32{add | sub}}  & add_sub_result)
 			  			    | ({32{sra}}  & sra_result)
 			  			    | ({32{sll}}  & sll_result)
 			  			    | ({32{and0}} & and_result)
-			  			    | ({32{bge}}  & bge_result);
+			  			    | ({32{bge}}  & bge_result)
+			  			    | ({32{beq}}  & beq_result);
 // 			  			| ({32{alu_op[4]}} & result_addi)
 // 			  			| ({32{alu_op[5]}} & result_add)
 // 			  			| ({32{alu_op[6]}} & result_lw)
