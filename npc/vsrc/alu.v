@@ -15,7 +15,7 @@ wire sub;
 wire sra;
 wire sll;
 wire and0;
-wire bge;
+wire slt;
 wire beq;
 wire srl;
 
@@ -28,7 +28,7 @@ assign sub = alu_op[5];
 assign sra = alu_op[6];
 assign sll = alu_op[7];
 assign and0 = alu_op[8];
-assign bge = alu_op[9];
+assign slt = alu_op[9];
 assign beq = alu_op[10];
 assign srl = alu_op[11];
 
@@ -40,7 +40,7 @@ wire [31:0] or_result;
 wire [31:0] sra_result;
 wire [31:0] sll_result;
 wire [31:0] and_result;
-wire [31:0] bge_result;
+wire [31:0] slt_result;
 wire [31:0] beq_result;
 wire [31:0] srl_result;
 
@@ -51,8 +51,8 @@ wire        adder_cin;
 wire [31:0] adder_result;
 wire        adder_cout;
 assign adder_a   = src1;
-assign adder_b   = (sltu | bne | sub | bge | beq) ? ~src2 : src2;
-assign adder_cin = (sltu | bne | sub | bge | beq) ? 1'b1  : 1'b0;
+assign adder_b   = (sltu | bne | sub | slt | beq) ? ~src2 : src2;
+assign adder_cin = (sltu | bne | sub | slt | beq) ? 1'b1  : 1'b0;
 
 assign {adder_cout , adder_result} = {1'b0,adder_a} + {1'b0,adder_b} + {32'b0,adder_cin};
 
@@ -65,9 +65,9 @@ assign add_sub_result = adder_result;
 assign sltu_result[31:1] = 31'b0;
 assign sltu_result[0] = ~adder_cout;
 
-//bge(补码比较)
-assign bge_result[31:1] = 31'b0;
-assign bge_result[0]    = ~((src1[31] != src2[31]) ? src1[31] : adder_result[31]);
+//slt(补码比较)
+assign slt_result[31:1] = 31'b0;
+assign slt_result[0]    = (src1[31] != src2[31]) ? src1[31] : adder_result[31];
 
 //bne
 assign bne_result[31:1] = 31'b0;
@@ -98,7 +98,7 @@ assign alu_result = ({32{add | sub}}  & add_sub_result)
 			  			    | ({32{sra}}  & sra_result)
 			  			    | ({32{sll}}  & sll_result)
 			  			    | ({32{and0}} & and_result)
-			  			    | ({32{bge}}  & bge_result)
+			  			    | ({32{slt}}  & slt_result)
 			  			    | ({32{beq}}  & beq_result)
 			  			    | ({32{srl}}  & srl_result);
 // 			  			| ({32{alu_op[4]}} & result_addi)

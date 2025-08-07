@@ -78,6 +78,7 @@ wire is_sll;
 wire is_and;
 wire is_srl;
 wire is_srli;
+wire is_slt;
 //I
 wire is_jalr;
 wire is_addi;
@@ -166,6 +167,7 @@ assign is_sub   =  opcode_d[51]  &  funct3_d[0] & inst31_25_d[32];
 assign is_sll   =  opcode_d[51]  &  funct3_d[1] & inst31_25_d[0];
 assign is_and   =  opcode_d[51]  &  funct3_d[7] & inst31_25_d[0];
 assign is_srl   =  opcode_d[51]  &  funct3_d[5] & inst31_25_d[0];
+assign is_slt   =  opcode_d[51]  &  funct3_d[2] & inst31_25_d[0];
 //I
 assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];
@@ -194,13 +196,13 @@ assign is_ebreak = (inst == 32'h00100073);
 //控制信号 3.加指令改
 assign mem_en   = is_lw | is_lbu;
 assign mem_wen  = is_sw | is_sb | is_sh;
-assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli ;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli | is_slt;
 
 assign reg_from_mem  = is_lw  | is_lbu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 //这条判断的B指令是否正确
-assign is_correct_b  = ((is_bne | is_bge | is_beq | is_bltu) && (alu_result == 1)) | (is_bgeu && alu_result==0) ;
+assign is_correct_b  = ((is_bne | is_beq | is_bltu) && (alu_result == 1)) | ((is_bgeu | is_bge) && alu_result==0);
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -258,7 +260,7 @@ assign alu_op[5] = is_sub;
 assign alu_op[6] = is_srai;
 assign alu_op[7] = is_sll | is_slli;
 assign alu_op[8] = is_and | is_andi;
-assign alu_op[9] = is_bge;
+assign alu_op[9] = is_slt | is_bge;
 assign alu_op[10] = is_beq;
 assign alu_op[11] = is_srl | is_srli;
 
