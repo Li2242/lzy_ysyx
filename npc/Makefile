@@ -1,6 +1,6 @@
 VERILATOR = verilator
 #参数
-VERILATOR_FLAGS = --cc --exe --build  --top-module npc  #--trace
+VERILATOR_FLAGS = --cc --exe --build  --top-module npc  --trace
 CFLAGS = -g -O3
 # 头文件路径
 CFLAGS += -I $(NPC_HOME)/csrc/include/
