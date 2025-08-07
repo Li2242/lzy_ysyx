@@ -143,6 +143,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__nextpc = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__inst = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__mem_en = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__reg_from_pc_4 = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__imm = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__is_add = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_xor = VL_RAND_RESET_I(1);
@@ -150,11 +151,10 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__is_sltu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_sll = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_and = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__is_srl = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_srli = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_slt = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_jalr = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_addi = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__is_lw = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_lbu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_sltiu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_srai = VL_RAND_RESET_I(1);
@@ -163,6 +163,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__is_slli = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_sh = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_sb = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__is_bge = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_bgeu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_bltu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
@@ -182,7 +183,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__u_alu__DOT__sltu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__u_alu__DOT__bne = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__u_alu__DOT__sub = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__u_alu__DOT__bge = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__u_alu__DOT__slt = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__u_alu__DOT__beq = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__u_alu__DOT__add_sub_result = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__u_alu__DOT__sra_result = VL_RAND_RESET_I(32);

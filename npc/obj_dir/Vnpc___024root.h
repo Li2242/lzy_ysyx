@@ -20,17 +20,17 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     VL_IN8(clk,0,0);
     VL_IN8(reset,0,0);
     CData/*0:0*/ npc__DOT__mem_en;
+    CData/*0:0*/ npc__DOT__reg_from_pc_4;
     CData/*0:0*/ npc__DOT__is_add;
     CData/*0:0*/ npc__DOT__is_xor;
     CData/*0:0*/ npc__DOT__is_or;
     CData/*0:0*/ npc__DOT__is_sltu;
     CData/*0:0*/ npc__DOT__is_sll;
     CData/*0:0*/ npc__DOT__is_and;
-    CData/*0:0*/ npc__DOT__is_srl;
     CData/*0:0*/ npc__DOT__is_srli;
+    CData/*0:0*/ npc__DOT__is_slt;
     CData/*0:0*/ npc__DOT__is_jalr;
     CData/*0:0*/ npc__DOT__is_addi;
-    CData/*0:0*/ npc__DOT__is_lw;
     CData/*0:0*/ npc__DOT__is_lbu;
     CData/*0:0*/ npc__DOT__is_sltiu;
     CData/*0:0*/ npc__DOT__is_srai;
@@ -39,6 +39,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ npc__DOT__is_slli;
     CData/*0:0*/ npc__DOT__is_sh;
     CData/*0:0*/ npc__DOT__is_sb;
+    CData/*0:0*/ npc__DOT__is_bge;
     CData/*0:0*/ npc__DOT__is_bgeu;
     CData/*0:0*/ npc__DOT__is_bltu;
     CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_8;
@@ -49,7 +50,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ npc__DOT__u_alu__DOT__sltu;
     CData/*0:0*/ npc__DOT__u_alu__DOT__bne;
     CData/*0:0*/ npc__DOT__u_alu__DOT__sub;
-    CData/*0:0*/ npc__DOT__u_alu__DOT__bge;
+    CData/*0:0*/ npc__DOT__u_alu__DOT__slt;
     CData/*0:0*/ npc__DOT__u_alu__DOT__beq;
     CData/*0:0*/ npc__DOT__u_alu__DOT__adder_cin;
     CData/*0:0*/ __VstlFirstIteration;
