@@ -75,7 +75,7 @@ uint32_t pmem_read(uint32_t addr, int len) {
 		if(addr == 0xa0000048){
 			rtc_io_handler();
 		}
-		uint32_t ret = host_read(rtc_port_base,len);
+		uint32_t ret = host_read(rtc_port_base+(addr - 0xa000004c),len);
 		return ret;
 	}
 	out_of_bound(addr);
