@@ -29,9 +29,10 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     CData/*0:0*/ npc__DOT__is_addi;
     CData/*0:0*/ npc__DOT__is_lbu;
     CData/*0:0*/ npc__DOT__is_sltiu;
-    CData/*0:0*/ npc__DOT__is_bne;
     CData/*0:0*/ npc__DOT____VdfgRegularize_h9a2a8a06_0_11;
     CData/*0:0*/ npc__DOT__u_alu__DOT__sltu;
+    CData/*0:0*/ npc__DOT__u_alu__DOT__bne;
+    CData/*0:0*/ npc__DOT__u_alu__DOT__adder_cin;
     CData/*0:0*/ __VstlFirstIteration;
     CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
     CData/*0:0*/ __VactContinue;

@@ -153,7 +153,6 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__is_addi = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_lbu = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__is_sltiu = VL_RAND_RESET_I(1);
-    vlSelf->npc__DOT__is_bne = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__src1 = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__alu_src1 = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__alu_src2 = VL_RAND_RESET_I(32);
@@ -165,8 +164,10 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
     vlSelf->npc__DOT__u_alu__DOT__sltu = VL_RAND_RESET_I(1);
+    vlSelf->npc__DOT__u_alu__DOT__bne = VL_RAND_RESET_I(1);
     vlSelf->npc__DOT__u_alu__DOT__add_sub_result = VL_RAND_RESET_I(32);
     vlSelf->npc__DOT__u_alu__DOT__adder_b = VL_RAND_RESET_I(32);
+    vlSelf->npc__DOT__u_alu__DOT__adder_cin = VL_RAND_RESET_I(1);
     vlSelf->__Vfunc_v_pmem_read__0__Vfuncout = 0;
     vlSelf->__Vfunc_v_pmem_read__3__Vfuncout = 0;
     vlSelf->__Vfunc_v_pmem_read__4__Vfuncout = 0;
