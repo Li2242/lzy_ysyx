@@ -1,10 +1,19 @@
 #include <am.h>
+#include <riscv/riscv.h>
+#include <stdio.h>
+
+# define DEVICE_BASE 0xa0000000
+//实时时钟地址
+#define RTC_ADDR        (DEVICE_BASE + 0x0000048)
 
 void __am_timer_init() {
 }
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-  uptime->us = 0;
+  uint32_t high32= inl(RTC_ADDR + 4);
+	uint32_t low32 = inl(RTC_ADDR);
+	// printf("%d %d\n",high32,low32);
+	uptime->us = (uint64_t)high32<<32 | low32;
 }
 
 void __am_timer_rtc(AM_TIMER_RTC_T *rtc) {

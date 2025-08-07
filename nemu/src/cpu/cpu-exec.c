@@ -116,7 +116,7 @@ static void execute(uint64_t n) {
     if(ftrace_switch){
         #ifdef CONFIG_FTRACE
             //ftrace
-            ftrace(s.logbuf);
+            ftrace(&s);
         #endif
     }
 #endif
@@ -213,63 +213,56 @@ void ring_buf_fun(char* inst){
 
 
 //ftrace(我这个是根据ITRACE的反汇编写的)
-void ftrace(char* inst){
-    //找出jal和jalr
-        // char* fun = s.logbuf;
-        // fun+=24;
-        char fun1[10];
-        unsigned int pc, target;
-        // char target[10];
-        sscanf(inst,"%x: %*s %*s %*s %*s %s\t%x",&pc ,fun1, &target);
-        // char* temp = strtok(fun,"\t");
-        //终于找出来了，接下来要进行处理了
-        bool find = 0;
+void ftrace(Decode *s){
+
+				uint32_t inst_t = s->isa.inst;
+				uint32_t opcode = inst_t & 0x7f;
+				uint32_t funct3 = (inst_t >> 12) & 0x7;
+	 			uint32_t rd  = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
+				uint32_t rs1 = (inst_t >> 15) & 0x1f;
+				int32_t imm_I = SEXT(BITS(inst_t, 31, 20), 12);
+
+
         bool in = 0;
         //jal
-        if(strncmp(fun1,"jal",4) ==0){
+        if(opcode == 111 ){
             in = 1;
-            int jal_target = pc + target;
+            int jal_target = cpu.pc;
             for(int i =0;i<sym_num;i++){
-                if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&   ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jal_target);
-                    find = 1;
-                    break;
+                if((symtab[i].st_value <= jal_target && jal_target < symtab[i].st_value + symtab[i].st_size) &&\
+								  ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC)
+									{
+                    printf("0x%x: %*scall [%s@0x%x]\n",s->pc,(count++)*2,"",strtab+symtab[i].st_name,jal_target);
+                    return;
                 }
             }
-        }
-        //jalr
-        if(strncmp(fun1,"jalr",5)==0){
-            in = 1;
-            char str_t[10];
-            sprintf(str_t,"%x",target);
-            bool success_flag = false;
-            uint32_t jalr_target = isa_reg_str2val(str_t, &success_flag);
-            if(!success_flag){
-                printf("寄存器取值失败!\n");
-            }
-            for(int i =0;i<sym_num;i++){
-                in = 1;
-                if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size && ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
-                    printf("0x%x: %*scall [%s@0x%x]\n",pc,++count,"",strtab+symtab[i].st_name,jalr_target);
-                    find = 1;
-                    break;
-                }
-            }
-        }
-        //ret
-        if(strncmp(fun1,"ret",3)==0){
-            in = 1;
-            for(int i =0;i<sym_num;i++){
-                in = 1;
-                if(symtab[i].st_value <= pc && pc < symtab[i].st_value + symtab[i].st_size ){
-                    printf("0x%x: %*sret[%s]\n",pc,--count,"",strtab+symtab[i].st_name);
-                    find = 1;
-                    break;
-                }
-            }
-        }
-        if(find==0 && in==1){
-            printf("???\n");
         }
 
+        //jalr(未使用Itrace)
+        if(opcode == 103 && funct3==0){
+            in = 1;
+						//ret
+						if(rd == 0 && rs1 == 1 && imm_I == 0){
+							uint32_t ret_target = cpu.pc;
+							for(int i =0;i<sym_num;i++){
+									if(symtab[i].st_value <= ret_target && ret_target < symtab[i].st_value + symtab[i].st_size ){
+											printf("0x%x: %*sret[%s]\n",s->pc,(--count)*2,"",strtab+symtab[i].st_name);
+											return;
+									}
+							}
+						}
+						//jalr
+						uint32_t jalr_target = cpu.pc;
+            for(int i =0;i<sym_num;i++){
+                if(symtab[i].st_value <= jalr_target && jalr_target < symtab[i].st_value + symtab[i].st_size &&\
+									 ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC){
+                    printf("0x%x: %*scall [%s@0x%x]\n",s->pc,(count++)*2,"",strtab+symtab[i].st_name,jalr_target);
+                    return;
+                }
+            }
+        }
+        if(in==1){
+            printf("???\n");
+        }
+				return;
 }

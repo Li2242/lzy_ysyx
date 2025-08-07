@@ -21,6 +21,11 @@ int printf(const char *fmt, ...) {
 					putstr(str);
 					break;
 				}
+				case 'c':{
+					char c = va_arg(ap,int );
+					putch(c);
+					break;
+				}
 				case 'd':{
 					int num = va_arg(ap,int);
 					char str[13];
@@ -28,6 +33,7 @@ int printf(const char *fmt, ...) {
 					putstr(str);
 					break;
 				}
+				default : putch(*fmt);
 			}
 			fmt++;
 		}else{

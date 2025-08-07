@@ -12,8 +12,8 @@ module npc(
 // =========================== PC ==================================
 wire [31:0] nextpc;
 
-assign nextpc =  is_jalr ? (src1+imm) & ~1 :
-                 is_jal  ?  pc + imm :  //未来B型指令要加在这里因为他们都是 pc + 4;
+assign nextpc =  is_jalr          ? (src1+imm) & ~1 :
+                 (is_jal | is_correct_b)  ?  pc + imm :       //未来B型指令要加在这里因为他们都是 pc + 4;
                  pc + 32'h4 ;
 
 //更新pc
@@ -32,6 +32,7 @@ end
 // ========================= 解析指令 ===================================
 reg[31:0]    inst;
 //肢解inst
+wire[6:0]    inst31_25;
 wire[6:0]    opcode;
 wire[2:0]    funct3;
 wire[4:0]    rs1;
@@ -51,7 +52,7 @@ wire [31:0]imm_I;
 wire [31:0]imm_U;
 wire [31:0]imm_J;
 wire [31:0]imm_S;
-// wire [31:0]imm_B;
+wire [31:0]imm_B;
 
 //指令大类型(个人感觉这是处理立即数所需要的)
 wire is_R;
@@ -59,7 +60,7 @@ wire is_I;
 wire is_U;
 wire is_J;
 wire is_S;
-// wire is_B;
+wire is_B;
 
 //指令小类型
 //U(end)
@@ -69,16 +70,40 @@ wire is_auipc;
 wire is_jal;
 //R
 wire is_add;
+wire is_xor;
+wire is_or;
+wire is_sltu;
+wire is_sub;
+wire is_sll;
+wire is_and;
+wire is_srl;
+wire is_srli;
+wire is_slt;
+wire is_sra;
 //I
 wire is_jalr;
 wire is_addi;
 wire is_lw;
 wire is_lbu;
+wire is_sltiu;
+wire is_srai;
+wire is_xori;
+wire is_andi;
+wire is_slli;
+wire is_lh;
+wire is_lhu;
 //S
 wire is_sw;
+wire is_sh;
 wire is_sb;
 //B
-
+wire is_correct_b;
+wire is_bne;
+wire is_bge;
+wire is_beq;
+wire is_bgeu;
+wire is_bltu;
+wire is_blt;
 //ebreak(end)
 wire is_ebreak;
 
@@ -90,7 +115,7 @@ assign inst = v_pmem_read(pc,4);
 
 //全部符号扩展，待会在处理
 assign imm_S = {{20{inst[31]}},inst[31:25],inst[11:7]};
-// assign imm_B = {{19{inst[31]}},inst[31],inst[7],inst[30:25],inst[11:8],0};
+assign imm_B = {{19{inst[31]}},inst[31],inst[7],inst[30:25],inst[11:8],1'b0};
 assign imm_I = {{20{inst[31]}},inst[31:20]};
 assign imm_U = {inst[31:12],{12{1'b0}}};
 assign imm_J = {{11{inst[31]}},inst[31],inst[19:12],inst[20],inst[30:21],1'b0};
@@ -100,7 +125,7 @@ assign rs1     = inst[19:15];
 assign rs2     = inst[24:20];
 assign rd      = inst[11:7];
 assign funct3  = inst[14:12];
-
+assign inst31_25 = inst[31:25];
 
 //独热码
 wire [127:0] opcode_d;
@@ -114,46 +139,84 @@ decoder3_8 u_decoder3_8(
 	.in  	(funct3   ),
 	.out 	(funct3_d  )
 );
+
+wire [127:0] inst31_25_d;
+decoder7_128 u1_decoder7_128(
+	.in  	(inst31_25   ),
+	.out 	(inst31_25_d)
+);
+
+
 //大类
 assign is_I = opcode_d[19] | opcode_d[3] | opcode_d[103] ; // 0010011 or 0000011 or 1100111 → I 型
 assign is_U = opcode_d[55] | opcode_d[23] ;                // 0110111 or 0010111 → U 型
 assign is_J = opcode_d[111] ;                              // 1101111 → J 型
 assign is_R = opcode_d[51] ;                               // 0110011 → R 型
-// assign is_B = opcode_[99] ;                             // 1100011 → B 型
-assign is_S = opcode_d[35] ;                            // 0100011 → S 型
+assign is_B = opcode_d[99] ;                                // 1100011 → B 型
+assign is_S = opcode_d[35] ;                               // 0100011 → S 型
 
 
 //指令识别
 //U
 assign is_auipc =  opcode_d[23];
 assign is_lui   =  opcode_d[55];
-// //J
+//J
 assign is_jal   =  opcode_d[111];
 //R
-assign is_add   =  opcode_d[51]  &  funct3_d[0];
+assign is_add   =  opcode_d[51]  &  funct3_d[0] & inst31_25_d[0];
+assign is_xor   =  opcode_d[51]  &  funct3_d[4];
+assign is_or   =   opcode_d[51]  &  funct3_d[6];
+assign is_sltu  =  opcode_d[51]  &  funct3_d[3];
+assign is_sub   =  opcode_d[51]  &  funct3_d[0] & inst31_25_d[32];
+assign is_sll   =  opcode_d[51]  &  funct3_d[1] & inst31_25_d[0];
+assign is_and   =  opcode_d[51]  &  funct3_d[7] & inst31_25_d[0];
+assign is_srl   =  opcode_d[51]  &  funct3_d[5] & inst31_25_d[0];
+assign is_slt   =  opcode_d[51]  &  funct3_d[2] & inst31_25_d[0];
+assign is_sra   =  opcode_d[51]  &  funct3_d[5] & inst31_25_d[32];
 //I
 assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];
 assign is_lw    =  opcode_d[3]   &  funct3_d[2];
 assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
-assign is_sw    =  opcode_d[35]  &  funct3_d[2];
+assign is_sltiu =  opcode_d[19]  &  funct3_d[3];
+assign is_srai  =  opcode_d[19]  &  funct3_d[5] & inst31_25_d[32];
+assign is_xori  =  opcode_d[19]  &  funct3_d[4];
+assign is_andi  =  opcode_d[19]  &  funct3_d[7];
+assign is_srli  =  opcode_d[19]  &  funct3_d[5] & inst31_25_d[0];
+assign is_slli  =  opcode_d[19]  &  funct3_d[1] & inst31_25_d[0];
+assign is_lh    =  opcode_d[3]   &  funct3_d[1];
+assign is_lhu   =  opcode_d[3]   &  funct3_d[5];
+//S
 assign is_sb    =  opcode_d[35]  &  funct3_d[0];
+assign is_sw    =  opcode_d[35]  &  funct3_d[2];
+assign is_sh    =  opcode_d[35]  &  funct3_d[1];
+
+//B
+assign is_bne   =  opcode_d[99]  &  funct3_d[1];
+assign is_bge   =  opcode_d[99]  &  funct3_d[5];
+assign is_beq   =  opcode_d[99]  &  funct3_d[0];
+assign is_bgeu   =  opcode_d[99]  &  funct3_d[7];
+assign is_bltu   =  opcode_d[99]  &  funct3_d[6];
+assign is_blt   =  opcode_d[99]  &  funct3_d[4];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
 
 //控制信号 3.加指令改
-assign mem_en   = is_lw | is_lbu;
-assign mem_wen  = is_sw | is_sb;
-assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu;
+assign mem_en   = is_lw | is_lbu | is_lh | is_lhu;
+assign mem_wen  = is_sw | is_sb | is_sh;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli | is_slt | is_lh |       is_lhu| is_sra;
 
-assign reg_from_mem  = is_lw  | is_lbu;
+assign reg_from_mem  = is_lw  | is_lbu | is_lh | is_lhu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
+//这条判断的B指令是否正确
+assign is_correct_b  = ((is_bne | is_beq | is_bltu | is_blt) && (alu_result == 1)) | ((is_bgeu | is_bge) && alu_result==0);
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
 				   | ({32{is_U}} & imm_U)
 		       | ({32{is_J}} & imm_J)
+		       | ({32{is_B}} & imm_B)
 				   | ({32{is_S}} & imm_S);
 
 // ======================= 解析指令 END ===================================
@@ -180,7 +243,7 @@ RegisterFile u_regfile2 (
 // ================================= 寄存器END  ======================================
 
 // =======================    ALU  ========================================
-wire [0:0]  alu_op;           //1.加指令时需要改
+wire [11:0]  alu_op;           //1.加指令时需要改
 wire        src1_is_pc;
 wire        src2_is_imm;
 wire [31:0]   src1;
@@ -189,14 +252,26 @@ wire [31:0] alu_src1;
 wire [31:0] alu_src2;
 
 //2.加指令时这里需要改
-assign src1_is_pc = is_auipc;
-assign src2_is_imm = is_addi | is_auipc;
+assign src1_is_pc  = is_auipc;
+assign src2_is_imm = is_addi | is_auipc | is_sltiu | is_srai | is_xori | is_andi |is_srli | is_slli;
 
 assign alu_src1 = src1_is_pc ? pc : src1;
 assign alu_src2 = src2_is_imm ? imm : src2;
 //4.改
 assign alu_op[0] = is_add | is_addi | is_auipc;
-
+//bgeu bltu利用了sltu的无符号比较
+assign alu_op[1] = is_sltiu | is_sltu | is_bgeu | is_bltu;
+assign alu_op[2] = is_bne;
+assign alu_op[3] = is_xor | is_xori;
+assign alu_op[4] = is_or;
+assign alu_op[5] = is_sub;
+assign alu_op[6] = is_srai | is_sra;
+assign alu_op[7] = is_sll | is_slli;
+assign alu_op[8] = is_and | is_andi;
+//blt 利用了slt的有符号比较
+assign alu_op[9] = is_slt | is_bge | is_blt;
+assign alu_op[10] = is_beq;
+assign alu_op[11] = is_srl | is_srli ;
 
 //alu
 alu u_alu(
@@ -216,23 +291,29 @@ wire [31:0] raddr;
 wire [31:0] waddr;
 wire [31:0] wdata;
 wire [7:0]  wmask;
+wire [31:0] pmem_read_data;
+
 //内存地址
-// assign raddr = src1 + imm ;
-// assign waddr = src1 + imm;
-assign raddr = mem_en ? src1 + imm : 32'h80000000;
+//这里verilator会编译之后会出现mem_en未0的情况下取调用v_pmem_read去读地址
+//为了防止出现读到其他内存，这里就设置了可读的地址
+assign raddr = mem_en  ? src1 + imm : 32'h80000000;
 assign waddr = mem_wen ? src1 + imm : 32'h80000000;
 assign wdata = src2;
 //掩码
 assign wmask = is_sb ? 8'b00000001 :
-							 8'b00001111;
-
+							 is_sh ? 8'b00000011 :
+							         8'b00001111 ;
+//数据
+assign pmem_read_data = is_lbu ? v_pmem_read(raddr , 1) :
+						 					  (is_lh | is_lhu)  ? v_pmem_read(raddr , 2) :
+					 						           v_pmem_read(raddr , 4);
 //读地址
 always @(*) begin
 	if(mem_en)begin
 		// $display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
-		rdata =  is_lbu ? v_pmem_read(raddr , 1) & 32'h000000FF:
-							// is_lhu ? v_pmem_read(raddr , 2) & 32'hFFFF:
-					 						 v_pmem_read(raddr , 4);
+		rdata =  (is_lbu | is_lhu) ? pmem_read_data :
+						 is_lh  ? {{16{pmem_read_data[15]}},pmem_read_data[15:0]}:
+					 						pmem_read_data;
 	end else begin
 		rdata = 0;
 	end
