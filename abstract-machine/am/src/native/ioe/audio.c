@@ -19,8 +19,10 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
   int nread = len;
   if (count < len) nread = count;
   int b = 0;
+	//read 可能不会一次读满，要检查是否读满了
   while (b < nread) {
     int n = read(rfd, stream, nread);
+		//没读完就继续读
     if (n > 0) b += n;
   }
 
@@ -29,7 +31,7 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
     memset(stream + nread, 0, len - nread);
   }
 }
-
+//向音频输出设备写入音频数据的函数
 static void audio_write(uint8_t *buf, int len) {
   int nwrite = 0;
   while (nwrite < len) {

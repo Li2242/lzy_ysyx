@@ -34,6 +34,7 @@ enum {
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
+//填充音频数据的回调函数
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 }
 
