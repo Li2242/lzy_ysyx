@@ -69,6 +69,7 @@ assign sltu_result[0] = ~adder_cout;
 assign slt_result[31:1] = 31'b0;
 assign slt_result[0]    = (src1[31] != src2[31]) ? src1[31] : adder_result[31];
 
+//下面这两个感觉还能改改，这样写给有点草率了
 //bne
 assign bne_result[31:1] = 31'b0;
 assign bne_result[0]    = |add_sub_result;
@@ -83,7 +84,7 @@ assign or_result  = src1 | src2;
 //and
 assign and_result = src1 & src2;
 
-//sra
+//sra 需要用$signed()强转为有符号数才能符号右移
 assign sra_result = $signed(src1) >>> src2[4:0];
 //sll
 assign sll_result = src1 << src2[4:0];
