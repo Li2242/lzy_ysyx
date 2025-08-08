@@ -8,6 +8,7 @@ html:
 ## 1. Basic Setup and Checks
 
 ### Default to create a bare-metal kernel image
+### 用来确保在用户不指定目标时，默认构建 image
 ifeq ($(MAKECMDGOALS),)
   MAKECMDGOALS  = image
   .DEFAULT_GOAL = image
@@ -16,22 +17,28 @@ endif
 ### Override checks when `make clean/clean-all/html`
 ifeq ($(findstring $(MAKECMDGOALS),clean|clean-all|html),)
 
-### Print build info message
+### Print build info message 打印构建信息
 $(info # Building $(NAME)-$(MAKECMDGOALS) [$(ARCH)])
 
 ### Check: environment variable `$AM_HOME` looks sane
+### 检查环境变量“$AM_HOME”看起来是否正常
 ifeq ($(wildcard $(AM_HOME)/am/include/am.h),)
   $(error $$AM_HOME must be an AbstractMachine repo)
 endif
 
 ### Check: environment variable `$ARCH` must be in the supported list
+### 环境变量“$ARCH”必须在支持的列表中
 ARCHS = $(basename $(notdir $(shell ls $(AM_HOME)/scripts/*.mk)))
+## 匹配ARCH必须是在ARCHS中的，不然就报错
 ifeq ($(filter $(ARCHS), $(ARCH)), )
   $(error Expected $$ARCH in {$(ARCHS)}, Got "$(ARCH)")
 endif
 
 ### Extract instruction set architecture (`ISA`) and platform from `$ARCH`. Example: `ARCH=x86_64-qemu -> ISA=x86_64; PLATFORM=qemu`
+## 提取出指令集和平台
+# 将 - 替换成 空格 
 ARCH_SPLIT = $(subst -, ,$(ARCH))
+# word 获取第 N 个单词
 ISA        = $(word 1,$(ARCH_SPLIT))
 PLATFORM   = $(word 2,$(ARCH_SPLIT))
 
