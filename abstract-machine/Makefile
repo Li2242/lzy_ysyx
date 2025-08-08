@@ -43,6 +43,7 @@ ISA        = $(word 1,$(ARCH_SPLIT))
 PLATFORM   = $(word 2,$(ARCH_SPLIT))
 
 ### Check if there is something to build
+## 检查是SRCS是否被定义
 ifeq ($(flavor SRCS), undefined)
   $(error Nothing to build)
 endif
@@ -50,20 +51,27 @@ endif
 ### Checks end here
 endif
 
+
 ## 2. General Compilation Targets
 
 ### Create the destination directory (`build/$ARCH`)
+##  创建目标目录（`build/$ARCH`）
 WORK_DIR  = $(shell pwd)
 DST_DIR   = $(WORK_DIR)/build/$(ARCH)
 $(shell mkdir -p $(DST_DIR))
 
 ### Compilation targets (a binary image or archive)
+## 构建的“镜像”相对路径
 IMAGE_REL = build/$(NAME)-$(ARCH)
+## 把 IMAGE_REL 转换成 绝对路径
 IMAGE     = $(abspath $(IMAGE_REL))
+# 生成的静态库 .a 文件路径
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
 
 ### Collect the files to be linked: object files (`.o`) and libraries (`.a`)
+## 收集要链接的文件：目标文件（`.o`）和库文件（`.a`）
 OBJS      = $(addprefix $(DST_DIR)/, $(addsuffix .o, $(basename $(SRCS))))
+## 对整个列表排序并去重。
 LIBS     := $(sort $(LIBS) am klib) # lazy evaluation ("=") causes infinite recursions
 LINKAGE   = $(OBJS)  # library archives are added by LIB_TEMPLATE below
 
@@ -80,9 +88,12 @@ OBJCOPY   = $(CROSS_COMPILE)objcopy
 READELF   = $(CROSS_COMPILE)readelf
 
 ### Compilation flags
+## 把需要的.h文件都搞进去
 INC_PATH += $(WORK_DIR)/include $(addsuffix /include/, $(addprefix $(AM_HOME)/, $(LIBS)))
+## 再用-I连接
 INCFLAGS += $(addprefix -I, $(INC_PATH))
 
+## gcc -D宏名=值 等于  #define 宏名 值
 ARCH_H := arch/$(ARCH).h
 CFLAGS   += -O2 -MMD -Wall -Werror $(INCFLAGS) \
             -D__ISA__=\"$(ISA)\" -D__ISA_$(shell echo $(ISA) | tr a-z A-Z)__ \
