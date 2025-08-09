@@ -18,7 +18,6 @@ void __am_audio_init() {
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
   cfg->present = true;
 	cfg->bufsize = inl(AUDIO_SBUF_SIZE_ADDR);
-	printf("%d\n",cfg->bufsize);
 }
 
 //写入freq, channels和samples这三个的初始化参数`
@@ -26,6 +25,7 @@ void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
 	outl(AUDIO_FREQ_ADDR     , ctrl->freq);
 	outl(AUDIO_CHANNELS_ADDR , ctrl->channels);
 	outl(AUDIO_SAMPLES_ADDR  , ctrl->samples);
+	printf("freq=%d channels=%d  samples=%d\n",inl(AUDIO_FREQ_ADDR),inl(AUDIO_CHANNELS_ADDR),inl(AUDIO_SAMPLES_ADDR));
 	outl(AUDIO_INIT_ADDR     , 1); // 直接触发 NEMU 端初始化
 }
 
