@@ -55,7 +55,7 @@ void audio_callback(void *userdata, uint8_t *stream, int len){
 	}
 
 
-	printf("audio_callback调用后的%d\n",audio_base[reg_count]);
+	// printf("audio_callback调用后的%d\n",audio_base[reg_count]);
 }
 
 //填充音频数据的回调函数
