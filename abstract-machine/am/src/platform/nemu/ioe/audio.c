@@ -44,7 +44,7 @@ static uint32_t sbuf_count = 0;
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 	sbuf_count = inl(AUDIO_COUNT_ADDR);
 	uint32_t sbuf_size  = inl(AUDIO_SBUF_SIZE_ADDR);
-	// printf("__am_audio_play调用前的%d\n",sbuf_count);
+	printf("__am_audio_play调用前的%d\n",sbuf_count);
 
 
 	int len = (uint8_t *)ctl->buf.end - (uint8_t *)ctl->buf.start;
@@ -65,5 +65,5 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 
 	//写回
 	outl(AUDIO_COUNT_ADDR , sbuf_count);
-	// printf("__am_audio_play调用后的%d\n",sbuf_count);
+	printf("__am_audio_play调用后的%d\n",sbuf_count);
 }
