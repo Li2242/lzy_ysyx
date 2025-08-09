@@ -62,11 +62,11 @@ void audio_callback(void *userdata, uint8_t *stream, int len){
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 	int reg_index = offset /4;
 	switch(reg_index){
-		case reg_freq:
-		case reg_channels:
-		case reg_samples:
-		case reg_count:
-			break;
+		// case reg_freq:
+		// case reg_channels:
+		// case reg_samples:
+		// case reg_count:
+		// 	break;
 
 		case reg_init:
 			s.freq     = audio_base[reg_freq];
