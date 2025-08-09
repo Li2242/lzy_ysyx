@@ -52,9 +52,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 		//计算缓冲区的空闲空间
 		int free_space = sbuf_size - sbuf_count;
 		if(free_space == 0){
-			for (volatile int delay = 0; delay < 1000; delay++) {
-    		// 空循环延迟，防止忙等占满CPU
-  		}
+			
 			continue;
 		}
 		outb(AUDIO_SBUF_ADDR + sbuf_wpos,*((uint8_t *)ctl->buf.start + i));
