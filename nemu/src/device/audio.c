@@ -73,6 +73,9 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 			s.format   = AUDIO_S16SYS;
 			s.callback = audio_callback;
 			s.userdata = NULL;
+
+			sbuf_count = audio_base[reg_count];
+
 			if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
 				printf("Failed to init SDL audio: %s\n", SDL_GetError());
 				return;
@@ -90,8 +93,8 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 			break;
 
 		case reg_count:
-		//这里应该些什么
-			audio_base[reg_count] = sbuf_count;
+		// //这里应该些什么
+		// 	audio_base[reg_count] = sbuf_count;
 			break;
 		default:
 			break;
