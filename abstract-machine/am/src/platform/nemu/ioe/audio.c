@@ -18,6 +18,7 @@ void __am_audio_init() {
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
   cfg->present = true;
 	cfg->bufsize = inl(AUDIO_SBUF_SIZE_ADDR);
+	printf("0x%x\n",cfg->bufsize);
 }
 
 //写入freq, channels和samples这三个的初始化参数`
