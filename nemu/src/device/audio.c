@@ -64,6 +64,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 		case reg_freq:
 		case reg_channels:
 		case reg_samples:
+		case reg_count:
 			break;
 
 		case reg_init:
@@ -90,11 +91,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 
 		case reg_sbuf_size :
 			audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
-			break;
-
-		case reg_count:
-		// //这里应该些什么
-		// 	audio_base[reg_count] = sbuf_count;
 			break;
 		default:
 			break;

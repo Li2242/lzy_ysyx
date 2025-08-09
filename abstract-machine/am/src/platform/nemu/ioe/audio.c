@@ -25,7 +25,6 @@ void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
 	outl(AUDIO_FREQ_ADDR     , ctrl->freq);
 	outl(AUDIO_CHANNELS_ADDR , ctrl->channels);
 	outl(AUDIO_SAMPLES_ADDR  , ctrl->samples);
-	printf("freq=%d channels=%d  samples=%d\n",inl(AUDIO_FREQ_ADDR),inl(AUDIO_CHANNELS_ADDR),inl(AUDIO_SAMPLES_ADDR));
 	outl(AUDIO_INIT_ADDR     , 1); // 直接触发 NEMU 端初始化
 }
 
@@ -45,7 +44,7 @@ static uint32_t sbuf_count = 0;
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 	sbuf_count = inl(AUDIO_COUNT_ADDR);
 	uint32_t sbuf_size  = inl(AUDIO_SBUF_SIZE_ADDR);
-	printf("__am_audio_play调用前的%d\n",sbuf_count);
+	// printf("__am_audio_play调用前的%d\n",sbuf_count);
 
 
 	int len = (uint8_t *)ctl->buf.end - (uint8_t *)ctl->buf.start;
@@ -66,5 +65,5 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 
 	//写回
 	outl(AUDIO_COUNT_ADDR , sbuf_count);
-	printf("__am_audio_play调用后的%d\n",sbuf_count);
+	// printf("__am_audio_play调用后的%d\n",sbuf_count);
 }
