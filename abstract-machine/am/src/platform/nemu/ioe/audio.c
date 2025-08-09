@@ -57,9 +57,8 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 		if(free_space == 0){
 			// 等待或退出循环
         printf("buffer full, waiting...\n");
-			for(int i = 0;i<100000;i++){
-
-			}
+			for(int i = 0;i<100000;i++){    }
+			sbuf_count = inl(AUDIO_COUNT_ADDR);
 			continue;
 		}
 		outb(AUDIO_SBUF_ADDR + sbuf_wpos,*((uint8_t *)ctl->buf.start + i));

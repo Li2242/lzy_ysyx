@@ -47,11 +47,11 @@ void audio_callback(void *userdata, uint8_t *stream, int len){
 			stream[i] = sbuf[sbuf_rpos];
 			sbuf_rpos = (sbuf_rpos + 1) % CONFIG_SB_SIZE;
 			sbuf_count--;
-			//修改之后再把公共区域的改一下
-			audio_base[reg_count]    = sbuf_count;
 		}else{
 			stream[i] = 0;
 		}
+		//修改之后再把公共区域的改一下
+			audio_base[reg_count]    = sbuf_count;
 	}
 
 
