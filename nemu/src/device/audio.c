@@ -54,7 +54,7 @@ void audio_callback(void *userdata, uint8_t *stream, int len){
 
 	//修改之后再把公共区域的改一下
 	audio_base[reg_count]    = sbuf_count;
-	printf("audio_callback调用后的%d\n",audio_base[reg_count]);
+	// printf("audio_callback调用后的%d\n",audio_base[reg_count]);
 }
 
 //填充音频数据的回调函数
