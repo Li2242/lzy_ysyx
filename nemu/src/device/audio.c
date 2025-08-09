@@ -36,7 +36,7 @@ static uint32_t *audio_base = NULL;
 
 static SDL_AudioSpec s={};        // 保存 SDL 音频参数
 static uint32_t sbuf_rpos = 0;      // 环形缓冲区读指针
-static uint32_t sbuf_count = 0;     // 当前缓冲区已用字节数
+static uint32_t sbuf_count = 9;     // 当前缓冲区已用字节数
 
 void audio_callback(void *userdata, uint8_t *stream, int len){
 	if (!audio_base || !sbuf) return;
