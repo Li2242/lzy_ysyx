@@ -1,7 +1,5 @@
 #include <am.h>
 #include <nemu.h>
-#include <stdio.h>
-
 
 #define AUDIO_FREQ_ADDR      (AUDIO_ADDR + 0x00)
 #define AUDIO_CHANNELS_ADDR  (AUDIO_ADDR + 0x04)
@@ -10,9 +8,7 @@
 #define AUDIO_INIT_ADDR      (AUDIO_ADDR + 0x10)
 #define AUDIO_COUNT_ADDR     (AUDIO_ADDR + 0x14)
 
-
 void __am_audio_init() {
-
 }
 
 //可读出存在标志present以及流缓冲区的大小bufsize
@@ -44,7 +40,7 @@ static uint32_t sbuf_wpos  = 0;
 static uint32_t sbuf_count = 0;
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
-
+	//读出
 	sbuf_count = inl(AUDIO_COUNT_ADDR);
 	uint32_t sbuf_size  = inl(AUDIO_SBUF_SIZE_ADDR);
 
