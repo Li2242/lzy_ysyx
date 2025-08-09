@@ -53,7 +53,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 
 	while(i < len){
 		//计算缓冲区的空闲空间
-		int free_space = sbuf_size - sbuf_count;
+		int free_space = sbuf_size - inl(AUDIO_COUNT_ADDR);
 		if(free_space == 0){
 			// 等待或退出循环
       printf("buffer full, waiting...\n");
