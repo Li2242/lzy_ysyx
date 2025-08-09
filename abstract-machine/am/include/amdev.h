@@ -24,10 +24,10 @@ AM_DEVREG(11, GPU_FBDRAW,   WR, int x, y; void *pixels; int w, h; bool sync);  /
 AM_DEVREG(12, GPU_MEMCPY,   WR, uint32_t dest; void *src; int size);
 AM_DEVREG(13, GPU_RENDER,   WR, uint32_t root);
 
-AM_DEVREG(14, AUDIO_CONFIG, RD, bool present; int bufsize);   //AM声卡控制器信息
-AM_DEVREG(15, AUDIO_CTRL,   WR, int freq, channels, samples); // AM声卡控制寄存器
-AM_DEVREG(16, AUDIO_STATUS, RD, int count);                   //AM声卡状态寄存器
-AM_DEVREG(17, AUDIO_PLAY,   WR, Area buf);                    //AM声卡播放寄存器
+AM_DEVREG(14, AUDIO_CONFIG, RD, bool present; int bufsize);    //AM声卡控制器信息
+AM_DEVREG(15, AUDIO_CTRL,   WR, int freq, channels, samples);  // AM声卡控制寄存器
+AM_DEVREG(16, AUDIO_STATUS, RD, int count);                    //AM声卡状态寄存器,当前流缓冲区已经使用的大小count.
+AM_DEVREG(17, AUDIO_PLAY,   WR, Area buf);                     //AM声卡播放寄存器
 
 AM_DEVREG(18, DISK_CONFIG,  RD, bool present; int blksz, blkcnt);
 AM_DEVREG(19, DISK_STATUS,  RD, bool ready);
