@@ -63,5 +63,5 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 
 	//写回
 	outl(AUDIO_COUNT_ADDR , sbuf_count);
-	printf("%d\n",sbuf_count);
+	printf("__am_audio_play中的%d\n",sbuf_count);
 }
