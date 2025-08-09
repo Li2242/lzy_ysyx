@@ -56,7 +56,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 		if(free_space == 0){
 			continue;
 		}
-		outb(AUDIO_SBUF_ADDR+i,*((uint8_t *)ctl->buf.start + i));
+		outb(AUDIO_SBUF_ADDR + sbuf_wpos,*((uint8_t *)ctl->buf.start + i));
     sbuf_wpos = (sbuf_wpos + 1) % sbuf_size;
     sbuf_count++;
     i++;
