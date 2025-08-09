@@ -75,8 +75,14 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 			s.format   = AUDIO_S16SYS;
 			s.callback = audio_callback;
 			s.userdata = NULL;
-			SDL_InitSubSystem(SDL_INIT_AUDIO);
-			SDL_OpenAudio(&s, NULL);
+			if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
+				printf("Failed to init SDL audio: %s\n", SDL_GetError());
+				return;
+			}
+			if (SDL_OpenAudio(&s, NULL) < 0) {
+				printf("Failed to open audio: %s\n", SDL_GetError());
+				return;
+			}
 			SDL_PauseAudio(0);
 			break;
 
@@ -88,6 +94,9 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 		//这里应该些什么
 			audio_base[reg_count] = sbuf_count;
 			break;
+		case reg_sbuf_rpos:
+			audio_base[reg_sbuf_rpos] = sbuf_rpos;
+  		break;
 		default:
 			break;
 	}
