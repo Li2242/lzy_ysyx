@@ -40,7 +40,7 @@ static uint32_t sbuf_count = 0;     // 当前缓冲区已用字节数
 
 void audio_callback(void *userdata, uint8_t *stream, int len){
 	if (!audio_base || !sbuf) return;
-
+	printf("audio_callback called, len=%d, sbuf_count=%u\n", len, audio_base[reg_count]);
 	sbuf_count = audio_base[reg_count];     // 当前缓冲区已用字节数
 
 	for(int i =0; i<len ;i++){
