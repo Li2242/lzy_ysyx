@@ -39,7 +39,7 @@ static uint32_t sbuf_rpos = 0;      // 环形缓冲区读指针
 static uint32_t sbuf_count = 0;     // 当前缓冲区已用字节数
 
 void audio_callback(void *userdata, uint8_t *stream, int len){
-	if (!audio_base || !sbuf) return;
+
 	sbuf_count = audio_base[reg_count];     // 当前缓冲区已用字节数
 
 	for(int i =0; i<len ;i++){
@@ -90,9 +90,11 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 			// printf("调用了！\n");
 			break;
 
+		//这个是不变的所以可以放在这
 		case reg_sbuf_size :
 			audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
 			break;
+
 		default:
 			break;
 	}
