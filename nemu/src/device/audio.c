@@ -40,8 +40,10 @@ static uint32_t sbuf_count = 0;     // 当前缓冲区已用字节数
 
 void audio_callback(void *userdata, uint8_t *stream, int len){
 	if (!audio_base || !sbuf) return;
-	printf("audio_callback called, len=%d, sbuf_count=%u\n", len, audio_base[reg_count]);
 	sbuf_count = audio_base[reg_count];     // 当前缓冲区已用字节数
+
+	printf("audio_callback调用前的%d\n",audio_base[reg_count]);
+	printf("audio_callback called, len=%d, sbuf_count=%u\n", len, audio_base[reg_count]);
 
 	for(int i =0; i<len ;i++){
 		if(sbuf_count>0){
@@ -55,7 +57,7 @@ void audio_callback(void *userdata, uint8_t *stream, int len){
 
 	//修改之后再把公共区域的改一下
 	audio_base[reg_count]    = sbuf_count;
-	printf("audio_callback中的%d\n",audio_base[reg_count]);
+	printf("audio_callback调用后的%d\n",audio_base[reg_count]);
 }
 
 //填充音频数据的回调函数
