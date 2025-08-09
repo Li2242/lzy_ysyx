@@ -24,6 +24,7 @@ extern void __am_asm_trap(void);
 // initialize exception entry
 bool cte_init(Context*(*handler)(Event, Context*)) {
 	//把 __am_asm_trap 的地址写到 mtvec 里
+	// 直接将异常入口地址设置到mtvec寄存器中即可.
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
 
   // register event handler
