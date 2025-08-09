@@ -26,7 +26,7 @@ void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
 	outl(AUDIO_FREQ_ADDR     , ctrl->freq);
 	outl(AUDIO_CHANNELS_ADDR , ctrl->channels);
 	outl(AUDIO_SAMPLES_ADDR  , ctrl->samples);
-	outl(AUDIO_INIT_ADDR     , 1); // 直接触发 NEMU 端初始化
+	outl(AUDIO_INIT_ADDR     , 0); // 直接触发 NEMU 端初始化
 }
 
 //可读出当前流缓冲区已经使用的大小count.

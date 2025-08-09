@@ -38,12 +38,13 @@ static SDL_AudioSpec s={};        // 保存 SDL 音频参数
 static uint32_t sbuf_rpos = 0;      // 环形缓冲区读指针
 static uint32_t sbuf_count = 0;     // 当前缓冲区已用字节数
 
+//注册的回调函数(一段时间SDL会调用它一次)
 void audio_callback(void *userdata, uint8_t *stream, int len){
 
 	sbuf_count = audio_base[reg_count];     // 当前缓冲区已用字节数
 
-	for(int i =0; i<len ;i++){
-		if(sbuf_count>0){
+	for(int i = 0; i < len ; i++){
+		if(sbuf_count > 0){
 			stream[i] = sbuf[sbuf_rpos];
 			sbuf_rpos = (sbuf_rpos + 1) % CONFIG_SB_SIZE;
 			sbuf_count--;
@@ -51,9 +52,8 @@ void audio_callback(void *userdata, uint8_t *stream, int len){
 			stream[i] = 0;
 		}
 		//修改之后再把公共区域的改一下
-			audio_base[reg_count]    = sbuf_count;
+			audio_base[reg_count] = sbuf_count;
 	}
-
 
 	// printf("audio_callback调用后的%d\n",audio_base[reg_count]);
 }
