@@ -20,11 +20,14 @@ Context* __am_irq_handle(Context *c) {
 
 extern void __am_asm_trap(void);
 
+//用于进行CTE相关的初始化操作. 
+// initialize exception entry
 bool cte_init(Context*(*handler)(Event, Context*)) {
-  // initialize exception entry
+	//把 __am_asm_trap 的地址写到 mtvec 里
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
 
   // register event handler
+	// user_handler 是一个全局变量，用来存储用户提供的 handler 函数。
   user_handler = handler;
 
   return true;
@@ -34,6 +37,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   return NULL;
 }
 
+//用于进行自陷操作, 会触发一个编号为EVENT_YIELD事件. 
 void yield() {
 #ifdef __riscv_e
   asm volatile("li a5, -1; ecall");
