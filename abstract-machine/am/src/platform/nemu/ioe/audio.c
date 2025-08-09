@@ -2,6 +2,7 @@
 #include <nemu.h>
 #include <stdio.h>
 
+
 #define AUDIO_FREQ_ADDR      (AUDIO_ADDR + 0x00)
 #define AUDIO_CHANNELS_ADDR  (AUDIO_ADDR + 0x04)
 #define AUDIO_SAMPLES_ADDR   (AUDIO_ADDR + 0x08)
@@ -54,7 +55,9 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 		//计算缓冲区的空闲空间
 		int free_space = sbuf_size - sbuf_count;
 		if(free_space == 0){
-			
+			for(int i = 0;i<10000;i++){
+				
+			}
 			continue;
 		}
 		outb(AUDIO_SBUF_ADDR + sbuf_wpos,*((uint8_t *)ctl->buf.start + i));
