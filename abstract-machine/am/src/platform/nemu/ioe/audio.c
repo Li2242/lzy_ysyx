@@ -1,6 +1,6 @@
 #include <am.h>
 #include <nemu.h>
-#include <SDL2/SDL.h>
+
 
 #define AUDIO_FREQ_ADDR      (AUDIO_ADDR + 0x00)
 #define AUDIO_CHANNELS_ADDR  (AUDIO_ADDR + 0x04)
@@ -8,35 +8,29 @@
 #define AUDIO_SBUF_SIZE_ADDR (AUDIO_ADDR + 0x0c)
 #define AUDIO_INIT_ADDR      (AUDIO_ADDR + 0x10)
 #define AUDIO_COUNT_ADDR     (AUDIO_ADDR + 0x14)
+#define AUDIO_RPOS_ADDR      (AUDIO_ADDR + 0x18)
 
 
-//写入后将根据设置好的`freq`, `channels`和`samples`来对SDL的音频子系统进行初始化
 void __am_audio_init() {
+
 }
 
 //可读出存在标志present以及流缓冲区的大小bufsize
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
-  cfg->present = false;
+  cfg->present = true;
+	cfg->bufsize = inl(AUDIO_SBUF_SIZE_ADDR);
 }
 
-//可根据写入的freq, channels和samples对声卡进行初始化.
+//写入freq, channels和samples这三个的初始化参数`
 void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
-	SDL_AudioSpec s = {};
-	s.freq     = ctrl->freq;
-	s.format   = AUDIO_S16SYS;
-	s.channels = ctrl->channels; 
-	s.samples  = ctrl->samples;
-	s.callback = outl; 
-	s.userdata = NULL;        
-	
-	SDL_InitSubSystem(SDL_INIT_AUDIO); // 只初始化音频子系统
-	SDL_OpenAudio(&s, NULL); //打开设备并准备好缓冲区
-	SDL_PauseAudio(0);       //开始播放音频
+	outl(AUDIO_FREQ_ADDR     , ctrl->freq);
+	outl(AUDIO_CHANNELS_ADDR , ctrl->channels);
+	outl(AUDIO_SAMPLES_ADDR  , ctrl->samples);
 }
 
 //可读出当前流缓冲区已经使用的大小count.
 void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
-  stat->count = 0;
+  stat->count = inl(AUDIO_COUNT_ADDR);
 }
 
 /*
@@ -44,5 +38,34 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
  若当前流缓冲区的空闲空间少于即将写入的音频数据, 此次写入将会一直等待, 
  直到有足够的空闲空间将音频数据完全写入流缓冲区才会返回.
 */
+uint32_t sbuf_wpos  = 0;
+uint32_t sbuf_rpos  = 0;
+uint32_t sbuf_count = 0;
+
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
+	sbuf_rpos = inl(AUDIO_RPOS_ADDR);
+	sbuf_count = inl(AUDIO_COUNT_ADDR);
+	uint32_t sbuf_size  = inl(AUDIO_SBUF_SIZE_ADDR);
+
+	uint8_t *sbuf = (uint8_t *)AUDIO_SBUF_ADDR;
+	int len = (uint8_t *)ctl->buf.end - (uint8_t *)ctl->buf.start;
+	int i =0;
+
+	while(i < len){
+		//计算缓冲区的空闲空间
+		int free_space = sbuf_size - sbuf_count;
+		if(free_space == 0){
+			continue;
+		}
+		sbuf[sbuf_wpos] = *((uint8_t *)ctl->buf.start + i);
+    sbuf_wpos = (sbuf_wpos + 1) % sbuf_size;
+    sbuf_count++;
+    i++;
+		
+	}
+
+	//写回
+	outl(AUDIO_RPOS_ADDR  , sbuf_rpos);
+	outl(AUDIO_COUNT_ADDR , sbuf_count);
+
 }

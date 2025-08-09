@@ -28,18 +28,74 @@ enum {
   reg_init,
 	//count寄存器可以读出当前流缓冲区已经使用的大小
   reg_count,
+	//加了两个指针
+	reg_sbuf_rpos,
   nr_reg
 };
 
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
+static SDL_AudioSpec s={};        // 保存 SDL 音频参数
+static uint32_t sbuf_rpos = 0;      // 环形缓冲区读指针
+static uint32_t sbuf_count = 0;     // 当前缓冲区已用字节数
+
+void audio_callback(void *userdata, uint8_t *stream, int len){
+	//把nemu和AM公共区域的数据拿出来调用
+	 sbuf_rpos  = audio_base[reg_sbuf_rpos];      // 环形缓冲区读指针
+	 sbuf_count = audio_base[reg_count];     // 当前缓冲区已用字节数
+
+	for(int i =0; i<len ;i++){
+		if(sbuf_count>0){
+			stream[i] = sbuf[sbuf_rpos];
+			sbuf_rpos = (sbuf_rpos + 1) % CONFIG_SB_SIZE;
+			sbuf_count--;
+		}else{
+			stream[i] = 0;
+		}
+	}
+	//修改之后再把公共区域的改一下
+	audio_base[reg_sbuf_rpos] = sbuf_rpos;
+	audio_base[reg_count]    = sbuf_count;
+}
+
 //填充音频数据的回调函数
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
+	int reg_index = offset /4;
+	switch(reg_index){
+		case reg_freq:
+		case reg_channels:
+		case reg_samples:
+			break;
+
+		case reg_init:
+			s.freq     = audio_base[reg_freq];
+			s.channels = audio_base[reg_channels];
+			s.samples  = audio_base[reg_samples];
+			s.format   = AUDIO_S16SYS;
+			s.callback = audio_callback;
+			s.userdata = NULL;
+			SDL_InitSubSystem(SDL_INIT_AUDIO);
+			SDL_OpenAudio(&s, NULL);
+			SDL_PauseAudio(0);
+			break;
+
+		case reg_sbuf_size :
+			audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
+			break;
+
+		case reg_count:
+		//这里应该些什么
+			audio_base[reg_count] = sbuf_count;
+			break;
+		default:
+			break;
+	}
 }
 
 void init_audio() {
 	//注册0x200处长度为24个字节的端口
+	//我想再加几个
   uint32_t space_size = sizeof(uint32_t) * nr_reg;
   audio_base = (uint32_t *)new_space(space_size);
 	//注册0xa0000200处长度为24字节的MMIO空间
