@@ -28,8 +28,6 @@ enum {
   reg_init,
 	//count寄存器可以读出当前流缓冲区已经使用的大小
   reg_count,
-	//加了两个指针
-	reg_sbuf_rpos,
   nr_reg
 };
 
@@ -41,8 +39,7 @@ static uint32_t sbuf_rpos = 0;      // 环形缓冲区读指针
 static uint32_t sbuf_count = 0;     // 当前缓冲区已用字节数
 
 void audio_callback(void *userdata, uint8_t *stream, int len){
-	//把nemu和AM公共区域的数据拿出来调用
-	 sbuf_rpos  = audio_base[reg_sbuf_rpos];      // 环形缓冲区读指针
+
 	 sbuf_count = audio_base[reg_count];     // 当前缓冲区已用字节数
 
 	for(int i =0; i<len ;i++){
@@ -54,8 +51,8 @@ void audio_callback(void *userdata, uint8_t *stream, int len){
 			stream[i] = 0;
 		}
 	}
+
 	//修改之后再把公共区域的改一下
-	audio_base[reg_sbuf_rpos] = sbuf_rpos;
 	audio_base[reg_count]    = sbuf_count;
 }
 
@@ -94,9 +91,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 		//这里应该些什么
 			audio_base[reg_count] = sbuf_count;
 			break;
-		case reg_sbuf_rpos:
-			audio_base[reg_sbuf_rpos] = sbuf_rpos;
-  		break;
 		default:
 			break;
 	}
