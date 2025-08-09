@@ -55,7 +55,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 		//计算缓冲区的空闲空间
 		int free_space = sbuf_size - sbuf_count;
 		if(free_space == 0){
-			for(int i = 0;i<1000000;i++){
+			for(int i = 0;i<10000;i++){
 
 			}
 			continue;
