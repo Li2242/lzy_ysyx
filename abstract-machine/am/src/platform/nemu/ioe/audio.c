@@ -26,7 +26,8 @@ void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
 	outl(AUDIO_FREQ_ADDR     , ctrl->freq);
 	outl(AUDIO_CHANNELS_ADDR , ctrl->channels);
 	outl(AUDIO_SAMPLES_ADDR  , ctrl->samples);
-	outl(AUDIO_INIT_ADDR     , 0); // 直接触发 NEMU 端初始化
+	// 就是为了触发nemu那边的几条指令，写入什么值不重要
+	outl(AUDIO_INIT_ADDR     , 0); 
 }
 
 //可读出当前流缓冲区已经使用的大小count.
@@ -43,16 +44,16 @@ static uint32_t sbuf_wpos  = 0;
 static uint32_t sbuf_count = 0;
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
+
 	sbuf_count = inl(AUDIO_COUNT_ADDR);
 	uint32_t sbuf_size  = inl(AUDIO_SBUF_SIZE_ADDR);
-	// printf("__am_audio_play调用前的%d\n",sbuf_count);
-
 
 	int len = (uint8_t *)ctl->buf.end - (uint8_t *)ctl->buf.start;
 	int i =0;
 
 	while(i < len){
 		//计算缓冲区的空闲空间
+		//这里直接用inl的原因是subf_count会一直卡在这里，如果不用这个，他的值就不会变
 		int free_space = sbuf_size - inl(AUDIO_COUNT_ADDR);
 		if(free_space == 0){
 			// 等待或退出循环
@@ -63,9 +64,8 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 		outb(AUDIO_SBUF_ADDR + sbuf_wpos,*((uint8_t *)ctl->buf.start + i));
     sbuf_wpos = (sbuf_wpos + 1) % sbuf_size;
     sbuf_count++;
-		//写回
-		outl(AUDIO_COUNT_ADDR , sbuf_count);
     i++;
 	}
-	// printf("__am_audio_play调用后的%d\n",sbuf_count);
+	//写回
+		outl(AUDIO_COUNT_ADDR , sbuf_count);
 }
