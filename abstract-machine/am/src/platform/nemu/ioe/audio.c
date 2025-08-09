@@ -45,7 +45,7 @@ static uint32_t sbuf_count = 0;
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 	sbuf_count = inl(AUDIO_COUNT_ADDR);
 	uint32_t sbuf_size  = inl(AUDIO_SBUF_SIZE_ADDR);
-	// printf("__am_audio_play调用前的%d\n",sbuf_count);
+	printf("__am_audio_play调用前的%d\n",sbuf_count);
 
 
 	int len = (uint8_t *)ctl->buf.end - (uint8_t *)ctl->buf.start;
@@ -55,18 +55,19 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 		//计算缓冲区的空闲空间
 		int free_space = sbuf_size - sbuf_count;
 		if(free_space == 0){
-			// for(int i = 0;i<100000;i++){
+			// 等待或退出循环
+        printf("buffer full, waiting...\n");
+			for(int i = 0;i<100000;i++){
 
-			// }
+			}
 			continue;
 		}
 		outb(AUDIO_SBUF_ADDR + sbuf_wpos,*((uint8_t *)ctl->buf.start + i));
     sbuf_wpos = (sbuf_wpos + 1) % sbuf_size;
     sbuf_count++;
+		//写回
+		outl(AUDIO_COUNT_ADDR , sbuf_count);
     i++;
 	}
-
-	//写回
-	outl(AUDIO_COUNT_ADDR , sbuf_count);
-	// printf("__am_audio_play调用后的%d\n",sbuf_count);
+	printf("__am_audio_play调用后的%d\n",sbuf_count);
 }
