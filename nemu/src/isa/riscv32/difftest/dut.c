@@ -24,15 +24,15 @@
 		第二个参数pc应指向导致对比结果不一致的指令, 可用于打印提示信息
 */
 bool is_same = true;
-bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
+bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t npc) {
 	for(int i = 0;i<32;i++){
 		if(cpu.gpr[i] != ref_r->gpr[i]){
 			Log("Mismatch in gpr[%d]: dut=0x%08x, ref=0x%08x\n", i, cpu.gpr[i], ref_r->gpr[i]);
 			is_same = false;
 		}
 	}
-	if(cpu.pc != ref_r->pc){
-		Log("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", cpu.pc, pc);
+	if(npc != ref_r->pc){
+		Log("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", cpu.pc, npc);
 		is_same = false;
 	}
   return is_same;
