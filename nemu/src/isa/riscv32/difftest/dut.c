@@ -31,10 +31,10 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 			is_same = false;
 		}
 	}
-	// if(cpu.pc != ref_r->pc){
-	// 	Log("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", cpu.pc, pc);
-	// 	is_same = false;
-	// }
+	if(cpu.pc != ref_r->pc){
+		Log("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", cpu.pc, pc);
+		is_same = false;
+	}
   return is_same;
 }
 
