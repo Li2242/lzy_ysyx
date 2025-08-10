@@ -28,7 +28,7 @@ typedef struct {
 	mepc			0x341				触发异常的 PC
 	mcause		0x342				异常/中断原因
 	*/
-	word_t csrs[43];
+	word_t csrs[67];
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 
 // decode 指令
