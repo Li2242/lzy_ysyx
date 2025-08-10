@@ -37,17 +37,22 @@ f(30) f(31)
 #define OFFSET_STATUS ((NR_REGS + 1) * XLEN)
 #define OFFSET_EPC    ((NR_REGS + 2) * XLEN)
 
+#对齐指令，将接下来的代码地址对齐到 2^3 = 8 字节边界
 .align 3
+
+#声明符号 __am_asm_trap 是全局的，链接器可以访问
 .globl __am_asm_trap
+#定义标签，异常入口的函数名
 __am_asm_trap:
+#栈指针 sp 减少 CONTEXT_SIZE，为保存上下文腾出栈空间
   addi sp, sp, -CONTEXT_SIZE
 
   MAP(REGS, PUSH)
-
+#从 CSR 寄存器读取异常原因（mcause）、机器状态（mstatus）、异常程序计数器（mepc），分别放入 t0, t1, t2。
   csrr t0, mcause
   csrr t1, mstatus
   csrr t2, mepc
-
+#把刚读的 mcause、mstatus、mepc 值存入栈上对应偏移位置，保存在上下文结构体里。
   STORE t0, OFFSET_CAUSE(sp)
   STORE t1, OFFSET_STATUS(sp)
   STORE t2, OFFSET_EPC(sp)
