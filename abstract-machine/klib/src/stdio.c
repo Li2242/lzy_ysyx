@@ -74,8 +74,15 @@ int sprintf(char *out, const char *fmt, ...) {
 int snprintf(char *out, size_t n, const char *fmt, ...) {
   va_list ap;
   va_start(ap,fmt);
+	int total_len = vsnprintf(out,n,fmt,ap);
+  va_end(ap);
+  return total_len;
+}
+
+int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
   int count = 0; //已经写入的字符串
   int total_len = 0;
+
   while(*fmt != '\0'){
 		if(*fmt == '%'){
 			switch(*++fmt){
@@ -127,12 +134,7 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
   //确保字符串
 	if(n!=0 && out!=NULL)
   	out[count] = '\0';
-  va_end(ap);
-  return total_len;
-}
-
-int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-  panic("Not implemented");
+	return total_len;
 }
 
 
