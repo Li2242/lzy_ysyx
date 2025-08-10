@@ -13,7 +13,7 @@ Context* __am_irq_handle(Context *c) {
     }
 
     c = user_handler(ev, c);
-
+		printf("=====================\n");
 //   uintptr_t  mcause, mstatus, mepc, gpr[NR_REGS];
 
 		printf("mcause = %d, mstatus=%d, mepc=0x%08x\n",c->mcause,c->mstatus,c->mepc);
