@@ -1,6 +1,7 @@
 #include <am.h>
 #include <riscv/riscv.h>
 #include <klib.h>
+#include <stdio.h>
 
 static Context* (*user_handler)(Event, Context*) = NULL;
 
@@ -12,6 +13,18 @@ Context* __am_irq_handle(Context *c) {
     }
 
     c = user_handler(ev, c);
+
+//   uintptr_t  mcause, mstatus, mepc, gpr[NR_REGS];
+
+		printf("mcause = %d, mstatus=%d, mepc=0x%08x\n",c->mcause,c->mstatus,c->mepc);
+		for(int i =0;i<32;i++){
+			printf("gpr[%d] = 0x%08x  ",i,c->gpr[i]);
+			if(i%4==0){
+				printf("\n");
+			}
+		}
+
+
     assert(c != NULL);
   }
 
