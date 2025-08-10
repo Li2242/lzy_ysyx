@@ -21,6 +21,7 @@ static uint32_t *rtc_port_base = NULL;
 
 static void rtc_io_handler(uint32_t offset, int len, bool is_write) {
   assert(offset == 0 || offset == 4);
+	//offset在为4的时候才更新,如果先读低位会到的是上一次未更新的时间
   if (!is_write && offset == 4) {
     uint64_t us = get_time();       // 获取当前系统运行时间（单位：微秒）
     rtc_port_base[0] = (uint32_t)us;// 低 32 位写入偏移 0

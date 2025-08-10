@@ -20,10 +20,8 @@
 //寄存器和pc
 typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
+	word_t csrs[43];
   vaddr_t pc;
-	vaddr_t mepc;
-	vaddr_t mstatus;
-	vaddr_t mcause;
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 
 // decode 指令
