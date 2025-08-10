@@ -43,7 +43,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   // register event handler
 	// user_handler 是一个全局变量，用来存储用户提供的 handler 函数。
   user_handler = handler;
-	if(user_handler == NULL)
+	if(user_handler != NULL)
 		printf("user_handler = \n");
   return true;
 }
