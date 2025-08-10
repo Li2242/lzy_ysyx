@@ -23,7 +23,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 	// cpu.csrs[42] = NO;
 
   // return cpu.csrs[5];
-	return 0;
+	return 1;
 }
 
 word_t isa_query_intr() {
