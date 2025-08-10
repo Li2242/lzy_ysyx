@@ -5,7 +5,8 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-void num_str(int num , char *str);
+void int_num_str(int num , char *str);
+void uint_num_str(unsigned int num , char *str);
 
 
 int printf(const char *fmt, ...) {
@@ -33,7 +34,16 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 					int num = va_arg(ap,int);
 					char str[13];
 					int i = 0;
-					num_str(num,str);
+					int_num_str(num,str);
+					//写入
+					while(str[i]!='\0') out[count++] = str[i++];
+					break;
+				}
+				case 'x':{
+					unsigned int num = va_arg(ap,unsigned int);
+					char str[15];
+					int i = 0;
+					uint_num_str(num,str);
 					//写入
 					while(str[i]!='\0') out[count++] = str[i++];
 					break;
@@ -91,7 +101,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
 					int num = va_arg(ap,int);
 					char str[13];
 					int i = 0;
-					num_str(num,str);
+					int_num_str(num,str);
 					//写入
 					while(str[i]!='\0'){
 						if(out != NULL && count < n-1 && n!=0){
@@ -138,7 +148,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
 }
 
 
-void num_str(int num , char *str){
+void int_num_str(int num , char *str){
 	unsigned int u;
 	char *p = str;
 	char *start = NULL;
@@ -162,6 +172,37 @@ void num_str(int num , char *str){
 	while(u > 0){
 		*p++ = (u % 10) + '0';
 		u/=10;
+	}
+	//保证是字符串
+	*p = '\0';
+	//反转字符串
+	char *end = p-1;
+	//只要 start 指针还在 end 指针的左边，就继续交换两端的字符。
+	while(start < end){
+		char tem = *start;
+		*start++ = *end;
+		*end-- = tem;
+	}
+}
+
+
+void uint_num_str(unsigned int num , char *str){
+	const char *hex_chars = "0123456789abcdef";
+	char *p = str;
+	char *start = NULL;
+	//处理 0；
+	if(num == 0){
+		*p++ = '0';
+		*p = '\0';
+		return;
+	}
+
+	//因为负数的存在考虑起始端(现在没有也不想去掉了)
+	start = p;
+
+	while(num > 0){
+		*p++ = hex_chars[(num % 16)];
+		num/=16;
 	}
 	//保证是字符串
 	*p = '\0';
