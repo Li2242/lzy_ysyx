@@ -11,13 +11,13 @@ Context* __am_irq_handle(Context *c) {
 		printf("=====================\n");
 //   uintptr_t  mcause, mstatus, mepc, gpr[NR_REGS];
 
-		printf("mcause = %d, mstatus=%d, mepc=%d\n",c->mcause,c->mstatus,c->mepc);
-		for(int i =0;i<32;i++){
-			printf("gpr[%d] = %d  ",i,c->gpr[i]);
-			if(i%4==0){
-				printf("\n");
-			}
-		}
+		// printf("mcause = 0x%08x, mstatus=0x%08x, mepc=0x%08x\n",c->mcause,c->mstatus,c->mepc);
+		// for(int i =0;i<32;i++){
+		// 	printf("gpr[%d] = 0x%08x  ",i,c->gpr[i]);
+		// 	if(i%4==0){
+		// 		printf("\n");
+		// 	}
+		// }
     switch (c->mcause) {
       default:ev.event = EVENT_ERROR; break;
     }

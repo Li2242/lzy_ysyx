@@ -13,44 +13,16 @@ int printf(const char *fmt, ...) {
   va_list ap;
 	//初始化 ap，让它指向可变参数序列的第一个参数。
   va_start(ap,fmt);
-  while(*fmt != '\0'){
-		if(*fmt == '%'){
-			switch(*++fmt){
-				case 's':{
-					char* str = va_arg(ap,char*);
-					putstr(str);
-					break;
-				}
-				case 'c':{
-					char c = va_arg(ap,int );
-					putch(c);
-					break;
-				}
-				case 'd':{
-					int num = va_arg(ap,int);
-					char str[13];
-					num_str(num,str);
-					putstr(str);
-					break;
-				}
-				default : putch(*fmt);
-			}
-			fmt++;
-		}else{
-			putch(*fmt++);
-		}	
-  }
+	char *str = malloc(1024);
+  vsprintf(str,fmt,ap);
   va_end(ap);
+
+	putstr(str);
+
   return 0;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
-}
-
-int sprintf(char *out, const char *fmt, ...) {
-  va_list ap;
-  va_start(ap,fmt);
   int count = 0; //已经写入的字符串
 
   while(*fmt != '\0'){
@@ -75,16 +47,28 @@ int sprintf(char *out, const char *fmt, ...) {
 					}
 					break;
 				}
+				default:
+				//未实现的功能直接跳过
+					out[count++] = '%';
+					out[count++] = *fmt;
+					break;
 			}
-			fmt++;
+			fmt++; //处理完格式字符串后跳过
 		}else{
 			out[count++] = *fmt++;
 		}
   }
   //确保字符串
   out[count] = '\0';
+	return count;
+}
+
+int sprintf(char *out, const char *fmt, ...) {
+  va_list ap;
+  va_start(ap,fmt);
+  int count = vsprintf(out,fmt,ap);
   va_end(ap);
-  return count;
+	return count;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
