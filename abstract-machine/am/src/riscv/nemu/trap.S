@@ -47,7 +47,9 @@ __am_asm_trap:
 #栈指针 sp 减少 CONTEXT_SIZE，为保存上下文腾出栈空间
   addi sp, sp, -CONTEXT_SIZE
 
+# 宏展开，保存所有通用寄存器（寄存器集 REGS）到栈中（PUSHz)
   MAP(REGS, PUSH)
+
 #从 CSR 寄存器读取异常原因（mcause）、机器状态（mstatus）、异常程序计数器（mepc），分别放入 t0, t1, t2。
   csrr t0, mcause
   csrr t1, mstatus
@@ -62,9 +64,11 @@ __am_asm_trap:
   or t1, t1, a0
   csrw mstatus, t1
 
+# 把当前栈指针传给异常处理函数 __am_irq_handle（作为参数 a0）
   mv a0, sp
   call __am_irq_handle
 
+# 异常处理函数返回后，恢复 mstatus 和 mepc 寄存器的值
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
