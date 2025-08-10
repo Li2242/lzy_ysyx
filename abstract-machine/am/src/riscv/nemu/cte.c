@@ -13,8 +13,8 @@ Context* __am_irq_handle(Context *c) {
 
 		printf("mcause = %d, mstatus=%d, mepc=0x%x\n",c->mcause,c->mstatus,c->mepc);
 		for(int i =0;i<32;i++){
-			printf("gpr[%d] = 0x%x  ",i,c->gpr[i]);
-			if(i%4==0){
+			printf("gpr[%d]=0x%x\t",i,c->gpr[i]);
+			if(i!=0 && i%4==0){
 				printf("\n");
 			}
 		}
