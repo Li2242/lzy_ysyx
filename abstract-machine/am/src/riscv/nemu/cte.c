@@ -12,11 +12,14 @@ Context* __am_irq_handle(Context *c) {
 // //   uintptr_t  mcause, mstatus, mepc, gpr[NR_REGS];
 
 		printf("mcause = %x, mstatus=%x, mepc=0x%x\n",c->mcause,c->mstatus,c->mepc);
+		int j = 0;
 		for(int i =0;i<32;i++){
 			printf("gpr[%d]=0x%x    \t",i,c->gpr[i]);
-			if(i!=0 && i%4==0){
+			if(j==3){
+				j = 0;
 				printf("\n");
 			}
+			j++;
 		}
     switch (c->mcause) {
       default:ev.event = EVENT_ERROR; break;
