@@ -15,11 +15,11 @@ Context* __am_irq_handle(Context *c) {
 		int j = 0;
 		for(int i =0;i<32;i++){
 			printf("gpr[%d]=0x%x    \t",i,c->gpr[i]);
+			j++;
 			if(j==3){
 				j = 0;
 				printf("\n");
 			}
-			j++;
 		}
     switch (c->mcause) {
       default:ev.event = EVENT_ERROR; break;
