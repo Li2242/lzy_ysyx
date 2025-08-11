@@ -60,6 +60,7 @@ __am_asm_trap:
   STORE t2, OFFSET_EPC(sp)
 
   # set mstatus.MPRV to pass difftest
+	# 是在异常进入(trap处理)的时候做的一个额外的状态寄存器修改,专门为了通过NEMU的difftest对比。
   li a0, (1 << 17)
   or t1, t1, a0
   csrw mstatus, t1
