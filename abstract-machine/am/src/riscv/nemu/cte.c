@@ -63,7 +63,8 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
 	Context* c = (Context *)sp;
 
 	c->mepc = (uintptr_t)entry;
-
+	// 如果需要传递参数给entry函数，可以放在a0寄存器(c->gpr[10])里（RISC-V约定）
+	c->gpr[10] = (uintptr_t)arg;
   return c;
 }
 
