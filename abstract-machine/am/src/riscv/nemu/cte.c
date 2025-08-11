@@ -17,7 +17,7 @@ Context* __am_irq_handle(Context *c) {
     Event ev = {0};
 // 		printf("=====================\n");
 // // //   uintptr_t  mcause, mstatus, mepc, gpr[NR_REGS];
-		// printf("mcause = %x, mstatus=%x, mepc=0x%x\n",c->mcause,c->mstatus,c->mepc);
+		printf("mcause = %x, mstatus=%x, mepc=0x%x\n",c->mcause,c->mstatus,c->mepc);
 // 		int j = 0;
 // 		for(int i =0;i<32;i++){
 // 			printf("gpr[%d]=0x%x    \t",i,c->gpr[i]);
