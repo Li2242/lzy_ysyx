@@ -55,7 +55,16 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 }
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
-  return NULL;
+	//uintptr_t 是一种无符号整型，保证足够大能存放一个指针的整数类型。(也是为了做字节单位减法)
+	//给Context划分内存
+	uintptr_t sp = (uintptr_t)kstack.end; //从高
+	sp -= sizeof(Context);                //到低
+	//.你需要在kstack的底部创建一个以entry为入口的上下文结构
+	Context* c = (Context *)sp;
+
+	c->mepc = (uintptr_t)entry;
+
+  return c;
 }
 
 //用于进行自陷操作, 会触发一个编号为EVENT_YIELD事件. 
