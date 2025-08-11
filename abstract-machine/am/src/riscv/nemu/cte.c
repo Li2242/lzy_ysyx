@@ -5,22 +5,28 @@
 
 static Context* (*user_handler)(Event, Context*) = NULL;
 
+/*
+参数 Context *c 通过 a0 寄存器传递
+汇编调用前，把上下文指针放进 a0
+直接用 call 指令调用，函数用 a0 取参数
+*/
+
+
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
-		printf("=====================\n");
-// //   uintptr_t  mcause, mstatus, mepc, gpr[NR_REGS];
-
+// 		printf("=====================\n");
+// // //   uintptr_t  mcause, mstatus, mepc, gpr[NR_REGS];
 		printf("mcause = %x, mstatus=%x, mepc=0x%x\n",c->mcause,c->mstatus,c->mepc);
-		int j = 0;
-		for(int i =0;i<32;i++){
-			printf("gpr[%d]=0x%x    \t",i,c->gpr[i]);
-			j++;
-			if(j==4){
-				j = 0;
-				printf("\n");
-			}
-		}
+// 		int j = 0;
+// 		for(int i =0;i<32;i++){
+// 			printf("gpr[%d]=0x%x    \t",i,c->gpr[i]);
+// 			j++;
+// 			if(j==4){
+// 				j = 0;
+// 				printf("\n");
+// 			}
+// 		}
     switch (c->mcause) {
       default:ev.event = EVENT_ERROR; break;
     }
