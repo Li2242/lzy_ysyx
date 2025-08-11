@@ -68,6 +68,7 @@ __am_asm_trap:
 # 把当前栈指针传给异常处理函数 __am_irq_handle（作为参数 a0）
   mv a0, sp
   call __am_irq_handle
+	mv sp, a0
 
 # 异常处理函数返回后，恢复 mstatus 和 mepc 寄存器的值
   LOAD t1, OFFSET_STATUS(sp)
