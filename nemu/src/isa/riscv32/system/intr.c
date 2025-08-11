@@ -28,7 +28,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   //  */
 	cpu.csrs[0x41] = epc;
 	cpu.csrs[0x42] = NO;
-#ifdef ETRACE
+#ifdef CONFIG_ETRACE
 	printf("mcause = 0x%08x, mstatus=0x%08x, mepc=0x%08x\n",cpu.csrs[0x42],cpu.csrs[0x0],cpu.csrs[0x41]);
 	isa_reg_display();
 #endif
