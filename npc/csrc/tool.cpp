@@ -66,10 +66,12 @@ uint32_t pmem_read(uint32_t addr, int len) {
 		uint32_t ret = host_read(guest_to_host(addr),len);
 		return ret;
 	}
-	if(addr == 0xa00003f8){
-		uint32_t ret = host_read(serial_base,len);
-		return ret;
-	}
+	// if(addr == 0xa00003f8){
+	// 	uint32_t ret = host_read(serial_base,len);
+	// 	return ret;
+	// }
+
+
 
 	if(addr == 0xa0000048 || addr == 0xa000004c){
 		if(addr == 0xa0000048){
@@ -87,8 +89,11 @@ void pmem_write(uint32_t addr, int len, uint32_t data){
 		host_write(guest_to_host(addr), len, data);
 	}
 	//串口
+	// if(addr == 0xa00003f8){
+	// 	host_write(serial_base, len, data);
+	// }
 	if(addr == 0xa00003f8){
-		host_write(serial_base, len, data);
+		putchar(data);
 	}
 
 		// if(addr != 0x80000000)
@@ -208,9 +213,9 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
 
 	pmem_write(waddr, 4, temp);
 
-	if(waddr == 0xa00003f8){
-		putchar(serial_base[0]);
-	}
+	// if(waddr == 0xa00003f8){
+	// 	putchar(serial_base[0]);
+	// }
 }
 
 // ====================   请在上面的范围内添加    =======================
