@@ -66,6 +66,7 @@ __am_asm_trap:
   csrw mstatus, t1
 
 # 把当前栈指针传给异常处理函数 __am_irq_handle（作为参数 a0）
+# a0也是函数的返回值
   mv a0, sp
   call __am_irq_handle
 	mv sp, a0
