@@ -10,7 +10,7 @@ void uint_num_str(unsigned int num , char *str);
 
 
 int printf(const char *fmt, ...) {
-	//声明一个可变参数访问指针/对象（通常是内部游标）。
+	//声明一个可变参数访问指针/对象（通常是内部游标）
   va_list ap;
 	//初始化 ap，让它指向可变参数序列的第一个参数。
   va_start(ap,fmt);
