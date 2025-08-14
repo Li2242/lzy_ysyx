@@ -48,6 +48,16 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 					while(str[i]!='\0') out[count++] = str[i++];
 					break;
 				}
+				case 'l':{
+					if(*++fmt == 'd'){
+						long num = va_arg(ap,long);
+						char str[20];
+						int_num_str(num,str);
+						int i =0;
+						while(str[i] != '\0') out[count++] = str[i++];
+					}
+					break;
+				}
 				case 's':{
 					//取出
 					char* str = va_arg(ap,char*);
