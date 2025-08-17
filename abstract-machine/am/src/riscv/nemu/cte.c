@@ -28,6 +28,7 @@ Context* __am_irq_handle(Context *c) {
 		// 	}
 		// }
     switch (c->mcause) {
+			//这是在处理自限指令 因此软件需要在适当的地方对保存的PC加上4
 			case 9:
 			case 8:
 			case 11: 
