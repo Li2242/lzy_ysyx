@@ -27,7 +27,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    * Then return the address of the interrupt/exception vector.
   //  */
 	cpu.csrs[0x41] = epc;
-	cpu.csrs[0x42] = NO == 8 ? 10 : 8;
+	cpu.csrs[0x42] = NO;
 
 //etrace
 #ifdef CONFIG_ETRACE
@@ -36,7 +36,6 @@ printf("===================== Exception Trace ======================\n");
 	isa_reg_display();
 printf("============================================================\n");
 #endif
-
   return cpu.csrs[0x5];
 }
 
