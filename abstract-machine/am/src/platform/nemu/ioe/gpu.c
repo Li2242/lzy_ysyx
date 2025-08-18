@@ -25,6 +25,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	//屏幕宽度
 	int width = inw(VGACTL_ADDR+2);
 
+	//把地址搞过来，整成数组的形式写
 	uint32_t* fb = (uint32_t*)FB_ADDR;
 	
 	//有点难想啊，还好想明白了

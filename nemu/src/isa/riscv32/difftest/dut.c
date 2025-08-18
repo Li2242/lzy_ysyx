@@ -15,7 +15,6 @@
 
 #include <isa.h>
 #include <cpu/difftest.h>
-#include "../local-include/reg.h"
 /*
     把通用寄存器和PC与从DUT中读出的寄存器的值进行比较.
   	若对比结果一致, 函数返回true; 如果发现值不一样, 函数返回false
@@ -32,7 +31,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 		}
 	}
 	if(cpu.pc != ref_r->pc){
-		Log("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", cpu.pc, pc);
+		Log("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", cpu.pc, ref_r->pc);
 		is_same = false;
 	}
   return is_same;

@@ -8,6 +8,7 @@ SECTIONS {
   }
   etext = .;
   _etext = .;
+
   .rodata : {
     *(.rodata*)
   }
@@ -20,6 +21,7 @@ SECTIONS {
   }
   edata = .;
   _data = .;
+
   .bss : {
 	_bss_start = .;
     *(.bss*)
@@ -31,5 +33,6 @@ SECTIONS {
   _stack_pointer = .;
   end = .;
   _end = .;
+	
   _heap_start = ALIGN(0x1000);
 }

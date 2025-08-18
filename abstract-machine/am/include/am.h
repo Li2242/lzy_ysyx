@@ -13,21 +13,26 @@
 #define MMAP_WRITE 0x00000002 // can write
 
 // Memory area for [@start, @end)
+//[@start, @end)这一段内存区域
 typedef struct {
   void *start, *end;
 } Area;
 
 // Arch-dependent processor context
+//与架构相关的处理器上下文
 typedef struct Context Context;
 
 // An event of type @event, caused by @cause of pointer @ref
 typedef struct {
+	//事件编号
   enum {
     EVENT_NULL = 0,
     EVENT_YIELD, EVENT_SYSCALL, EVENT_PAGEFAULT, EVENT_ERROR,
     EVENT_IRQ_TIMER, EVENT_IRQ_IODEV,
   } event;
+	//描述事件的补充信息
   uintptr_t cause, ref;
+	//事件信息字符串
   const char *msg;
 } Event;
 

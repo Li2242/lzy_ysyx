@@ -32,10 +32,6 @@ void sim_init(int argc,char** argv){
 	tfp->open("waveform.vcd");
 #endif
 
-
-
-
-
 // =============== 这里是初始化 ===============
 		//载入镜像文件 外部程序 or 内置指令
   long img_size = load_img();

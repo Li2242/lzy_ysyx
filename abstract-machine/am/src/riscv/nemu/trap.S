@@ -37,29 +37,41 @@ f(30) f(31)
 #define OFFSET_STATUS ((NR_REGS + 1) * XLEN)
 #define OFFSET_EPC    ((NR_REGS + 2) * XLEN)
 
+#对齐指令，将接下来的代码地址对齐到 2^3 = 8 字节边界
 .align 3
+
+#声明符号 __am_asm_trap 是全局的，链接器可以访问
 .globl __am_asm_trap
+#定义标签，异常入口的函数名
 __am_asm_trap:
+#栈指针 sp 减少 CONTEXT_SIZE，为保存上下文腾出栈空间
   addi sp, sp, -CONTEXT_SIZE
 
+# 宏展开，保存所有通用寄存器（寄存器集 REGS）到栈中（PUSHz)
   MAP(REGS, PUSH)
 
+#从 CSR 寄存器读取异常原因（mcause）、机器状态（mstatus）、异常程序计数器（mepc），分别放入 t0, t1, t2。
   csrr t0, mcause
   csrr t1, mstatus
   csrr t2, mepc
-
+#把刚读的 mcause、mstatus、mepc 值存入栈上对应偏移位置，保存在上下文结构体里。
   STORE t0, OFFSET_CAUSE(sp)
   STORE t1, OFFSET_STATUS(sp)
   STORE t2, OFFSET_EPC(sp)
 
   # set mstatus.MPRV to pass difftest
+	# 是在异常进入(trap处理)的时候做的一个额外的状态寄存器修改,专门为了通过NEMU的difftest对比。
   li a0, (1 << 17)
   or t1, t1, a0
   csrw mstatus, t1
 
+# 把当前栈指针传给异常处理函数 __am_irq_handle（作为参数 a0）
+# a0也是函数的返回值
   mv a0, sp
   call __am_irq_handle
+	mv sp, a0
 
+# 异常处理函数返回后，恢复 mstatus 和 mepc 寄存器的值
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1

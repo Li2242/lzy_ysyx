@@ -14,13 +14,29 @@
 ***************************************************************************************/
 
 #include <isa.h>
+/*
+	CSR				编号				作用
+	mstatus		0x300				保存处理器状态
+	mtvec			0x305				异常/中断入口地址
+	mepc			0x341				触发异常的 PC
+	mcause		0x342				异常/中断原因
+	*/
 
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
-   */
+  //  */
+	cpu.csrs[0x41] = epc;
+	cpu.csrs[0x42] = NO;
 
-  return 0;
+//etrace
+#ifdef CONFIG_ETRACE
+printf("===================== Exception Trace ======================\n");
+	printf("mcause = 0x%08x, mstatus=0x%08x, mepc=0x%08x\n",cpu.csrs[0x42],cpu.csrs[0x0],cpu.csrs[0x41]);
+	isa_reg_display();
+printf("============================================================\n");
+#endif
+  return cpu.csrs[0x5];
 }
 
 word_t isa_query_intr() {

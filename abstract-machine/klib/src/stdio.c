@@ -5,52 +5,25 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-void num_str(int num , char *str);
+void int_num_str(int num , char *str);
+void uint_num_str(unsigned int num , char *str);
 
 
 int printf(const char *fmt, ...) {
-	//声明一个可变参数访问指针/对象（通常是内部游标）。
+	//声明一个可变参数访问指针/对象（通常是内部游标）
   va_list ap;
 	//初始化 ap，让它指向可变参数序列的第一个参数。
   va_start(ap,fmt);
-  while(*fmt != '\0'){
-		if(*fmt == '%'){
-			switch(*++fmt){
-				case 's':{
-					char* str = va_arg(ap,char*);
-					putstr(str);
-					break;
-				}
-				case 'c':{
-					char c = va_arg(ap,int );
-					putch(c);
-					break;
-				}
-				case 'd':{
-					int num = va_arg(ap,int);
-					char str[13];
-					num_str(num,str);
-					putstr(str);
-					break;
-				}
-				default : putch(*fmt);
-			}
-			fmt++;
-		}else{
-			putch(*fmt++);
-		}	
-  }
+	char *str = malloc(1024);
+  vsprintf(str,fmt,ap);
   va_end(ap);
+
+	putstr(str);
+
   return 0;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
-}
-
-int sprintf(char *out, const char *fmt, ...) {
-  va_list ap;
-  va_start(ap,fmt);
   int count = 0; //已经写入的字符串
 
   while(*fmt != '\0'){
@@ -61,9 +34,28 @@ int sprintf(char *out, const char *fmt, ...) {
 					int num = va_arg(ap,int);
 					char str[13];
 					int i = 0;
-					num_str(num,str);
+					int_num_str(num,str);
 					//写入
 					while(str[i]!='\0') out[count++] = str[i++];
+					break;
+				}
+				case 'x':{
+					unsigned int num = va_arg(ap,unsigned int);
+					char str[15];
+					int i = 0;
+					uint_num_str(num,str);
+					//写入
+					while(str[i]!='\0') out[count++] = str[i++];
+					break;
+				}
+				case 'l':{
+					if(*++fmt == 'd'){
+						long num = va_arg(ap,long);
+						char str[20];
+						int_num_str(num,str);
+						int i =0;
+						while(str[i] != '\0') out[count++] = str[i++];
+					}
 					break;
 				}
 				case 's':{
@@ -75,23 +67,42 @@ int sprintf(char *out, const char *fmt, ...) {
 					}
 					break;
 				}
+				default:
+				//未实现的功能直接跳过
+					out[count++] = '%';
+					out[count++] = *fmt;
+					break;
 			}
-			fmt++;
+			fmt++; //处理完格式字符串后跳过
 		}else{
 			out[count++] = *fmt++;
 		}
   }
   //确保字符串
   out[count] = '\0';
+	return count;
+}
+
+int sprintf(char *out, const char *fmt, ...) {
+  va_list ap;
+  va_start(ap,fmt);
+  int count = vsprintf(out,fmt,ap);
   va_end(ap);
-  return count;
+	return count;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
   va_list ap;
   va_start(ap,fmt);
+	int total_len = vsnprintf(out,n,fmt,ap);
+  va_end(ap);
+  return total_len;
+}
+
+int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
   int count = 0; //已经写入的字符串
   int total_len = 0;
+
   while(*fmt != '\0'){
 		if(*fmt == '%'){
 			switch(*++fmt){
@@ -100,7 +111,7 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
 					int num = va_arg(ap,int);
 					char str[13];
 					int i = 0;
-					num_str(num,str);
+					int_num_str(num,str);
 					//写入
 					while(str[i]!='\0'){
 						if(out != NULL && count < n-1 && n!=0){
@@ -143,16 +154,11 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
   //确保字符串
 	if(n!=0 && out!=NULL)
   	out[count] = '\0';
-  va_end(ap);
-  return total_len;
-}
-
-int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-  panic("Not implemented");
+	return total_len;
 }
 
 
-void num_str(int num , char *str){
+void int_num_str(int num , char *str){
 	unsigned int u;
 	char *p = str;
 	char *start = NULL;
@@ -176,6 +182,37 @@ void num_str(int num , char *str){
 	while(u > 0){
 		*p++ = (u % 10) + '0';
 		u/=10;
+	}
+	//保证是字符串
+	*p = '\0';
+	//反转字符串
+	char *end = p-1;
+	//只要 start 指针还在 end 指针的左边，就继续交换两端的字符。
+	while(start < end){
+		char tem = *start;
+		*start++ = *end;
+		*end-- = tem;
+	}
+}
+
+
+void uint_num_str(unsigned int num , char *str){
+	const char *hex_chars = "0123456789abcdef";
+	char *p = str;
+	char *start = NULL;
+	//处理 0；
+	if(num == 0){
+		*p++ = '0';
+		*p = '\0';
+		return;
+	}
+
+	//因为负数的存在考虑起始端(现在没有也不想去掉了)
+	start = p;
+
+	while(num > 0){
+		*p++ = hex_chars[(num % 16)];
+		num/=16;
 	}
 	//保证是字符串
 	*p = '\0';

@@ -24,9 +24,14 @@ static inline int check_reg_idx(int idx) {
   return idx;
 }
 
+static inline int check_csrs_idx(int idx) {
+  IFDEF(CONFIG_RT_CHECK, assert(idx >= 0 && idx < 0x43));
+  return idx;
+}
+
 //这都对外的gpr，那我之前cpu.gpr[i]岂不是特别小丑
 #define gpr(idx) (cpu.gpr[check_reg_idx(idx)])
-
+#define csrs(idx) (cpu.csrs[check_csrs_idx((idx & 0xFFF) - 0x300)])
 //这还有个传入编号返回名字的，我太小丑了
 static inline const char* reg_name(int idx) {
   extern const char* regs[];

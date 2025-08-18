@@ -26,16 +26,6 @@ void rtc_io_handler() {
 		// printf("   %d %d\n",rtc_port_base[1],rtc_port_base[0]);
 }
 
-
-
-
-
-
-
-
-
-
-
 //设备初始化 init_timer
 void init_timer() {
   rtc_port_base = (uint32_t *)new_space(8);
