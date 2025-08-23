@@ -21,7 +21,7 @@
 #include "sdb.h"
 
 //为了读取客户端内存加的头文件
-#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
+#include </home/lzy14/ysyx-workbench/nemu/include/memory/vaddr.h>
 
 
 static int is_batch_mode = false;

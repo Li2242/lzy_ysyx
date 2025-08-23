@@ -14,7 +14,6 @@
 ***************************************************************************************/
 
 #include <common.h>
-#include "/home/lzy14/ysyx/ysyx-workbench/nemu/src/monitor/sdb/sdb.h"
 
 void init_monitor(int, char *[]);
 void am_init_monitor();

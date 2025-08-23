@@ -20,7 +20,7 @@
  */
 #include <regex.h>
 //根据地址取值使用的头文件
-#include </home/lzy14/ysyx/ysyx-workbench/nemu/include/memory/vaddr.h>
+#include </home/lzy14/ysyx-workbench/nemu/include/memory/vaddr.h>
 
 
 bool check_parentheses(int p,int q);
