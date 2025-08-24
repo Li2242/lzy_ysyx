@@ -4,7 +4,10 @@ VERILATOR_FLAGS = --cc --exe  --build  --top-module npc
 CFLAGS = -g -O3
 # 头文件路径
 CFLAGS += -I $(NPC_HOME)/csrc/include/
-CFLAGS += -I $(NPC_HOME)/tools/capstone/repo/include
+# CFLAGS += -I $(NPC_HOME)/tools/capstone/repo/include
+#防止找不到verilator的文件
+# CFLAGS += -I/usr/local/share/verilator/include
+# CFLAGS += -I$(NPC_HOME)/obj_dir
 # Link the readline library
 LDFLAGS = -lreadline
 #-Wall未加

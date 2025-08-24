@@ -8,7 +8,7 @@ void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
 //初始化
-void init_difftest(char *ref_so_file, long img_size) {
+void init_difftest(char *ref_so_file, long img_size){
   assert(ref_so_file != NULL);
 
 

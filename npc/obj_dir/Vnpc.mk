@@ -14,9 +14,9 @@ PYTHON3 = python3
 # Path to Verilator kit (from $VERILATOR_ROOT)
 VERILATOR_ROOT = /usr/local/share/verilator
 # SystemC include directory with systemc.h (from $SYSTEMC_INCLUDE)
-SYSTEMC_INCLUDE ?= 
+SYSTEMC_INCLUDE ?=
 # SystemC library directory with libsystemc.a (from $SYSTEMC_LIBDIR)
-SYSTEMC_LIBDIR ?= 
+SYSTEMC_LIBDIR ?=
 
 ### Switches...
 # C++ code coverage  0/1 (from --prof-c)
@@ -37,37 +37,36 @@ VM_PREFIX = Vnpc
 VM_MODPREFIX = Vnpc
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-g -O3 -I /home/lzy14/ysyx/ysyx-workbench/npc/csrc/include/ -I /home/lzy14/ysyx/ysyx-workbench/npc/tools/capstone/repo/include \
+  -g -O3 -I /home/lzy14/ysyx-workbench/npc/csrc/include/ -I tools/capstone/repo/include \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
-	-lreadline \
+  -lreadline \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
-	device \
-	map \
-	serial \
-	timer \
-	dut \
-	exper \
-	main \
-	reg \
-	sdb \
-	sim \
-	tool \
-	watchpoint \
-	disasm \
-	elf \
-	log \
+  device \
+  map \
+  serial \
+  timer \
+  dut \
+  exper \
+  main \
+  reg \
+  sdb \
+  sim \
+  tool \
+  watchpoint \
+  disasm \
+  elf \
+  log \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
-	.. \
-	../csrc \
-	../csrc/device \
-	../utils \
-
+  .. \
+  ../csrc \
+  ../csrc/device \
+  ../utils \
 
 ### Default rules...
 # Include list of all generated classes
@@ -112,6 +111,5 @@ log.o: utils/log.cpp
 ### Link rules... (from --exe)
 Vnpc: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a $(VM_HIER_LIBS)
 	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) $(LIBS) $(SC_LIBS) -o $@
-
 
 # Verilated -*- Makefile -*-
