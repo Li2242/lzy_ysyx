@@ -35,10 +35,10 @@ char ring_buf[8][100];
 
 void device_update();
 //ring buf
-void ring_buf_fun();
+void ring_buf_fun(char* inst);
 
 //ftrace
-void ftrace();
+void ftrace(Decode *s);
 //用于ftrace输出的空格
 int count = 0;
 
