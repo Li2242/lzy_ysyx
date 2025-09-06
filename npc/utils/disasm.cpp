@@ -12,6 +12,8 @@ static csh handle;
 void init_disasm() {
   void *dl_handle;
 
+	// reinterpret_cast 是 C++ 中的一种 强制类型转换，用于将一个指针或引用“重新解释”为另一种类型
+
   // 打开共享对象file并将其映射进来；返回一个句柄，可传递给 `dlsym` 以从中获取符号值。(符号对应的运行时地址)
   dl_handle = dlopen("tools/capstone/repo/libcapstone.so.5", RTLD_LAZY);
   assert(dl_handle);

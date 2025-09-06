@@ -19,12 +19,14 @@ static int cmd_w(char *args);
 //并返回给调用的参数
 static char* rl_gets(){
 	static char *line_read = NULL;
-
+//释放上一次的输入
 	if(line_read){
 		free(line_read);
 		line_read = NULL;
 	}
+	//获取新的输入
 	line_read = readline("(npc) ");
+
 	if(line_read && *line_read){
 		add_history(line_read);
 	}
@@ -65,9 +67,9 @@ void sdb_mainloop(){
 		return;
 	}
 	//循环
-	for(char *str;(str = rl_gets()) != NULL; ){
+	for(char *str; (str = rl_gets()) != NULL; ){
 		//输入指令的结尾
-		char *str_end = str+strlen(str);
+		char *str_end = str + strlen(str);
 		//这里是首次发出对输入命令的切割
 		char *cmd = strtok(str," ");
 		if(cmd == NULL){continue;}
@@ -120,7 +122,7 @@ static int cmd_c(char *args){
 //退出
 static int cmd_q(char *args){
 	npc_state = NPC_QUIT;
-	return -10;
+	return -10086;
 }
 
 //单步执行

@@ -2,10 +2,10 @@
 #include "common.h"
 
 
-void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n) = NULL;
+void     (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n) = NULL;
 uint32_t (*ref_difftest_regcpy)(void *dut, uint32_t pc, bool direction) = NULL;
-void (*ref_difftest_exec)(uint64_t n) = NULL;
-void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
+void     (*ref_difftest_exec)(uint64_t n) = NULL;
+void     (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
 //初始化
 void init_difftest(char *ref_so_file, long img_size){

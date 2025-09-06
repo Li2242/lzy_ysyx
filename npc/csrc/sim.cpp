@@ -154,7 +154,10 @@ static void trace_and_difftest() {
 		int space_len = 1;
 		memset(p,' ',space_len);
 		p += space_len;
+
+		//Function Declaration
 		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+		//Function Call
 		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&inst,ilen);
 // ================== ITRACING ENDS ===========================
 
@@ -168,6 +171,7 @@ if(diff_so_file != NULL){
 		if(g_print_step){ printf("%s\n",logbuf);}
 //反汇编写入日志文件
 		log_write("%s\n",logbuf);
+
   //扫描监视点
     bool success = false;
     scan_watchpoints(&success);

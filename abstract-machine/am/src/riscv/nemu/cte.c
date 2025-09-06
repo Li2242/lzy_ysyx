@@ -59,6 +59,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   return true;
 }
 
+//kcontext只能在栈上放置一个上下文结构
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
 	//uintptr_t 是一种无符号整型，保证足够大能存放一个指针的整数类型。(也是为了做字节单位减法)
 	//给Context划分内存
