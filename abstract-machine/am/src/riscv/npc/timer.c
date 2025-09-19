@@ -1,6 +1,5 @@
 #include <am.h>
 #include <riscv/riscv.h>
-#include <stdio.h>
 
 # define DEVICE_BASE 0xa0000000
 //实时时钟地址

@@ -6,6 +6,7 @@
 #include "Vnpc___024root.h"
 
 VL_ATTR_COLD void Vnpc___024root___eval_static__TOP(Vnpc___024root* vlSelf);
+VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf);
 
 VL_ATTR_COLD void Vnpc___024root___eval_static(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_static\n"); );
@@ -13,7 +14,9 @@ VL_ATTR_COLD void Vnpc___024root___eval_static(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     Vnpc___024root___eval_static__TOP(vlSelf);
+    Vnpc___024root____Vm_traceActivitySetAll(vlSelf);
     vlSelfRef.__Vtrigprevexpr___TOP__clk__0 = vlSelfRef.clk;
+    vlSelfRef.__Vtrigprevexpr___TOP__reset__0 = vlSelfRef.reset;
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_static__TOP(Vnpc___024root* vlSelf) {
@@ -23,8 +26,6 @@ VL_ATTR_COLD void Vnpc___024root___eval_static__TOP(Vnpc___024root* vlSelf) {
     // Body
     vlSelfRef.npc__DOT__u_decoder7_128__DOT____VdfgBinToOneHot_Pre_hbc128af0_0_0 = 0U;
     vlSelfRef.npc__DOT__u_decoder7_128__DOT____VdfgBinToOneHot_Tab_hbc128af0_0_0.fill(0U);
-    vlSelfRef.npc__DOT__u1_decoder7_128__DOT____VdfgBinToOneHot_Pre_hbc128af0_0_0 = 0U;
-    vlSelfRef.npc__DOT__u1_decoder7_128__DOT____VdfgBinToOneHot_Tab_hbc128af0_0_0.fill(0U);
 }
 
 VL_ATTR_COLD void Vnpc___024root___eval_initial(Vnpc___024root* vlSelf) {
@@ -95,6 +96,7 @@ VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
     // Body
     if ((1ULL & vlSelfRef.__VstlTriggered.word(0U))) {
         Vnpc___024root___stl_sequent__TOP__0(vlSelf);
+        Vnpc___024root____Vm_traceActivitySetAll(vlSelf);
     }
 }
 
@@ -127,6 +129,9 @@ VL_ATTR_COLD void Vnpc___024root___dump_triggers__act(Vnpc___024root* vlSelf) {
     if ((1ULL & vlSelfRef.__VactTriggered.word(0U))) {
         VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk)\n");
     }
+    if ((2ULL & vlSelfRef.__VactTriggered.word(0U))) {
+        VL_DBG_MSGF("         'act' region trigger index 1 is active: @(negedge reset)\n");
+    }
 }
 #endif  // VL_DEBUG
 
@@ -142,8 +147,21 @@ VL_ATTR_COLD void Vnpc___024root___dump_triggers__nba(Vnpc___024root* vlSelf) {
     if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
         VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk)\n");
     }
+    if ((2ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @(negedge reset)\n");
+    }
 }
 #endif  // VL_DEBUG
+
+VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vm_traceActivitySetAll\n"); );
+    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Body
+    vlSelfRef.__Vm_traceActivity[0U] = 1U;
+    vlSelfRef.__Vm_traceActivity[1U] = 1U;
+    vlSelfRef.__Vm_traceActivity[2U] = 1U;
+}
 
 VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___ctor_var_reset\n"); );
@@ -155,66 +173,40 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->reset = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 9928399931838511862ull);
     vlSelf->alu_result = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 15326351562492354909ull);
     vlSelf->pc = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 4211327832146562899ull);
+    vlSelf->inst_valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2881661861247159430ull);
     vlSelf->npc__DOT__nextpc = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 13448463068007023365ull);
-    vlSelf->npc__DOT__inst = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 13484185947400506850ull);
+    vlSelf->npc__DOT__ifu_state = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 11982977368688405936ull);
+    vlSelf->npc__DOT__ifu_next_state = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2364858635368160771ull);
+    vlSelf->npc__DOT__ifu_raddr = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 10384814231718738920ull);
+    vlSelf->npc__DOT__ifu_rdata = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 13417156986228291425ull);
+    vlSelf->npc__DOT__pc_valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10410329054304930378ull);
+    vlSelf->npc__DOT__inst_reg = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 559965870459530219ull);
     vlSelf->npc__DOT__reg_cwen = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7642231643570232800ull);
-    vlSelf->npc__DOT__mem_en = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6977832723820035533ull);
-    vlSelf->npc__DOT__reg_from_pc_4 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 11601376165023514718ull);
+    vlSelf->npc__DOT__mem_ren = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15006860431274983569ull);
+    vlSelf->npc__DOT__mem_wen = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 3148190559356722543ull);
     vlSelf->npc__DOT__imm = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 3403450650843488731ull);
+    vlSelf->npc__DOT__imm_R = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 631499588448480262ull);
     vlSelf->npc__DOT__is_add = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7113134690467923886ull);
-    vlSelf->npc__DOT__is_xor = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 16497246662640902904ull);
-    vlSelf->npc__DOT__is_or = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 14470214166798668838ull);
-    vlSelf->npc__DOT__is_sltu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7105619691891532568ull);
-    vlSelf->npc__DOT__is_sll = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 17740457191497796115ull);
-    vlSelf->npc__DOT__is_and = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 14564807147912235218ull);
-    vlSelf->npc__DOT__is_srli = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 1557024625016929814ull);
-    vlSelf->npc__DOT__is_slt = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 9371827908278391710ull);
-    vlSelf->npc__DOT__is_sra = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6832702589684493582ull);
     vlSelf->npc__DOT__is_jalr = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 16619542919619024910ull);
     vlSelf->npc__DOT__is_addi = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 18095654288942725152ull);
+    vlSelf->npc__DOT__is_lw = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10815129200715278395ull);
     vlSelf->npc__DOT__is_lbu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 3669384594204784412ull);
-    vlSelf->npc__DOT__is_sltiu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 1594603236580943049ull);
-    vlSelf->npc__DOT__is_srai = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 16084157117712975700ull);
-    vlSelf->npc__DOT__is_xori = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 17859615923300220298ull);
-    vlSelf->npc__DOT__is_andi = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15447534817475441426ull);
-    vlSelf->npc__DOT__is_slli = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15071584917759939222ull);
-    vlSelf->npc__DOT__is_lh = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2073067310019782717ull);
-    vlSelf->npc__DOT__is_lhu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7259090803116761004ull);
-    vlSelf->npc__DOT__is_sh = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15395300221938876305ull);
-    vlSelf->npc__DOT__is_sb = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 17239515840305236195ull);
-    vlSelf->npc__DOT__is_bge = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7048329365100282259ull);
-    vlSelf->npc__DOT__is_bgeu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2557408463039664384ull);
-    vlSelf->npc__DOT__is_bltu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7086124738964239788ull);
-    vlSelf->npc__DOT__is_blt = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10031783266708861801ull);
+    VL_SCOPED_RAND_RESET_W(128, vlSelf->npc__DOT__opcode_d, __VscopeHash, 9878343124624163258ull);
+    vlSelf->npc__DOT__src2_is_imm = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6504361381926984660ull);
     vlSelf->npc__DOT__src1 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 9000192369759755854ull);
-    vlSelf->npc__DOT__alu_src1 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 2344565004898394841ull);
-    vlSelf->npc__DOT__alu_src2 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 18328337154122140231ull);
     vlSelf->npc__DOT__raddr = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 7662766534979410799ull);
-    vlSelf->npc__DOT__pmem_read_data = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 8288190997008375572ull);
+    vlSelf->npc__DOT____VdfgExtracted_hd008e9d4__0 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 16752461302980099478ull);
     vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_0 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 8604789670429405903ull);
-    vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_9 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 8665689703024943622ull);
-    vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_18 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7097946056987704487ull);
-    vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_20 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 14201283190348851629ull);
-    vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_21 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6276050114838745970ull);
-    vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_22 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 8922911174211889837ull);
-    vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_23 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2912444945704275399ull);
-    vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_24 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 5337643676868673690ull);
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 7067308385293642866ull);
     }
     vlSelf->npc__DOT__u_csr__DOT__mcycle = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 17786633203603633416ull);
     vlSelf->npc__DOT__u_csr__DOT__mcycleh = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 16674371368503694857ull);
-    vlSelf->npc__DOT__u_alu__DOT__sltu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 17939194887316438677ull);
-    vlSelf->npc__DOT__u_alu__DOT__bne = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6195531813428464050ull);
-    vlSelf->npc__DOT__u_alu__DOT__sub = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 12512278017900902968ull);
-    vlSelf->npc__DOT__u_alu__DOT__slt = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15681093017981471643ull);
-    vlSelf->npc__DOT__u_alu__DOT__beq = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7992696781295302392ull);
-    vlSelf->npc__DOT__u_alu__DOT__add_sub_result = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 18308337887036356919ull);
-    vlSelf->npc__DOT__u_alu__DOT__adder_b = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 6063479746036311668ull);
-    vlSelf->npc__DOT__u_alu__DOT__adder_cin = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 13922209588567249933ull);
-    vlSelf->__Vfunc_v_pmem_read__0__Vfuncout = 0;
-    vlSelf->__Vfunc_v_pmem_read__1__Vfuncout = 0;
-    vlSelf->__Vfunc_v_pmem_read__2__Vfuncout = 0;
     vlSelf->__Vfunc_v_pmem_read__3__Vfuncout = 0;
+    vlSelf->__Vfunc_v_pmem_read__4__Vfuncout = 0;
     vlSelf->__Vtrigprevexpr___TOP__clk__0 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 9526919608049418986ull);
+    vlSelf->__Vtrigprevexpr___TOP__reset__0 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 1487628987237401141ull);
+    for (int __Vi0 = 0; __Vi0 < 3; ++__Vi0) {
+        vlSelf->__Vm_traceActivity[__Vi0] = 0;
+    }
 }

@@ -137,8 +137,6 @@ static void execute(uint32_t n){
 
 static void trace_and_difftest() {
 //===============  ITRACING BEGINS ========================
-		//我在考虑是否可以把它放进trace_and_difftest里面
-		//为什么我把它移进去，我的ftrace失效了，我需要慎重考虑一下
 
 		char* p = logbuf;
 		//写入pc

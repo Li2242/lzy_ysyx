@@ -1,4 +1,3 @@
-
 module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   input wire clk,
   //写端口
@@ -25,7 +24,6 @@ assign rdata2 = (raddr2 == 5'b0) ? 32'b0 : rf[raddr2];
   always @(posedge clk) begin
     if(wen && waddr!=5'b0) rf[waddr] <= wdata;
   end
-
 
 endmodule
 

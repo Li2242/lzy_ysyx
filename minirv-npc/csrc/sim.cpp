@@ -59,16 +59,20 @@ void sim_init(int argc,char** argv){
 		// 1. 复位初始化
 		// 在仿真环境中
 	top->clk = 0;
-	top->reset = 1;
+	top->reset = 0;
 	top->pc = MBASE;
 	top->eval();     // 应用复位状态
 
-	top->clk = 1;
-	top->eval();     // 应用复位状态
+	// 2. 保持复位几个周期
+for(int i = 0; i < 2; i++) {
+    top->clk = 1; top->eval();
+    top->clk = 0; top->eval();
+}
 
-
-	top->reset = 0;
-	green_printf("===========================================\n");
+	//3.释放复位
+	top->reset = 1;
+	top->eval();
+	// green_printf("===========================================\n");
 
 //====================  这里是初始化的结束  ===============
 }
@@ -84,7 +88,7 @@ void sim_exe(uint32_t n){
       return;
     default: npc_state = NPC_RUNNING;
   }
-	top->reset = 0;
+
 	execute(n);
 
 	//我有了difftest如果不出大问题，这里的退出都是正常退出
@@ -118,7 +122,6 @@ static void execute(uint32_t n){
 
 //===============  一条命令的开始  ========================
     top->clk = 0;
-    // top->inst = pmem_read(top->pc,4);
     top->eval();
 	#ifdef VTRACE
     tfp->dump(contextp->time());    // 记录波形
@@ -134,15 +137,15 @@ static void execute(uint32_t n){
 //===============  一条命令的结束  =========================
 
 //正如函数名所说它就是TRACE和DIFFTEST的办公场所
-		trace_and_difftest();
+		if(top->inst_valid){
+			trace_and_difftest();
+		}
   }
 }
 
 
 static void trace_and_difftest() {
 //===============  ITRACING BEGINS ========================
-		//我在考虑是否可以把它放进trace_and_difftest里面
-		//为什么我把它移进去，我的ftrace失效了，我需要慎重考虑一下
 
 		char* p = logbuf;
 		//写入pc

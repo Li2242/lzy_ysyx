@@ -13,29 +13,31 @@ static void out_of_bound(uint32_t addr);
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
 // 起始地址：PC = 0x80000000
-0x800000b7,  // lui   x1, 0x80000        # x1 = 0x80000000，基地址
-0x00008093,  // addi  x1, x1, 0         # 保持 x1 不变
+0x800000b7,  // lui   x1, 0x80000        # x1 = 0x80000000 (基地址)
+0x00000097,  // auipc x1, 0x0            # x1 = 0x80000004 (测试 auipc)
+0x00008093,  // addi  x1, x1, 0          # x1 = 0x80000004
 
-0x00000113,  // addi  x2, x0, 1         # x2 = 1
-0x12300213,  // addi  x4, x0, 0x123     # x4 = 0x123
+0x00000113,  // addi  x2, x0, 0          # x2 = 0
+0x12300213,  // addi  x4, x0, 0x123      # x4 = 0x123
 
-0x0020a023,  // sw    x2, 0(x1)         # mem[0x80000000] = 1
-0x0040a423,  // sw    x4, 4(x1)         # mem[0x80000004] = 0x123
+0x00408133,  // add   x2, x1, x4         # x2 = 0x80000004 + 0x123 = 0x80000127
 
-0x0000a283,  // lw    x5, 0(x1)         # x5 = mem[0x80000000]，应为1
-0x0010c383,  // lbu   x7, 1(x1)         # x7 = mem[0x80000001]，取最低字节
+0x0020a023,  // sw    x2, 0(x1)          # mem[0x80000004] = 0x80000127
+0x0040a423,  // sw    x4, 4(x1)          # mem[0x80000008] = 0x123
 
-0x0040006f,  // jal   x0, 4             # 跳过下一条指令（跳过 addi）
+0x0000a283,  // lw    x5, 0(x1)          # x5 = mem[0x80000004] = 0x80000127
+0x0010c383,  // lbu   x7, 1(x1)          # x7 = mem[0x80000005]
 
-0x11100113,  // addi  x2, x0, 0x111     # 不执行（被跳过）
+0x00c000ef,  // jal   x1, 12             # 跳到 PC+12，x1=返回地址=PC+4
 
-0x008000ef,  // jal   x1, 8             # x1 = PC + 8，跳转到 PC + 8 + 4 = 下一条+8字节的指令地址
-0x00008067,  // jalr  x0, 0(x1)         # 跳转到 x1 指向的地址（跳转回来）
+0x11100113,  // addi  x2, x0, 0x111      # 执行后 x2 = 0x111
 
-0x00100073,  // ebreak                  # 程序终止
+0x00008067,  // jalr  x0, 0(x1)          # 跳回到返回地址 (PC+4)，继续顺序执行
 
+0x12300413,  // addi  x8, x0, 0x123      # x8 = 0x123
+0x008400b3,  // add   x1, x8, x8         # x1 = 0x246
 
-
+0x00100073,  // ebreak                   # 程序终止
 
 };
 
@@ -98,7 +100,6 @@ void pmem_write(uint32_t addr, int len, uint32_t data){
 //越界处理
 static void out_of_bound(uint32_t addr) {
   printf("\033[31mERROR = address = 0x%08x is out of bound of pmem [0x%08x, 0x%08x] at pc =  0x%08x\033[0m\n",addr, MBASE, MBASE+MSIZE, top->pc);
-	assert(0);
 }
 
 //解析参数

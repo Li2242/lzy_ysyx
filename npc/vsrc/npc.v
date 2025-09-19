@@ -40,6 +40,7 @@ wire[4:0] 	 rs2;
 wire[4:0]    rd;
 //使能信号
 wire    reg_wen;
+wire    reg_cwen;
 wire    mem_en;
 wire    mem_wen;
 wire reg_from_mem;
@@ -92,6 +93,7 @@ wire is_andi;
 wire is_slli;
 wire is_lh;
 wire is_lhu;
+wire is_csrrw;
 //S
 wire is_sw;
 wire is_sh;
@@ -148,7 +150,7 @@ decoder7_128 u1_decoder7_128(
 
 
 //大类
-assign is_I = opcode_d[19] | opcode_d[3] | opcode_d[103] ; // 0010011 or 0000011 or 1100111 → I 型
+assign is_I = opcode_d[19] | opcode_d[3] | opcode_d[103] | opcode_d[115]; // 0010011 or 0000011 or 1100111 → I 型
 assign is_U = opcode_d[55] | opcode_d[23] ;                // 0110111 or 0010111 → U 型
 assign is_J = opcode_d[111] ;                              // 1101111 → J 型
 assign is_R = opcode_d[51] ;                               // 0110011 → R 型
@@ -186,6 +188,7 @@ assign is_srli  =  opcode_d[19]  &  funct3_d[5] & inst31_25_d[0];
 assign is_slli  =  opcode_d[19]  &  funct3_d[1] & inst31_25_d[0];
 assign is_lh    =  opcode_d[3]   &  funct3_d[1];
 assign is_lhu   =  opcode_d[3]   &  funct3_d[5];
+assign is_csrrw =  opcode_d[115] &  funct3_d[1];   
 //S
 assign is_sb    =  opcode_d[35]  &  funct3_d[0];
 assign is_sw    =  opcode_d[35]  &  funct3_d[2];
@@ -204,7 +207,9 @@ assign is_ebreak = (inst == 32'h00100073);
 //控制信号 3.加指令改
 assign mem_en   = is_lw | is_lbu | is_lh | is_lhu;
 assign mem_wen  = is_sw | is_sb | is_sh;
-assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli | is_slt | is_lh |       is_lhu| is_sra;
+assign reg_wen  = is_auipc | is_lui | is_jal | is_jalr | is_addi | is_add | is_lw | is_lbu | is_sltiu | is_xor | is_or|is_sltu | is_sub | is_srai | is_sll | is_and | is_xori | is_andi | is_srl | is_srli | is_slli | is_slt | is_lh | is_lhu| is_sra | is_csrrw;
+
+assign reg_cwen = is_csrrw;
 
 assign reg_from_mem  = is_lw  | is_lbu | is_lh | is_lhu;
 assign reg_from_pc_4 = is_jal | is_jalr;
@@ -227,6 +232,7 @@ wire [31:0] final_result;
 assign final_result = reg_from_mem  ?  rdata  :
 									    reg_from_pc_4 ?  pc + 4 :
 											reg_from_imm  ?  imm    :
+											is_csrrw      ?  csr_data :
 											alu_result;
 
 RegisterFile u_regfile2 (
@@ -242,6 +248,16 @@ RegisterFile u_regfile2 (
 
 // ================================= 寄存器END  ======================================
 
+// ================================= CSR ================================
+wire [31:0] csr_data;
+csr u_csr(
+	.clk(clk),
+	.craddr(imm[11:0]),
+	.crdata(csr_data),
+	.cwaddr(imm[11:0]),
+	.cwdata(src1),
+	.cwen(reg_cwen)
+);
 // =======================    ALU  ========================================
 wire [11:0]  alu_op;           //1.加指令时需要改
 wire        src1_is_pc;
@@ -332,23 +348,6 @@ end
 always @(posedge clk) begin
 	if(is_ebreak) ebreak(pc);
 end
-
-// 调试显示
-// always @(posedge clk) begin
-//     if (reg_wen) begin
-//         $display("RegWrite: rd=%d,  final_result=0x%08x, mem_en=%b, rdata=0x%08x",
-//                  rd,  final_result, mem_en, rdata);
-//     end
-// 		//  $display("mem_en=%b,is_lw=%b ,is_lbu=%b",
-//     //                mem_en,is_lw,is_lbu);
-// end
-
-// always @(posedge clk) begin
-//     if (mem_wen) begin
-//         $display("MemWrite: waddr=0x%08x,  wdata=0x%08x, mem_wen=%b, wmask=0x%08x",
-//                  waddr,  wdata, mem_wen, wmask);
-//     end
-// end
 
 
 endmodule
