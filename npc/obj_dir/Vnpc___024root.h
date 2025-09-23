@@ -43,6 +43,9 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
         CData/*0:0*/ npc__DOT__is_slli;
         CData/*0:0*/ npc__DOT__is_lh;
         CData/*0:0*/ npc__DOT__is_lhu;
+        CData/*0:0*/ npc__DOT__is_ori;
+        CData/*0:0*/ npc__DOT__is_csrrw;
+        CData/*0:0*/ npc__DOT__is_csrrs;
         CData/*0:0*/ npc__DOT__is_sh;
         CData/*0:0*/ npc__DOT__is_sb;
         CData/*0:0*/ npc__DOT__is_bge;
@@ -67,24 +70,29 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
         CData/*0:0*/ __VstlFirstIteration;
         CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
         CData/*0:0*/ __VactContinue;
+        SData/*11:0*/ npc__DOT__csr_raddr;
         VL_OUT(alu_result,31,0);
         VL_OUT(pc,31,0);
+        VL_OUT(addr,31,0);
         IData/*31:0*/ npc__DOT__nextpc;
         IData/*31:0*/ npc__DOT__inst;
         IData/*31:0*/ npc__DOT__imm;
+        IData/*31:0*/ npc__DOT__csr_rdata;
+        IData/*31:0*/ npc__DOT__csr_wdata;
         IData/*31:0*/ npc__DOT__src1;
         IData/*31:0*/ npc__DOT__alu_src1;
         IData/*31:0*/ npc__DOT__alu_src2;
         IData/*31:0*/ npc__DOT__raddr;
+    };
+    struct {
         IData/*31:0*/ npc__DOT__pmem_read_data;
-        IData/*31:0*/ npc__DOT____VdfgRegularize_h467b3cb3_0_0;
-        IData/*31:0*/ npc__DOT__u_csr__DOT__mcycle;
-        IData/*31:0*/ npc__DOT__u_csr__DOT__mcycleh;
+        IData/*31:0*/ npc__DOT__u_csr__DOT__mepc;
+        IData/*31:0*/ npc__DOT__u_csr__DOT__mcause;
+        IData/*31:0*/ npc__DOT__u_csr__DOT__mstatus;
+        IData/*31:0*/ npc__DOT__u_csr__DOT__mtvec;
         IData/*31:0*/ npc__DOT__u_alu__DOT__add_sub_result;
         IData/*31:0*/ npc__DOT__u_alu__DOT__adder_b;
         IData/*31:0*/ __Vfunc_v_pmem_read__0__Vfuncout;
-    };
-    struct {
         IData/*31:0*/ __Vfunc_v_pmem_read__1__Vfuncout;
         IData/*31:0*/ __Vfunc_v_pmem_read__2__Vfuncout;
         IData/*31:0*/ __Vfunc_v_pmem_read__3__Vfuncout;

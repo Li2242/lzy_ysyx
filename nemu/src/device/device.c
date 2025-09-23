@@ -52,6 +52,7 @@ void device_update() {
       case SDL_QUIT:
         nemu_state.state = NEMU_QUIT;
         break;
+//按键的检查
 #ifdef CONFIG_HAS_KEYBOARD
       // If a key was pressed
       case SDL_KEYDOWN:

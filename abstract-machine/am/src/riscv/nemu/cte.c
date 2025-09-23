@@ -15,18 +15,7 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
-		// printf("=====================\n");
-// //   uintptr_t  mcause, mstatus, mepc, gpr[NR_REGS];
-		// printf("mcause = %x, mstatus=%x, mepc=0x%x\n",c->mcause,c->mstatus,c->mepc);
-		// int j = 0;
-		// for(int i =0;i<32;i++){
-		// 	printf("gpr[%d]=0x%x    \t",i,c->gpr[i]);
-		// 	j++;
-		// 	if(j==4){
-		// 		j = 0;
-		// 		printf("\n");
-		// 	}
-		// }
+
     switch (c->mcause) {
 			//这是在处理自限指令 因此软件需要在适当的地方对保存的PC加上4
 			case 9:

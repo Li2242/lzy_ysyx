@@ -155,6 +155,7 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->reset = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 9928399931838511862ull);
     vlSelf->alu_result = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 15326351562492354909ull);
     vlSelf->pc = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 4211327832146562899ull);
+    vlSelf->addr = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 14934084843038794831ull);
     vlSelf->npc__DOT__nextpc = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 13448463068007023365ull);
     vlSelf->npc__DOT__inst = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 13484185947400506850ull);
     vlSelf->npc__DOT__reg_cwen = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7642231643570232800ull);
@@ -180,18 +181,23 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__is_slli = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15071584917759939222ull);
     vlSelf->npc__DOT__is_lh = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2073067310019782717ull);
     vlSelf->npc__DOT__is_lhu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7259090803116761004ull);
+    vlSelf->npc__DOT__is_ori = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 4354861069334576842ull);
+    vlSelf->npc__DOT__is_csrrw = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 3750296343148065ull);
+    vlSelf->npc__DOT__is_csrrs = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 3294389692030688566ull);
     vlSelf->npc__DOT__is_sh = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15395300221938876305ull);
     vlSelf->npc__DOT__is_sb = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 17239515840305236195ull);
     vlSelf->npc__DOT__is_bge = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7048329365100282259ull);
     vlSelf->npc__DOT__is_bgeu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2557408463039664384ull);
     vlSelf->npc__DOT__is_bltu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7086124738964239788ull);
     vlSelf->npc__DOT__is_blt = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10031783266708861801ull);
+    vlSelf->npc__DOT__csr_rdata = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 7320949017863734522ull);
+    vlSelf->npc__DOT__csr_raddr = VL_SCOPED_RAND_RESET_I(12, __VscopeHash, 10006122730569512850ull);
+    vlSelf->npc__DOT__csr_wdata = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 14994035147346098257ull);
     vlSelf->npc__DOT__src1 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 9000192369759755854ull);
     vlSelf->npc__DOT__alu_src1 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 2344565004898394841ull);
     vlSelf->npc__DOT__alu_src2 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 18328337154122140231ull);
     vlSelf->npc__DOT__raddr = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 7662766534979410799ull);
     vlSelf->npc__DOT__pmem_read_data = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 8288190997008375572ull);
-    vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_0 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 8604789670429405903ull);
     vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_9 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 8665689703024943622ull);
     vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_18 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7097946056987704487ull);
     vlSelf->npc__DOT____VdfgRegularize_h467b3cb3_0_20 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 14201283190348851629ull);
@@ -202,8 +208,10 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->npc__DOT__u_regfile2__DOT__rf[__Vi0] = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 7067308385293642866ull);
     }
-    vlSelf->npc__DOT__u_csr__DOT__mcycle = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 17786633203603633416ull);
-    vlSelf->npc__DOT__u_csr__DOT__mcycleh = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 16674371368503694857ull);
+    vlSelf->npc__DOT__u_csr__DOT__mepc = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 7882385580502595921ull);
+    vlSelf->npc__DOT__u_csr__DOT__mcause = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 16519444616851685064ull);
+    vlSelf->npc__DOT__u_csr__DOT__mstatus = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 14862025864194665906ull);
+    vlSelf->npc__DOT__u_csr__DOT__mtvec = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 11905907722351256196ull);
     vlSelf->npc__DOT__u_alu__DOT__sltu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 17939194887316438677ull);
     vlSelf->npc__DOT__u_alu__DOT__bne = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6195531813428464050ull);
     vlSelf->npc__DOT__u_alu__DOT__sub = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 12512278017900902968ull);

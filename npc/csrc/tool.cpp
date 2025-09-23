@@ -173,7 +173,7 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 			is_same = false;
 		}
 	}
-	if(top->pc != diff_pc){
+	if(top->pc != diff_pc ){
 		red_printf("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", top->pc, diff_pc);
 		is_same = false;
 	}

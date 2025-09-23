@@ -161,7 +161,7 @@ static void trace_and_difftest() {
 
 //difftest的关键
 if(diff_so_file != NULL){
-	difftest_step(cpu_pc);
+		difftest_step(cpu_pc);
 }
 //这里是ftrace的必要(被关了)
 		// ftrace(logbuf);

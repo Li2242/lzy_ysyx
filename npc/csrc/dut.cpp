@@ -69,7 +69,8 @@ void difftest_step(uint32_t pc) {
   uint32_t diff_reg[32] = {};
 	uint32_t diff_pc;
 	//REF执行以西
-  ref_difftest_exec(1);
+		ref_difftest_exec(1);
+  
 	//把REF中的寄存器和整到DUT中
 	//REF中的pc是这个函数返回的
   diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_DUT);

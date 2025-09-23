@@ -1,46 +1,46 @@
 module csr(
 	input wire clk,
+	input wire [31:0]pc,
 	//csr读
 	input  wire[11:0] craddr,
 	output wire[31:0] crdata,
 	//csr写
 	input wire cwen,
 	input wire [11:0] cwaddr,
-	input wire [31:0] cwdata 
+	input wire [31:0] cwdata,
+	//特殊处理 
+	input wire is_ecall
 );
 
 // =================== CSR =========================
-reg [31:0] mcycle;
-reg [31:0] mcycleh;
+reg [31:0]mepc;
+reg [31:0]mcause;
+reg [31:0]mstatus;
+reg [31:0]mtvec;
 
-localparam [31:0] mvendorid = 32'h79737978;
-localparam [31:0] marchid   = 32'h17E634B;
-
-always @(posedge clk)begin
-	{mcycleh,mcycle} <= { mcycleh,mcycle } + 1;
-end
 //csr_read
-assign crdata = (craddr == 12'hB00) ? mcycle  :
-								(craddr == 12'hB02) ? mcycleh :
-								(craddr == 12'hF11) ? mvendorid:
-								(craddr == 12'hF12) ? marchid:
+assign crdata = (craddr == 12'h300) ? mstatus  :
+								(craddr == 12'h305) ? mtvec :
+								(craddr == 12'h341) ? mepc  :
+								(craddr == 12'h342) ? mcause:
 								32'b0;
+
 //csr_write
 always @(posedge clk)begin
 	if(cwen)begin
-		// $display("mcycle: %d, mcycleh: %d", mcycle, mcycleh);
+		// $display("pc=0x%08x mtvec=0x%08x mstatus=0x%08x mepc=0x%08x mcause=0x%08x",pc,mtvec,mstatus,mepc,mcause);
 		case(cwaddr)
-			12'hB00:mcycle  <= cwdata;
-			12'hB02:mcycleh <= cwdata;
+			12'h300: mstatus <= cwdata;
+			12'h305: mtvec   <= cwdata;
+			12'h341: mepc    <= cwdata;
+			12'h342: mcause  <= cwdata;
 			default: ;
 		endcase
 	end
+	//ecall的特殊处理
+	if(is_ecall)begin
+		mepc   <= pc;
+		mcause <= 32'hb;
+	end
 end
-
-// always @(posedge clk) begin
-//   if (cwen) begin
-//       $display("CSR read: craddr = %h, mcycle = %d, mcycleh = %d", craddr, mcycle, mcycleh);
-//   end
-// end
-
 endmodule

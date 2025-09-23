@@ -13,6 +13,7 @@ Vnpc::Vnpc(VerilatedContext* _vcontextp__, const char* _vcname__)
     , reset{vlSymsp->TOP.reset}
     , alu_result{vlSymsp->TOP.alu_result}
     , pc{vlSymsp->TOP.pc}
+    , addr{vlSymsp->TOP.addr}
     , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}
     , rootp{&(vlSymsp->TOP)}
 {

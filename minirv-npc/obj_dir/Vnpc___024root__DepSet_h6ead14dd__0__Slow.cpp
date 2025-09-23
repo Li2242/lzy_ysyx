@@ -6,7 +6,6 @@
 #include "Vnpc___024root.h"
 
 VL_ATTR_COLD void Vnpc___024root___eval_static__TOP(Vnpc___024root* vlSelf);
-VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf);
 
 VL_ATTR_COLD void Vnpc___024root___eval_static(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___eval_static\n"); );
@@ -14,7 +13,6 @@ VL_ATTR_COLD void Vnpc___024root___eval_static(Vnpc___024root* vlSelf) {
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     Vnpc___024root___eval_static__TOP(vlSelf);
-    Vnpc___024root____Vm_traceActivitySetAll(vlSelf);
     vlSelfRef.__Vtrigprevexpr___TOP__clk__0 = vlSelfRef.clk;
     vlSelfRef.__Vtrigprevexpr___TOP__reset__0 = vlSelfRef.reset;
 }
@@ -96,7 +94,6 @@ VL_ATTR_COLD void Vnpc___024root___eval_stl(Vnpc___024root* vlSelf) {
     // Body
     if ((1ULL & vlSelfRef.__VstlTriggered.word(0U))) {
         Vnpc___024root___stl_sequent__TOP__0(vlSelf);
-        Vnpc___024root____Vm_traceActivitySetAll(vlSelf);
     }
 }
 
@@ -153,16 +150,6 @@ VL_ATTR_COLD void Vnpc___024root___dump_triggers__nba(Vnpc___024root* vlSelf) {
 }
 #endif  // VL_DEBUG
 
-VL_ATTR_COLD void Vnpc___024root____Vm_traceActivitySetAll(Vnpc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root____Vm_traceActivitySetAll\n"); );
-    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    vlSelfRef.__Vm_traceActivity[0U] = 1U;
-    vlSelfRef.__Vm_traceActivity[1U] = 1U;
-    vlSelfRef.__Vm_traceActivity[2U] = 1U;
-}
-
 VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___ctor_var_reset\n"); );
     Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -178,20 +165,15 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->npc__DOT__ifu_state = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 11982977368688405936ull);
     vlSelf->npc__DOT__ifu_next_state = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2364858635368160771ull);
     vlSelf->npc__DOT__ifu_raddr = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 10384814231718738920ull);
-    vlSelf->npc__DOT__ifu_rdata = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 13417156986228291425ull);
-    vlSelf->npc__DOT__pc_valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10410329054304930378ull);
     vlSelf->npc__DOT__inst_reg = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 559965870459530219ull);
     vlSelf->npc__DOT__reg_cwen = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7642231643570232800ull);
     vlSelf->npc__DOT__mem_ren = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15006860431274983569ull);
-    vlSelf->npc__DOT__mem_wen = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 3148190559356722543ull);
     vlSelf->npc__DOT__imm = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 3403450650843488731ull);
-    vlSelf->npc__DOT__imm_R = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 631499588448480262ull);
     vlSelf->npc__DOT__is_add = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 7113134690467923886ull);
     vlSelf->npc__DOT__is_jalr = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 16619542919619024910ull);
     vlSelf->npc__DOT__is_addi = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 18095654288942725152ull);
     vlSelf->npc__DOT__is_lw = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10815129200715278395ull);
     vlSelf->npc__DOT__is_lbu = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 3669384594204784412ull);
-    VL_SCOPED_RAND_RESET_W(128, vlSelf->npc__DOT__opcode_d, __VscopeHash, 9878343124624163258ull);
     vlSelf->npc__DOT__src2_is_imm = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6504361381926984660ull);
     vlSelf->npc__DOT__src1 = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 9000192369759755854ull);
     vlSelf->npc__DOT__raddr = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 7662766534979410799ull);
@@ -206,7 +188,4 @@ VL_ATTR_COLD void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf) {
     vlSelf->__Vfunc_v_pmem_read__4__Vfuncout = 0;
     vlSelf->__Vtrigprevexpr___TOP__clk__0 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 9526919608049418986ull);
     vlSelf->__Vtrigprevexpr___TOP__reset__0 = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 1487628987237401141ull);
-    for (int __Vi0 = 0; __Vi0 < 3; ++__Vi0) {
-        vlSelf->__Vm_traceActivity[__Vi0] = 0;
-    }
 }

@@ -22,10 +22,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     VL_OUT8(inst_valid,0,0);
     CData/*0:0*/ npc__DOT__ifu_state;
     CData/*0:0*/ npc__DOT__ifu_next_state;
-    CData/*0:0*/ npc__DOT__pc_valid;
     CData/*0:0*/ npc__DOT__reg_cwen;
     CData/*0:0*/ npc__DOT__mem_ren;
-    CData/*0:0*/ npc__DOT__mem_wen;
     CData/*0:0*/ npc__DOT__is_add;
     CData/*0:0*/ npc__DOT__is_jalr;
     CData/*0:0*/ npc__DOT__is_addi;
@@ -41,11 +39,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     VL_OUT(pc,31,0);
     IData/*31:0*/ npc__DOT__nextpc;
     IData/*31:0*/ npc__DOT__ifu_raddr;
-    IData/*31:0*/ npc__DOT__ifu_rdata;
     IData/*31:0*/ npc__DOT__inst_reg;
     IData/*31:0*/ npc__DOT__imm;
-    IData/*31:0*/ npc__DOT__imm_R;
-    VlWide<4>/*127:0*/ npc__DOT__opcode_d;
     IData/*31:0*/ npc__DOT__src1;
     IData/*31:0*/ npc__DOT__raddr;
     IData/*31:0*/ npc__DOT____VdfgExtracted_hd008e9d4__0;
@@ -57,7 +52,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<CData/*0:0*/, 128> npc__DOT__u_decoder7_128__DOT____VdfgBinToOneHot_Tab_hbc128af0_0_0;
     VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_regfile2__DOT__rf;
-    VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<2> __VactTriggered;
     VlTriggerVec<2> __VnbaTriggered;

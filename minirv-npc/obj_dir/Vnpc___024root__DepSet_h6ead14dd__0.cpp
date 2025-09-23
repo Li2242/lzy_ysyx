@@ -22,13 +22,63 @@ void Vnpc___024root___eval_nba(Vnpc___024root* vlSelf) {
     // Body
     if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
         Vnpc___024root___nba_sequent__TOP__0(vlSelf);
-        vlSelfRef.__Vm_traceActivity[1U] = 1U;
     }
     if ((3ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
         Vnpc___024root___nba_sequent__TOP__1(vlSelf);
-        vlSelfRef.__Vm_traceActivity[2U] = 1U;
         Vnpc___024root___nba_comb__TOP__0(vlSelf);
     }
+}
+
+VL_INLINE_OPT void Vnpc___024root___nba_sequent__TOP__1(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_sequent__TOP__1\n"); );
+    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Body
+    vlSelfRef.npc__DOT__ifu_state = ((IData)(vlSelfRef.reset) 
+                                     && (IData)(vlSelfRef.npc__DOT__ifu_next_state));
+    vlSelfRef.pc = ((IData)(vlSelfRef.reset) ? vlSelfRef.npc__DOT__nextpc
+                     : 0x80000000U);
+    vlSelfRef.npc__DOT__ifu_next_state = (1U & (~ (IData)(vlSelfRef.npc__DOT__ifu_state)));
+}
+
+VL_INLINE_OPT void Vnpc___024root___nba_comb__TOP__0(Vnpc___024root* vlSelf) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vnpc___024root___nba_comb__TOP__0\n"); );
+    Vnpc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Body
+    if (vlSelfRef.inst_valid) {
+        VL_WRITEF_NX("EXEC PC=0x%08x inst=0x%08x nextPC=0x%08x\n",0,
+                     32,vlSelfRef.pc,32,vlSelfRef.npc__DOT__inst_reg,
+                     32,((IData)(vlSelfRef.npc__DOT__is_jalr)
+                          ? (0xfffffffeU & vlSelfRef.npc__DOT____VdfgRegularize_h467b3cb3_0_0)
+                          : (vlSelfRef.npc__DOT__u_decoder7_128__DOT____VdfgBinToOneHot_Tab_hbc128af0_0_0
+                             [0x6fU] ? (vlSelfRef.pc 
+                                        + vlSelfRef.npc__DOT__imm)
+                              : ((IData)(4U) + vlSelfRef.pc))));
+    } else {
+        VL_WRITEF_NX("WAIT PC=0x%08x inst=0x%08x\n",0,
+                     32,vlSelfRef.pc,32,vlSelfRef.npc__DOT__inst_reg);
+    }
+    vlSelfRef.npc__DOT__nextpc = ((IData)(vlSelfRef.npc__DOT__is_jalr)
+                                   ? (0xfffffffeU & vlSelfRef.npc__DOT____VdfgRegularize_h467b3cb3_0_0)
+                                   : (vlSelfRef.npc__DOT__u_decoder7_128__DOT____VdfgBinToOneHot_Tab_hbc128af0_0_0
+                                      [0x6fU] ? (vlSelfRef.pc 
+                                                 + vlSelfRef.npc__DOT__imm)
+                                       : ((IData)(4U) 
+                                          + vlSelfRef.pc)));
+    vlSelfRef.alu_result = ((- (IData)(((IData)(vlSelfRef.npc__DOT__is_add) 
+                                        | (IData)(vlSelfRef.npc__DOT__src2_is_imm)))) 
+                            & ((vlSelfRef.npc__DOT__u_decoder7_128__DOT____VdfgBinToOneHot_Tab_hbc128af0_0_0
+                                [0x17U] ? vlSelfRef.pc
+                                 : vlSelfRef.npc__DOT__src1) 
+                               + ((IData)(vlSelfRef.npc__DOT__src2_is_imm)
+                                   ? vlSelfRef.npc__DOT__imm
+                                   : ((0U == (0x1fU 
+                                              & (vlSelfRef.npc__DOT__inst_reg 
+                                                 >> 0x14U)))
+                                       ? 0U : vlSelfRef.npc__DOT__u_regfile2__DOT__rf
+                                      [(0x1fU & (vlSelfRef.npc__DOT__inst_reg 
+                                                 >> 0x14U))]))));
 }
 
 void Vnpc___024root___eval_triggers__act(Vnpc___024root* vlSelf);

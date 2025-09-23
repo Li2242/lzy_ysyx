@@ -51,10 +51,14 @@ __am_asm_trap:
   STORE t0, OFFSET_CAUSE(sp)
   STORE t1, OFFSET_STATUS(sp)
   STORE t2, OFFSET_EPC(sp)
-
+ // 4. 调用C语言中断处理函数
+ //    将当前线程的栈指针作为参数传递给 __am_irq_handle
   mv a0, sp
   call __am_irq_handle
 
+// 5. 将栈顶指针切换到C函数返回的新线程上下文地址
+	mv sp, a0
+	
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
