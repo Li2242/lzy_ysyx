@@ -18,7 +18,7 @@
 #include <isa.h>
 #include <cpu/difftest.h>
 
-//nemu状态
+//设置nemu状态
 void set_nemu_state(int state, vaddr_t pc, int halt_ret) {
   difftest_skip_ref();
   nemu_state.state = state;
@@ -27,7 +27,7 @@ void set_nemu_state(int state, vaddr_t pc, int halt_ret) {
 }
 
 
-//无效指令
+//出现无效指令输出的内容
 __attribute__((noinline))
 void invalid_inst(vaddr_t thispc) {
   uint32_t temp[2];

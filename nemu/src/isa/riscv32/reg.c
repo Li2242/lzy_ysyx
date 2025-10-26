@@ -16,7 +16,7 @@
 #include <isa.h>
 #include "local-include/reg.h"
 
-//寄存器
+//寄存器名字
 const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
   "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
@@ -24,7 +24,7 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
-//打印寄存器
+//寄存器的打印
 void isa_reg_display() {
   for(int i=0;i<32;i+=4){
     //寄存器在cpu-exec.c中
@@ -35,7 +35,7 @@ void isa_reg_display() {
       结构体中定义
     */
     for(int k =i;k<i+4;k++){
-        printf("%-3s: 0x%08x\t",regs[k],cpu.gpr[k]);
+        printf("%-3s: 0x%08x\t",reg_name(k),gpr(k));
       }
     printf("\n");
   }
@@ -49,9 +49,9 @@ word_t isa_reg_str2val(const char *s, bool *success) {
   }
   for(int i = 0;i<32;i++){
     //对比寄存器的名字
-    if(strcmp(s,regs[i]) == 0){
+    if(strcmp(s,reg_name(i)) == 0){
       *success = true;
-      return cpu.gpr[i];
+      return gpr(i);
       break;
     }
   }

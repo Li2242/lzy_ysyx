@@ -20,10 +20,10 @@
 
 typedef struct Decode {
   vaddr_t pc;
-  vaddr_t snpc; // static next pc 下一条指令的PC
-  vaddr_t dnpc; // dynamic next pc
+  vaddr_t snpc;
+  vaddr_t dnpc;
   ISADecodeInfo isa;
-  //日志记录，追踪是否打开
+  //日志记录
   IFDEF(CONFIG_ITRACE, char logbuf[128]);
 } Decode;
 

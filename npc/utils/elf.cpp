@@ -13,15 +13,15 @@ void init_elf(){
     //打开文件
     FILE *fp = fopen(elf_file, "r");
 		if(fp==NULL){
-			red_printf("Can not open '%s'\n", elf_file);
+			red_printf("Can not open '%s'", elf_file);
 			assert(0);
 		}
 
-    green_printf("The %s Elf is be open \n", elf_file);
+    green_printf("The %s Elf is be open ", elf_file);
     //先整header
     Elf32_Ehdr ehdr;
     if(fread(&ehdr,sizeof(ehdr),1,fp) != 1){
-      red_printf("Can not open '%s'\n", elf_file);
+      red_printf("Can not open '%s'", elf_file);
 			assert(0);
     }
 
@@ -29,7 +29,7 @@ void init_elf(){
     Elf32_Shdr shdr[ehdr.e_shnum];
     fseek(fp,ehdr.e_shoff,SEEK_SET);
     if(fread(&shdr,sizeof(shdr),1,fp)!=1){
-      red_printf("Can not open '%s'\n", elf_file);
+      red_printf("Can not open '%s'", elf_file);
 			assert(0);
     }
     //找到节区后从节区中找到符号表和字符串表
@@ -44,14 +44,14 @@ void init_elf(){
     symtab = (Elf32_Sym*)malloc(u_symtab.sh_size);
     fseek(fp,u_symtab.sh_offset,SEEK_SET);
     if(fread(symtab,u_symtab.sh_size,1,fp)!= 1){
-      red_printf("Can not open '%s'\n", elf_file);
+      red_printf("Can not open '%s'", elf_file);
 			assert(0);
     }
     //字符串表
     strtab = (char*)malloc(u_strtab.sh_size);
     fseek(fp,u_strtab.sh_offset,SEEK_SET);
     if(fread(strtab,u_strtab.sh_size,1,fp) != 1){
-      red_printf("Can not open '%s'\n", elf_file);
+      red_printf("Can not open '%s'", elf_file);
 			assert(0);
     }
 }

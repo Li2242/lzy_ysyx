@@ -12,31 +12,20 @@ static void out_of_bound(uint32_t addr);
 
 //内置指令，为传入文件时的指令
 static const __uint32_t memory[] = {
-// 起始地址：PC = 0x80000000
-0x800000b7,  // lui   x1, 0x80000        # x1 = 0x80000000，基地址
-0x00008093,  // addi  x1, x1, 0         # 保持 x1 不变
-
-0x00000113,  // addi  x2, x0, 1         # x2 = 1
-0x12300213,  // addi  x4, x0, 0x123     # x4 = 0x123
-
-0x0020a023,  // sw    x2, 0(x1)         # mem[0x80000000] = 1
-0x0040a423,  // sw    x4, 4(x1)         # mem[0x80000004] = 0x123
-
-0x0000a283,  // lw    x5, 0(x1)         # x5 = mem[0x80000000]，应为1
-0x0010c383,  // lbu   x7, 1(x1)         # x7 = mem[0x80000001]，取最低字节
-
-0x0040006f,  // jal   x0, 4             # 跳过下一条指令（跳过 addi）
-
-0x11100113,  // addi  x2, x0, 0x111     # 不执行（被跳过）
-
-0x008000ef,  // jal   x1, 8             # x1 = PC + 8，跳转到 PC + 8 + 4 = 下一条+8字节的指令地址
-0x00008067,  // jalr  x0, 0(x1)         # 跳转到 x1 指向的地址（跳转回来）
-
-0x00100073,  // ebreak                  # 程序终止
-
-
-
-
+	// 起始地址：PC = 0x80000000
+	0x800000b7,  // lui   x1, 0x80000        # x1 = 0x80000000，基地址
+	0x00008093,  // addi  x1, x1, 0         # 保持 x1 不变
+	0x00000113,  // addi  x2, x0, 1         # x2 = 1
+	0x12300213,  // addi  x4, x0, 0x123     # x4 = 0x123
+	0x0020a023,  // sw    x2, 0(x1)         # mem[0x80000000] = 1
+	0x0040a423,  // sw    x4, 4(x1)         # mem[0x80000004] = 0x123
+	0x0000a283,  // lw    x5, 0(x1)         # x5 = mem[0x80000000]，应为1
+	0x0010c383,  // lbu   x7, 1(x1)         # x7 = mem[0x80000001]，取最低字节
+	0x0040006f,  // jal   x0, 4             # 跳过下一条指令（跳过 addi）
+	0x11100113,  // addi  x2, x0, 0x111     # 不执行（被跳过）
+	0x008000ef,  // jal   x1, 8             # x1 = PC + 8，跳转到 PC + 8 + 4 = 下一条+8字节的指令地址
+	0x00008067,  // jalr  x0, 0(x1)         # 跳转到 x1 指向的地址（跳转回来）
+	0x00100073,  // ebreak                  # 程序终止
 };
 
 //地址转换
@@ -47,7 +36,7 @@ static inline uint32_t host_read(void *addr, int len) {
     case 1: return *(uint8_t  *)addr;
     case 2: return *(uint16_t *)addr;
     case 4: return *(uint32_t *)addr;
-    default: red_printf("host_read中并不能读出这个长度\n"); assert(0);
+    default: red_printf("host_read中并不能读出这个长度"); assert(0);
   }
 }
 
@@ -56,7 +45,7 @@ static inline void host_write(void *addr,int len, uint32_t data) {
 		case 1: *(uint8_t  *)addr = data; return;
     case 2: *(uint16_t *)addr = data; return;
     case 4: *(uint32_t *)addr = data; return;
-		default: red_printf("host_write中并不能写入这个长度\n"); assert(0);
+		default: red_printf("host_write中并不能写入这个长度"); assert(0);
 	}
 }
 
@@ -66,11 +55,12 @@ uint32_t pmem_read(uint32_t addr, int len) {
 		uint32_t ret = host_read(guest_to_host(addr),len);
 		return ret;
 	}
+	//串口
 	if(addr == 0xa00003f8){
 		uint32_t ret = host_read(serial_base,len);
 		return ret;
 	}
-
+	//时间
 	if(addr == 0xa0000048 || addr == 0xa000004c){
 		if(addr == 0xa0000048){
 			rtc_io_handler();
@@ -139,11 +129,7 @@ long load_img() {
 		//写入内置程序
     memcpy(pmem,memory,sizeof(memory));
 		uint32_t addr = MBASE;
-		// for(int i =0;i<32;i++){
-		// 	printf("pmem[%d] = 0x%08x\n",i,pmem_read(addr,4));
-		// 	addr+=4;
-		// }
-    green_printf("No image is given. Use the default build-in image.\n");
+    green_printf("No image is given. Use the default build-in image.");
     return 4096; // built-in image size
   }
 
@@ -169,16 +155,18 @@ bool difftest_checkregs(uint32_t *ref_r, uint32_t diff_pc) {
 	for(int i = 0;i<32;i++){
 		uint32_t temp = top->rootp->npc__DOT__u_regfile2__DOT__rf[i];
 		if( temp != ref_r[i]){
-			red_printf("Mismatch in '%s': dut=0x%08x, ref=0x%08x\n", regs[i], temp, ref_r[i]);
+			red_printf("Mismatch in '%s': dut=0x%08x, ref=0x%08x", regs[i], temp, ref_r[i]);
 			is_same = false;
 		}
 	}
 	if(top->pc != diff_pc ){
-		red_printf("Mismatch in pc: dut=0x%08x, ref=0x%08x\n", top->pc, diff_pc);
+		red_printf("Mismatch in pc: dut=0x%08x, ref=0x%08x", top->pc, diff_pc);
 		is_same = false;
 	}
   return is_same;
 }
+
+
 // ================= 这里是verilog中的DPI-C ====================
 //停止指令
 extern "C" void ebreak(uint32_t pc){
@@ -210,6 +198,7 @@ extern "C" void v_pmem_write(int waddr, int wdata, char wmask){
 
 	if(waddr == 0xa00003f8){
 		putchar(serial_base[0]);
+		fflush(stdout);
 	}
 }
 
@@ -225,7 +214,7 @@ void green_printf(const char *fmt, ...) {
     printf("\033[32m");
     vprintf(fmt, args);
     printf("\033[0m");
-
+		printf("\n");
     va_end(args);
 }
 
@@ -236,6 +225,7 @@ void red_printf(const char *fmt, ...) {
     printf("\033[30m");
     vprintf(fmt, args);
     printf("\033[0m");
+		printf("\n");
 
     va_end(args);
 }

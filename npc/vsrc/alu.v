@@ -22,15 +22,15 @@ wire srl;
 assign add  = alu_op[0];
 assign sltu = alu_op[1];
 assign bne  = alu_op[2];
-assign xor0  = alu_op[3];
+assign xor0 = alu_op[3];
 assign or0  = alu_op[4];
-assign sub = alu_op[5];
-assign sra = alu_op[6];
-assign sll = alu_op[7];
+assign sub  = alu_op[5];
+assign sra  = alu_op[6];
+assign sll  = alu_op[7];
 assign and0 = alu_op[8];
-assign slt = alu_op[9];
-assign beq = alu_op[10];
-assign srl = alu_op[11];
+assign slt  = alu_op[9];
+assign beq  = alu_op[10];
+assign srl  = alu_op[11];
 
 wire [31:0] add_sub_result;
 wire [31:0] sltu_result;
@@ -92,19 +92,15 @@ assign sll_result = src1 << src2[4:0];
 assign srl_result = src1 >> src2[4:0];
 
 assign alu_result = ({32{add | sub}}  & add_sub_result)
-                  | ({32{sltu}} & sltu_result)
-			  			    | ({32{bne}}  & bne_result)
-			  			    | ({32{xor0}} & xor_result)
-			  			    | ({32{or0}}  & or_result)
-			  			    | ({32{sra}}  & sra_result)
-			  			    | ({32{sll}}  & sll_result)
-			  			    | ({32{and0}} & and_result)
-			  			    | ({32{slt}}  & slt_result)
-			  			    | ({32{beq}}  & beq_result)
-			  			    | ({32{srl}}  & srl_result);
-// 			  			| ({32{alu_op[4]}} & result_addi)
-// 			  			| ({32{alu_op[5]}} & result_add)
-// 			  			| ({32{alu_op[6]}} & result_lw)
-// 			  			| ({32{alu_op[7]}} & result_lbu);
+                  | ({32{sltu}}       & sltu_result)
+			  			    | ({32{bne}}        & bne_result)
+			  			    | ({32{xor0}}       & xor_result)
+			  			    | ({32{or0}}        & or_result)
+			  			    | ({32{sra}}        & sra_result)
+			  			    | ({32{sll}}        & sll_result)
+			  			    | ({32{and0}}       & and_result)
+			  			    | ({32{slt}}        & slt_result)
+			  			    | ({32{beq}}        & beq_result)
+			  			    | ({32{srl}}        & srl_result);
 
 endmodule

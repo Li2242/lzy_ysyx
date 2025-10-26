@@ -28,7 +28,6 @@ assign crdata = (craddr == 12'h300) ? mstatus  :
 //csr_write
 always @(posedge clk)begin
 	if(cwen)begin
-		// $display("pc=0x%08x mtvec=0x%08x mstatus=0x%08x mepc=0x%08x mcause=0x%08x",pc,mtvec,mstatus,mepc,mcause);
 		case(cwaddr)
 			12'h300: mstatus <= cwdata;
 			12'h305: mtvec   <= cwdata;

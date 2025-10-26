@@ -132,17 +132,13 @@ static int parse_args(int argc, char *argv[]) {
 //是对监控系统进行初始化操作。
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
-
   /* Parse arguments. */
-  //解析命令行参数
   parse_args(argc, argv);
 
   /* Set random seed. */
-  //为后续可能用到的随机数生成操作做准备。
   init_rand();
 
   /* Open the log file. */
-  //打开日志文件
   init_log(log_file);
 
 if(ftrace_switch){
@@ -151,14 +147,10 @@ if(ftrace_switch){
         init_elf(elf_file);
     #endif
 }
-
-
   /* Initialize memory. */
-  //初始化内存
   init_mem();
 
   /* Initialize devices. */
-  //根据 CONFIG_DEVICE 宏的定义情况来决定是否调用 init_device 函数。
   IFDEF(CONFIG_DEVICE, init_device());
 
   /* Perform ISA dependent initialization. */

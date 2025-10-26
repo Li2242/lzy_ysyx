@@ -24,12 +24,13 @@
  * This is useful when you use the `si' command.
  * You can modify this value as you want.
  */
-#define MAX_INST_TO_PRINT 10
+#define MAX_INST_TO_PRINT 20
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
+//环形缓冲区
 int ring_buf_count = 0;
 char ring_buf[8][100];
 
@@ -157,6 +158,7 @@ static void statistic() {
   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
+
 //该函数用于在断言失败时输出寄存器信息和统计信息。
 void assert_fail_msg() {
   isa_reg_display();
@@ -179,6 +181,7 @@ void cpu_exec(uint64_t n) {
   execute(n);
 
   uint64_t timer_end = get_time();
+	//总时间加上执行一条命令所需要的时间
   g_timer += timer_end - timer_start;
 
 		//输出程序结束信息
@@ -211,20 +214,19 @@ void ring_buf_fun(char* inst){
 }
 
 
-//ftrace(我这个是根据ITRACE的反汇编写的)
+//ftrace
 void ftrace(Decode *s){
-
+				//对指令进行解码
 				uint32_t inst_t = s->isa.inst;
 				uint32_t opcode = inst_t & 0x7f;
 				uint32_t funct3 = (inst_t >> 12) & 0x7;
-	 			uint32_t rd  = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
-				uint32_t rs1 = (inst_t >> 15) & 0x1f;
-				int32_t imm_I = SEXT(BITS(inst_t, 31, 20), 12);
-
-
+	 			uint32_t rd     = (inst_t >> 7) & 0x1f;    // 提取 rd 寄存器
+				uint32_t rs1    = (inst_t >> 15) & 0x1f;
+				int32_t imm_I   = SEXT(BITS(inst_t, 31, 20), 12);
         bool in = 0;
+
         //jal
-        if(opcode == 111 ){
+        if(opcode == 111){
             in = 1;
             int jal_target = cpu.pc;
             for(int i =0;i<sym_num;i++){
@@ -237,7 +239,7 @@ void ftrace(Decode *s){
             }
         }
 
-        //jalr(未使用Itrace)
+        //jalr and ret
         if(opcode == 103 && funct3==0){
             in = 1;
 						//ret
@@ -260,8 +262,9 @@ void ftrace(Decode *s){
                 }
             }
         }
+				//如果指令匹配了但未找到对应的函数名，就输出？？？
         if(in==1){
-            printf("???\n");
+          printf("???\n");
         }
 				return;
 }

@@ -13,15 +13,15 @@ module npc(
 // =========================== PC ==================================
 wire [31:0] nextpc;
 
-assign nextpc =  is_jalr                    ? (src1+imm) & ~1 :
+assign nextpc =  is_jalr                    ? (src1 + imm) & ~1 :
 								 (is_mret | is_ecall)       ?  csr_rdata :
-                 (is_jal | is_correct_b)    ?  pc + imm :       //未来B型指令要加在这里因为他们都是 pc + 4;
+                 (is_jal  | is_correct_b)   ?  pc + imm :       //未来B型指令要加在这里因为他们都是 pc + 4;
                  pc + 32'h4 ;
 
 //更新pc
 always @(posedge clk) begin
     if (reset) begin
-        pc <= 32'h80000000;     // 复位时的初始值
+        pc <= 32'h80000000;     // 初始值
     end
     else begin
         pc <= nextpc;           // 正常情况下更新为下一条指令地址
@@ -45,9 +45,9 @@ wire    reg_wen;
 wire    reg_cwen;
 wire    mem_en;
 wire    mem_wen;
-wire reg_from_mem;
-wire reg_from_pc_4;
-wire reg_from_imm;
+wire    reg_from_mem;
+wire    reg_from_pc_4;
+wire    reg_from_imm;
 //立即数
 wire [31:0]imm;
 wire [31:0]imm_R;
@@ -207,8 +207,8 @@ assign is_sh    =  opcode_d[35]  &  funct3_d[1];
 assign is_bne   =  opcode_d[99]  &  funct3_d[1];
 assign is_bge   =  opcode_d[99]  &  funct3_d[5];
 assign is_beq   =  opcode_d[99]  &  funct3_d[0];
-assign is_bgeu   =  opcode_d[99]  &  funct3_d[7];
-assign is_bltu   =  opcode_d[99]  &  funct3_d[6];
+assign is_bgeu  =  opcode_d[99] &  funct3_d[7];
+assign is_bltu  =  opcode_d[99] &  funct3_d[6];
 assign is_blt   =  opcode_d[99]  &  funct3_d[4];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
@@ -226,7 +226,7 @@ assign reg_from_mem  = is_lw  | is_lbu | is_lh | is_lhu;
 assign reg_from_pc_4 = is_jal | is_jalr;
 assign reg_from_imm  = is_lui;
 //这条判断的B指令是否正确
-assign is_correct_b  = ((is_bne | is_beq | is_bltu | is_blt) && (alu_result == 1)) | ((is_bgeu | is_bge) && alu_result==0);
+assign is_correct_b  = ((is_bne | is_beq | is_bltu | is_blt) && (alu_result == 1)) | ((is_bgeu | is_bge) && alu_result == 0);
 
 //立即数的选择
 assign imm = ({32{is_I}} & imm_I)
@@ -274,6 +274,7 @@ wire [31:0] csr_wdata;
 assign csr_wdata = is_csrrw ? src1 :
 									 is_csrrs ? (src1 | csr_rdata) :
 									 32'h0;
+
 assign csr_raddr = is_mret  ? 12'h341 :
 									 is_ecall ? 12'h305 :
 									 inst[31:20];
@@ -352,21 +353,21 @@ assign wmask = is_sb ? 8'b00000001 :
 //数据
 assign pmem_read_data = is_lbu ? v_pmem_read(raddr , 1) :
 						 					  (is_lh | is_lhu)  ? v_pmem_read(raddr , 2) :
-					 						           v_pmem_read(raddr , 4);
+					 						  v_pmem_read(raddr , 4);
 //读地址
 always @(*) begin
 	if(mem_en)begin
 		// $display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
 		rdata =  (is_lbu | is_lhu) ? pmem_read_data :
 						 is_lh  ? {{16{pmem_read_data[15]}},pmem_read_data[15:0]}:
-					 						pmem_read_data;
+					 		pmem_read_data;
 	end else begin
 		rdata = 0;
 	end
 end
 //写地址
 always @(posedge clk)begin
- if  (mem_wen) begin // 有写请求时
+ if(mem_wen) begin // 有写请求时
 			// $display("mem_wen=%b, is_sw=%b, is_sb=%b, raddr=0x%08x", mem_wen, is_sw, is_sb, raddr);
       v_pmem_write(waddr, wdata, wmask);
     end
@@ -378,9 +379,6 @@ end
 always @(posedge clk) begin
 	if(is_ebreak) ebreak(pc);
 end
-
-//调试
-
 
 endmodule
 

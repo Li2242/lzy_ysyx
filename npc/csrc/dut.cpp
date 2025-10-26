@@ -34,10 +34,10 @@ void init_difftest(char *ref_so_file, long img_size){
   void (*ref_difftest_init)(int) = (void(*)(int))dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
 
-  green_printf("Differential testing: NO\n");
+  green_printf("Differential testing: NO");
   green_printf("The result of every instruction will be compared with %s. "
       "This will help you a lot for debugging, but also significantly reduce the performance. "
-      "If it is not necessary, you can turn it off in menuconfig.\n", ref_so_file);
+      "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
 
 	//将DUT的guest memory拷贝到REF中.
   ref_difftest_memcpy(MBASE, guest_to_host(MBASE), img_size);
@@ -53,7 +53,7 @@ static void checkregs(uint32_t *ref, uint32_t diff_pc) {
 		//不同就停下啦
 		npc_state = NPC_ABORT;
     reg_display();
-		red_printf("npc : HIT BAD TRAP\n");
+		red_printf("npc : HIT BAD TRAP");
   }
 }
 

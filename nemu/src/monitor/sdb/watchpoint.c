@@ -64,21 +64,18 @@ int new_wp(char *str){
   p->next = head;
   //head指向p
   head = p;
-
   //使用strup是为了防止被readline给free掉,从新分配空间给
-  p->s = strdup(str);
-
+  p->s = strdup(str); //复制字符串
   p->n = a;
+
   return 0;
 }
 
 void free_wp(int n){
-
-  if (n<0 || n > 31) {
+  if (n < 0 || n > 31) {
     Log("Please provide the correct watchpoint number!(0-31)");
     return;
   }
-
   //从head中删除
   WP** pp = &head;
   while(*pp != NULL){
@@ -147,7 +144,7 @@ void scan(){
     if(wp == NULL){
       Log(" Watchpoints was not been set up!");
     }
-    while(wp!=NULL){
+    while(wp != NULL){
         printf("The value of the %d Watchpoint %s is 0x%08x\n",wp->NO,wp->s,wp->n);
         wp = wp->next;
     }

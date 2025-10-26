@@ -27,9 +27,6 @@ typedef struct watchpoint {
   uint32_t n;
   //下一个监视点的地址
   struct watchpoint *next;
-
-  /* TODO: Add more members if necessary */
-
 } WP;
 
 

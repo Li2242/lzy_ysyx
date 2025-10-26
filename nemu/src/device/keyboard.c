@@ -31,6 +31,7 @@ f(LSHIFT) f(Z) f(X) f(C) f(V) f(B) f(N) f(M) f(COMMA) f(PERIOD) f(SLASH) f(RSHIF
 f(LCTRL) f(APPLICATION) f(LALT) f(SPACE) f(RALT) f(RCTRL) \
 f(UP) f(DOWN) f(LEFT) f(RIGHT) f(INSERT) f(DELETE) f(HOME) f(END) f(PAGEUP) f(PAGEDOWN)
 
+//## 是宏定义中的“拼接工具”
 #define NEMU_KEY_NAME(k) NEMU_KEY_ ## k,
 
 enum {
@@ -51,8 +52,7 @@ static int key_queue[KEY_QUEUE_LEN] = {};
 //头指针和目前位置指针
 static int key_f = 0, key_r = 0;
 
-//这是第二步=对转化成AM 键码的值进行操作
-//键盘事件环形缓冲区（循环队列）入队函数
+//入队
 static void key_enqueue(uint32_t am_scancode) {
   key_queue[key_r] = am_scancode;
 	//防止溢出（环形缓冲区）
@@ -60,7 +60,8 @@ static void key_enqueue(uint32_t am_scancode) {
   Assert(key_r != key_f, "key queue overflow!");
 }
 
-//从键盘的队列缓冲区里读出一条
+
+//出列
 static uint32_t key_dequeue() {
   uint32_t key = NEMU_KEY_NONE;
 	//防止溢出（环形缓冲区）
@@ -71,9 +72,9 @@ static uint32_t key_dequeue() {
   return key;
 }
 
-//这是第一步，获取到外界是否按下和按下的什么按键
+//nemu的device_update会调用这个
+//最高位是状态位，剩下的15位才代表按下的是哪个键。
 void send_key(uint8_t scancode, bool is_keydown) {
-
   if (nemu_state.state == NEMU_RUNNING && keymap[scancode] != NEMU_KEY_NONE) {
 		//把原始的 SDL 扫描码（scancode）转换为 AM 框架定义的键码（AM 键码）格式
     uint32_t am_scancode = keymap[scancode] | (is_keydown ? KEYDOWN_MASK : 0);
@@ -92,7 +93,7 @@ static uint32_t key_dequeue() {
 
 static uint32_t *i8042_data_port_base = NULL;
 
-//写入内存中，外部回调这个函数
+//回调函数
 static void i8042_data_io_handler(uint32_t offset, int len, bool is_write) {
   assert(!is_write);
   assert(offset == 0);

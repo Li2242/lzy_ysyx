@@ -6,7 +6,7 @@
 #include ISA_H // the macro `ISA_H` is defined in CFLAGS
 // it will be expanded as "x86/x86.h", "mips/mips32.h", ...
 
-//不同的指令采用不同的结束方式,nemu_trap 宏定义
+//不同的结束方式,nemu_trap宏定义
 #if defined(__ISA_X86__)
 # define nemu_trap(code) asm volatile ("int3" : :"a"(code))
 #elif defined(__ISA_MIPS32__)
@@ -45,10 +45,11 @@
 #define AUDIO_SBUF_ADDR (MMIO_BASE   + 0x1200000)
 
 extern char _pmem_start;
-// 128MB
+// 128MB 大小
 #define PMEM_SIZE (128 * 1024 * 1024)
-
+//结束地址
 #define PMEM_END  ((uintptr_t)&_pmem_start + PMEM_SIZE)
+//串行接口、实时时钟、屏幕、键盘
 #define NEMU_PADDR_SPACE \
   RANGE(&_pmem_start, PMEM_END), \
   RANGE(FB_ADDR, FB_ADDR + 0x200000), \
@@ -57,6 +58,6 @@ extern char _pmem_start;
 typedef uintptr_t PTE;
 
 //页面大小
-#define PGSIZE    4096
+#define PGSIZE  4096
 
 #endif

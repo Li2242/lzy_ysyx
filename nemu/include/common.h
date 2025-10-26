@@ -51,9 +51,7 @@ typedef MUXDEF(CONFIG_ISA64, int64_t, int32_t)  sword_t; //有符号字
 typedef word_t vaddr_t;
 //选择架构对应的地址类型
 typedef MUXDEF(PMEM64, uint64_t, uint32_t) paddr_t;
-//格式化地址
 #define FMT_PADDR MUXDEF(PMEM64, "0x%016" PRIx64, "0x%08" PRIx32)
-//因该是I/O 端口地址
 typedef uint16_t ioaddr_t;
 
 #include <debug.h>

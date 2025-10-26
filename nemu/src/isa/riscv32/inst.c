@@ -25,7 +25,8 @@
 
 enum {
   TYPE_I, TYPE_U, TYPE_S,
-  TYPE_N, TYPE_J,TYPE_B,TYPE_R// none
+  TYPE_N, TYPE_J, TYPE_B, 
+	TYPE_R  // none
 };
 
 //src1R()和src2R()两个辅助宏, 用于寄存器的读取结果记录到相应的操作数变量中

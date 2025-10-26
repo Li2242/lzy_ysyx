@@ -3,7 +3,7 @@
 
 extern char _heap_start;
 int main(const char *args);
-
+//用于指示堆区的起始和末尾，在linker.ld中
 Area heap = RANGE(&_heap_start, PMEM_END);
 static const char mainargs[MAINARGS_MAX_LEN] = TOSTRING(MAINARGS_PLACEHOLDER); // defined in CFLAGS
 

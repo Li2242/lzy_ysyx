@@ -31,6 +31,7 @@ static uint64_t get_time_internal() {
   struct timeval now;
 	//当前的系统时间，以微秒（μs）为单位
   gettimeofday(&now, NULL);
+	//tv_sec秒   tv_usec微秒
   uint64_t us = now.tv_sec * 1000000 + now.tv_usec;
 #else
   struct timespec now;
@@ -49,5 +50,6 @@ uint64_t get_time() {
 
 //随机数初始化
 void init_rand() {
+	//用给定的数字为随机数生成器设置种子
   srand(get_time_internal());
 }

@@ -138,16 +138,3 @@ extern void init_timer();
 extern uint32_t *rtc_port_base;
 extern uint64_t get_time();
 extern void rtc_io_handler();
-// //内存映射，寄存器的信息
-// typedef struct {
-// 	//名字
-//   const char *name;
-//   // we treat ioaddr_t as paddr_t here
-// 	//起始地址
-//   uint32_t low;
-// 	//结束地址
-//   uint32_t high;
-// 	//映射的目标空间
-//   void *space;
-// 	//回调函数
-// } IOMap;

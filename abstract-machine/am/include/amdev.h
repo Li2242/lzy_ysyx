@@ -15,6 +15,7 @@ AM_DEVREG( 3, UART_RX,      RD, char data);
 AM_DEVREG( 4, TIMER_CONFIG, RD, bool present, has_rtc);
 AM_DEVREG( 5, TIMER_RTC,    RD, int year, month, day, hour, minute, second); //真实时钟
 AM_DEVREG( 6, TIMER_UPTIME, RD, uint64_t us); //程序运行的时间
+
 AM_DEVREG( 7, INPUT_CONFIG, RD, bool present); 
 AM_DEVREG( 8, INPUT_KEYBRD, RD, bool keydown; int keycode); //键盘控制器
 
@@ -25,7 +26,7 @@ AM_DEVREG(12, GPU_MEMCPY,   WR, uint32_t dest; void *src; int size);
 AM_DEVREG(13, GPU_RENDER,   WR, uint32_t root);
 
 AM_DEVREG(14, AUDIO_CONFIG, RD, bool present; int bufsize);    //AM声卡控制器信息
-AM_DEVREG(15, AUDIO_CTRL,   WR, int freq, channels, samples);  // AM声卡控制寄存器
+AM_DEVREG(15, AUDIO_CTRL,   WR, int freq, channels, samples);  //AM声卡控制寄存器
 AM_DEVREG(16, AUDIO_STATUS, RD, int count);                    //AM声卡状态寄存器,当前流缓冲区已经使用的大小count.
 AM_DEVREG(17, AUDIO_PLAY,   WR, Area buf);                     //AM声卡播放寄存器
 

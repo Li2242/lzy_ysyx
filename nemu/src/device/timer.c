@@ -19,6 +19,7 @@
 
 static uint32_t *rtc_port_base = NULL;
 
+//时钟的回调函数
 static void rtc_io_handler(uint32_t offset, int len, bool is_write) {
   assert(offset == 0 || offset == 4);
 	//offset在为4的时候才更新,如果先读低位会到的是上一次未更新的时间

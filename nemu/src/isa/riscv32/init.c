@@ -20,18 +20,17 @@
 // but it is ok since we do not access the array directly
 //如果没有镜像文件就用这几条指令
 static const uint32_t img [] = {
-  0x00000297,  // auipc t0,0
-  0x00028823,  // sb  zero,16(t0)
-  0x0102c503,  // lbu a0,16(t0)
-  0x00100073,  // ebreak (used as nemu_trap)
-  0xdeadbeef,  // some data
+  0x00000297,  //auipc t0,0
+  0x00028823,  //sb  zero,16(t0)
+  0x0102c503,  //lbu a0,16(t0)
+  0x00100073,  //ebreak (used as nemu_trap)
+  0xdeadbeef,  //some data
 };
 
 //初始化pc和寄存器
 static void restart() {
-  /* Set the initial program counter. */
+  /*Set the initial program counter.*/
   cpu.pc = RESET_VECTOR;
-
   /* The zero register is always 0. */
   cpu.gpr[0] = 0;
 	//让DiffTest支持异常响应机制 针对riscv64, 你需要将mstatus初始化为0xa00001800.
@@ -39,9 +38,8 @@ static void restart() {
 }
 
 void init_isa() {
-  /* Load built-in image. */
+  /*Load built-in image.*/
   memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
-
-  /* Initialize this virtual computer system. */
+  /*Initialize this virtual computer system.*/
   restart();
 }
