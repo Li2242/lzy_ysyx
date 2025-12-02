@@ -47,7 +47,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
-    //如果走的步数少于MAX_INST_TO_PRINT就打印步骤
+    //如果si少于MAX_INST_TO_PRINT就打印步骤
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
 	//如果要difftest就进入difftest进行
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -72,10 +72,12 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
   //日志跟踪
 #ifdef CONFIG_ITRACE
-    //先存储执行过程中的二进制
+  //先存储执行过程中的二进制
   char *p = s->logbuf;
   //snprintf的返回值是"本应该"写入的总字符数
+	//写入后把p指针往后移动
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
+	//当前指令的实际长度
   int ilen = s->snpc - s->pc;
   int i;
   uint8_t *inst = (uint8_t *)&s->isa.inst;
@@ -86,19 +88,21 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   for (i = ilen - 1; i >= 0; i --) {
 #endif
+		//两个两个写入，注意中间有空格
     p += snprintf(p, 4, " %02x", inst[i]);
   }
   //架构决定的
-  int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
-
-  int space_len = ilen_max - ilen;
-  if (space_len < 0) space_len = 0;
-  space_len = space_len * 3 + 1;
-
+  int ilen_max  = MUXDEF(CONFIG_ISA_x86, 8, 4);
+	//对于riscv来说指令是一样长的好像并没有作用。
+  int space_len = ilen_max - ilen;  // 实际指令长度与最大长度的差值
+  if (space_len < 0) space_len = 0; // 避免指令长度异常（比如超过最大长度）导致负数
+  space_len = space_len * 3 + 1;    // 换算成最终需要填充的空格数。
+	//补充空格，对齐日志文件前面的二进制
   memset(p, ' ', space_len);
   p += space_len;
-  //写入了反汇编的内容
+  //声明
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+	//写入了反汇编的内容
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, ilen);
 #endif
@@ -112,20 +116,21 @@ static void execute(uint64_t n) {
 #ifdef CONFIG_ITRACE
     //ring_buf
     ring_buf_fun(s.logbuf);
-    //在没有-e选项时不启动
-    if(ftrace_switch){
-        #ifdef CONFIG_FTRACE
-            //ftrace
-            ftrace(&s);
-        #endif
-    }
 #endif
+
+//在没有-e选项时不启动
+if(ftrace_switch){
+		#ifdef CONFIG_FTRACE
+				//ftrace
+				ftrace(&s);
+		#endif
+}
 
     g_nr_guest_inst ++;  //对一个用于记录客户指令的计数器加1
     trace_and_difftest(&s, cpu.pc);
 
-    //在这里添加出错指令再好不过了,不对不对，这里正常结束也会显示，我想定义一个全局变量，然后在最后状态里面输出
     //算了状态提前判断一下吧，就在这个文件里写一个ring_buf吧
+		//借用了is_exit_status_bad()这个函数的判断方法
     if (nemu_state.state != NEMU_RUNNING){
         //判断是否正常退出
         int good = (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) ||
@@ -133,8 +138,10 @@ static void execute(uint64_t n) {
         if(good == 0){
             //log_write 写入文件的函数
             log_write("下面是临近出错时的8条指令\n");
-            for(int j=0; j<8; j++){
-                if(ring_buf_count<8){
+            for(int j = 0; j<8; j++){
+							//设置ring_buf_count目的是为了从当前出错的指令开始往后输出
+							//固定输出8次是为了把环形缓冲区的全部输出一遍，尽管可能会存在空格
+                if(ring_buf_count < 8){
                     log_write("%s\n", ring_buf[ring_buf_count++]);
                 }else{
                     ring_buf_count = 0;
@@ -203,7 +210,7 @@ void cpu_exec(uint64_t n) {
 //ringbuf(这个应该可以用%进行优化，暂时不想优化)
 void ring_buf_fun(char* inst){
     //加的环形缓冲区
-    if(ring_buf_count<8){
+    if(ring_buf_count < 8){
         strncpy(ring_buf[ring_buf_count], inst, 100 );
         ring_buf[ring_buf_count++][99] = '\0';
     }else{

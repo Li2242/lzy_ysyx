@@ -50,12 +50,14 @@ static void serial_io_handler(uint32_t offset, int len, bool is_write) {
 
 //初始化串口
 void init_serial() {
-	//串口初始化时会分别注册`0x3F8`处长度为8个字节的端口
-  serial_base = new_space(8);
+	//串口初始化时会分配长度为8个字节的串口大小
+  	serial_base = new_space(8);
+
 #ifdef CONFIG_HAS_PORT_IO
-  add_pio_map ("serial", CONFIG_SERIAL_PORT, serial_base, 8, serial_io_handler);
+	//端口
+ 	 add_pio_map ("serial", CONFIG_SERIAL_PORT, serial_base, 8, serial_io_handler);
 #else
-	//以及`0xa00003F8`处长度为8字节的MMIO空间
-  add_mmio_map("serial", CONFIG_SERIAL_MMIO, serial_base, 8, serial_io_handler);
+	//命名 0xa00003F8处长度为8字节的MMIO空间
+  	add_mmio_map("serial", CONFIG_SERIAL_MMIO, serial_base, 8, serial_io_handler);
 #endif
 }

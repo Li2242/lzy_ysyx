@@ -3,32 +3,33 @@
 #include <klib-macros.h>
 #include <stdarg.h>
 
+
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 void int_num_str(int num , char *str);
 void uint_num_str(unsigned int num , char *str);
 
-
 int printf(const char *fmt, ...) {
 	//声明一个可变参数访问指针/对象（通常是内部游标）
-  va_list ap;
+  	va_list ap;
 	//初始化 ap，让它指向可变参数序列的第一个参数。
-  va_start(ap,fmt);
+  	va_start(ap,fmt);
 	char *str = malloc(1024);
-  vsprintf(str,fmt,ap);
-  va_end(ap);
+  	vsprintf(str,fmt,ap);
+  	va_end(ap);
 
 	putstr(str);
 
-  return 0;
+  	return 0;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
   int count = 0; //已经写入的字符串
-
+	//开始匹配双引号中的字符串
   while(*fmt != '\0'){
 		if(*fmt == '%'){
 			switch(*++fmt){
+				//整形
 				case 'd':{
 					//取出
 					int num = va_arg(ap,int);
@@ -39,6 +40,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 					while(str[i]!='\0') out[count++] = str[i++];
 					break;
 				}
+				//16进制
 				case 'x':{
 					unsigned int num = va_arg(ap,unsigned int);
 					char str[15];
@@ -48,6 +50,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 					while(str[i]!='\0') out[count++] = str[i++];
 					break;
 				}
+				//浮点数
 				case 'l':{
 					if(*++fmt == 'd'){
 						long num = va_arg(ap,long);
@@ -73,12 +76,13 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 					out[count++] = *fmt;
 					break;
 			}
-			fmt++; //处理完格式字符串后跳过
+			fmt++; //处理完各种类型的格式字符串后跳过
 		}else{
+			//没有格式化的正常录入
 			out[count++] = *fmt++;
 		}
   }
-  //确保字符串
+  //最后确保字符串
   out[count] = '\0';
 	return count;
 }
@@ -162,7 +166,7 @@ void int_num_str(int num , char *str){
 	unsigned int u;
 	char *p = str;
 	char *start = NULL;
-	//处理 0；
+	//处理0这种特殊情况
 	if(num == 0){
 		*p++ = '0';
 		*p = '\0';
@@ -171,7 +175,7 @@ void int_num_str(int num , char *str){
 	//处理负数
 	if(num < 0){
 		*p++ = '-';
-		//用 (unsigned int)(-(long)num) 处理负数绝对值，避免 INT_MIN 溢出问题
+		//用 (unsigned int)(-(long)num) 处理负数绝对值，避免INT_MIN溢出问题
 		u = (unsigned int)(-(long)num);
 	}else{
 		u = (unsigned int)num;
@@ -181,7 +185,7 @@ void int_num_str(int num , char *str){
 
 	while(u > 0){
 		*p++ = (u % 10) + '0';
-		u/=10;
+		u /= 10;
 	}
 	//保证是字符串
 	*p = '\0';
@@ -212,7 +216,7 @@ void uint_num_str(unsigned int num , char *str){
 
 	while(num > 0){
 		*p++ = hex_chars[(num % 16)];
-		num/=16;
+		num /= 16;
 	}
 	//保证是字符串
 	*p = '\0';

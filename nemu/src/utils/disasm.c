@@ -65,14 +65,15 @@ void init_disasm() {
 }
 //反汇编
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte) {
-	cs_insn *insn;
+	cs_insn *insn; // 指向 Capstone 解析后的「指令结构」（存储汇编相关信息）
 	size_t count = cs_disasm_dl(handle, code, nbyte, pc, 0, &insn);
   assert(count == 1);
-  //这个应该是在写入riscv指令
+  //写入riscv指令的类型
   int ret = snprintf(str, size, "%s", insn->mnemonic);
   if (insn->op_str[0] != '\0') {
     //这是后面的操作数变量
     snprintf(str + ret, size - ret, "\t%s", insn->op_str);
   }
+	//释放 Capstone 分配的内存
   cs_free_dl(insn, count);
 }

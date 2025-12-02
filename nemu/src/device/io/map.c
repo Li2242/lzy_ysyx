@@ -59,22 +59,26 @@ void init_map() {
 
 //用于将地址addr映射到map所指示的目标空间, 并进行访问
 word_t map_read(paddr_t addr, int len, IOMap *map) {
-  assert(len >= 1 && len <= 8);
-  check_bound(map, addr);
-  paddr_t offset = addr - map->low;
-	//准备好要读的数据(其实就是直接往地址里写内容)
-  invoke_callback(map->callback, offset, len, false); // prepare data to read
-  word_t ret = host_read(map->space + offset, len);
-	IFDEF(CONFIG_DTRACE , printf("%s: addr = 0x%08x, len = %d, data = 0x%08x\n",map->name,addr,len,ret));
-	  return ret;
+	assert(len >= 1 && len <= 8);
+	check_bound(map, addr);
+	paddr_t offset = addr - map->low;
+	//触发回调函数对设备和目标空间的状态进行更新
+	invoke_callback(map->callback, offset, len, false); // prepare data to read
+	word_t ret = host_read(map->space + offset, len);
+	//dtrace
+	IFDEF(CONFIG_DTRACE , printf("\n[MMIO-READ]: name=%s addr=0x%08x  len=%d, data=0x%08x\n",map->name,addr,len,ret));
+	return ret;
 }
 
 void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
-  assert(len >= 1 && len <= 8);
-  check_bound(map, addr);
+	assert(len >= 1 && len <= 8);
+	check_bound(map, addr);
 	//偏移量
-  paddr_t offset = addr - map->low;
-  host_write(map->space + offset, len, data);
-  invoke_callback(map->callback, offset, len, true);
-	IFDEF(CONFIG_DTRACE,printf("%s: addr = 0x%08x, len = %d, data = 0x%08x\n",map->name,addr,len,data));
+	paddr_t offset = addr - map->low;
+	//写入
+	host_write(map->space + offset, len, data);
+	//写入之后对设备和目标空间的状态进行更新
+	invoke_callback(map->callback, offset, len, true);
+	//dtrace
+	IFDEF(CONFIG_DTRACE,printf("\n[MMIO-WRITE]: name=%s addr=0x%08x  len=%d  data=0x%08x\n",map->name,addr,len,data));
 }

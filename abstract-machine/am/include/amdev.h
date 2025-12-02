@@ -3,18 +3,17 @@
 
 // **MAY SUBJECT TO CHANGE IN THE FUTURE**
 
-//这个宏写的也很好，宏的写法还是可以学学的
 #define AM_DEVREG(id, reg, perm, ...) \
   enum { AM_##reg = (id) }; \
   typedef struct { __VA_ARGS__; } AM_##reg##_T;
 
-//常见设备的"抽象寄存器"编号和相应的结构.(在我看来就是结构体)
+//定义了常见设备的"抽象寄存器"编号和相应的结构.
 AM_DEVREG( 1, UART_CONFIG,  RD, bool present);
 AM_DEVREG( 2, UART_TX,      WR, char data);
 AM_DEVREG( 3, UART_RX,      RD, char data);
 AM_DEVREG( 4, TIMER_CONFIG, RD, bool present, has_rtc);
-AM_DEVREG( 5, TIMER_RTC,    RD, int year, month, day, hour, minute, second); //真实时钟
-AM_DEVREG( 6, TIMER_UPTIME, RD, uint64_t us); //程序运行的时间
+AM_DEVREG( 5, TIMER_RTC,    RD, int year, month, day, hour, minute, second);//实时时钟
+AM_DEVREG( 6, TIMER_UPTIME, RD, uint64_t us); 								//AM系统启动时间
 
 AM_DEVREG( 7, INPUT_CONFIG, RD, bool present); 
 AM_DEVREG( 8, INPUT_KEYBRD, RD, bool keydown; int keycode); //键盘控制器

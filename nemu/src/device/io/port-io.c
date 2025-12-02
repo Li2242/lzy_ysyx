@@ -23,8 +23,7 @@ static IOMap maps[NR_MAP] = {};
 static int nr_map = 0;
 
 /* device interface 设备接口*/
-//设备的初始化注册一个端口映射I/O的映射关系
-//每一个map对应一个端口映射区
+//用于为设备的初始化注册一个端口映射I/O的映射关系k
 void add_pio_map(const char *name, ioaddr_t addr, void *space, uint32_t len, io_callback_t callback) {
   assert(nr_map < NR_MAP);
   assert(addr + len <= PORT_IO_SPACE_MAX);

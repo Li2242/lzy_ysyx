@@ -31,9 +31,10 @@ f(LSHIFT) f(Z) f(X) f(C) f(V) f(B) f(N) f(M) f(COMMA) f(PERIOD) f(SLASH) f(RSHIF
 f(LCTRL) f(APPLICATION) f(LALT) f(SPACE) f(RALT) f(RCTRL) \
 f(UP) f(DOWN) f(LEFT) f(RIGHT) f(INSERT) f(DELETE) f(HOME) f(END) f(PAGEUP) f(PAGEDOWN)
 
-//## 是宏定义中的“拼接工具”
+//宏定义中的拼接工具
 #define NEMU_KEY_NAME(k) NEMU_KEY_ ## k,
 
+//枚举
 enum {
   NEMU_KEY_NONE = 0,
   MAP(NEMU_KEYS, NEMU_KEY_NAME)
@@ -47,39 +48,38 @@ static void  init_keymap() {
 }
 
 #define KEY_QUEUE_LEN 1024
-//缓冲区队列
+//队列
 static int key_queue[KEY_QUEUE_LEN] = {};
-//头指针和目前位置指针
+//队列的头和位指针
 static int key_f = 0, key_r = 0;
 
 //入队
 static void key_enqueue(uint32_t am_scancode) {
-  key_queue[key_r] = am_scancode;
-	//防止溢出（环形缓冲区）
-  key_r = (key_r + 1) % KEY_QUEUE_LEN;
-  Assert(key_r != key_f, "key queue overflow!");
+  	key_queue[key_r] = am_scancode;
+	//循环队列
+  	key_r = (key_r + 1) % KEY_QUEUE_LEN;
+  	Assert(key_r != key_f, "key queue overflow!");
 }
 
 
-//出列
+//出队
 static uint32_t key_dequeue() {
-  uint32_t key = NEMU_KEY_NONE;
-	//防止溢出（环形缓冲区）
-  if (key_f != key_r) {
-    key = key_queue[key_f];
-    key_f = (key_f + 1) % KEY_QUEUE_LEN;
-  }
-  return key;
+	uint32_t key = NEMU_KEY_NONE;
+	if (key_f != key_r) {
+		key = key_queue[key_f];
+		key_f = (key_f + 1) % KEY_QUEUE_LEN;
+	}
+	return key;
 }
 
 //nemu的device_update会调用这个
-//最高位是状态位，剩下的15位才代表按下的是哪个键。
+//最高位是状态位，剩下的15位才代表按下的是哪个键
 void send_key(uint8_t scancode, bool is_keydown) {
-  if (nemu_state.state == NEMU_RUNNING && keymap[scancode] != NEMU_KEY_NONE) {
-		//把原始的 SDL 扫描码（scancode）转换为 AM 框架定义的键码（AM 键码）格式
-    uint32_t am_scancode = keymap[scancode] | (is_keydown ? KEYDOWN_MASK : 0);
-    key_enqueue(am_scancode);
-  }
+  	if (nemu_state.state == NEMU_RUNNING && keymap[scancode] != NEMU_KEY_NONE) {
+		//把SDL扫描码转换为本身定义的键码格式并且判断状态位是否为1
+		uint32_t am_scancode = keymap[scancode] | (is_keydown ? KEYDOWN_MASK : 0); 
+		key_enqueue(am_scancode);
+  	}
 }
 #else // !CONFIG_TARGET_AM
 #define NEMU_KEY_NONE 0
@@ -104,13 +104,13 @@ static void i8042_data_io_handler(uint32_t offset, int len, bool is_write) {
 //两种不同的访问方式分配的是一块内存
 void init_i8042() {
 	//注册0x60处长度为4个字节的端口
-  i8042_data_port_base = (uint32_t *)new_space(4);
-  i8042_data_port_base[0] = NEMU_KEY_NONE;
-	//注冊0xa0000060处长度为4字节的MMIO空间
+	i8042_data_port_base = (uint32_t *)new_space(4);
+	i8042_data_port_base[0] = NEMU_KEY_NONE;
+
 #ifdef CONFIG_HAS_PORT_IO
-  add_pio_map ("keyboard", CONFIG_I8042_DATA_PORT, i8042_data_port_base, 4, i8042_data_io_handler);
+  	add_pio_map ("keyboard", CONFIG_I8042_DATA_PORT, i8042_data_port_base, 4, i8042_data_io_handler);
 #else
+	add_mmio_map("keyboard", CONFIG_I8042_DATA_MMIO, i8042_data_port_base, 4, i8042_data_io_handler);
 #endif
-add_mmio_map("keyboard", CONFIG_I8042_DATA_MMIO, i8042_data_port_base, 4, i8042_data_io_handler);
-  IFNDEF(CONFIG_TARGET_AM, init_keymap());
+  	IFNDEF(CONFIG_TARGET_AM, init_keymap());
 }

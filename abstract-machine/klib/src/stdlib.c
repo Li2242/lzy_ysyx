@@ -29,8 +29,10 @@ int atoi(const char* nptr) {
   return x;
 }
 
-	int addr_offset = 0;
+//这里初始化偏移量为0；
 
+int addr_offset = 0;
+//8字节对齐,向上取整
 #define ALIGN8(x) (((x) + 7) & ~7)
 
 void *malloc(size_t size) {
@@ -38,6 +40,8 @@ void *malloc(size_t size) {
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
 	if(size == 0) return NULL;
+
+	//分配堆中的内存
 	void *m_addr = heap.start + addr_offset;
 	
 	//size对齐
@@ -47,14 +51,19 @@ void *malloc(size_t size) {
 		printf("空间不足,分配失败!\n");
 		return NULL;
 	} 
+
 	addr_offset += size;
+	
+
+	// #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
+	//   panic("Not implemented");
+	// #endif
+
+	//maolloc的返回要求: 对齐（8位对齐）， 空闲（没有被占用）， 可用（至少能存储size个字节）
 	return m_addr;
-#if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
-  panic("Not implemented");
-#endif
-  return NULL;
 }
 
+//直接留空就行表示不释放
 void free(void *ptr) {
 }
 

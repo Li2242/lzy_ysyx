@@ -26,16 +26,16 @@ uint8_t* new_space(int size);
 //内存映射，寄存器的信息
 typedef struct {
 	//名字
-  const char *name;
-  // we treat ioaddr_t as paddr_t here
+	const char *name;
+  	// we treat ioaddr_t as paddr_t here
 	//起始地址
-  paddr_t low;
+  	paddr_t low;
 	//结束地址
-  paddr_t high;
+  	paddr_t high;
 	//映射的目标空间
-  void *space;
+  	void *space;
 	//回调函数
-  io_callback_t callback;
+  	io_callback_t callback;
 } IOMap;
 
 //是否在map的规定内存内
@@ -48,20 +48,25 @@ static inline int find_mapid_by_addr(IOMap *maps, int size, paddr_t addr) {
   int i;
   for (i = 0; i < size; i ++) {
     if (map_inside(maps + i, addr)) {
-			//为了避免误判设备访问指令为错误指令
-      difftest_skip_ref();
+		//框架代码在访问设备的过程中调用了difftest_skip_ref()函数来跳过与REF的检查
+      	difftest_skip_ref();
       return i;
     }
   }
   return -1;
 }
-//添加设备
+
+//端口添加设备
 void add_pio_map(const char *name, ioaddr_t addr,
         void *space, uint32_t len, io_callback_t callback);
+
+//内存映射添加设备
 void add_mmio_map(const char *name, paddr_t addr,
         void *space, uint32_t len, io_callback_t callback);
-
+//读
 word_t map_read(paddr_t addr, int len, IOMap *map);
+
+//写
 void map_write(paddr_t addr, int len, word_t data, IOMap *map);
 
 #endif

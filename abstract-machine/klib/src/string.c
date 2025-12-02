@@ -7,14 +7,14 @@
 size_t strlen(const char *s) {
 	size_t count = 0;
 	while(s[count++]!='\0');
-	return count-1;
+	return count - 1;
 }
 
 char *strcpy(char *dst, const char *src) {
   size_t i = 0;
-  while(src[i]!='\0'){
-	dst[i] = src[i];
-	i++;
+  while(src[i] != '\0'){
+		dst[i] = src[i];
+		i++;
   }
   dst[i] = '\0';
   return dst;
@@ -22,11 +22,12 @@ char *strcpy(char *dst, const char *src) {
 
 char *strncpy(char *dst, const char *src, size_t n) {
 	size_t i = 0;
+	//正常复制
 	while(i < n && src[i] != '\0'){
 		dst[i] = src[i];  
 		i++;
 	}
-	//如果没有源码不够
+	//如果需要复制的字符不够n个，就在后面加 '\0'
 	if(i < n){
 		while(i < n){
 			dst[i] = '\0';
@@ -38,40 +39,43 @@ char *strncpy(char *dst, const char *src, size_t n) {
 
 //追加
 char *strcat(char *dst, const char *src) {
+	//用自己写过的函数
   size_t start = strlen(dst);
 	size_t i = 0;
+	//从而dst原先的字符串后面开始复制
 	while(src[i] != '\0'){
 		dst[start + i] = src[i];
 		i++;
 	}
-	dst[start+i] = '\0';
+	dst[start + i] = '\0';
 	return dst;
 }
 
 int strcmp(const char *s1, const char *s2) {
 	size_t i = 0;
-		while(s1[i]!='\0' && s2[i]!='\0'){
-			if(s1[i] != s2[i]) return (unsigned char)s1[i] - (unsigned char)s2[i];
-			i++;
-		}
-		//如果长度不同，且前面相同
+	while(s1[i]!='\0' && s2[i]!='\0'){
+		//遇到不同就直接返回
+		if(s1[i] != s2[i]) return (unsigned char)s1[i] - (unsigned char)s2[i];
+		i++;
+	}
+	//如果长度不同，且前面相同
 	return (unsigned char)s1[i]-(unsigned char)s2[i];
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
   size_t i = 0;
-	while(s1[i]!=0 && s2[i] !=0 && i<n){
+	while(s1[i]!= 0 && s2[i] != 0 && i < n){
 		if(s1[i] == s2[i]){
 			i++;
 			continue;
 		}else{
-			return s1[i] - s2[i];
+			return (unsigned char)s1[i] - (unsigned char)s2[i];
 		}
 	}
-	if(n==i){
+	if(n == i){
 		return 0;
 	}else{
-		return s1[i]-s2[i];
+		return (unsigned char)s1[i] - (unsigned char)s2[i];
 	}
 }
 
@@ -88,7 +92,7 @@ void *memset(void *s, int c, size_t n) {
 void *memmove(void *dst, const void *src, size_t n) {
 	const unsigned char *a = src;
 	unsigned char *p = dst;
-	if(a+n <= p || p+n <= a){
+	if(a + n <= p || p + n <= a){
 		for(size_t i =0; i<n; i++) p[i] = a[i];
 	}else{
 		for(size_t i =n; i>0; i--) p[i-1] = a[i-1];
@@ -97,7 +101,7 @@ void *memmove(void *dst, const void *src, size_t n) {
 }
 
 void *memcpy(void *out, const void *in, size_t n) {
-  	const unsigned char *a = in;
+	const unsigned char *a = in;
 	unsigned char *p = out;
 	for(size_t i =0;i<n;i++){
 		p[i] = a[i];
@@ -110,8 +114,8 @@ int memcmp(const void *s1, const void *s2, size_t n) {
   const unsigned char *t2 = s2;
   size_t i = 0;
   while(i < n ){
-	if(t1[i]!=t2[i]) return t1[i] - t2[i];
-	i++;
+	if(t1[i] != t2[i]) return t1[i] - t2[i];
+		i++;
   }
   return 0;
 }

@@ -15,10 +15,11 @@ LDFLAGS   += --gc-sections -e _start
 NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt  -e $(IMAGE).elf -b
 
 MAINARGS_MAX_LEN = 64
+#Makefile 中的 insert-arg 规则将在这里插入 mainargs
 MAINARGS_PLACEHOLDER = the_insert-arg_rule_in_Makefile_will_insert_mainargs_here
 CFLAGS += -DMAINARGS_MAX_LEN=$(MAINARGS_MAX_LEN) -DMAINARGS_PLACEHOLDER=$(MAINARGS_PLACEHOLDER)
 
-#用这个传入mainargs=的数据的
+#传入mainargs数据，三个参数：可操作文件，占位符最大长度，mainargs的数据
 insert-arg: image
 	@python $(AM_HOME)/tools/insert-arg.py $(IMAGE).bin $(MAINARGS_MAX_LEN) $(MAINARGS_PLACEHOLDER) "$(mainargs)"
 

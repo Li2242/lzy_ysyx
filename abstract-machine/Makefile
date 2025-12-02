@@ -8,7 +8,8 @@ html:
 ## 1. Basic Setup and Checks
 
 ### Default to create a bare-metal kernel image
-### 用来确保在用户不指定目标时，默认构建 image
+### 用来确保在用户不指定目标时，默认构建 image；
+### MAKECMDGOALS 是 Makefile 的内置变量，存储用户在执行make命令时指定的目标（比如make clean中的clean）
 ifeq ($(MAKECMDGOALS),)
   MAKECMDGOALS  = image
   .DEFAULT_GOAL = image

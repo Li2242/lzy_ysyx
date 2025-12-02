@@ -169,10 +169,10 @@ static void init_platform() {
   assert(__am_pgsize > 0 && __am_pgsize % sys_pgsz == 0);
 
   // set stdout unbuffered
-  setbuf(stdout, NULL);
-	//从 环境变量 中获取名为 "mainargs" 的值，并将其存储在 args 指针中。
-  const char *args = getenv("mainargs");
-  halt(main(args ? args : "")); // call main here!
+  	setbuf(stdout, NULL);
+	//getenv从环境变量中取值
+  	const char *args = getenv("mainargs");
+  	halt(main(args ? args : "")); // call main here!
 }
 
 void __am_exit_platform(int code) {

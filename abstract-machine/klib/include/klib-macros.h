@@ -7,6 +7,7 @@
 #define RANGE(st, ed)       (Area) { .start = (void *)(st), .end = (void *)(ed) }
 #define IN_RANGE(ptr, area) ((area).start <= (ptr) && (ptr) < (area).end)
 
+// # 是字符串化运算符，作用是：将宏的参数直接转换为字符串字面量
 #define STRINGIFY(s)        #s
 #define TOSTRING(s)         STRINGIFY(s)
 #define _CONCAT(x, y)       x ## y
@@ -15,13 +16,11 @@
 #define putstr(s) \
   ({ for (const char *p = s; *p; p++) putch(*p); })
 
-//io_read()和io_write()这两个宏, 它们分别对ioe_read()和ioe_write()这两个API进行了进一步的封装.
-//宏调用时会把整个 ({ ... }) 看作一个表达式
 /*展开之后
 ({
-   reg##_T __io_param;         // 1. 定义变量
-   ioe_read(reg, &__io_param); // 2. 调用函数填充 __io_param
-   __io_param;                 // 3. 这是最后的表达式，决定整个 ({ ... }) 的值
+   reg##_T __io_param;         // 定义变量
+   ioe_read(reg, &__io_param); // 调用函数
+   __io_param;                 // 返回值
 })
 */
 #define io_read(reg) \
