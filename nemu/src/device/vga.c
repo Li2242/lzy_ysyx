@@ -19,8 +19,6 @@
 #define SCREEN_W (MUXDEF(CONFIG_VGA_SIZE_800x600, 800, 400))
 #define SCREEN_H (MUXDEF(CONFIG_VGA_SIZE_800x600, 600, 300))
 
-//这也是初始化的一部分
-
 static uint32_t screen_width() {
   return MUXDEF(CONFIG_TARGET_AM, io_read(AM_GPU_CONFIG).width, SCREEN_W);
 }
@@ -43,40 +41,41 @@ static uint32_t *vgactl_port_base = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
-//初始化一个小屏幕
+//初始化
+//texture纹理； renderer渲染器； veme显存
 static void init_screen() {
-  SDL_Window *window = NULL;
-  char title[128];
-  sprintf(title, "%s-NEMU", str(__GUEST_ISA__));
-  SDL_Init(SDL_INIT_VIDEO);
-  SDL_CreateWindowAndRenderer(
-      SCREEN_W * (MUXDEF(CONFIG_VGA_SIZE_400x300, 2, 1)),
-      SCREEN_H * (MUXDEF(CONFIG_VGA_SIZE_400x300, 2, 1)),
-      0, &window, &renderer);
-	//设置window标题
-  SDL_SetWindowTitle(window, title);
-	//相当于画布 用来存放你‘将来要显示’的像素图像。
-  texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+	SDL_Window *window = NULL;
+	//标题
+	char title[128];
+	sprintf(title, "%s-NEMU", str(__GUEST_ISA__));
+	SDL_Init(SDL_INIT_VIDEO);
+	//创建renderer
+	SDL_CreateWindowAndRenderer(
+		SCREEN_W * (MUXDEF(CONFIG_VGA_SIZE_400x300, 2, 1)),
+		SCREEN_H * (MUXDEF(CONFIG_VGA_SIZE_400x300, 2, 1)),
+		0, &window, &renderer);
+	//设置窗口的标题
+  	SDL_SetWindowTitle(window, title);
+	//创造texture
+  	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
       SDL_TEXTUREACCESS_STATIC, SCREEN_W, SCREEN_H);
-	//把渲染器当前内容真正显示到屏幕上。
-  SDL_RenderPresent(renderer);
+	//展示renderer
+  	SDL_RenderPresent(renderer);
 }
 
-//更新屏幕:将显存 (vmem) 中的像素数据同步到窗口显示屏幕上。
+//更新屏幕      将显存中的像素数据同步到窗口显示屏幕上
 static inline void update_screen() {
-	//把 vmem 拷贝进 texture
-  SDL_UpdateTexture(texture, NULL, vmem, SCREEN_W * sizeof(uint32_t));
-	//清除上一帧的画面
-  SDL_RenderClear(renderer);
-	//把 texture 画到 renderer（渲染器）上
-	//两个 NULL 表示整张 texture 都用，覆盖整个窗口
-  SDL_RenderCopy(renderer, texture, NULL, NULL);
-	//将 renderer 的内容真正呈现到屏幕上。
-  SDL_RenderPresent(renderer);
+	//将vmem中的数据传入的到texture中
+  	SDL_UpdateTexture(texture, NULL, vmem, SCREEN_W * sizeof(uint32_t));
+	//清空renderer
+  	SDL_RenderClear(renderer);
+	//将texture传入到renderer中
+  	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	//展现renderer
+  	SDL_RenderPresent(renderer);
 }
 #else
 static void init_screen() {}
-
 static inline void update_screen() {
   io_write(AM_GPU_FBDRAW, 0, 0, vmem, screen_width(), screen_height(), true);
 }
@@ -93,21 +92,18 @@ void vga_update_screen() {
 
 //初始化
 void init_vga() {
-  vgactl_port_base = (uint32_t *)new_space(8);
+  	vgactl_port_base = (uint32_t *)new_space(8);
 	//宽高
-  vgactl_port_base[0] = (screen_width() << 16) | screen_height();
-
+  	vgactl_port_base[0] = (screen_width() << 16) | screen_height();
 #ifdef CONFIG_HAS_PORT_IO
-  add_pio_map ("vgactl", CONFIG_VGA_CTL_PORT, vgactl_port_base, 8, NULL);
+  	add_pio_map ("vgactl", CONFIG_VGA_CTL_PORT, vgactl_port_base, 8, NULL);
 #else
-  add_mmio_map("vgactl", CONFIG_VGA_CTL_MMIO, vgactl_port_base, 8, NULL);
+  	add_mmio_map("vgactl", CONFIG_VGA_CTL_MMIO, vgactl_port_base, 8, NULL);
 #endif
-	//一段用于映射到video memory(显存, 也叫frame buffer, 帧缓冲)的MMIO空间.
-  vmem = new_space(screen_size());
-	//显存
-  add_mmio_map("vmem", CONFIG_FB_ADDR, vmem, screen_size(), NULL);
-	//初始化画布
-  IFDEF(CONFIG_VGA_SHOW_SCREEN, init_screen());
-	//清空画布
-  IFDEF(CONFIG_VGA_SHOW_SCREEN, memset(vmem, 0, screen_size()));
+  	vmem = new_space(screen_size());
+  	add_mmio_map("vmem", CONFIG_FB_ADDR, vmem, screen_size(), NULL);
+	//初始化
+  	IFDEF(CONFIG_VGA_SHOW_SCREEN, init_screen());
+	//清空
+  	IFDEF(CONFIG_VGA_SHOW_SCREEN, memset(vmem, 0, screen_size()));
 }
