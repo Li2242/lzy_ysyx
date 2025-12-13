@@ -65,16 +65,16 @@ static void checkregs(uint32_t *ref, uint32_t diff_pc) {
 */
 //这个是与外界相连接的入口
 void difftest_step(uint32_t pc) {
-	//这里装的是REF的寄存器 和 pc
-  uint32_t diff_reg[32] = {};
-	uint32_t diff_pc;
-	//REF执行以西
-		ref_difftest_exec(1);
-  
-	//把REF中的寄存器和整到DUT中
-	//REF中的pc是这个函数返回的
-  diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_DUT);
-	//检查REF和DUT的PC和寄存器是否相同
-  checkregs(diff_reg, diff_pc);
+    //这里装的是REF的寄存器 和 pc
+    uint32_t diff_reg[32] = {};
+    uint32_t diff_pc;
+    //REF执行以西
+    ref_difftest_exec(1);
+    
+    //把REF中的寄存器和整到DUT中
+    //REF中的pc是这个函数返回的
+    diff_pc = ref_difftest_regcpy(diff_reg , pc ,DIFFTEST_TO_DUT);
+    //检查REF和DUT的PC和寄存器是否相同
+    checkregs(diff_reg, diff_pc);
 }
 

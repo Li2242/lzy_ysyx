@@ -52,13 +52,13 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
         CData/*0:0*/ npc__DOT__is_bgeu;
         CData/*0:0*/ npc__DOT__is_bltu;
         CData/*0:0*/ npc__DOT__is_blt;
-        CData/*0:0*/ npc__DOT____VdfgRegularize_h467b3cb3_0_9;
-        CData/*0:0*/ npc__DOT____VdfgRegularize_h467b3cb3_0_18;
-        CData/*0:0*/ npc__DOT____VdfgRegularize_h467b3cb3_0_20;
-        CData/*0:0*/ npc__DOT____VdfgRegularize_h467b3cb3_0_21;
-        CData/*0:0*/ npc__DOT____VdfgRegularize_h467b3cb3_0_22;
-        CData/*0:0*/ npc__DOT____VdfgRegularize_h467b3cb3_0_23;
-        CData/*0:0*/ npc__DOT____VdfgRegularize_h467b3cb3_0_24;
+        CData/*0:0*/ npc__DOT____VdfgRegularize_h06e98be2_0_2;
+        CData/*0:0*/ npc__DOT____VdfgRegularize_h06e98be2_0_3;
+        CData/*0:0*/ npc__DOT____VdfgRegularize_h06e98be2_0_4;
+        CData/*0:0*/ npc__DOT____VdfgRegularize_h06e98be2_0_5;
+        CData/*0:0*/ npc__DOT____VdfgRegularize_h06e98be2_0_6;
+        CData/*0:0*/ npc__DOT____VdfgRegularize_h06e98be2_0_7;
+        CData/*0:0*/ npc__DOT____VdfgRegularize_h06e98be2_0_8;
         CData/*6:0*/ npc__DOT__u_decoder7_128__DOT____VdfgBinToOneHot_Pre_hbc128af0_0_0;
         CData/*6:0*/ npc__DOT__u1_decoder7_128__DOT____VdfgBinToOneHot_Pre_hbc128af0_0_0;
         CData/*0:0*/ npc__DOT__u_alu__DOT__sltu;
@@ -69,7 +69,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
         CData/*0:0*/ npc__DOT__u_alu__DOT__adder_cin;
         CData/*0:0*/ __VstlFirstIteration;
         CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
-        CData/*0:0*/ __VactContinue;
         SData/*11:0*/ npc__DOT__csr_raddr;
         VL_OUT(alu_result,31,0);
         VL_OUT(pc,31,0);
@@ -77,21 +76,21 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
         IData/*31:0*/ npc__DOT__nextpc;
         IData/*31:0*/ npc__DOT__inst;
         IData/*31:0*/ npc__DOT__imm;
-        IData/*31:0*/ npc__DOT__csr_rdata;
         IData/*31:0*/ npc__DOT__csr_wdata;
-        IData/*31:0*/ npc__DOT__src1;
-        IData/*31:0*/ npc__DOT__alu_src1;
-        IData/*31:0*/ npc__DOT__alu_src2;
         IData/*31:0*/ npc__DOT__raddr;
-    };
-    struct {
         IData/*31:0*/ npc__DOT__pmem_read_data;
+        IData/*31:0*/ npc__DOT__u_regfile2__DOT__rdata1;
+        IData/*31:0*/ npc__DOT__u_csr__DOT__crdata;
         IData/*31:0*/ npc__DOT__u_csr__DOT__mepc;
         IData/*31:0*/ npc__DOT__u_csr__DOT__mcause;
+    };
+    struct {
         IData/*31:0*/ npc__DOT__u_csr__DOT__mstatus;
         IData/*31:0*/ npc__DOT__u_csr__DOT__mtvec;
-        IData/*31:0*/ npc__DOT__u_alu__DOT__add_sub_result;
+        IData/*31:0*/ npc__DOT__u_alu__DOT__src1;
+        IData/*31:0*/ npc__DOT__u_alu__DOT__src2;
         IData/*31:0*/ npc__DOT__u_alu__DOT__adder_b;
+        IData/*31:0*/ npc__DOT__u_alu__DOT__adder_result;
         IData/*31:0*/ __Vfunc_v_pmem_read__0__Vfuncout;
         IData/*31:0*/ __Vfunc_v_pmem_read__1__Vfuncout;
         IData/*31:0*/ __Vfunc_v_pmem_read__2__Vfuncout;
@@ -100,10 +99,10 @@ class alignas(VL_CACHE_LINE_BYTES) Vnpc___024root final : public VerilatedModule
         VlUnpacked<CData/*0:0*/, 128> npc__DOT__u_decoder7_128__DOT____VdfgBinToOneHot_Tab_hbc128af0_0_0;
         VlUnpacked<CData/*0:0*/, 128> npc__DOT__u1_decoder7_128__DOT____VdfgBinToOneHot_Tab_hbc128af0_0_0;
         VlUnpacked<IData/*31:0*/, 32> npc__DOT__u_regfile2__DOT__rf;
+        VlUnpacked<QData/*63:0*/, 1> __VstlTriggered;
+        VlUnpacked<QData/*63:0*/, 1> __VactTriggered;
+        VlUnpacked<QData/*63:0*/, 1> __VnbaTriggered;
     };
-    VlTriggerVec<1> __VstlTriggered;
-    VlTriggerVec<1> __VactTriggered;
-    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vnpc__Syms* const vlSymsp;

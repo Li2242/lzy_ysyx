@@ -3,8 +3,6 @@
 // See Vnpc.h for the primary calling header
 
 #include "Vnpc__pch.h"
-#include "Vnpc__Syms.h"
-#include "Vnpc___024root.h"
 
 void Vnpc___024root___ctor_var_reset(Vnpc___024root* vlSelf);
 
