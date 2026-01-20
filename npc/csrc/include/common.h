@@ -138,3 +138,10 @@ extern void init_timer();
 extern uint32_t *rtc_port_base;
 extern uint64_t get_time();
 extern void rtc_io_handler();
+//vga
+extern void device_update() ;
+extern void init_vga();
+extern void vga_update_screen();
+extern uint32_t* vgactl_port_base;
+extern void *vmem;
+

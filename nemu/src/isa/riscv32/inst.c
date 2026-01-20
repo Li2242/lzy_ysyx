@@ -76,7 +76,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 //译码
 static int decode_exec(Decode *s) {
   s->dnpc = s->snpc;
-//INSTPAT_INST获取当前指令
+//获取当前指令
 #define INSTPAT_INST(s) ((s)->isa.inst)
 //根据指令找出对应的操作数
 #define INSTPAT_MATCH(s, name, type, ... /* execute body */ ) { \
@@ -108,7 +108,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, R(rd) = (int32_t)(((int64_t)(int32_t)src1*(int64_t)(int32_t)src2 )>>32 ));
   INSTPAT("0000000 ????? ????? 101 ????? 01100 11", srl    , R, R(rd) = (uint32_t)src1 >> (src2&0x1F)); //逻辑右移
   INSTPAT("0100000 ????? ????? 101 ????? 01100 11", sra    , R, R(rd) = (int32_t)src1 >> (src2&0x1F)); //逻辑右移
- 	INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu   , R, R(rd) = (uint32_t)( ( (uint64_t)(uint32_t)src1*(uint64_t)(uint32_t)src2 ) >>32 ));
+  INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu   , R, R(rd) = (uint32_t)( ( (uint64_t)(uint32_t)src1*(uint64_t)(uint32_t)src2 ) >>32 ));
 
   //U型
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
@@ -148,17 +148,17 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 100 ????? 11000 11", blt    , B, if((int32_t)src1 < (int32_t)src2) s->dnpc = imm + s->pc);
   INSTPAT("??????? ????? ????? 110 ????? 11000 11", bltu   , B, if((uint32_t)src1<(uint32_t)src2) s->dnpc = s->pc + imm);
 
-  //未确定是否正确、
+	//未确定是否正确、
 	INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, R(rd)=C(imm), C(imm) = src1);
 	INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, R(rd)=C(imm), C(imm) = C(imm) | src1);
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , R, s->dnpc = (C(0x341)));
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(0xb,s->pc));
+  	INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , R, s->dnpc = (C(0x341)));
+  	INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(0xb,s->pc));
 
-  //特殊指令
-
-  INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
-  INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
-  INSTPAT_END();
+	//特殊指令
+	INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
+	//前面的都没匹配上是把???那你完蛋,你成非法指令了.
+	INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
+	INSTPAT_END();
 
 
 //译码结果将记录到函数参数rd, src1, src2和imm中, 它们分别代表 目的操作数的寄存器号码, 两个源操作数 和 立即数.

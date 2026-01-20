@@ -12,18 +12,18 @@ module RegisterFile #(ADDR_WIDTH = 5, DATA_WIDTH = 32) (
   output wire[DATA_WIDTH-1:0] rdata2
 );
 //寄存器
-  reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
+reg [DATA_WIDTH-1:0] rf [2**ADDR_WIDTH-1:0];
 
-//READ 1
+//读1
 assign rdata1 = (raddr1 == 5'b0) ? 32'b0 : rf[raddr1];
 
-//READ 2
+//读2
 assign rdata2 = (raddr2 == 5'b0) ? 32'b0 : rf[raddr2];
 
-//WRITE
-  always @(posedge clk) begin
-    if(wen && waddr!=5'b0) rf[waddr] <= wdata;
-  end
+//写
+always @(posedge clk) begin
+	if(wen && waddr!=5'b0) rf[waddr] <= wdata;
+end
 
 endmodule
 

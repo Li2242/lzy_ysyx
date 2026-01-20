@@ -74,7 +74,7 @@ void device_update() {
 #endif
 }
 
-//清空所有 SDL（Simple DirectMedia Layer）事件队列中的事件，防止旧事件影响当前帧的处理。
+//清空所有SDL事件队列
 void sdl_clear_event_queue() {
 #ifndef CONFIG_TARGET_AM
   SDL_Event event;
@@ -88,8 +88,7 @@ void init_device() {
 	//初始化映射的内存空间
   	init_map();
 
-	//2.对上述设备进行初始化, 其中在初始化VGA时还会进行一些和SDL相关的初始化工作
-	//包括创建窗口, 设置显示模式等;
+	//对设备进行初始化
   	IFDEF(CONFIG_HAS_SERIAL, init_serial());
   	IFDEF(CONFIG_HAS_TIMER, init_timer());
   	IFDEF(CONFIG_HAS_VGA, init_vga());
@@ -98,7 +97,6 @@ void init_device() {
   	IFDEF(CONFIG_HAS_DISK, init_disk());
   	IFDEF(CONFIG_HAS_SDCARD, init_sdcard());
 
-	//3.然后会进行定时器(alarm)相关的初始化工作.
 	//定时器的功能在PA4最后才会用到, 目前可以忽略它.
   	IFNDEF(CONFIG_TARGET_AM, init_alarm());
 }

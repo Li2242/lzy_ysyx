@@ -20,10 +20,10 @@ reg [31:0]mtvec;
 
 //csr_read
 assign crdata = (craddr == 12'h300) ? mstatus  :
-								(craddr == 12'h305) ? mtvec :
-								(craddr == 12'h341) ? mepc  :
-								(craddr == 12'h342) ? mcause:
-								32'b0;
+				(craddr == 12'h305) ? mtvec :
+				(craddr == 12'h341) ? mepc  :
+				(craddr == 12'h342) ? mcause:
+				32'b0;
 
 //csr_write
 always @(posedge clk)begin

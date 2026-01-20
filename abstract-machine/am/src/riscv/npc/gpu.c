@@ -1,18 +1,23 @@
 #include <am.h>
-#include <nemu.h>
+#include "npc.h"
+#include <riscv/riscv.h>
+
 
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
+
 void __am_gpu_init() {
-}
+
+ }
+
 
 //AM_DEVREG( 9, GPU_CONFIG,   RD, bool present, has_accel; int width, height, vmemsz);
 //定义大小
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
-    .width = inw(VGACTL_ADDR + 2), .height = inw(VGACTL_ADDR),
-    .vmemsz = inw(VGACTL_ADDR + 2) * inw(VGACTL_ADDR) * sizeof(uint32_t)
+    .width = inw(VGACTL_ADDR+2), .height = inw(VGACTL_ADDR),
+    .vmemsz = inw(VGACTL_ADDR+2) * inw(VGACTL_ADDR) * sizeof(uint32_t)
   };
 }
 // AM_DEVREG(11, GPU_FBDRAW,   WR, int x, y; void *pixels; int w, h; bool sync); 
@@ -45,7 +50,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 	//触发刷新
 	if (sync) {
     	outl(SYNC_ADDR, 1);  
-  }
+  	}
 }
 
 

@@ -29,11 +29,11 @@ static const uint32_t img [] = {
 
 //初始化pc和寄存器
 static void restart() {
-  /*Set the initial program counter.*/
-  cpu.pc = RESET_VECTOR;
-  /* The zero register is always 0. */
-  cpu.gpr[0] = 0;
-	//让DiffTest支持异常响应机制 针对riscv64, 你需要将mstatus初始化为0xa00001800.
+	/*Set the initial program counter.*/
+	cpu.pc = RESET_VECTOR;
+	/* The zero register is always 0. */
+	cpu.gpr[0] = 0;
+	//让DiffTest支持异常响应机制
 	cpu.csrs[0] = 0x1800;
 }
 

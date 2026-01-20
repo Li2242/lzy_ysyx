@@ -127,34 +127,36 @@ static void execute(uint32_t n){
     contextp->timeInc(5);
 //===============  一条命令的结束  =========================
 
+	device_update();
+
 //正如函数名所说它就是TRACE和DIFFTEST的办公场所
-		trace_and_difftest();
+	// trace_and_difftest();
   }
 }
 
 
 static void trace_and_difftest() {
 //===============  ITRACING BEGINS ========================
+	char* p = logbuf;
+	//写入pc
+	p += snprintf(p, sizeof(logbuf), "0x%08x:",cpu_pc);
+	int ilen = 4;
+	int k;
+	uint32_t inst = pmem_read(cpu_pc,4);
+	uint8_t *s_inst = (uint8_t *)&inst;
 
-		char* p = logbuf;
-		//写入pc
-		p += snprintf(p, sizeof(logbuf), "0x%08x:",cpu_pc);
-		int ilen = 4;
-		int k;
-		uint32_t inst = pmem_read(cpu_pc,4);
-		uint8_t *s_inst = (uint8_t *)&inst;
+	for(k = ilen - 1; k >= 0; k --){
+		p += snprintf(p,4," %02x", s_inst[k]);
+	}
+	//保证指令那块一样长,但是对于riscv这样指令是一样长的并没有什么用
+	int space_len = 1;
+	memset(p,' ',space_len);
+	p += space_len;
 
-		for(k = ilen - 1; k >= 0; k --){
-			p += snprintf(p,4," %02x", s_inst[k]);
-		}
-		int space_len = 1;
-		memset(p,' ',space_len);
-		p += space_len;
-
-		//Function Declaration
-		void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-		//Function Call
-		disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&inst,ilen);
+	//Function Declaration
+	void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+	//Function Call
+	disassemble(p,logbuf + 128 - p,cpu_pc,(uint8_t *)&inst,ilen);
 // ================== ITRACING ENDS ===========================
 
 //difftest的关键

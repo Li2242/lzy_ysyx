@@ -22,11 +22,11 @@ typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
 	vaddr_t pc;
 	/*
-	CSR				编号				作用
-	mstatus		0x300				保存处理器状态
+	CSR				编号				 作用
+	mstatus		    0x300				保存处理器状态
 	mtvec			0x305				异常/中断入口地址
 	mepc			0x341				触发异常的 PC
-	mcause		0x342				异常/中断原因
+	mcause		    0x342				异常/中断原因
 	*/
 	word_t csrs[0x43];
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);

@@ -57,8 +57,6 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static char *elf_file = NULL;
 static int difftest_port = 1234;
-//在没有-e选项时不启动
-bool ftrace_switch = 0;
 
 //这个函数会将一个有意义的客户程序从镜像文件读入到内存, 覆盖刚才的内置客户程序.
 static long load_img() {
@@ -113,7 +111,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 'e': elf_file = optarg; ftrace_switch = 1; break;
+      case 'e': elf_file = optarg;  break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -141,12 +139,12 @@ void init_monitor(int argc, char *argv[]) {
   /* Open the log file. */
   init_log(log_file);
 
-if(ftrace_switch){
-    #ifdef CONFIG_FTRACE
-        //打开elf文件并构建符号表和字符串表
-        init_elf(elf_file);
-    #endif
-}
+
+#ifdef CONFIG_FTRACE
+	//打开elf文件并构建符号表和字符串表
+	init_elf(elf_file);
+#endif
+
   /* Initialize memory. */
   init_mem();
 
@@ -155,8 +153,8 @@ if(ftrace_switch){
 
   /* Perform ISA dependent initialization. */
   //执行与指令集架构相关的初始化操作
-  //第一项工作就是将一个内置的客户程序读入到内存中.
-  //第二项任务是初始化寄存器
+  //将一个内置指令读入到内存中
+  //初始化寄存器
   init_isa();
 
   /* Load the image to memory. This will overwrite the built-in image. */

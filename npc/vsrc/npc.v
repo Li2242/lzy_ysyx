@@ -7,16 +7,16 @@ module npc(
     input  wire reset,
     output wire [31:0]  alu_result,
     output reg  [31:0]  pc,
-		output [31:0] addr
+	output      [31:0]  addr
 );
 
 // =========================== PC ==================================
 wire [31:0] nextpc;
 
-assign nextpc =  is_jalr                    ? (src1 + imm) & ~1 :
-								 (is_mret | is_ecall)       ?  csr_rdata :
-                 (is_jal  | is_correct_b)   ?  pc + imm :       //未来B型指令要加在这里因为他们都是 pc + 4;
-                 pc + 32'h4 ;
+assign nextpc = is_jalr                    ? (src1 + imm) & ~1 :
+				(is_mret | is_ecall)       ?  csr_rdata :
+                (is_jal  | is_correct_b)   ?  pc + imm :        //未来B型指令要加在这里因为他们都是 pc + 4;
+                pc + 32'h4 ;
 
 //更新pc
 always @(posedge clk) begin
@@ -34,7 +34,7 @@ end
 // ========================= 解析指令 ===================================
 reg[31:0]    inst;
 //肢解inst
-wire[6:0]    inst31_25;
+wire[6:0]    funct7;
 wire[6:0]    opcode;
 wire[2:0]    funct3;
 wire[4:0]    rs1;
@@ -111,9 +111,9 @@ wire is_beq;
 wire is_bgeu;
 wire is_bltu;
 wire is_blt;
-//ebreak(end)
+//ebreak
 wire is_ebreak;
-
+//
 wire is_mret;
 wire is_ecall;
 
@@ -128,12 +128,12 @@ assign imm_I = {{20{inst[31]}},inst[31:20]};
 assign imm_U = {inst[31:12],{12{1'b0}}};
 assign imm_J = {{11{inst[31]}},inst[31],inst[19:12],inst[20],inst[30:21],1'b0};
 //判断类型
-assign opcode  = inst[6:0];
-assign rs1     = inst[19:15];
-assign rs2     = inst[24:20];
-assign rd      = inst[11:7];
-assign funct3  = inst[14:12];
-assign inst31_25 = inst[31:25];
+assign opcode    = inst[6:0];
+assign rs1       = inst[19:15];
+assign rs2       = inst[24:20];
+assign rd        = inst[11:7];
+assign funct3    = inst[14:12];
+assign funct7 = inst[31:25];
 
 //独热码
 wire [127:0] opcode_d;
@@ -148,10 +148,10 @@ decoder3_8 u_decoder3_8(
 	.out 	(funct3_d  )
 );
 
-wire [127:0] inst31_25_d;
+wire [127:0] funct7_d;
 decoder7_128 u1_decoder7_128(
-	.in  	(inst31_25   ),
-	.out 	(inst31_25_d)
+	.in  	(funct7   ),
+	.out 	(funct7_d)
 );
 
 
@@ -171,27 +171,27 @@ assign is_lui   =  opcode_d[55];
 //J
 assign is_jal   =  opcode_d[111];
 //R
-assign is_add   =  opcode_d[51]  &  funct3_d[0] & inst31_25_d[0];
+assign is_add   =  opcode_d[51]  &  funct3_d[0] & funct7_d[0];
 assign is_xor   =  opcode_d[51]  &  funct3_d[4];
-assign is_or   =   opcode_d[51]  &  funct3_d[6];
+assign is_or    =  opcode_d[51]  &  funct3_d[6];
 assign is_sltu  =  opcode_d[51]  &  funct3_d[3];
-assign is_sub   =  opcode_d[51]  &  funct3_d[0] & inst31_25_d[32];
-assign is_sll   =  opcode_d[51]  &  funct3_d[1] & inst31_25_d[0];
-assign is_and   =  opcode_d[51]  &  funct3_d[7] & inst31_25_d[0];
-assign is_srl   =  opcode_d[51]  &  funct3_d[5] & inst31_25_d[0];
-assign is_slt   =  opcode_d[51]  &  funct3_d[2] & inst31_25_d[0];
-assign is_sra   =  opcode_d[51]  &  funct3_d[5] & inst31_25_d[32];
+assign is_sub   =  opcode_d[51]  &  funct3_d[0] & funct7_d[32];
+assign is_sll   =  opcode_d[51]  &  funct3_d[1] & funct7_d[0];
+assign is_and   =  opcode_d[51]  &  funct3_d[7] & funct7_d[0];
+assign is_srl   =  opcode_d[51]  &  funct3_d[5] & funct7_d[0];
+assign is_slt   =  opcode_d[51]  &  funct3_d[2] & funct7_d[0];
+assign is_sra   =  opcode_d[51]  &  funct3_d[5] & funct7_d[32];
 //I
 assign is_jalr  =  opcode_d[103] &  funct3_d[0];
 assign is_addi  =  opcode_d[19]  &  funct3_d[0];
 assign is_lw    =  opcode_d[3]   &  funct3_d[2];
 assign is_lbu   =  opcode_d[3]   &  funct3_d[4];
 assign is_sltiu =  opcode_d[19]  &  funct3_d[3];
-assign is_srai  =  opcode_d[19]  &  funct3_d[5] & inst31_25_d[32];
+assign is_srai  =  opcode_d[19]  &  funct3_d[5] & funct7_d[32];
 assign is_xori  =  opcode_d[19]  &  funct3_d[4];
 assign is_andi  =  opcode_d[19]  &  funct3_d[7];
-assign is_srli  =  opcode_d[19]  &  funct3_d[5] & inst31_25_d[0];
-assign is_slli  =  opcode_d[19]  &  funct3_d[1] & inst31_25_d[0];
+assign is_srli  =  opcode_d[19]  &  funct3_d[5] & funct7_d[0];
+assign is_slli  =  opcode_d[19]  &  funct3_d[1] & funct7_d[0];
 assign is_lh    =  opcode_d[3]   &  funct3_d[1];
 assign is_lhu   =  opcode_d[3]   &  funct3_d[5];
 
@@ -207,8 +207,8 @@ assign is_sh    =  opcode_d[35]  &  funct3_d[1];
 assign is_bne   =  opcode_d[99]  &  funct3_d[1];
 assign is_bge   =  opcode_d[99]  &  funct3_d[5];
 assign is_beq   =  opcode_d[99]  &  funct3_d[0];
-assign is_bgeu  =  opcode_d[99] &  funct3_d[7];
-assign is_bltu  =  opcode_d[99] &  funct3_d[6];
+assign is_bgeu  =  opcode_d[99]  &  funct3_d[7];
+assign is_bltu  =  opcode_d[99]  &  funct3_d[6];
 assign is_blt   =  opcode_d[99]  &  funct3_d[4];
 //ebreak
 assign is_ebreak = (inst == 32'h00100073);
@@ -229,28 +229,28 @@ assign reg_from_imm  = is_lui;
 assign is_correct_b  = ((is_bne | is_beq | is_bltu | is_blt) && (alu_result == 1)) | ((is_bgeu | is_bge) && alu_result == 0);
 
 //立即数的选择
-assign imm = ({32{is_I}} & imm_I)
-				   | ({32{is_U}} & imm_U)
-		       | ({32{is_J}} & imm_J)
-		       | ({32{is_B}} & imm_B)
-				   | ({32{is_S}} & imm_S);
+assign imm =  ({32{is_I}} & imm_I)
+			| ({32{is_U}} & imm_U)
+		    | ({32{is_J}} & imm_J)
+		    | ({32{is_B}} & imm_B)
+			| ({32{is_S}} & imm_S);
 
 // ======================= 解析指令 END ===================================
 
 // ======================= 寄存器堆 ============================
-wire [31:0] final_result;
+wire [31:0] write_reg_result;
 
-assign final_result = reg_from_mem  ?  rdata  :
-									    reg_from_pc_4 ?  pc + 4 :
-											reg_from_imm  ?  imm    :
-											(is_csrrw | is_csrrs)   ?  csr_rdata :
-											alu_result;
+assign write_reg_result = reg_from_mem ? rdata :
+								 	 reg_from_pc_4 ? pc + 4 :
+									 reg_from_imm ? imm    :
+									 (is_csrrw | is_csrrs) ? csr_rdata :
+									 alu_result;
 
 RegisterFile u_regfile2 (
     .clk(clk),
     .wen(reg_wen),
     .waddr(rd),
-    .wdata(final_result),
+    .wdata(write_reg_result),
     .raddr1(rs1),
     .rdata1(src1),
     .raddr2(rs2),
@@ -259,11 +259,11 @@ RegisterFile u_regfile2 (
 
 // ================================= 寄存器END  ======================================
 /*
-	CSR				编号				作用
-	mstatus		0x300				保存处理器状态
-	mtvec			0x305				异常/中断入口地址
-	mepc			0x341				触发异常的 PC
-	mcause		0x342				异常/中断原因
+	CSR			编号		作用
+	mstatus		0x300	   保存处理器状态
+	mtvec		0x305	   异常/中断入口地址
+	mepc		0x341	   触发异常的 PC
+	mcause		0x342	   异常/中断原因
 	*/
 
 // ================================= CSR ================================
@@ -272,12 +272,12 @@ wire [11:0] csr_raddr;
 wire [31:0] csr_wdata;
 
 assign csr_wdata = is_csrrw ? src1 :
-									 is_csrrs ? (src1 | csr_rdata) :
-									 32'h0;
+							  is_csrrs ? (src1 | csr_rdata) :
+							  32'h0;
 
 assign csr_raddr = is_mret  ? 12'h341 :
-									 is_ecall ? 12'h305 :
-									 inst[31:20];
+							  is_ecall ? 12'h305 :
+							  inst[31:20];
 csr u_csr(
 	.clk(clk),
 	.pc(pc),
@@ -288,12 +288,13 @@ csr u_csr(
 	.cwen(reg_cwen),
 	.is_ecall(is_ecall)
 );
-// =======================    ALU  ========================================
-wire [11:0]  alu_op;           //1.加指令时需要改
-wire         src1_is_pc;
-wire         src2_is_imm;
-wire [31:0]   src1;
-wire [31:0]   src2;
+
+// =======================   ALU  ========================================
+wire [11:0] alu_op;        //1.加指令时需要改
+wire        src1_is_pc;
+wire        src2_is_imm;
+wire [31:0] src1;
+wire [31:0] src2;
 wire [31:0] alu_src1;
 wire [31:0] alu_src2;
 
@@ -301,30 +302,37 @@ wire [31:0] alu_src2;
 assign src1_is_pc  = is_auipc;
 assign src2_is_imm = is_addi | is_auipc | is_sltiu | is_srai | is_xori | is_andi |is_srli | is_slli | is_ori;
 
-assign alu_src1 = src1_is_pc ? pc : src1;
+assign alu_src1 = src1_is_pc  ? pc : src1;
 assign alu_src2 = src2_is_imm ? imm : src2;
 //4.改
+// 0.add
 assign alu_op[0] = is_add | is_addi | is_auipc;
+// 1.
 //bgeu bltu利用了sltu的无符号比较
 assign alu_op[1] = is_sltiu | is_sltu | is_bgeu | is_bltu;
 assign alu_op[2] = is_bne;
+// 3.xor
 assign alu_op[3] = is_xor | is_xori;
+// 4.or
 assign alu_op[4] = is_or | is_ori;
+// 5.sub
 assign alu_op[5] = is_sub;
 assign alu_op[6] = is_srai | is_sra;
 assign alu_op[7] = is_sll | is_slli;
+// 8.and
 assign alu_op[8] = is_and | is_andi;
 //blt 利用了slt的有符号比较
 assign alu_op[9] = is_slt | is_bge | is_blt;
+// 10.判断相等 
 assign alu_op[10] = is_beq;
 assign alu_op[11] = is_srl | is_srli ;
 
 //alu
 alu u_alu(
-    .src1   	(alu_src1    ),
-		.src2      (alu_src2),
-    .alu_op 	(alu_op  ),
-    .alu_result 	(alu_result  )
+    .src1       (alu_src1),
+	.src2       (alu_src2),
+    .alu_op     (alu_op),
+    .alu_result (alu_result)
 );
 
 // ========================== ALU END ========================================
@@ -348,19 +356,19 @@ assign addr  = src1 + imm;
 assign wdata = src2;
 //掩码
 assign wmask = is_sb ? 8'b00000001 :
-							 is_sh ? 8'b00000011 :
-							         8'b00001111 ;
+			   is_sh ? 8'b00000011 :
+			   8'b00001111 ;
 //数据
-assign pmem_read_data = is_lbu ? v_pmem_read(raddr , 1) :
-						 					  (is_lh | is_lhu)  ? v_pmem_read(raddr , 2) :
-					 						  v_pmem_read(raddr , 4);
+assign pmem_read_data = is_lbu ? v_pmem_read(raddr,1) :
+						(is_lh | is_lhu) ? v_pmem_read(raddr,2) :
+					 	v_pmem_read(raddr,4);
 //读地址
 always @(*) begin
 	if(mem_en)begin
 		// $display("mem_en=%b, is_lbu=%b, raddr=0x%08x", mem_en, is_lbu, raddr);
 		rdata =  (is_lbu | is_lhu) ? pmem_read_data :
-						 is_lh  ? {{16{pmem_read_data[15]}},pmem_read_data[15:0]}:
-					 		pmem_read_data;
+				 is_lh ? {{16{pmem_read_data[15]}},pmem_read_data[15:0]}:
+				 pmem_read_data;
 	end else begin
 		rdata = 0;
 	end
@@ -368,13 +376,12 @@ end
 //写地址
 always @(posedge clk)begin
  if(mem_wen) begin // 有写请求时
-			// $display("mem_wen=%b, is_sw=%b, is_sb=%b, raddr=0x%08x", mem_wen, is_sw, is_sb, raddr);
-      v_pmem_write(waddr, wdata, wmask);
+		// $display("mem_wen=%b, is_sw=%b, is_sb=%b, raddr=0x%08x", mem_wen, is_sw, is_sb, raddr);
+      	v_pmem_write(waddr, wdata, wmask);
     end
 end
+
 // ========================== 内存读写结束   =====================================
-
-
 //ebreak 检测
 always @(posedge clk) begin
 	if(is_ebreak) ebreak(pc);

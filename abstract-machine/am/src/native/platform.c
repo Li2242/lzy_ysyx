@@ -14,6 +14,7 @@
 static int pmem_fd = 0;
 static void *pmem = NULL;
 static ucontext_t uc_example = {};
+//
 static void *(*memcpy_libc)(void *, const void *, size_t) = NULL;
 sigset_t __am_intr_sigmask = {};
 __am_cpu_t *__am_cpu_struct = NULL;
@@ -31,6 +32,7 @@ static void save_example_context() {
   // registers. So we save the example context during signal handling
   // to get a context with everything valid.
   struct sigaction s;
+  // 跳过当前库中的memset,查找下一个匹配的符号
   void *(*memset_libc)(void *, int, size_t) = dlsym(RTLD_NEXT, "memset");
   memset_libc(&s, 0, sizeof(s));
   s.sa_sigaction = save_context_handler;
@@ -58,6 +60,7 @@ static void setup_sigaltstack() {
 
 int main(const char *args);
 
+// __attribute__((contructor))是gcc的特性,标记的函数会在main前执行
 static void init_platform() __attribute__((constructor));
 static void init_platform() {
   // create memory object and set up mapping to simulate the physical memory
@@ -87,6 +90,7 @@ static void init_platform() {
   assert(ret != (void *)-1);
 
   // save the address of memcpy() in glibc, since it may be linked with klib
+  // 保存glibc中memcpy()的地址，因为它可能链接到了klib
   memcpy_libc = dlsym(RTLD_NEXT, "memcpy");
   assert(memcpy_libc != NULL);
 

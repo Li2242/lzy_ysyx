@@ -7,10 +7,7 @@
 #define NR_REGS 32
 #endif
 
-/*
-虽然这块内存是“栈上的一块匿名区域”，但在 C 里我们把它的指针解释成了 Context*
-，于是它就“被命名为 Context 了”。
-*/
+
 struct Context {
   // TODO: fix the order of these members to match trap.S
   uintptr_t  gpr[NR_REGS], mcause, mstatus, mepc;

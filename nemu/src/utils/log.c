@@ -36,7 +36,7 @@ void init_log(const char *log_file) {
 //是否可以往日志文件中输入指令
 //目前可以输出10000条
 bool log_enable() {
-  return MUXDEF(CONFIG_TRACE, (g_nr_guest_inst >= CONFIG_TRACE_START) &&
+  	return MUXDEF(CONFIG_TRACE, (g_nr_guest_inst >= CONFIG_TRACE_START) &&
          (g_nr_guest_inst <= CONFIG_TRACE_END), false);
 }
 #endif

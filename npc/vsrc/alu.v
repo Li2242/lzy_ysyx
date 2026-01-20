@@ -1,7 +1,7 @@
 
 module alu(
     input[31:0] src1,
-		input[31:0] src2,
+	input[31:0] src2,
     input[11:0]  alu_op,
     output[31:0] alu_result
 );
@@ -44,7 +44,7 @@ wire [31:0] slt_result;
 wire [31:0] beq_result;
 wire [31:0] srl_result;
 
-//加减法
+//加减法合并
 wire [31:0] adder_a;
 wire [31:0] adder_b;
 wire        adder_cin;
@@ -56,9 +56,6 @@ assign adder_cin = (sltu | bne | sub | slt | beq) ? 1'b1  : 1'b0;
 
 assign {adder_cout , adder_result} = {1'b0,adder_a} + {1'b0,adder_b} + {32'b0,adder_cin};
 
-
-
-//加减法
 assign add_sub_result = adder_result;
 
 //sltu(无符号比较)a<b
@@ -69,7 +66,7 @@ assign sltu_result[0] = ~adder_cout;
 assign slt_result[31:1] = 31'b0;
 assign slt_result[0]    = (src1[31] != src2[31]) ? src1[31] : adder_result[31];
 
-//下面这两个感觉还能改改，这样写给有点草率了
+
 //bne
 assign bne_result[31:1] = 31'b0;
 assign bne_result[0]    = |add_sub_result;
@@ -93,14 +90,14 @@ assign srl_result = src1 >> src2[4:0];
 
 assign alu_result = ({32{add | sub}}  & add_sub_result)
                   | ({32{sltu}}       & sltu_result)
-			  			    | ({32{bne}}        & bne_result)
-			  			    | ({32{xor0}}       & xor_result)
-			  			    | ({32{or0}}        & or_result)
-			  			    | ({32{sra}}        & sra_result)
-			  			    | ({32{sll}}        & sll_result)
-			  			    | ({32{and0}}       & and_result)
-			  			    | ({32{slt}}        & slt_result)
-			  			    | ({32{beq}}        & beq_result)
-			  			    | ({32{srl}}        & srl_result);
+			  	  | ({32{bne}}        & bne_result)
+			  	  | ({32{xor0}}       & xor_result)
+			  	  | ({32{or0}}        & or_result)
+			  	  | ({32{sra}}        & sra_result)
+			  	  | ({32{sll}}        & sll_result)
+			  	  | ({32{and0}}       & and_result)
+			  	  | ({32{slt}}        & slt_result)
+			  	  | ({32{beq}}        & beq_result)
+			  	  | ({32{srl}}        & srl_result);
 
 endmodule

@@ -37,11 +37,11 @@ VM_PREFIX = Vnpc
 VM_MODPREFIX = Vnpc
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-  -g -O3 -I/home/lzy14/ysyx-workbench/npc/csrc/include/ -I/home/lzy14/ysyx-workbench/npc/tools/capstone/repo/include \
+  -g -O3 -I/home/lzy14/ysyx-workbench/npc/csrc/include/ \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
-  -lreadline \
+  -lreadline -lSDL2 -lSDL2main \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
@@ -49,6 +49,7 @@ VM_USER_CLASSES = \
   map \
   serial \
   timer \
+  vga \
   dut \
   exper \
   main \
@@ -84,6 +85,8 @@ map.o: csrc/device/map.cpp
 serial.o: csrc/device/serial.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 timer.o: csrc/device/timer.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+vga.o: csrc/device/vga.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 dut.o: csrc/dut.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<

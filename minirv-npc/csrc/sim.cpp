@@ -121,19 +121,19 @@ static void execute(uint32_t n){
 		// printf("0x%08x\n",cpu_pc);
 
 //===============  一条命令的开始  ========================
-    top->clk = 0;
-    top->eval();
-	#ifdef VTRACE
-    tfp->dump(contextp->time());    // 记录波形
-	#endif
-    contextp->timeInc(5);
+		top->clk = 0;
+		top->eval();
+		#ifdef VTRACE
+		tfp->dump(contextp->time());    // 记录波形
+		#endif
+		contextp->timeInc(5);
 
-    top->clk = 1;
-    top->eval();
-	#ifdef VTRACE
-    tfp->dump(contextp->time());    // 记录波形
-	#endif
-    contextp->timeInc(5);
+		top->clk = 1;
+		top->eval();
+		#ifdef VTRACE
+		tfp->dump(contextp->time());    // 记录波形
+		#endif
+		contextp->timeInc(5);
 //===============  一条命令的结束  =========================
 
 //正如函数名所说它就是TRACE和DIFFTEST的办公场所

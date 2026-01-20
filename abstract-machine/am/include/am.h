@@ -25,23 +25,23 @@ typedef struct Context Context;
 // An event of type @event, caused by @cause of pointer @ref
 typedef struct {
 	//事件编号
-  enum {
-    EVENT_NULL = 0,
-    EVENT_YIELD, EVENT_SYSCALL, EVENT_PAGEFAULT, EVENT_ERROR,
-    EVENT_IRQ_TIMER, EVENT_IRQ_IODEV,
-  } event;
+	enum {
+		EVENT_NULL = 0,
+		EVENT_YIELD, EVENT_SYSCALL, EVENT_PAGEFAULT, EVENT_ERROR,
+		EVENT_IRQ_TIMER, EVENT_IRQ_IODEV,
+	} event;
 	//描述事件的补充信息
-  uintptr_t cause, ref;
+  	uintptr_t cause, ref;
 	//事件信息字符串
-  const char *msg;
+  	const char *msg;
 } Event;
 
 // A protected address space with user memory @area
 // and arch-dependent @ptr
 typedef struct {
-  int pgsize;
-  Area area;
-  void *ptr;
+	int pgsize;
+	Area area;
+	void *ptr;
 } AddrSpace;
 
 #ifdef __cplusplus

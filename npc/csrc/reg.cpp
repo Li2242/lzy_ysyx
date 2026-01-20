@@ -25,7 +25,7 @@ uint32_t reg_str2val_name(char* name){
   //对比寄存器的名字
     if(strcmp(name,regs[i]) == 0){
       uint32_t reg_num = top->rootp->npc__DOT__u_regfile2__DOT__rf[i];
-      break;
+      return reg_num;
     }
   }
   //加的pc

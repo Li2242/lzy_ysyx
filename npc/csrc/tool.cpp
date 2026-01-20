@@ -65,24 +65,65 @@ uint32_t pmem_read(uint32_t addr, int len) {
 		if(addr == 0xa000004c){
 			rtc_io_handler();
 		}
-		uint32_t ret = host_read(rtc_port_base+(addr - 0xa0000048),len);
+		uint32_t ret = host_read(rtc_port_base + (addr - 0xa0000048)/4 ,len);
 		return ret;
 	}
+
+	if(addr == 0xa0000100 || addr == 0xa0000102 || addr == 0xa0000104){
+		uint32_t ret = 0;
+		if(addr == 0xa0000100){
+			uint32_t full = vgactl_port_base[0];
+			ret = (full >> 16) & 0xFFFF;
+		}
+
+		if(addr == 0xa0000102){
+			uint32_t full = vgactl_port_base[0];
+			ret = full & 0xFFFF;
+		}
+
+		if(addr == 0xa0000104){
+			ret = vgactl_port_base[1];
+		}
+		
+		return ret;
+	}
+	
+
+	if(addr >= 0xa1000000 && addr < 0xa2000000){
+		uint32_t ret = host_read((uint32_t *)vmem + (addr - 0xa1000000)/4,len);
+		return ret;
+	}
+
+	red_printf("pmem_read out of bound\n");
 	out_of_bound(addr);
+
 	return 0;
 }
 
 void pmem_write(uint32_t addr, int len, uint32_t data){
 	if(in_pmem(addr) == 1){
 		host_write(guest_to_host(addr), len, data);
+		return;
 	}
 	//串口
 	if(addr == 0xa00003f8){
 		host_write(serial_base, len, data);
+		return;
 	}
-
-		// if(addr != 0x80000000)
-		// 	green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
+	if(addr == 0xa0000104){
+		// host_write(vgactl_port_base + 1, len, data);
+		vgactl_port_base[1] = data;
+		// printf("write: addr=%08x data=%d vgactl=%d\n",addr,data,vgactl_port_base[1]);
+		return;
+	}
+	if(addr >= 0xa1000000 && addr < 0xa2000000){
+		host_write((uint32_t *)vmem + (addr - 0xa1000000)/4 , len, data);
+		return;
+	}
+	red_printf("pmem_write out of bound");
+	out_of_bound(addr);
+	// if(addr != 0x80000000)
+	// 	green_printf("写入地址:0x%08x, 写入数据:0x%08x\n",addr,pmem_read(addr,4));
 }
 
 //越界处理

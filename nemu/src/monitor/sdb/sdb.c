@@ -74,7 +74,7 @@ static int cmd_si(char *args){
     //用了刚刚讲过的sscanf
     sscanf(arg , "%u" , &n);
 
-    if(n<=0){
+    if(n <= 0){
         Log ("ERROR: The number of execution steps should be greater than 0!\n");
         return 1;
     }
@@ -305,46 +305,44 @@ void sdb_set_batch_mode() {
 }
 
 void sdb_mainloop() {
-  //批处理模式
-  if (is_batch_mode) {
-    cmd_c(NULL);
-    return;
-  }
+	//批处理模式
+	if (is_batch_mode) {
+		cmd_c(NULL);
+		return;
+	}
 
-  for (char *str; (str = rl_gets()) != NULL; ) {
-    char *str_end = str + strlen(str);
+	for (char *str; (str = rl_gets()) != NULL; ){
+		char *str_end = str + strlen(str);
 
-    /* extract the first token as the command */
-    //如果在nemu中的命令行什么都不输入跳过这个循环
-    char *cmd = strtok(str, " ");
-    if (cmd == NULL) { continue; }
+		/* extract the first token as the command */
+		//第一个参数被视为命令
+		char *cmd = strtok(str, " ");
+		if (cmd == NULL) { continue; }
 
-    /* treat the remaining string as the arguments,
-     * which may need further parsing
-     * 参数
-     */
-    char *args = cmd + strlen(cmd) + 1;
+		/* treat the remaining string as the arguments,
+		* which may need further parsing 剩余的字符被视为参数
+		*/
+		char *args = cmd + strlen(cmd) + 1;
 		//判断是否有参数
-    if (args >= str_end) {
-      args = NULL;
-    }
-
-#ifdef CONFIG_DEVICE
-    extern void sdl_clear_event_queue();
-    sdl_clear_event_queue();
-#endif
+		if (args >= str_end) {
+			args = NULL;
+		}
+	//清空sdl事件队列
+	#ifdef CONFIG_DEVICE
+		extern void sdl_clear_event_queue();
+		sdl_clear_event_queue();
+	#endif
 		//处理参数ing...
-    int i;
-    for (i = 0; i < NR_CMD; i ++) {
-      if (strcmp(cmd, cmd_table[i].name) == 0) {
+		int i;
+		for (i = 0; i < NR_CMD; i++) {
+			if (strcmp(cmd, cmd_table[i].name) == 0) {
 				//是否退出
-        if (cmd_table[i].handler(args) < 0) { return; }
-        break;
-      }
-    }
-		//是否找到命令
-    if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
-  }
+				if (cmd_table[i].handler(args) < 0) { return; }
+				break;
+			}
+		}
+		if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+	}
 }
 
 void init_sdb() {

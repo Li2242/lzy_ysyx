@@ -56,8 +56,6 @@ $(OBJ_DIR)/%.o: %.cc
 .PHONY: app clean
 
 app: $(BINARY)
-# 静态库（archive）存放的多为.a文件
-#LIBS 里一般放 链接器需要链接的库名
 #链接
 $(BINARY):: $(OBJS) $(ARCHIVES)
 	@echo + LD $@

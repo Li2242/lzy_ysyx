@@ -57,38 +57,34 @@ void init_mem() {
 
 //读
 word_t paddr_read(paddr_t addr, int len) {
-  if (likely(in_pmem(addr))) {
-		word_t temp = pmem_read(addr, len);
-		//mtrace
-		#ifdef CONFIG_MTRACE
-			log_write("\t\tR  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,temp);
-		#endif
+  	if (likely(in_pmem(addr))){
+	word_t temp = pmem_read(addr, len);
+//mtrace
+#ifdef CONFIG_MTRACE
+	log_write("\t\tR  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,temp);
+#endif
     return temp;
-  }
-  //不在nemu物理内存中，在设备中
-  IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
-
-  //越~界~喽~
-  out_of_bound(addr);
-  return 0;
+}
+	//不在nemu物理内存中，在设备中
+	IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
+	//越~界~喽~
+	out_of_bound(addr);
+	return 0;
 }
 
 //写
 void paddr_write(paddr_t addr, int len, word_t data) {
 	//是否在nemu物理内存中
-  if (likely(in_pmem(addr))) {
+  	if (likely(in_pmem(addr))){
 		pmem_write(addr, len, data);
-		//mtrace
-		#ifdef CONFIG_MTRACE
-			log_write("\t\tW  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,data);
-		#endif
-
+//mtrace
+#ifdef CONFIG_MTRACE
+		log_write("\t\tW  adder=0x%08x  size=%d  data=0x%08x\n",addr,len,data);
+#endif
 		return;
-		}
-
+	}
   //不在nemu物理内存中，在设备中
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
-
   //越~界~喽~
   out_of_bound(addr);
 }
